@@ -14,14 +14,20 @@
             overflow: auto;
         }
 
-        /* The video background */
+        /* --- UPDATED VIDEO BACKGROUND STYLE --- */
         #background-video {
             position: fixed;
             right: 0;
             bottom: 0;
             min-width: 100%;
             min-height: 100%;
+            width: auto;
+            height: auto;
             z-index: -1;
+            background-size: cover;
+            background-position: center center;
+            /* This is the key property to make the video cover the screen */
+            object-fit: cover; 
         }
         
         /* --- SPLASH SCREEN STYLES (Unchanged) --- */
@@ -60,7 +66,7 @@
         .contact-form {
             display: flex;
             flex-direction: column;
-            gap: 15px; /* Adds space between form elements */
+            gap: 15px;
             text-align: left;
         }
         .contact-form label {
@@ -75,7 +81,7 @@
             background-color: rgba(255, 255, 255, 0.1);
             color: white;
             font-size: 1em;
-            box-sizing: border-box; /* Important for padding */
+            box-sizing: border-box;
         }
         .contact-form button {
             padding: 12px;
@@ -133,7 +139,6 @@
     </main>
 
     <script>
-        // (Your JavaScript is unchanged)
         const enterButton = document.getElementById('enter-button');
         const splashScreen = document.getElementById('splash-screen');
         const mainContent = document.getElementById('main-content');

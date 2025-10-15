@@ -11,19 +11,10 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: white;
             background-color: #000;
+            overflow: auto;
         }
 
-        /* --- SPLASH SCREEN STYLES --- */
-        #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 100;
-            transition: opacity 0.5s ease-out;
-        }
-        
+        /* The video background */
         #background-video {
             position: fixed;
             right: 0;
@@ -32,64 +23,73 @@
             min-height: 100%;
             z-index: -1;
         }
-
-        /* --- UPDATED BUTTON STYLE --- */
+        
+        /* --- SPLASH SCREEN STYLES (Unchanged) --- */
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 100; transition: opacity 0.5s ease-out;
+        }
         #enter-button {
-            /* We use absolute positioning to pin it to the bottom */
-            position: absolute;
-            bottom: 10%; /* Position it 10% from the bottom */
-            left: 50%; /* Center it horizontally */
-            transform: translateX(-50%); /* Fine-tune the horizontal centering */
-
-            /* --- Visual styling (unchanged) --- */
-            padding: 15px 30px;
-            font-size: 1.2em;
-            color: white;
-            background-color: rgba(0, 0, 0, 0.5);
-            border: 2px solid white;
-            border-radius: 50px;
-            cursor: pointer;
+            position: absolute; bottom: 10%; left: 50%;
+            transform: translateX(-50%); padding: 15px 30px; font-size: 1.2em;
+            color: white; background-color: rgba(0, 0, 0, 0.5);
+            border: 2px solid white; border-radius: 50px; cursor: pointer;
             transition: background-color 0.3s, transform 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            text-transform: uppercase; letter-spacing: 2px;
         }
         #enter-button:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
+            background-color: rgba(255, 255, 255, 0.2); transform: scale(1.05);
         }
 
-        /* --- MAIN CONTENT STYLES --- */
+        /* --- MAIN CONTENT STYLES (Unchanged) --- */
         #main-content {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease-in;
+            display: none; opacity: 0; transition: opacity 0.5s ease-in;
         }
-        
         .visible {
-            display: block !important;
-            opacity: 1 !important;
+            display: block !important; opacity: 1 !important;
         }
-
-        .content-container {
-            padding: 20px;
-            text-align: center;
-        }
-
+        .content-container { padding: 20px; text-align: center; }
         .section {
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 40px 20px;
-            margin: 20px auto;
-            max-width: 800px;
-            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.5); padding: 40px 20px;
+            margin: 20px auto; max-width: 800px; border-radius: 8px;
         }
-        
-        .logo {
-            max-width: 150px;
-            margin-bottom: 20px;
-        }
+        .logo { max-width: 150px; margin-bottom: 20px; }
+        h1, h2 { text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); }
 
-        h1, h2 {
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        /* --- STYLES FOR THE CONTACT FORM --- */
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Adds space between form elements */
+            text-align: left;
+        }
+        .contact-form label {
+            font-weight: bold;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #555;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1em;
+            box-sizing: border-box; /* Important for padding */
+        }
+        .contact-form button {
+            padding: 12px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+            background-color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .contact-form button:hover {
+            background-color: #ccc;
         }
     </style>
 </head>
@@ -113,23 +113,30 @@
                 <h2>About Us</h2>
                 <p>This is where you can write a paragraph about your business. Explain what you do, who you are, and what makes your project unique.</p>
             </div>
+            
             <div class="section">
-                <h2>Services</h2>
-                <p>Here are some of the things we offer:</p>
-                <ul>
-                    <li>Service One</li>
-                    <li>Service Two</li>
-                    <li>Service Three</li>
-                </ul>
+                <h2>Contact Us</h2>
+                <form action="https://formspree.io/f/mwprawvj" method="POST" class="contact-form">
+                    <label>Your Name:</label>
+                    <input type="text" name="name" required>
+                    
+                    <label>Your Email:</label>
+                    <input type="email" name="_replyto" required>
+                    
+                    <label>Your Message:</label>
+                    <textarea name="message" rows="6" required></textarea>
+                    
+                    <button type="submit">Send Message</button>
+                </form>
             </div>
         </div>
     </main>
 
     <script>
+        // (Your JavaScript is unchanged)
         const enterButton = document.getElementById('enter-button');
         const splashScreen = document.getElementById('splash-screen');
         const mainContent = document.getElementById('main-content');
-
         enterButton.addEventListener('click', () => {
             splashScreen.style.opacity = '0';
             setTimeout(() => {

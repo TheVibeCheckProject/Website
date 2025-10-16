@@ -54,65 +54,39 @@
             z-index: -1;
         }
 
-        /* Overlay for text readability */
-        #splash-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .splash-content {
-            text-align: center;
-            animation: fadeInUp 1.5s ease-out;
-        }
-
-        .splash-title {
-            font-size: 3em;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-        }
-
-        .splash-subtitle {
-            font-size: 1.2em;
-            margin-bottom: 40px;
-            opacity: 0.9;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
-        }
-
+        /* Enter button that animates in */
         .enter-prompt {
-            font-size: 1em;
-            padding: 15px 30px;
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2em;
+            padding: 15px 40px;
             background-color: rgba(255, 255, 255, 0.15);
             border: 2px solid rgba(255, 255, 255, 0.4);
-            border-radius: 25px;
+            border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s ease;
             user-select: none;
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+            opacity: 0;
+            animation: slideInUp 0.8s ease-out 2s forwards;
         }
 
         .enter-prompt:hover {
             background-color: rgba(255, 255, 255, 0.25);
             border-color: rgba(255, 255, 255, 0.6);
-            transform: scale(1.05);
+            transform: translateX(-50%) scale(1.05);
         }
 
-        @keyframes fadeInUp {
+        @keyframes slideInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateX(-50%) translateY(50px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateX(-50%) translateY(0);
             }
         }
 
@@ -163,14 +137,8 @@
             <source src="Affirmation_Sign_Video_Generation.mp4" type="video/mp4">
         </video>
         
-        <!-- Overlay with content -->
-        <div id="splash-overlay">
-            <div class="splash-content">
-                <div class="splash-title">The Vibe Check Project</div>
-                <div class="splash-subtitle">Welcome to our community</div>
-                <div class="enter-prompt" id="enter-prompt">Press Enter to Continue</div>
-            </div>
-        </div>
+        <!-- Enter button that animates in after 2 seconds -->
+        <div class="enter-prompt" id="enter-prompt">Press Enter to Continue</div>
     </div>
 
     <!-- Main content - initially hidden -->

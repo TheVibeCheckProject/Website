@@ -4,14 +4,23 @@
     <meta charset="UTF-8">
     <title>The Vibe Check Project</title>
     <style>
+        /* Import Google Fonts for better typography */
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
         /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body, html {
             height: 100%;
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: white;
-            background-color: #000;
-            overflow: hidden; /* Hide overflow during splash */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+            overflow-y: hidden; /* Hide overflow during splash */
         }
 
         /* Video background style for main content */
@@ -35,7 +44,7 @@
             width: 100%;
             height: 100%;
             z-index: 1000;
-            transition: opacity 0.5s ease-in-out;
+            transition: opacity 0.8s ease-in-out;
         }
 
         #splash-screen.hidden {
@@ -62,7 +71,8 @@
             transform: translateX(-50%);
             font-size: 1.2em;
             padding: 15px 40px;
-            background-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.4);
             border-radius: 30px;
             cursor: pointer;
@@ -71,12 +81,15 @@
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
             opacity: 0;
             animation: slideInUp 0.8s ease-out 2s forwards;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
         }
 
         .enter-prompt:hover {
-            background-color: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.25);
             border-color: rgba(255, 255, 255, 0.6);
             transform: translateX(-50%) scale(1.05);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         @keyframes slideInUp {
@@ -93,74 +106,395 @@
         /* Main content styles - hidden initially */
         #main-content {
             opacity: 0;
-            transition: opacity 0.5s ease-in-out;
+            transition: opacity 0.8s ease-in-out;
+            min-height: 100vh;
+            position: relative;
         }
 
         #main-content.show {
             opacity: 1;
         }
 
-        .content-container {
-            padding: 20px;
+        /* Floating particles background */
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Organic container styles */
+        .organic-container {
+            position: relative;
+            margin: 80px auto;
+            max-width: 90%;
+            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 60% 40% 70% 30% / 30% 70% 40% 60%;
+            overflow: hidden;
+            animation: breathe 4s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        .organic-container:nth-child(even) {
+            border-radius: 40% 60% 30% 70% / 70% 30% 60% 40%;
+            animation-delay: -2s;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.02) rotate(1deg); }
+        }
+
+        /* Hero section */
+        .hero-container {
             text-align: center;
+            padding: 100px 40px;
+            margin-bottom: 0;
         }
-        
-        .section {
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 40px 20px;
-            margin: 20px auto;
-            max-width: 800px;
-            border-radius: 8px;
+
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            margin-bottom: 30px;
+            line-height: 1.1;
         }
-        
-        .logo {
-            max-width: 150px;
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 50px;
+            line-height: 1.6;
+            font-weight: 300;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mission section */
+        .mission-container {
+            margin: 100px auto;
+            max-width: 85%;
+        }
+
+        .mission-content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .mission-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .mission-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .mission-description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 40px;
+        }
+
+        .mission-icons {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .mission-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .mission-icon:nth-child(2) { animation-delay: -1s; }
+        .mission-icon:nth-child(3) { animation-delay: -2s; }
+
+        /* Features section */
+        .features-container {
+            margin: 100px auto;
+            max-width: 90%;
+            padding: 80px 40px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50% 20% 50% 20%;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: breathe 6s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:nth-child(2) {
+            border-radius: 20% 50% 20% 50%;
+            animation-delay: -2s;
+        }
+
+        .feature-card:nth-child(3) {
+            border-radius: 40% 30% 60% 30%;
+            animation-delay: -4s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) rotate(2deg);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
             margin-bottom: 20px;
+            display: block;
         }
-        
-        h1, h2 {
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+
+        .feature-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .feature-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta-container {
+            text-align: center;
+            margin: 100px auto;
+            max-width: 80%;
+            padding: 80px 40px;
+        }
+
+        .cta-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .cta-text {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 50px;
+            line-height: 1.7;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 20px 50px;
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.4);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .organic-container {
+                margin: 40px auto;
+                padding: 40px 20px;
+                max-width: 95%;
+            }
+
+            .mission-content {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .hero-container {
+                padding: 60px 20px;
+            }
+        }
+
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
-
-    <!-- Main background video (for main content) -->
+    <!-- Main background video -->
     <video autoplay loop muted playsinline id="background-video">
         <source src="Affirmation_Sign_Video_Generation.mp4" type="video/mp4">
     </video>
 
+    <!-- Floating particles -->
+    <div class="floating-particles" id="particles"></div>
+
     <!-- Splash Screen with Video -->
     <div id="splash-screen">
-        <!-- Video as splash screen background -->
         <video autoplay muted playsinline id="splash-video">
             <source src="Affirmation_Sign_Video_Generation.mp4" type="video/mp4">
         </video>
-        
-        <!-- Enter button that animates in after 2 seconds -->
         <div class="enter-prompt" id="enter-prompt">Press Enter to Continue</div>
     </div>
 
-    <!-- Main content - initially hidden -->
+    <!-- Main content -->
     <main id="main-content">
-        <div class="content-container">
-            <div class="section">
-                <img src="logo.png" alt="The Vibe Check Project Logo" class="logo">
-                <h1>The Vibe Check Project</h1>
-                <p>Your one-line slogan or mission statement goes here.</p>
+        <!-- Hero Section -->
+        <div class="organic-container hero-container scroll-reveal">
+            <div class="hero-title">The Vibe Check Project</div>
+            <div class="hero-subtitle">
+                Where emotional intelligence meets self-love, creating deeper connections through mindful communication and authentic growth.
             </div>
-            <div class="section">
-                <h2>About Us</h2>
-                <p>This is where you can write a paragraph about your business.</p>
+        </div>
+
+        <!-- Mission Section -->
+        <div class="organic-container mission-container scroll-reveal">
+            <div class="mission-content">
+                <div class="mission-text">
+                    <h2 class="mission-title">Your Journey to Deeper Connection</h2>
+                    <p class="mission-description">
+                        Every meaningful relationship begins with understanding yourself first. We believe that small, daily affirmations and mindful practices can transform how you communicate, love, and grow with others. It's not about fixing what's broken—it's about nurturing what's already beautiful within you.
+                    </p>
+                    <p class="mission-description">
+                        Through emotional intelligence and intentional communication, we help you build the skills that matter most in life: empathy, vulnerability, and authentic connection.
+                    </p>
+                </div>
+                <div class="mission-icons">
+                    <div class="mission-icon">💝</div>
+                    <div class="mission-icon">🧠</div>
+                    <div class="mission-icon">🤝</div>
+                </div>
             </div>
-            <div class="section">
-                <h2>Contact Us</h2>
-                <p>We'd love to hear from you! Please feel free to reach out.</p>
+        </div>
+
+        <!-- Features Section -->
+        <div class="organic-container features-container scroll-reveal">
+            <h2 class="mission-title" style="text-align: center; margin-bottom: 60px;">Discover What's Possible</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">✨</div>
+                    <h3 class="feature-title">Daily Affirmations</h3>
+                    <p class="feature-description">
+                        Start each day with intention. Our carefully crafted affirmations help you build confidence, self-love, and emotional awareness that radiates into all your relationships.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3 class="feature-title">Social Connection</h3>
+                    <p class="feature-description">
+                        Share your journey with a supportive community. Connect with others who are growing, learning, and prioritizing healthy relationships in their lives.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3 class="feature-title">Personal Growth</h3>
+                    <p class="feature-description">
+                        Track your progress as you develop emotional intelligence skills. Celebrate small wins and see how consistent practice leads to meaningful transformation.
+                    </p>
+                </div>
             </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="organic-container cta-container scroll-reveal">
+            <h2 class="cta-title">Ready to Transform Your Connections?</h2>
+            <p class="cta-text">
+                Join thousands who are already building healthier, more meaningful relationships through daily practice of emotional intelligence and self-love.
+            </p>
+            <a href="#" class="cta-button" id="cta-button">Start Your Journey</a>
         </div>
     </main>
 
-    <!-- Script for splash screen and Tally popup trigger -->
+    <!-- Scripts -->
     <script>
         let splashCompleted = false;
 
@@ -173,16 +507,16 @@
             const mainContent = document.getElementById('main-content');
             const body = document.body;
 
-            // Hide splash screen and show main content
             splashScreen.classList.add('hidden');
-            body.style.overflow = 'auto'; // Restore scrolling
+            body.style.overflow = 'auto';
             
             setTimeout(() => {
                 mainContent.classList.add('show');
                 splashScreen.style.display = 'none';
+                createParticles();
+                initScrollReveal();
             }, 500);
 
-            // Trigger the Tally popup after splash screen is hidden
             setTimeout(() => {
                 triggerTallyPopup();
             }, 1000);
@@ -190,16 +524,48 @@
 
         // Function to trigger the existing Tally popup
         function triggerTallyPopup() {
-            // Wait for Tally to be loaded, then open the popup
             if (window.Tally) {
                 window.Tally.openPopup('mR7JRj');
             } else {
-                // Keep trying until Tally is loaded
                 setTimeout(triggerTallyPopup, 100);
             }
         }
 
-        // Listen for Enter key press on splash screen
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 6 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Scroll reveal animation
+        function initScrollReveal() {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            reveals.forEach(reveal => {
+                revealObserver.observe(reveal);
+            });
+        }
+
+        // Event listeners
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Enter' && !splashCompleted) {
                 event.preventDefault();
@@ -207,11 +573,16 @@
             }
         });
 
-        // Also allow clicking on the prompt
         document.getElementById('enter-prompt').addEventListener('click', function() {
             if (!splashCompleted) {
                 completeSplashScreen();
             }
+        });
+
+        // Make CTA button trigger Tally popup
+        document.getElementById('cta-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            triggerTallyPopup();
         });
 
         // Ensure splash video starts playing
@@ -221,7 +592,7 @@
         });
     </script>
 
-    <!-- Your existing Tally configuration and script -->
+    <!-- Tally configuration and script -->
     <script>
         window.TallyConfig = {
             "formId": "mR7JRj",
@@ -237,6 +608,5 @@
         };
     </script>
     <script async src="https://tally.so/widgets/embed.js"></script>
-
 </body>
 </html>

@@ -7,30 +7,15 @@
     <script async src="https://tally.so/widgets/embed.js"></script>
 
     <style>
-        /* Basic reset */
+        /* All your CSS is unchanged */
         body, html {
-            height: 100%;
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: white;
-            background-color: #000;
-            overflow: auto;
+            height: 100%; margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: white; background-color: #000; overflow: auto;
         }
-
-        /* Video background style */
         #background-video {
-            position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -1;
-            object-fit: cover; 
+            position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%;
+            width: auto; height: auto; z-index: -1; object-fit: cover; 
         }
-        
-        /* Splash screen styles */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 100; transition: opacity 0.5s ease-out;
@@ -46,8 +31,6 @@
         #enter-button:hover {
             background-color: rgba(255, 255, 255, 0.2); transform: scale(1.05);
         }
-
-        /* Main content styles */
         #main-content {
             display: none; opacity: 0; transition: opacity 0.5s ease-in;
         }
@@ -61,23 +44,6 @@
         }
         .logo { max-width: 150px; margin-bottom: 20px; }
         h1, h2 { text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); }
-
-        /* --- NEW: Style for the popup button --- */
-        .popup-button {
-            padding: 15px 30px;
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #333;
-            background-color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-        .popup-button:hover {
-            background-color: #ccc;
-            transform: scale(1.05);
-        }
     </style>
 </head>
 <body>
@@ -103,31 +69,42 @@
             
             <div class="section">
                 <h2>Contact Us</h2>
-                <p style="margin-bottom: 20px;">Have a question or want to vibe with us? Click the button below!</p>
-                <button
-                    class="popup-button"
-                    data-tally-open="mR7JRj"
-                    data-tally-layout="modal"
-                    data-tally-width="700"
-                    data-tally-hide-title="1"
-                >
-                    Open Contact Form
-                </button>
+                <p>We'd love to hear from you! Please feel free to reach out.</p>
             </div>
         </div>
     </main>
 
     <script>
-        // (Your JavaScript is unchanged)
+        // --- UPDATED SCRIPT ---
         const enterButton = document.getElementById('enter-button');
         const splashScreen = document.getElementById('splash-screen');
         const mainContent = document.getElementById('main-content');
+        
+        // IMPORTANT: Replace this with your REAL form ID
+        const myTallyFormId = 'YOUR_REAL_FORM_ID'; 
+
         enterButton.addEventListener('click', () => {
+            // Fade out the splash screen
             splashScreen.style.opacity = '0';
+
+            // After the fade out animation is done...
             setTimeout(() => {
+                // Hide the splash screen completely
                 splashScreen.style.display = 'none';
+                
+                // Show the main content
                 mainContent.classList.add('visible');
-            }, 500);
+
+                // AND open the Tally popup form
+                Tally.openPopup(myTallyFormId, {
+                    layout: 'modal',
+                    width: 700,
+                    hideTitle: true,
+                    onSubmit: (payload) => {
+                        alert('Thanks for your submission! We will get back to you soon.');
+                    }
+                });
+            }, 500); // This time must match the CSS transition time
         });
     </script>
 

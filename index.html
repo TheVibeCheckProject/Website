@@ -7,20 +7,34 @@
         /* Import Google Fonts for better typography */
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
-        /* Basic reset */
+        /* CHAOTIC RESET - Everything moves and breathes */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            animation: subtleShake 8s ease-in-out infinite;
         }
 
         body, html {
             height: 100%;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: white;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #ff6b6b 100%);
+            background-size: 400% 400%;
+            animation: chaoticBackground 6s ease-in-out infinite;
             overflow-x: hidden;
-            overflow-y: hidden; /* Hide overflow during splash */
+            overflow-y: hidden;
+        }
+
+        @keyframes chaoticBackground {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes subtleShake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(0.5deg); }
+            75% { transform: rotate(-0.5deg); }
         }
 
         /* Video background style for main content */
@@ -33,7 +47,14 @@
             width: auto;
             height: auto;
             z-index: -1;
-            object-fit: cover; 
+            object-fit: cover;
+            filter: hue-rotate(90deg) saturate(1.2);
+            animation: videoPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes videoPulse {
+            0%, 100% { filter: hue-rotate(90deg) saturate(1.2); }
+            50% { filter: hue-rotate(120deg) saturate(1.5); }
         }
 
         /* Splash screen styles with video background */
@@ -45,11 +66,17 @@
             height: 100%;
             z-index: 1000;
             transition: opacity 0.8s ease-in-out;
+            animation: splashBreathe 3s ease-in-out infinite;
         }
 
         #splash-screen.hidden {
             opacity: 0;
             pointer-events: none;
+        }
+
+        @keyframes splashBreathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
         }
 
         /* Video as splash screen background */
@@ -61,6 +88,13 @@
             height: 100%;
             object-fit: cover;
             z-index: -1;
+            animation: splashVideoRotate 8s linear infinite;
+        }
+
+        @keyframes splashVideoRotate {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(2deg) scale(1.05); }
+            100% { transform: rotate(0deg) scale(1); }
         }
 
         /* Enter button that animates in */
@@ -74,22 +108,23 @@
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.4);
-            border-radius: 30px;
+            border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
             user-select: none;
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
             opacity: 0;
-            animation: slideInUp 0.8s ease-out 2s forwards;
+            animation: slideInUp 0.8s ease-out 2s forwards, pulse 2s ease-in-out infinite 2s;
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 500;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
         }
 
         .enter-prompt:hover {
             background: rgba(255, 255, 255, 0.25);
             border-color: rgba(255, 255, 255, 0.6);
-            transform: translateX(-50%) scale(1.05);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transform: translateX(-50%) scale(1.05) rotate(2deg);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 255, 255, 0.5);
         }
 
         @keyframes slideInUp {
@@ -101,6 +136,11 @@
                 opacity: 1;
                 transform: translateX(-50%) translateY(0);
             }
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.6); }
         }
 
         /* Main content styles - hidden initially */
@@ -130,7 +170,7 @@
             position: absolute;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
+            animation: float 6s ease-in-out infinite, particleRotate 4s linear infinite;
         }
 
         @keyframes float {
@@ -138,8 +178,13 @@
             50% { transform: translateY(-20px) rotate(180deg); }
         }
 
-        /* Organic container styles */
-        .organic-container {
+        @keyframes particleRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* CHAOTIC ORGANIC CONTAINER - No straight lines! */
+        .chaotic-container {
             position: relative;
             margin: 80px auto;
             max-width: 90%;
@@ -149,44 +194,70 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 60% 40% 70% 30% / 30% 70% 40% 60%;
             overflow: hidden;
-            animation: breathe 4s ease-in-out infinite;
+            animation: chaoticBreathe 4s ease-in-out infinite, chaoticFloat 6s ease-in-out infinite;
             transform-origin: center;
         }
 
-        .organic-container:nth-child(even) {
+        .chaotic-container:nth-child(even) {
             border-radius: 40% 60% 30% 70% / 70% 30% 60% 40%;
-            animation-delay: -2s;
+            animation-delay: -2s, -3s;
         }
 
-        @keyframes breathe {
+        .chaotic-container:nth-child(3n) {
+            border-radius: 80% 20% 60% 40% / 40% 80% 20% 60%;
+            animation-delay: -1s, -4s;
+        }
+
+        @keyframes chaoticBreathe {
             0%, 100% { transform: scale(1) rotate(0deg); }
             50% { transform: scale(1.02) rotate(1deg); }
         }
 
-        /* Hero section */
+        @keyframes chaoticFloat {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            25% { transform: translateY(-5px) translateX(3px); }
+            75% { transform: translateY(5px) translateX(-2px); }
+        }
+
+        /* HERO SECTION - Totally chaotic title */
         .hero-container {
             text-align: center;
             padding: 100px 40px;
             margin-bottom: 0;
+            animation: heroShake 5s ease-in-out infinite;
+        }
+
+        @keyframes heroShake {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(0.5deg) scale(1.01); }
+            75% { transform: rotate(-0.5deg) scale(0.99); }
         }
 
         .hero-title {
             font-family: 'Space Grotesk', sans-serif;
             font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 700;
-            background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
-            background-size: 300% 300%;
+            background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #f093fb, #ff6b6b);
+            background-size: 400% 400%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: gradientShift 3s ease-in-out infinite;
+            animation: chaoticGradientShift 3s ease-in-out infinite, titleFloat 4s ease-in-out infinite;
             margin-bottom: 30px;
             line-height: 1.1;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        @keyframes gradientShift {
+        @keyframes chaoticGradientShift {
             0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 50% 25%; }
             50% { background-position: 100% 50%; }
+            75% { background-position: 50% 75%; }
+        }
+
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
         }
 
         .hero-subtitle {
@@ -195,7 +266,13 @@
             margin-bottom: 50px;
             line-height: 1.6;
             font-weight: 300;
-            animation: fadeInUp 1s ease-out 0.5s both;
+            animation: fadeInUp 1s ease-out 0.5s both, subtitleFloat 3s ease-in-out infinite;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes subtitleFloat {
+            0%, 100% { transform: translateX(0px); }
+            50% { transform: translateX(2px); }
         }
 
         @keyframes fadeInUp {
@@ -209,7 +286,7 @@
             }
         }
 
-        /* Mission section */
+        /* MISSION SECTION - Scattered and breathing */
         .mission-container {
             margin: 100px auto;
             max-width: 85%;
@@ -220,6 +297,12 @@
             align-items: center;
             gap: 60px;
             flex-wrap: wrap;
+            animation: missionSway 4s ease-in-out infinite;
+        }
+
+        @keyframes missionSway {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(0.3deg); }
         }
 
         .mission-text {
@@ -233,6 +316,12 @@
             font-weight: 600;
             margin-bottom: 30px;
             color: #fff;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); }
+            100% { text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.2); }
         }
 
         .mission-description {
@@ -240,6 +329,12 @@
             line-height: 1.8;
             color: rgba(255, 255, 255, 0.85);
             margin-bottom: 40px;
+            animation: textFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes textFloat {
+            0%, 100% { transform: translateX(0px); }
+            50% { transform: translateX(1px); }
         }
 
         .mission-icons {
@@ -258,17 +353,38 @@
             align-items: center;
             justify-content: center;
             font-size: 2rem;
-            animation: float 3s ease-in-out infinite;
+            animation: chaoticFloat 3s ease-in-out infinite, iconRotate 5s linear infinite;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
-        .mission-icon:nth-child(2) { animation-delay: -1s; }
-        .mission-icon:nth-child(3) { animation-delay: -2s; }
+        .mission-icon:nth-child(2) { animation-delay: -1s, -2s; }
+        .mission-icon:nth-child(3) { animation-delay: -2s, -4s; }
 
-        /* Features section */
+        @keyframes iconRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* FEATURES SECTION - Actually showcase real Parity features! */
         .features-container {
             margin: 100px auto;
             max-width: 90%;
             padding: 80px 40px;
+        }
+
+        .features-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 60px;
+            color: #fff;
+            animation: titlePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .features-grid {
@@ -285,23 +401,28 @@
             padding: 40px 30px;
             text-align: center;
             transition: all 0.3s ease;
-            animation: breathe 6s ease-in-out infinite;
+            animation: chaoticBreathe 6s ease-in-out infinite, cardHover 0.5s ease-in-out;
             position: relative;
             overflow: hidden;
         }
 
         .feature-card:nth-child(2) {
             border-radius: 20% 50% 20% 50%;
-            animation-delay: -2s;
+            animation-delay: -2s, 0s;
         }
 
         .feature-card:nth-child(3) {
             border-radius: 40% 30% 60% 30%;
-            animation-delay: -4s;
+            animation-delay: -4s, 0s;
+        }
+
+        .feature-card:nth-child(4) {
+            border-radius: 70% 30% 80% 20%;
+            animation-delay: -1s, 0s;
         }
 
         .feature-card:hover {
-            transform: translateY(-10px) rotate(2deg);
+            transform: translateY(-10px) rotate(2deg) scale(1.02);
             background: rgba(255, 255, 255, 0.1);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
@@ -310,6 +431,12 @@
             font-size: 3rem;
             margin-bottom: 20px;
             display: block;
+            animation: iconBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         .feature-title {
@@ -339,6 +466,12 @@
             font-weight: 600;
             margin-bottom: 30px;
             color: #fff;
+            animation: ctaShake 3s ease-in-out infinite;
+        }
+
+        @keyframes ctaShake {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(0.5deg); }
         }
 
         .cta-text {
@@ -360,22 +493,24 @@
             font-size: 1.2rem;
             transition: all 0.3s ease;
             box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
-            animation: pulse 2s ease-in-out infinite;
+            animation: chaoticPulse 2s ease-in-out infinite;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
         .cta-button:hover {
-            transform: translateY(-3px);
+            transform: translateY(-3px) rotate(1deg) scale(1.05);
             box-shadow: 0 15px 40px rgba(255, 107, 107, 0.4);
+            background: linear-gradient(135deg, #feca57, #ff6b6b);
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        @keyframes chaoticPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.05) rotate(0.5deg); }
         }
 
         /* Responsive design */
         @media (max-width: 768px) {
-            .organic-container {
+            .chaotic-container {
                 margin: 40px auto;
                 padding: 40px 20px;
                 max-width: 95%;
@@ -399,13 +534,13 @@
         /* Scroll animations */
         .scroll-reveal {
             opacity: 0;
-            transform: translateY(50px);
+            transform: translateY(50px) rotate(2deg);
             transition: all 0.8s ease;
         }
 
         .scroll-reveal.revealed {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) rotate(0deg);
         }
     </style>
 </head>
@@ -429,7 +564,7 @@
     <!-- Main content -->
     <main id="main-content">
         <!-- Hero Section -->
-        <div class="organic-container hero-container scroll-reveal">
+        <div class="chaotic-container hero-container scroll-reveal">
             <div class="hero-title">The Vibe Check Project</div>
             <div class="hero-subtitle">
                 Where emotional intelligence meets self-love, creating deeper connections through mindful communication and authentic growth.
@@ -437,7 +572,7 @@
         </div>
 
         <!-- Mission Section -->
-        <div class="organic-container mission-container scroll-reveal">
+        <div class="chaotic-container mission-container scroll-reveal">
             <div class="mission-content">
                 <div class="mission-text">
                     <h2 class="mission-title">Your Journey to Deeper Connection</h2>
@@ -456,36 +591,57 @@
             </div>
         </div>
 
-        <!-- Features Section -->
-        <div class="organic-container features-container scroll-reveal">
-            <h2 class="mission-title" style="text-align: center; margin-bottom: 60px;">Discover What's Possible</h2>
+        <!-- Features Section - REAL PARITY APP FEATURES -->
+        <div class="chaotic-container features-container scroll-reveal">
+            <h2 class="features-title">Experience Real Connection</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">✨</div>
-                    <h3 class="feature-title">Daily Affirmations</h3>
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Daily Challenges</h3>
                     <p class="feature-description">
-                        Start each day with intention. Our carefully crafted affirmations help you build confidence, self-love, and emotional awareness that radiates into all your relationships.
+                        Complete step-by-step relationship challenges every day. Earn XP, track your streak, and build emotional intelligence skills like active listening, appreciation expression, and vulnerability sharing.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔥</div>
+                    <h3 class="feature-title">Streak Tracking</h3>
+                    <p class="feature-description">
+                        Maintain your daily practice streak and watch your emotional intelligence grow. Visual streak counters motivate consistent personal growth and relationship building.
                     </p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">💬</div>
-                    <h3 class="feature-title">Social Connection</h3>
+                    <h3 class="feature-title">Social Feed</h3>
                     <p class="feature-description">
-                        Share your journey with a supportive community. Connect with others who are growing, learning, and prioritizing healthy relationships in their lives.
+                        Connect anonymously with a supportive community. Share your journey, get encouragement, and learn from others who are also prioritizing healthy relationships.
                     </p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">📈</div>
-                    <h3 class="feature-title">Personal Growth</h3>
+                    <div class="feature-icon">🤖</div>
+                    <h3 class="feature-title">AI Coach</h3>
                     <p class="feature-description">
-                        Track your progress as you develop emotional intelligence skills. Celebrate small wins and see how consistent practice leads to meaningful transformation.
+                        Get personalized relationship guidance and advice. Our AI coach provides tailored insights to help you navigate communication challenges and build stronger connections.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Skill Progress</h3>
+                    <p class="feature-description">
+                        Track your development in key areas: communication, appreciation, quality time, conflict resolution, intimacy, and personal growth. See your progress over time.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3 class="feature-title">Achievement System</h3>
+                    <p class="feature-description">
+                        Unlock achievements as you complete challenges and hit milestones. Celebrate your growth with badges that represent your commitment to better relationships.
                     </p>
                 </div>
             </div>
         </div>
 
         <!-- Call to Action -->
-        <div class="organic-container cta-container scroll-reveal">
+        <div class="chaotic-container cta-container scroll-reveal">
             <h2 class="cta-title">Ready to Transform Your Connections?</h2>
             <p class="cta-text">
                 Join thousands who are already building healthier, more meaningful relationships through daily practice of emotional intelligence and self-love.
@@ -509,7 +665,7 @@
 
             splashScreen.classList.add('hidden');
             body.style.overflow = 'auto';
-            
+
             setTimeout(() => {
                 mainContent.classList.add('show');
                 splashScreen.style.display = 'none';

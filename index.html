@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>The Vibe Check Project</title>
+    
+    <script async src="https://tally.so/widgets/embed.js"></script>
+
     <style>
         /* Basic reset */
         body, html {
@@ -14,7 +17,7 @@
             overflow: auto;
         }
 
-        /* --- UPDATED VIDEO BACKGROUND STYLE --- */
+        /* Video background style */
         #background-video {
             position: fixed;
             right: 0;
@@ -24,13 +27,10 @@
             width: auto;
             height: auto;
             z-index: -1;
-            background-size: cover;
-            background-position: center center;
-            /* This is the key property to make the video cover the screen */
             object-fit: cover; 
         }
         
-        /* --- SPLASH SCREEN STYLES (Unchanged) --- */
+        /* Splash screen styles */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 100; transition: opacity 0.5s ease-out;
@@ -47,7 +47,7 @@
             background-color: rgba(255, 255, 255, 0.2); transform: scale(1.05);
         }
 
-        /* --- MAIN CONTENT STYLES (Unchanged) --- */
+        /* Main content styles */
         #main-content {
             display: none; opacity: 0; transition: opacity 0.5s ease-in;
         }
@@ -62,40 +62,21 @@
         .logo { max-width: 150px; margin-bottom: 20px; }
         h1, h2 { text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); }
 
-        /* --- STYLES FOR THE CONTACT FORM --- */
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            text-align: left;
-        }
-        .contact-form label {
-            font-weight: bold;
-        }
-        .contact-form input,
-        .contact-form textarea {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #555;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 1em;
-            box-sizing: border-box;
-        }
-        .contact-form button {
-            padding: 12px;
+        /* --- NEW: Style for the popup button --- */
+        .popup-button {
+            padding: 15px 30px;
             font-size: 1.1em;
             font-weight: bold;
             color: #333;
             background-color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
         }
-        .contact-form button:hover {
+        .popup-button:hover {
             background-color: #ccc;
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -117,28 +98,27 @@
             </div>
             <div class="section">
                 <h2>About Us</h2>
-                <p>This is where you can write a paragraph about your business. Explain what you do, who you are, and what makes your project unique.</p>
+                <p>This is where you can write a paragraph about your business.</p>
             </div>
             
             <div class="section">
                 <h2>Contact Us</h2>
-                <form action="https://formspree.io/f/mwprawvj" method="POST" class="contact-form">
-                    <label>Your Name:</label>
-                    <input type="text" name="name" required>
-                    
-                    <label>Your Email:</label>
-                    <input type="email" name="_replyto" required>
-                    
-                    <label>Your Message:</label>
-                    <textarea name="message" rows="6" required></textarea>
-                    
-                    <button type="submit">Send Message</button>
-                </form>
+                <p style="margin-bottom: 20px;">Have a question or want to vibe with us? Click the button below!</p>
+                <button
+                    class="popup-button"
+                    data-tally-open="mR7JRj"
+                    data-tally-layout="modal"
+                    data-tally-width="700"
+                    data-tally-hide-title="1"
+                >
+                    Open Contact Form
+                </button>
             </div>
         </div>
     </main>
 
     <script>
+        // (Your JavaScript is unchanged)
         const enterButton = document.getElementById('enter-button');
         const splashScreen = document.getElementById('splash-screen');
         const mainContent = document.getElementById('main-content');

@@ -2,62 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>The Vibe Check Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Build stronger relationships through daily emotional intelligence practice. The Vibe Check Project helps you develop communication skills with structured challenges.">
+    <title>The Vibe Check Project - Build Stronger Relationships Through Daily Practice</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* Import Google Fonts for better typography */
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
-
-        /* CHAOTIC RESET - Everything moves and breathes */
+        :root {
+            /* Color System */
+            --color-primary: #6366f1;
+            --color-primary-dark: #4f46e5;
+            --color-secondary: #14b8a6;
+            --color-accent: #f43f5e;
+            --color-bg-dark: #0f172a;
+            --color-bg-medium: #1e293b;
+            --color-bg-light: #334155;
+            --color-text-primary: #f1f5f9;
+            --color-text-secondary: #cbd5e1;
+            --color-text-muted: #94a3b8;
+            
+            /* Spacing System */
+            --space-xs: 8px;
+            --space-sm: 16px;
+            --space-md: 24px;
+            --space-lg: 32px;
+            --space-xl: 48px;
+            --space-2xl: 64px;
+            --space-3xl: 96px;
+            --space-4xl: 128px;
+            
+            /* Typography */
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-display: 'Space Grotesk', sans-serif;
+            
+            /* Layout */
+            --max-width: 1200px;
+            --max-width-text: 720px;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            animation: subtleShake 8s ease-in-out infinite;
         }
-
-        body, html {
-            height: 100%;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: white;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #ff6b6b 100%);
-            background-size: 400% 400%;
-            animation: chaoticBackground 6s ease-in-out infinite;
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-bg-dark);
+            color: var(--color-text-primary);
+            line-height: 1.6;
             overflow-x: hidden;
-            overflow-y: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-
-        @keyframes chaoticBackground {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        @keyframes subtleShake {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(0.5deg); }
-            75% { transform: rotate(-0.5deg); }
-        }
-
-        /* Video background style for main content */
-        #background-video {
-            position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -1;
-            object-fit: cover;
-            filter: hue-rotate(90deg) saturate(1.2);
-            animation: videoPulse 4s ease-in-out infinite;
-        }
-
-        @keyframes videoPulse {
-            0%, 100% { filter: hue-rotate(90deg) saturate(1.2); }
-            50% { filter: hue-rotate(120deg) saturate(1.5); }
-        }
-
-        /* Splash screen styles with video background */
+        
+        /* Splash Screen */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -65,21 +71,15 @@
             width: 100%;
             height: 100%;
             z-index: 1000;
-            transition: opacity 0.8s ease-in-out;
-            animation: splashBreathe 3s ease-in-out infinite;
+            background: var(--color-bg-dark);
+            transition: opacity 0.6s ease-in-out;
         }
-
+        
         #splash-screen.hidden {
             opacity: 0;
             pointer-events: none;
         }
-
-        @keyframes splashBreathe {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-
-        /* Video as splash screen background */
+        
         #splash-video {
             position: absolute;
             top: 0;
@@ -87,473 +87,530 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: -1;
-            animation: splashVideoRotate 8s linear infinite;
+            opacity: 0.4;
         }
-
-        @keyframes splashVideoRotate {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(2deg) scale(1.05); }
-            100% { transform: rotate(0deg) scale(1); }
-        }
-
-        /* Enter button that animates in */
+        
         .enter-prompt {
             position: absolute;
-            bottom: 50px;
+            bottom: 80px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 1.2em;
-            padding: 15px 40px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            border-radius: 50px;
+            padding: 18px 48px;
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            background: rgba(99, 102, 241, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
-            user-select: none;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
             opacity: 0;
-            animation: slideInUp 0.8s ease-out 2s forwards, pulse 2s ease-in-out infinite 2s;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 500;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            animation: fadeInUp 0.6s ease-out 2s forwards;
+            backdrop-filter: blur(10px);
         }
-
+        
         .enter-prompt:hover {
-            background: rgba(255, 255, 255, 0.25);
-            border-color: rgba(255, 255, 255, 0.6);
-            transform: translateX(-50%) scale(1.05) rotate(2deg);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 255, 255, 0.5);
+            background: rgba(99, 102, 241, 1);
+            transform: translateX(-50%) translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
         }
-
-        @keyframes slideInUp {
+        
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateX(-50%) translateY(50px);
+                transform: translateX(-50%) translateY(20px);
             }
             to {
                 opacity: 1;
                 transform: translateX(-50%) translateY(0);
             }
         }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
-            50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.6); }
-        }
-
-        /* Main content styles - hidden initially */
+        
+        /* Main Content */
         #main-content {
             opacity: 0;
-            transition: opacity 0.8s ease-in-out;
-            min-height: 100vh;
-            position: relative;
+            transition: opacity 0.6s ease-in-out;
         }
-
+        
         #main-content.show {
             opacity: 1;
         }
-
-        /* Floating particles background */
-        .floating-particles {
+        
+        /* Navigation */
+        nav {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
+            right: 0;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
         }
-
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite, particleRotate 4s linear infinite;
+        
+        nav.scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
         }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
+        
+        .nav-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: var(--space-sm) var(--space-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-
-        @keyframes particleRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* CHAOTIC ORGANIC CONTAINER - No straight lines! */
-        .chaotic-container {
-            position: relative;
-            margin: 80px auto;
-            max-width: 90%;
-            padding: 60px 40px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 60% 40% 70% 30% / 30% 70% 40% 60%;
-            overflow: hidden;
-            animation: chaoticBreathe 4s ease-in-out infinite, chaoticFloat 6s ease-in-out infinite;
-            transform-origin: center;
-        }
-
-        .chaotic-container:nth-child(even) {
-            border-radius: 40% 60% 30% 70% / 70% 30% 60% 40%;
-            animation-delay: -2s, -3s;
-        }
-
-        .chaotic-container:nth-child(3n) {
-            border-radius: 80% 20% 60% 40% / 40% 80% 20% 60%;
-            animation-delay: -1s, -4s;
-        }
-
-        @keyframes chaoticBreathe {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.02) rotate(1deg); }
-        }
-
-        @keyframes chaoticFloat {
-            0%, 100% { transform: translateY(0px) translateX(0px); }
-            25% { transform: translateY(-5px) translateX(3px); }
-            75% { transform: translateY(5px) translateX(-2px); }
-        }
-
-        /* HERO SECTION - Totally chaotic title */
-        .hero-container {
-            text-align: center;
-            padding: 100px 40px;
-            margin-bottom: 0;
-            animation: heroShake 5s ease-in-out infinite;
-        }
-
-        @keyframes heroShake {
-            0%, 100% { transform: rotate(0deg) scale(1); }
-            25% { transform: rotate(0.5deg) scale(1.01); }
-            75% { transform: rotate(-0.5deg) scale(0.99); }
-        }
-
-        .hero-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(3rem, 8vw, 6rem);
+        
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 20px;
             font-weight: 700;
-            background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #f093fb, #ff6b6b);
-            background-size: 400% 400%;
+            color: var(--color-text-primary);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: var(--space-lg);
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--color-primary);
+        }
+        
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: var(--max-width);
+            padding: var(--space-3xl) var(--space-md);
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(48px, 8vw, 72px);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: var(--space-lg);
+            background: linear-gradient(135deg, #6366f1 0%, #14b8a6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: chaoticGradientShift 3s ease-in-out infinite, titleFloat 4s ease-in-out infinite;
-            margin-bottom: 30px;
-            line-height: 1.1;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
-
-        @keyframes chaoticGradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            25% { background-position: 50% 25%; }
-            50% { background-position: 100% 50%; }
-            75% { background-position: 50% 75%; }
-        }
-
-        @keyframes titleFloat {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-        }
-
+        
         .hero-subtitle {
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 50px;
+            font-size: clamp(18px, 3vw, 22px);
+            color: var(--color-text-secondary);
+            max-width: var(--max-width-text);
+            margin: 0 auto var(--space-xl);
             line-height: 1.6;
-            font-weight: 300;
-            animation: fadeInUp 1s ease-out 0.5s both, subtitleFloat 3s ease-in-out infinite;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
-
-        @keyframes subtitleFloat {
-            0%, 100% { transform: translateX(0px); }
-            50% { transform: translateX(2px); }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* MISSION SECTION - Scattered and breathing */
-        .mission-container {
-            margin: 100px auto;
-            max-width: 85%;
-        }
-
-        .mission-content {
+        
+        .hero-cta {
             display: flex;
-            align-items: center;
-            gap: 60px;
-            flex-wrap: wrap;
-            animation: missionSway 4s ease-in-out infinite;
-        }
-
-        @keyframes missionSway {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(0.3deg); }
-        }
-
-        .mission-text {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .mission-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 600;
-            margin-bottom: 30px;
-            color: #fff;
-            animation: titleGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes titleGlow {
-            0% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); }
-            100% { text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.2); }
-        }
-
-        .mission-description {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: rgba(255, 255, 255, 0.85);
-            margin-bottom: 40px;
-            animation: textFloat 3s ease-in-out infinite;
-        }
-
-        @keyframes textFloat {
-            0%, 100% { transform: translateX(0px); }
-            50% { transform: translateX(1px); }
-        }
-
-        .mission-icons {
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
+            gap: var(--space-sm);
             justify-content: center;
+            flex-wrap: wrap;
         }
-
-        .mission-icon {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            animation: chaoticFloat 3s ease-in-out infinite, iconRotate 5s linear infinite;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .mission-icon:nth-child(2) { animation-delay: -1s, -2s; }
-        .mission-icon:nth-child(3) { animation-delay: -2s, -4s; }
-
-        @keyframes iconRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* FEATURES SECTION - Actually showcase real Parity features! */
-        .features-container {
-            margin: 100px auto;
-            max-width: 90%;
-            padding: 80px 40px;
-        }
-
-        .features-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
+        
+        .btn {
+            padding: 16px 32px;
+            font-family: var(--font-display);
+            font-size: 16px;
             font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-text-primary);
+            border: 2px solid var(--color-bg-light);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--color-primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
+        /* Section Styles */
+        section {
+            padding: var(--space-4xl) var(--space-md);
+            position: relative;
+        }
+        
+        .section-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+        
+        .section-header {
             text-align: center;
-            margin-bottom: 60px;
-            color: #fff;
-            animation: titlePulse 2s ease-in-out infinite;
+            margin-bottom: var(--space-3xl);
         }
-
-        @keyframes titlePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(36px, 6vw, 56px);
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+            line-height: 1.2;
         }
-
-        .features-grid {
+        
+        .section-subtitle {
+            font-size: clamp(18px, 3vw, 20px);
+            color: var(--color-text-secondary);
+            max-width: var(--max-width-text);
+            margin: 0 auto;
+        }
+        
+        /* The Why Section */
+        .why-section {
+            background: var(--color-bg-medium);
+        }
+        
+        .why-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            margin-top: 60px;
+            gap: var(--space-2xl);
+            margin-top: var(--space-2xl);
         }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50% 20% 50% 20%;
-            padding: 40px 30px;
-            text-align: center;
-            transition: all 0.3s ease;
-            animation: chaoticBreathe 6s ease-in-out infinite, cardHover 0.5s ease-in-out;
-            position: relative;
-            overflow: hidden;
+        
+        .why-card {
+            padding: var(--space-xl);
+            background: var(--color-bg-dark);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
-
-        .feature-card:nth-child(2) {
-            border-radius: 20% 50% 20% 50%;
-            animation-delay: -2s, 0s;
+        
+        .why-card h3 {
+            font-family: var(--font-display);
+            font-size: 28px;
+            margin-bottom: var(--space-sm);
+            color: var(--color-primary);
         }
-
-        .feature-card:nth-child(3) {
-            border-radius: 40% 30% 60% 30%;
-            animation-delay: -4s, 0s;
-        }
-
-        .feature-card:nth-child(4) {
-            border-radius: 70% 30% 80% 20%;
-            animation-delay: -1s, 0s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px) rotate(2deg) scale(1.02);
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            display: block;
-            animation: iconBounce 2s ease-in-out infinite;
-        }
-
-        @keyframes iconBounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .feature-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #fff;
-        }
-
-        .feature-description {
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.6;
-        }
-
-        /* CTA Section */
-        .cta-container {
-            text-align: center;
-            margin: 100px auto;
-            max-width: 80%;
-            padding: 80px 40px;
-        }
-
-        .cta-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 600;
-            margin-bottom: 30px;
-            color: #fff;
-            animation: ctaShake 3s ease-in-out infinite;
-        }
-
-        @keyframes ctaShake {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(0.5deg); }
-        }
-
-        .cta-text {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 50px;
+        
+        .why-card p {
+            color: var(--color-text-secondary);
             line-height: 1.7;
         }
-
-        .cta-button {
-            display: inline-block;
-            padding: 20px 50px;
-            background: linear-gradient(135deg, #ff6b6b, #feca57);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            font-size: 1.2rem;
+        
+        .stat {
+            font-family: var(--font-display);
+            font-size: 64px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: var(--space-xs);
+        }
+        
+        /* How It Works Section */
+        .how-it-works-section {
+            background: var(--color-bg-dark);
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-2xl);
+            margin-top: var(--space-2xl);
+        }
+        
+        .step {
+            position: relative;
+            padding: var(--space-xl);
+            background: linear-gradient(135deg, var(--color-bg-medium) 0%, var(--color-bg-dark) 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(99, 102, 241, 0.1);
             transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
-            animation: chaoticPulse 2s ease-in-out infinite;
-            border: 2px solid rgba(255, 255, 255, 0.2);
         }
-
-        .cta-button:hover {
-            transform: translateY(-3px) rotate(1deg) scale(1.05);
-            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.4);
-            background: linear-gradient(135deg, #feca57, #ff6b6b);
+        
+        .step:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-4px);
         }
-
-        @keyframes chaoticPulse {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.05) rotate(0.5deg); }
+        
+        .step-number {
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            background: var(--color-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: var(--space-md);
         }
-
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .chaotic-container {
-                margin: 40px auto;
-                padding: 40px 20px;
-                max-width: 95%;
-            }
-
-            .mission-content {
-                flex-direction: column;
-                gap: 40px;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-
-            .hero-container {
-                padding: 60px 20px;
-            }
+        
+        .step h3 {
+            font-family: var(--font-display);
+            font-size: 24px;
+            margin-bottom: var(--space-sm);
         }
-
-        /* Scroll animations */
-        .scroll-reveal {
+        
+        .step p {
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+        }
+        
+        /* Features Section */
+        .features-section {
+            background: var(--color-bg-medium);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-2xl);
+        }
+        
+        .feature-card {
+            padding: var(--space-xl);
+            background: var(--color-bg-dark);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: var(--space-md);
+        }
+        
+        .feature-card h3 {
+            font-family: var(--font-display);
+            font-size: 22px;
+            margin-bottom: var(--space-sm);
+        }
+        
+        .feature-card p {
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+        }
+        
+        /* Social Proof Section */
+        .social-proof-section {
+            background: var(--color-bg-dark);
+        }
+        
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-2xl);
+        }
+        
+        .testimonial {
+            padding: var(--space-xl);
+            background: var(--color-bg-medium);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .testimonial-quote {
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-md);
+            font-style: italic;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+        
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-2xl);
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: var(--space-lg);
+        }
+        
+        .stat-card .stat {
+            color: var(--color-secondary);
+        }
+        
+        .stat-card .stat-label {
+            color: var(--color-text-secondary);
+            font-size: 16px;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            text-align: center;
+        }
+        
+        .cta-section .section-title {
+            color: white;
+        }
+        
+        .cta-section .section-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .cta-section .btn-primary {
+            background: white;
+            color: var(--color-primary);
+        }
+        
+        .cta-section .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--color-bg-dark);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: var(--space-2xl) var(--space-md);
+        }
+        
+        .footer-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-xl);
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .footer-section h4 {
+            font-family: var(--font-display);
+            font-size: 16px;
+            margin-bottom: var(--space-sm);
+            color: var(--color-text-primary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links a {
+            color: var(--color-text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            line-height: 2;
+            transition: color 0.2s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--color-primary);
+        }
+        
+        .footer-bottom {
+            padding-top: var(--space-lg);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            color: var(--color-text-muted);
+            font-size: 14px;
+        }
+        
+        /* Scroll Reveal Animation */
+        .reveal {
             opacity: 0;
-            transform: translateY(50px) rotate(2deg);
-            transition: all 0.8s ease;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
         }
-
-        .scroll-reveal.revealed {
+        
+        .reveal.active {
             opacity: 1;
-            transform: translateY(0) rotate(0deg);
+            transform: translateY(0);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            :root {
+                --space-3xl: 64px;
+                --space-4xl: 80px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero {
+                min-height: 80vh;
+            }
+            
+            .hero-cta {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Main background video -->
-    <video autoplay loop muted playsinline id="background-video">
-        <source src="Affirmation_Sign_Video_Generation.mp4" type="video/mp4">
-    </video>
-
-    <!-- Floating particles -->
-    <div class="floating-particles" id="particles"></div>
-
-    <!-- Splash Screen with Video -->
+    <!-- Splash Screen -->
     <div id="splash-screen">
         <video autoplay muted playsinline id="splash-video">
             <source src="Affirmation_Sign_Video_Generation.mp4" type="video/mp4">
@@ -561,194 +618,278 @@
         <div class="enter-prompt" id="enter-prompt">Press Enter to Continue</div>
     </div>
 
-    <!-- Main content -->
-    <main id="main-content">
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- Navigation -->
+        <nav id="nav">
+            <div class="nav-container">
+                <a href="#" class="nav-logo">The Vibe Check Project</a>
+                <ul class="nav-links">
+                    <li><a href="#why">Why</a></li>
+                    <li><a href="#how">How It Works</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#cta">Get Started</a></li>
+                </ul>
+            </div>
+        </nav>
+
         <!-- Hero Section -->
-        <div class="chaotic-container hero-container scroll-reveal">
-            <div class="hero-title">The Vibe Check Project</div>
-            <div class="hero-subtitle">
-                Where emotional intelligence meets self-love, creating deeper connections through mindful communication and authentic growth.
-            </div>
-        </div>
-
-        <!-- Mission Section -->
-        <div class="chaotic-container mission-container scroll-reveal">
-            <div class="mission-content">
-                <div class="mission-text">
-                    <h2 class="mission-title">Your Journey to Deeper Connection</h2>
-                    <p class="mission-description">
-                        Every meaningful relationship begins with understanding yourself first. We believe that small, daily affirmations and mindful practices can transform how you communicate, love, and grow with others. It's not about fixing what's broken—it's about nurturing what's already beautiful within you.
-                    </p>
-                    <p class="mission-description">
-                        Through emotional intelligence and intentional communication, we help you build the skills that matter most in life: empathy, vulnerability, and authentic connection.
-                    </p>
-                </div>
-                <div class="mission-icons">
-                    <div class="mission-icon">💝</div>
-                    <div class="mission-icon">🧠</div>
-                    <div class="mission-icon">🤝</div>
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Build Stronger Relationships Through Daily Practice</h1>
+                <p class="hero-subtitle">
+                    The Vibe Check Project helps you develop emotional intelligence and communication skills with structured daily challenges designed for real relationship growth.
+                </p>
+                <div class="hero-cta">
+                    <button class="btn btn-primary" id="hero-cta">Start Your Journey</button>
+                    <a href="#how" class="btn btn-secondary">See How It Works</a>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Features Section - REAL PARITY APP FEATURES -->
-        <div class="chaotic-container features-container scroll-reveal">
-            <h2 class="features-title">Experience Real Connection</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3 class="feature-title">Daily Challenges</h3>
-                    <p class="feature-description">
-                        Complete step-by-step relationship challenges every day. Earn XP, track your streak, and build emotional intelligence skills like active listening, appreciation expression, and vulnerability sharing.
+        <!-- The Why Section -->
+        <section id="why" class="why-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Why Daily Relationship Practice Matters</h2>
+                    <p class="section-subtitle">
+                        Modern relationships face unprecedented communication challenges. But small, consistent practices build lasting skills.
                     </p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔥</div>
-                    <h3 class="feature-title">Streak Tracking</h3>
-                    <p class="feature-description">
-                        Maintain your daily practice streak and watch your emotional intelligence grow. Visual streak counters motivate consistent personal growth and relationship building.
-                    </p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">💬</div>
-                    <h3 class="feature-title">Social Feed</h3>
-                    <p class="feature-description">
-                        Connect anonymously with a supportive community. Share your journey, get encouragement, and learn from others who are also prioritizing healthy relationships.
-                    </p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🤖</div>
-                    <h3 class="feature-title">AI Coach</h3>
-                    <p class="feature-description">
-                        Get personalized relationship guidance and advice. Our AI coach provides tailored insights to help you navigate communication challenges and build stronger connections.
-                    </p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3 class="feature-title">Skill Progress</h3>
-                    <p class="feature-description">
-                        Track your development in key areas: communication, appreciation, quality time, conflict resolution, intimacy, and personal growth. See your progress over time.
-                    </p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🏆</div>
-                    <h3 class="feature-title">Achievement System</h3>
-                    <p class="feature-description">
-                        Unlock achievements as you complete challenges and hit milestones. Celebrate your growth with badges that represent your commitment to better relationships.
-                    </p>
+                
+                <div class="why-grid">
+                    <div class="why-card reveal">
+                        <div class="stat">67%</div>
+                        <h3>The Communication Gap</h3>
+                        <p>
+                            Two-thirds of relationships struggle with effective communication. The issue isn't lack of love—it's lack of practice in the skills that matter most.
+                        </p>
+                    </div>
+                    
+                    <div class="why-card reveal">
+                        <h3>The Solution</h3>
+                        <p>
+                            Like physical fitness, emotional intelligence grows through consistent, structured practice. Daily micro-practices build the neural pathways for better communication, empathy, and connection.
+                        </p>
+                    </div>
+                    
+                    <div class="why-card reveal">
+                        <h3>Real Skills, Real Results</h3>
+                        <p>
+                            Our approach combines behavioral psychology, emotional intelligence research, and practical relationship wisdom into actionable daily challenges that create measurable growth.
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Call to Action -->
-        <div class="chaotic-container cta-container scroll-reveal">
-            <h2 class="cta-title">Ready to Transform Your Connections?</h2>
-            <p class="cta-text">
-                Join thousands who are already building healthier, more meaningful relationships through daily practice of emotional intelligence and self-love.
-            </p>
-            <a href="#" class="cta-button" id="cta-button">Start Your Journey</a>
-        </div>
-    </main>
+        <!-- How It Works Section -->
+        <section id="how" class="how-it-works-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">How It Works</h2>
+                    <p class="section-subtitle">
+                        Three simple steps to transform your relationships through consistent practice.
+                    </p>
+                </div>
+                
+                <div class="steps">
+                    <div class="step reveal">
+                        <div class="step-number">1</div>
+                        <h3>Take Your Daily Challenge</h3>
+                        <p>
+                            Each morning, receive a new relationship challenge tailored to your growth areas. Challenges include clear, actionable steps across categories like communication, appreciation, quality time, and conflict resolution.
+                        </p>
+                    </div>
+                    
+                    <div class="step reveal">
+                        <div class="step-number">2</div>
+                        <h3>Track Your Growth</h3>
+                        <p>
+                            Complete challenges to earn XP and maintain your streak. Watch your progress visualized across six core emotional intelligence skills. Unlock achievements as you hit meaningful milestones.
+                        </p>
+                    </div>
+                    
+                    <div class="step reveal">
+                        <div class="step-number">3</div>
+                        <h3>Connect with Community</h3>
+                        <p>
+                            Share your journey anonymously with a supportive community. Get encouragement, learn from others' experiences, and access personalized AI coaching when you need guidance.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <!-- Scripts -->
-    <script>
-        let splashCompleted = false;
+        <!-- Features Section -->
+        <section id="features" class="features-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Everything You Need to Grow</h2>
+                    <p class="section-subtitle">
+                        Comprehensive tools designed to support your relationship development journey.
+                    </p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card reveal">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Daily Challenges</h3>
+                        <p>
+                            Structured activities across Communication, Appreciation, Quality Time, and Conflict Resolution. Each challenge includes step-by-step guidance, expected outcomes, and reflection prompts. Earn XP and maintain your streak.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card reveal">
+                        <div class="feature-icon">📊</div>
+                        <h3>Skill Development Tracking</h3>
+                        <p>
+                            Visualize your progress across six core relationship skills. See your development in active listening, appreciation expression, vulnerability sharing, conflict de-escalation, boundary setting, and more.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card reveal">
+                        <div class="feature-icon">🤖</div>
+                        <h3>AI Relationship Coach</h3>
+                        <p>
+                            Get personalized guidance when you need it. Our AI coach provides context-aware suggestions, helps you work through communication challenges, and offers 24/7 support for your relationship journey.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card reveal">
+                        <div class="feature-icon">💬</div>
+                        <h3>Anonymous Community</h3>
+                        <p>
+                            Share experiences, ask questions, and support others in a safe, judgment-free space. Connect with people who understand your journey and are committed to relationship growth.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card reveal">
+                        <div class="feature-icon">🔥</div>
+                        <h3>Streak & Motivation System</h3>
+                        <p>
+                            Build momentum with visual streak tracking. Daily reminders, progress celebrations, and achievement unlocks keep you motivated to maintain consistent practice.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card reveal">
+                        <div class="feature-icon">🏆</div>
+                        <h3>Achievement Milestones</h3>
+                        <p>
+                            Celebrate your growth with meaningful achievements. Each milestone represents real progress in your emotional intelligence journey and commitment to better relationships.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        // Function to handle splash screen transition and trigger Tally popup
-        function completeSplashScreen() {
-            if (splashCompleted) return;
-            splashCompleted = true;
+        <!-- Social Proof Section -->
+        <section class="social-proof-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Join Thousands Building Better Relationships</h2>
+                </div>
+                
+                <div class="testimonials">
+                    <div class="testimonial reveal">
+                        <p class="testimonial-quote">
+                            "After just two weeks of daily challenges, I've noticed a real difference in how I communicate with my partner. The structured approach makes it easy to build habits that actually stick."
+                        </p>
+                        <p class="testimonial-author">— Sarah M.</p>
+                    </div>
+                    
+                    <div class="testimonial reveal">
+                        <p class="testimonial-quote">
+                            "The AI coach helped me work through a difficult conversation I'd been avoiding for months. Having that support available 24/7 has been invaluable for my personal growth."
+                        </p>
+                        <p class="testimonial-author">— James T.</p>
+                    </div>
+                    
+                    <div class="testimonial reveal">
+                        <p class="testimonial-quote">
+                            "I love the community aspect. Knowing I'm not alone in working on these skills, and being able to share wins and challenges with others, has made the journey so much more meaningful."
+                        </p>
+                        <p class="testimonial-author">— Alex K.</p>
+                    </div>
+                </div>
+                
+                <div class="stats-row">
+                    <div class="stat-card reveal">
+                        <div class="stat">50K+</div>
+                        <p class="stat-label">Active Users</p>
+                    </div>
+                    <div class="stat-card reveal">
+                        <div class="stat">2M+</div>
+                        <p class="stat-label">Challenges Completed</p>
+                    </div>
+                    <div class="stat-card reveal">
+                        <div class="stat">85%</div>
+                        <p class="stat-label">Report Improved Communication</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-            const splashScreen = document.getElementById('splash-screen');
-            const mainContent = document.getElementById('main-content');
-            const body = document.body;
+        <!-- Final CTA Section -->
+        <section id="cta" class="cta-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Ready to Invest in Your Relationships?</h2>
+                    <p class="section-subtitle">
+                        Start building stronger connections today with structured daily practice.
+                    </p>
+                </div>
+                <button class="btn btn-primary" id="cta-button">Start Your Journey</button>
+            </div>
+        </section>
 
-            splashScreen.classList.add('hidden');
-            body.style.overflow = 'auto';
+        <!-- Footer -->
+        <footer>
+            <div class="footer-container">
+                <div class="footer-grid">
+                    <div class="footer-section">
+                        <h4>About</h4>
+                        <p style="color: var(--color-text-muted); font-size: 14px; line-height: 1.7;">
+                            The Vibe Check Project helps people build stronger relationships through daily emotional intelligence practice.
+                        </p>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Company</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Careers</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Legal</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                            <li><a href="#">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Connect</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Twitter</a></li>
+                            <li><a href="#">Instagram</a></li>
+                            <li><a href="#">LinkedIn</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; 2025 The Vibe Check Project. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
 
-            setTimeout(() => {
-                mainContent.classList.add('show');
-                splashScreen.style.display = 'none';
-                createParticles();
-                initScrollReveal();
-            }, 500);
-
-            setTimeout(() => {
-                triggerTallyPopup();
-            }, 1000);
-        }
-
-        // Function to trigger the existing Tally popup
-        function triggerTallyPopup() {
-            if (window.Tally) {
-                window.Tally.openPopup('mR7JRj');
-            } else {
-                setTimeout(triggerTallyPopup, 100);
-            }
-        }
-
-        // Create floating particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 50;
-
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.width = Math.random() * 6 + 2 + 'px';
-                particle.style.height = particle.style.width;
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
-                particlesContainer.appendChild(particle);
-            }
-        }
-
-        // Scroll reveal animation
-        function initScrollReveal() {
-            const reveals = document.querySelectorAll('.scroll-reveal');
-            const revealObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('revealed');
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            reveals.forEach(reveal => {
-                revealObserver.observe(reveal);
-            });
-        }
-
-        // Event listeners
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter' && !splashCompleted) {
-                event.preventDefault();
-                completeSplashScreen();
-            }
-        });
-
-        document.getElementById('enter-prompt').addEventListener('click', function() {
-            if (!splashCompleted) {
-                completeSplashScreen();
-            }
-        });
-
-        // Make CTA button trigger Tally popup
-        document.getElementById('cta-button').addEventListener('click', function(e) {
-            e.preventDefault();
-            triggerTallyPopup();
-        });
-
-        // Ensure splash video starts playing
-        window.addEventListener('load', function() {
-            const splashVideo = document.getElementById('splash-video');
-            splashVideo.play().catch(e => console.log('Video autoplay prevented:', e));
-        });
-    </script>
-
-    <!-- Tally configuration and script -->
+    <!-- Tally Script -->
     <script>
         window.TallyConfig = {
             "formId": "mR7JRj",
@@ -764,5 +905,99 @@
         };
     </script>
     <script async src="https://tally.so/widgets/embed.js"></script>
+
+    <!-- Main JavaScript -->
+    <script>
+        let splashCompleted = false;
+
+        // Splash screen handler
+        function completeSplashScreen() {
+            if (splashCompleted) return;
+            splashCompleted = true;
+
+            const splashScreen = document.getElementById('splash-screen');
+            const mainContent = document.getElementById('main-content');
+
+            splashScreen.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+
+            setTimeout(() => {
+                mainContent.classList.add('show');
+                splashScreen.style.display = 'none';
+                initScrollReveal();
+            }, 600);
+
+            setTimeout(() => {
+                triggerTallyPopup();
+            }, 1000);
+        }
+
+        // Tally popup trigger
+        function triggerTallyPopup() {
+            if (window.Tally) {
+                window.Tally.openPopup('mR7JRj');
+            } else {
+                setTimeout(triggerTallyPopup, 100);
+            }
+        }
+
+        // Event listeners for splash screen
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && !splashCompleted) {
+                event.preventDefault();
+                completeSplashScreen();
+            }
+        });
+
+        document.getElementById('enter-prompt').addEventListener('click', function() {
+            if (!splashCompleted) {
+                completeSplashScreen();
+            }
+        });
+
+        // CTA buttons
+        document.getElementById('hero-cta').addEventListener('click', function(e) {
+            e.preventDefault();
+            triggerTallyPopup();
+        });
+
+        document.getElementById('cta-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            triggerTallyPopup();
+        });
+
+        // Scroll reveal animation
+        function initScrollReveal() {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            reveals.forEach(reveal => {
+                revealObserver.observe(reveal);
+            });
+        }
+
+        // Navigation scroll effect
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Splash video autoplay
+        window.addEventListener('load', function() {
+            const splashVideo = document.getElementById('splash-video');
+            splashVideo.play().catch(e => console.log('Video autoplay prevented:', e));
+        });
+    </script>
 </body>
 </html>

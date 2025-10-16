@@ -11,7 +11,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: white;
             background-color: #000;
-            overflow: auto;
+            overflow: hidden; /* Hide overflow during splash */
         }
 
         /* Video background style */
@@ -27,8 +27,80 @@
             object-fit: cover; 
         }
 
-        /* Main content styles (now visible by default) */
+        /* Splash screen styles */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #splash-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .splash-content {
+            text-align: center;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        .splash-title {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .splash-subtitle {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            opacity: 0.8;
+        }
+
+        .enter-prompt {
+            font-size: 1em;
+            padding: 15px 30px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .enter-prompt:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Main content styles - hidden initially */
         #main-content {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #main-content.show {
             opacity: 1;
         }
 
@@ -36,6 +108,7 @@
             padding: 20px;
             text-align: center;
         }
+        
         .section {
             background-color: rgba(0, 0, 0, 0.5);
             padding: 40px 20px;
@@ -43,10 +116,12 @@
             max-width: 800px;
             border-radius: 8px;
         }
+        
         .logo {
             max-width: 150px;
             margin-bottom: 20px;
         }
+        
         h1, h2 {
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
         }
@@ -58,7 +133,16 @@
         <source src="Affirmation_Sign_Video_Generation.mp4" type="video/mp4">
     </video>
 
-    <!-- The splash screen has been removed. The main content is now visible on load. -->
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+        <div class="splash-content">
+            <div class="splash-title">The Vibe Check Project</div>
+            <div class="splash-subtitle">Welcome to our community</div>
+            <div class="enter-prompt" id="enter-prompt">Press Enter to Continue</div>
+        </div>
+    </div>
+
+    <!-- Main content - initially hidden -->
     <main id="main-content">
         <div class="content-container">
             <div class="section">
@@ -77,20 +161,75 @@
         </div>
     </main>
 
-    <!-- This is your script that makes the popup appear automatically -->
+    <!-- Script for splash screen and Tally popup trigger -->
     <script>
-      window.TallyConfig = {
-        "formId": "mR7JRj",
-        "popup": {
-          "emoji": {
-            "text": "👋",
-            "animation": "flash"
-          },
-          "autoClose": 2000,
-          "showOnce": true,
-          "doNotShowAfterSubmit": true
+        let splashCompleted = false;
+
+        // Function to handle splash screen transition and trigger Tally popup
+        function completeSplashScreen() {
+            if (splashCompleted) return;
+            splashCompleted = true;
+
+            const splashScreen = document.getElementById('splash-screen');
+            const mainContent = document.getElementById('main-content');
+            const body = document.body;
+
+            // Hide splash screen and show main content
+            splashScreen.classList.add('hidden');
+            body.style.overflow = 'auto'; // Restore scrolling
+            
+            setTimeout(() => {
+                mainContent.classList.add('show');
+                splashScreen.style.display = 'none';
+            }, 500);
+
+            // Trigger the Tally popup after splash screen is hidden
+            setTimeout(() => {
+                triggerTallyPopup();
+            }, 1000);
         }
-      };
+
+        // Function to trigger the existing Tally popup
+        function triggerTallyPopup() {
+            // Wait for Tally to be loaded, then open the popup
+            if (window.Tally) {
+                window.Tally.openPopup('mR7JRj');
+            } else {
+                // Keep trying until Tally is loaded
+                setTimeout(triggerTallyPopup, 100);
+            }
+        }
+
+        // Listen for Enter key press on splash screen
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && !splashCompleted) {
+                event.preventDefault();
+                completeSplashScreen();
+            }
+        });
+
+        // Also allow clicking on the prompt
+        document.getElementById('enter-prompt').addEventListener('click', function() {
+            if (!splashCompleted) {
+                completeSplashScreen();
+            }
+        });
+    </script>
+
+    <!-- Your existing Tally configuration and script -->
+    <script>
+        window.TallyConfig = {
+            "formId": "mR7JRj",
+            "popup": {
+                "emoji": {
+                    "text": "👋",
+                    "animation": "flash"
+                },
+                "autoClose": 2000,
+                "showOnce": true,
+                "doNotShowAfterSubmit": true
+            }
+        };
     </script>
     <script async src="https://tally.so/widgets/embed.js"></script>
 

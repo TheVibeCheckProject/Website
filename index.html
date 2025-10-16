@@ -75,21 +75,37 @@
     </main>
 
     <script>
-window.TallyConfig = {
-  "formId": "mR7JRj",
-  "popup": {
-    "emoji": {
-      "text": "👋",
-      "animation": "flash"
-    },
-    "autoClose": 2000,
-    "showOnce": true,
-    "doNotShowAfterSubmit": true
-  }
-};
-</script>
+        const enterButton = document.getElementById('enter-button');
+        const splashScreen = document.getElementById('splash-screen');
+        const mainContent = document.getElementById('main-content');
+        
+        // Your real Form ID is now included
+        const myTallyFormId = 'mR7JRj'; 
 
-<script async src="https://tally.so/widgets/embed.js"></script>
+        enterButton.addEventListener('click', () => {
+            // Fade out the splash screen
+            splashScreen.style.opacity = '0';
+
+            // After the fade out animation is done...
+            setTimeout(() => {
+                // Hide the splash screen completely
+                splashScreen.style.display = 'none';
+                
+                // Show the main content
+                mainContent.classList.add('visible');
+
+                // AND open the Tally popup form
+                Tally.openPopup(myTallyFormId, {
+                    layout: 'modal',
+                    width: 700,
+                    hideTitle: true,
+                    onSubmit: (payload) => {
+                        alert('Thanks for your submission! We will get back to you soon.');
+                    }
+                });
+            }, 500); // This time must match the CSS transition time
+        });
+    </script>
 
 </body>
 </html>

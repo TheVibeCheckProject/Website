@@ -144,24 +144,24 @@ async function handleEmailSignup(e) {
     submitBtn.textContent = 'Subscribing...';
     submitBtn.disabled = true;
     
+    // Create form data for Buttondown's email-only endpoint
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('metadata', JSON.stringify({
+        name: name,
+        signup_date: new Date().toISOString(),
+        source: 'website'
+    }));
+    
     try {
-        const response = await fetch('https://api.buttondown.email/v1/subscribers', {
+        // Use Buttondown's email-only endpoint (no API key needed!)
+        const response = await fetch('https://buttondown.email/api/emails/embed-subscribe/griffin', {
             method: 'POST',
-            headers: {
-                'Authorization': 'Token 9427276d-9ab8-45d8-80c5-612780278964',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: email,
-                metadata: {
-                    name: name,
-                    signup_date: new Date().toISOString(),
-                    source: 'website'
-                }
-            })
+            body: formData
         });
         
-        if (response.ok) {
+        // Buttondown returns 200 for success
+        if (response.ok || response.status === 200) {
             // Success! Show success message
             document.getElementById('email-signup-form').style.display = 'none';
             document.getElementById('signup-success').style.display = 'block';
@@ -174,15 +174,18 @@ async function handleEmailSignup(e) {
             
             console.log('✅ Subscriber added to Buttondown:', email);
         } else {
-            const errorData = await response.json();
-            console.error('Buttondown API error:', errorData);
-            
-            // Check if already subscribed
-            if (errorData.code === 'email_already_exists') {
-                alert('You\'re already subscribed! Check your email for daily vibes. ✨');
-            } else {
-                alert('Oops! Something went wrong. Please try again or email us directly.');
+            // Try to get error message
+            let errorMessage = 'Something went wrong. Please try again!';
+            try {
+                const errorData = await response.json();
+                if (errorData.email) {
+                    errorMessage = 'You\'re already subscribed! Check your email for daily vibes. ✨';
+                }
+            } catch (e) {
+                // Couldn't parse error
             }
+            
+            alert(errorMessage);
             
             // Reset button
             submitBtn.textContent = originalText;

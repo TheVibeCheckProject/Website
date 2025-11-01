@@ -155,7 +155,7 @@ async function handleEmailSignup(e) {
     
     try {
         // Use Buttondown's email-only endpoint (no API key needed!)
-        const response = await fetch('https://buttondown.email/api/emails/embed-subscribe/griffin', {
+        const response = await fetch('https://buttondown.com/api/emails/embed-subscribe/griffin', {
             method: 'POST',
             body: formData
         });

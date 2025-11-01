@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Vibe Check Project - Daily affirmations and uplifting messages to brighten your day. Small words, big impact.">
+    <meta name="keywords" content="affirmations, positive vibes, mental health, motivation, inspiration, daily affirmations">
+    <meta name="author" content="The Vibe Check Project">
+    
+    <title>The Vibe Check Project - Spread Good Vibes, One Message at a Time</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scroll-progress"></div>
+
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+        <div class="splash-background">
+            <div class="splash-gradient"></div>
+            <div class="splash-particles">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
+        </div>
+        <div class="splash-content">
+            <div class="splash-logo">✨ The Vibe Check Project</div>
+            <p class="splash-tagline">Spreading good vibes, one message at a time</p>
+            <div class="enter-prompt" id="enter-prompt">Press Enter to Continue</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- Navigation -->
+        <nav id="nav">
+            <div class="nav-container">
+                <a href="#" class="nav-logo">✨ The Vibe Check</a>
+                <ul class="nav-links">
+                    <li><a href="#why">Our Mission</a></li>
+                    <li><a href="#affirmations">Daily Vibes</a></li>
+                    <li><a href="#join">Join Us</a></li>
+                    <li><a href="#support">Support</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-bg" id="hero-bg"></div>
+            <div class="hero-content">
+                <h1 class="hero-title">Small Words. Big Impact.</h1>
+                <p class="hero-subtitle">
+                    The world can be tough. But a simple message at the right moment can help someone move mountains. 
+                    Get your daily dose of positivity and join a community spreading good vibes.
+                </p>
+                <div class="hero-cta">
+                    <button class="btn btn-primary" id="hero-cta">Get Your Daily Vibe Check ✨</button>
+                    <a href="#why" class="btn btn-secondary">Learn More</a>
+                </div>
+                <div class="hero-affirmation">
+                    <p class="affirmation-text">"You're trying, and that's what counts."</p>
+                    <p class="affirmation-label">Today's Vibe Check</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Why Section -->
+        <section id="why" class="why-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Why Small Words Matter</h2>
+                    <p class="section-subtitle">
+                        In a world that can feel overwhelming, sometimes all someone needs is a simple reminder that they matter.
+                    </p>
+                </div>
+                
+                <div class="why-grid">
+                    <div class="why-card reveal">
+                        <div class="card-emoji">💙</div>
+                        <h3>The Hidden Struggles</h3>
+                        <p>
+                            Everyone is fighting battles we can't see. A person struggling with anxiety, grief, burnout, or just a tough day 
+                            might look fine on the outside. But inside? They need a reminder that they're not alone.
+                        </p>
+                    </div>
+                    
+                    <div class="why-card reveal">
+                        <div class="card-emoji">✨</div>
+                        <h3>The Power of Words</h3>
+                        <p>
+                            "Your feelings are valid." "You're enough just as you are." "It's okay to rest." 
+                            These aren't just words—they're lifelines. They can turn someone's entire day around, 
+                            giving them the strength to keep going.
+                        </p>
+                    </div>
+                    
+                    <div class="why-card reveal">
+                        <div class="card-emoji">🌟</div>
+                        <h3>Our Mission</h3>
+                        <p>
+                            The Vibe Check Project exists to spread the good that humans have the potential to spread. 
+                            Through daily affirmations, uplifting messages, and a supportive community, we're making the world 
+                            smile a little more—one person at a time.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Affirmations Preview Section -->
+        <section id="affirmations" class="affirmations-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Your Daily Vibe Check</h2>
+                    <p class="section-subtitle">
+                        Every day, receive a carefully crafted message designed to uplift, motivate, and remind you of your worth.
+                    </p>
+                </div>
+                
+                <div class="affirmations-grid">
+                    <div class="affirmation-card reveal">
+                        <div class="affirmation-icon">
+                            <i data-lucide="heart"></i>
+                        </div>
+                        <p class="affirmation-quote">"Your feelings are valid, and you deserve to be heard."</p>
+                        <span class="affirmation-category">Self-Compassion</span>
+                    </div>
+                    
+                    <div class="affirmation-card reveal">
+                        <div class="affirmation-icon">
+                            <i data-lucide="sunrise"></i>
+                        </div>
+                        <p class="affirmation-quote">"Every new day is a fresh chance to try again."</p>
+                        <span class="affirmation-category">Hope</span>
+                    </div>
+                    
+                    <div class="affirmation-card reveal">
+                        <div class="affirmation-icon">
+                            <i data-lucide="smile"></i>
+                        </div>
+                        <p class="affirmation-quote">"You're doing better than you think you are."</p>
+                        <span class="affirmation-category">Encouragement</span>
+                    </div>
+                    
+                    <div class="affirmation-card reveal">
+                        <div class="affirmation-icon">
+                            <i data-lucide="sparkles"></i>
+                        </div>
+                        <p class="affirmation-quote">"Your presence makes a difference, even when you don't see it."</p>
+                        <span class="affirmation-category">Worth</span>
+                    </div>
+                    
+                    <div class="affirmation-card reveal">
+                        <div class="affirmation-icon">
+                            <i data-lucide="moon"></i>
+                        </div>
+                        <p class="affirmation-quote">"Rest is not weakness. It's essential."</p>
+                        <span class="affirmation-category">Self-Care</span>
+                    </div>
+                    
+                    <div class="affirmation-card reveal">
+                        <div class="affirmation-icon">
+                            <i data-lucide="zap"></i>
+                        </div>
+                        <p class="affirmation-quote">"You're trying, and that's what counts."</p>
+                        <span class="affirmation-category">Motivation</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how" class="how-it-works-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">How It Works</h2>
+                    <p class="section-subtitle">
+                        Getting your daily dose of positivity is simple and free.
+                    </p>
+                </div>
+                
+                <div class="steps">
+                    <div class="step reveal">
+                        <div class="step-number">1</div>
+                        <h3>Sign Up for Free</h3>
+                        <p>
+                            Enter your email to receive daily affirmations. No credit card required, no commitments. 
+                            Just good vibes delivered straight to your inbox every morning.
+                        </p>
+                    </div>
+                    
+                    <div class="step reveal">
+                        <div class="step-number">2</div>
+                        <h3>Receive Your Daily Message</h3>
+                        <p>
+                            Wake up to a thoughtfully crafted affirmation each day. Whether you need encouragement, 
+                            validation, hope, or just a smile—we've got you covered.
+                        </p>
+                    </div>
+                    
+                    <div class="step reveal">
+                        <div class="step-number">3</div>
+                        <h3>Share the Love</h3>
+                        <p>
+                            Found a message that resonated? Share it with someone who needs it. Every share spreads 
+                            the good vibes further, creating a ripple effect of positivity.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Premium Features Section -->
+        <section id="premium" class="features-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Go Premium, Spread More Good</h2>
+                    <p class="section-subtitle">
+                        Upgrade to Premium to unlock more ways to spread positivity—and keep this project sustainable for everyone.
+                    </p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card reveal">
+                        <div class="feature-icon">
+                            <i data-lucide="library"></i>
+                        </div>
+                        <h3>Full Affirmation Library</h3>
+                        <p>
+                            Access our complete collection of 500+ affirmations organized by theme: anxiety, grief, 
+                            motivation, self-love, celebration, and more. Find exactly what you need, when you need it.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card reveal">
+                        <div class="feature-icon">
+                            <i data-lucide="palette"></i>
+                        </div>
+                        <h3>Custom Wallpapers & Cards</h3>
+                        <p>
+                            Download beautiful, shareable affirmation cards and phone wallpapers. Keep your favorite messages 
+                            close and share them with friends who need a pick-me-up.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card reveal">
+                        <div class="feature-icon">
+                            <i data-lucide="bell"></i>
+                        </div>
+                        <h3>Personalized Timing</h3>
+                        <p>
+                            Choose when you receive your daily affirmations. Morning motivation? Evening reflection? 
+                            Midday boost? You decide what works best for your routine.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card reveal">
+                        <div class="feature-icon">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <h3>Community Access</h3>
+                        <p>
+                            Join our supportive community of vibe-spreaders. Share your favorite affirmations, 
+                            submit your own messages, and connect with others on the same journey.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card reveal">
+                        <div class="feature-icon">
+                            <i data-lucide="gift"></i>
+                        </div>
+                        <h3>Gift Subscriptions</h3>
+                        <p>
+                            Know someone who could use some good vibes? Gift them a premium subscription. 
+                            It's the perfect way to show you care.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card reveal">
+                        <div class="feature-icon">
+                            <i data-lucide="shield-check"></i>
+                        </div>
+                        <h3>Ad-Free Experience</h3>
+                        <p>
+                            Enjoy your daily dose of positivity without distractions. Premium keeps the focus 
+                            on what matters: your wellbeing and spreading good.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="pricing-highlight">
+                    <p class="pricing-text">Premium: $3.99/month • Keep it accessible for everyone</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Proof Section -->
+        <section class="social-proof-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Spreading Good Vibes Together</h2>
+                </div>
+                
+                <div class="testimonials">
+                    <div class="testimonial reveal">
+                        <p class="testimonial-quote">
+                            I've been getting these daily messages for two weeks, and honestly, they've changed my mornings. 
+                            On days when I feel like giving up, that simple text reminder helps me keep going.
+                        </p>
+                        <p class="testimonial-author">— Sarah M.</p>
+                    </div>
+                    
+                    <div class="testimonial reveal">
+                        <p class="testimonial-quote">
+                            I love sharing these affirmations with my team. It's become our little ritual—everyone shares 
+                            their daily message in our group chat. It's brought us closer and made work feel more human.
+                        </p>
+                        <p class="testimonial-author">— James T.</p>
+                    </div>
+                    
+                    <div class="testimonial reveal">
+                        <p class="testimonial-quote">
+                            During my grief journey, these messages have been a lifeline. Whoever writes these truly understands 
+                            what it's like to struggle. I'm so grateful this exists.
+                        </p>
+                        <p class="testimonial-author">— Alex K.</p>
+                    </div>
+                </div>
+                
+                <div class="stats-row">
+                    <div class="stat-card reveal">
+                        <div class="stat" data-target="10">0K+</div>
+                        <p class="stat-label">Daily Vibes Sent</p>
+                    </div>
+                    <div class="stat-card reveal">
+                        <div class="stat" data-target="500">0+</div>
+                        <p class="stat-label">Affirmations</p>
+                    </div>
+                    <div class="stat-card reveal">
+                        <div class="stat" data-target="95">0%</div>
+                        <p class="stat-label">Feel More Positive</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Join Section -->
+        <section id="join" class="cta-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Ready for Your Daily Vibe Check?</h2>
+                    <p class="section-subtitle">
+                        Start your day with positivity. Join thousands spreading good vibes.
+                    </p>
+                </div>
+                <button class="btn btn-primary btn-large" id="cta-button">Get Started Free ✨</button>
+                <p class="cta-note">No credit card required • Cancel anytime • Always free option</p>
+            </div>
+        </section>
+
+        <!-- Support Section -->
+        <section id="support" class="support-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Support The Mission</h2>
+                    <p class="section-subtitle">
+                        Help us keep spreading good vibes and make this accessible to everyone.
+                    </p>
+                </div>
+                
+                <div class="support-grid">
+                    <div class="support-card reveal">
+                        <h3>☕ Buy Us a Coffee</h3>
+                        <p>Every coffee helps us create more affirmations and keep the free version accessible for everyone.</p>
+                        <a href="#" class="btn btn-secondary">Support on Ko-fi</a>
+                    </div>
+                    
+                    <div class="support-card reveal">
+                        <h3>💜 Become a Patron</h3>
+                        <p>Join our Patreon community and get early access to new affirmations, exclusive content, and behind-the-scenes updates.</p>
+                        <a href="#" class="btn btn-secondary">Join on Patreon</a>
+                    </div>
+                    
+                    <div class="support-card reveal">
+                        <h3>🎁 Gift a Subscription</h3>
+                        <p>Know someone who could use some daily positivity? Gift them a Premium subscription—it's the gift that keeps giving.</p>
+                        <a href="#" class="btn btn-secondary">Gift Premium</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-container">
+                <div class="footer-grid">
+                    <div class="footer-section">
+                        <h4>About</h4>
+                        <p style="color: var(--color-text-muted); font-size: 14px; line-height: 1.7;">
+                            The Vibe Check Project exists to spread positivity through daily affirmations and uplifting messages. 
+                            Because small words can make a big impact.
+                        </p>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Project</h4>
+                        <ul class="footer-links">
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="#support">Support Us</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Legal</h4>
+                        <ul class="footer-links">
+                            <li><a href="privacy.html">Privacy Policy</a></li>
+                            <li><a href="terms.html">Terms of Service</a></li>
+                            <li><a href="cookies.html">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Connect</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Twitter</a></li>
+                            <li><a href="#">Instagram</a></li>
+                            <li><a href="#">TikTok</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>✨ Made with love by The Vibe Check Project • Spreading good since 2025</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Email Collection Form (Replace with your form service) -->
+    <script>
+        // Configure your email collection service here
+        window.FormConfig = {
+            "formId": "your-form-id-here",
+            "popup": {
+                "autoClose": 2000,
+                "showOnce": true,
+                "doNotShowAfterSubmit": true
+            }
+        };
+    </script>
+
+    <!-- Main JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

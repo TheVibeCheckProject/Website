@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Get in touch with us. Contact us for support, questions, or collaboration opportunities.">
+    <title>Contact Us - Your Company</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏢</text></svg>">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">Your Company</a>
+            <ul class="nav-links">
+                <li><a href="index.html#why">Why</a></li>
+                <li><a href="index.html#how">How It Works</a></li>
+                <li><a href="index.html#features">Features</a></li>
+                <li><a href="index.html#cta">Get Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" style="min-height: 60vh;">
+        <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1920&q=80');"></div>
+        <div class="hero-content">
+            <h1 style="margin-bottom: var(--space-md);">Contact Us</h1>
+            <p class="hero-subtitle">
+                Have questions? Want to collaborate? We'd love to hear from you.
+            </p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="why-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Get in Touch</h2>
+                <p class="section-subtitle">
+                    Whether you have questions about our services, want to share feedback, or explore collaboration opportunities, we're here to help.
+                </p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-2xl); margin-top: var(--space-2xl);">
+                <!-- Contact Information -->
+                <div class="why-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); margin-bottom: var(--space-md);">
+                        <i data-lucide="mail"></i>
+                    </div>
+                    <h3>Email Us</h3>
+                    <p>For general inquiries, support, or feedback:</p>
+                    <p style="color: var(--color-primary); font-weight: 600; margin-top: var(--space-sm);">
+                        <a href="mailto:support@yourcompany.com" style="color: inherit; text-decoration: none;">
+                            support@yourcompany.com
+                        </a>
+                    </p>
+                </div>
+                
+                <div class="why-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, var(--color-secondary), var(--color-accent)); margin-bottom: var(--space-md);">
+                        <i data-lucide="message-circle"></i>
+                    </div>
+                    <h3>Response Time</h3>
+                    <p>We typically respond to all inquiries within 24-48 hours during business days. We appreciate your patience!</p>
+                </div>
+                
+                <div class="why-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, var(--color-accent), var(--color-primary)); margin-bottom: var(--space-md);">
+                        <i data-lucide="users"></i>
+                    </div>
+                    <h3>Partnerships</h3>
+                    <p>Interested in collaborating or have a business partnership idea? Let's talk about how we can work together to help more businesses succeed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="how-it-works-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <p class="section-subtitle">
+                    Quick answers to common questions about our services.
+                </p>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <h3>How do I get started?</h3>
+                    <p>
+                        Simply reach out through our contact form or email, and we'll schedule a consultation to understand your business needs. We'll provide clear, actionable recommendations and a roadmap for implementation.
+                    </p>
+                </div>
+                
+                <div class="step">
+                    <h3>What services do you provide?</h3>
+                    <p>
+                        We offer comprehensive business technology consulting, system implementation, process optimization, and ongoing support. Our approach is tailored to each client's specific needs and growth goals.
+                    </p>
+                </div>
+                
+                <div class="step">
+                    <h3>How much does it cost?</h3>
+                    <p>
+                        Pricing varies based on the scope and complexity of your project. We provide detailed proposals after understanding your requirements. Contact us for a customized quote that fits your budget.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="features-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Send Us a Message</h2>
+                <p class="section-subtitle">
+                    Use the form below to reach out to us directly.
+                </p>
+            </div>
+            
+            <div style="max-width: 600px; margin: 0 auto;">
+                <div class="why-card" style="text-align: center; padding: var(--space-2xl);">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); margin: 0 auto var(--space-md);">
+                        <i data-lucide="send"></i>
+                    </div>
+                    <h3>Contact Form</h3>
+                    <p style="margin-bottom: var(--space-lg);">
+                        Ready to get in touch? Click the button below to open our contact form.
+                    </p>
+                    <button class="btn btn-primary" onclick="window.Tally && window.Tally.openPopup('your-form-id')" style="margin-top: var(--space-md);">
+                        Open Contact Form
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>About</h4>
+                    <p style="color: var(--color-text-muted); font-size: 14px; line-height: 1.7;">
+                        We help businesses streamline operations and maximize efficiency through strategic technology implementation.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="careers.html">Careers</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="cookies.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Your Company Name. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Form Script -->
+    <script>
+        window.FormConfig = {
+            "formId": "your-form-id",
+            "popup": {
+                "autoClose": 2000,
+                "showOnce": true,
+                "doNotShowAfterSubmit": true
+            }
+        };
+    </script>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

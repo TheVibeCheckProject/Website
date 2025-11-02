@@ -68,10 +68,10 @@
             }
         }
 
-        /* 3D Envelope Container - increased space for tri-fold */
+        /* 3D Envelope Container - increased space for horizontal tri-fold */
         .envelope-scene {
-            width: 500px;
-            height: 900px;
+            width: 800px;
+            height: 700px;
             perspective: 2000px;
             position: relative;
             z-index: 10;
@@ -82,7 +82,8 @@
             width: 100%;
             height: 350px;
             position: relative;
-            top: 250px;
+            top: 150px;
+            transform-style: preserve-3d;
         }
 
         .envelope-3d {
@@ -136,6 +137,7 @@
                 0 0 0 1px rgba(255, 255, 255, 0.15) inset;
             cursor: pointer;
             z-index: 10;
+            backface-visibility: hidden;
         }
 
         .envelope-flap::before {
@@ -171,7 +173,7 @@
             transform: translate(-50%, -50%) scale(0) rotate(180deg);
         }
 
-        /* Tri-fold Card Container */
+        /* Horizontal Tri-fold Card Container */
         .card-trifold {
             position: absolute;
             width: 460px;
@@ -181,74 +183,110 @@
             margin-left: -230px;
             transform: translateY(100%) translateZ(-10px);
             transform-style: preserve-3d;
-            transition: all 1.4s cubic-bezier(0.4, 0.2, 0.2, 1) 0.3s;
+            transition: all 1.4s cubic-bezier(0.4, 0.2, 0.2, 1) 0.3s, width 1.2s ease-out 1.2s;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             overflow: visible;
             z-index: 5;
         }
 
         .envelope-3d.opening .card-trifold {
-            transform: translateY(-500px) translateZ(50px);
+            transform: translateY(-300px) translateZ(50px);
+            width: 1380px;
+            margin-left: -690px;
         }
 
         /* Tri-fold Panels */
         .panel {
             position: relative;
-            flex: 1;
+            width: 460px;
+            height: 550px;
             background: white;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 40px;
             text-align: center;
             transform-style: preserve-3d;
             transition: transform 1.2s cubic-bezier(0.4, 0.2, 0.2, 1) 1.2s,
                         box-shadow 1.2s ease-out 1.2s,
                         opacity 0.5s ease-out 1.2s;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            backface-visibility: hidden;
         }
 
-        .panel-top {
-            transform-origin: bottom center;
-            border-radius: 10px 10px 0 0;
+        .panel-left {
+            transform-origin: right center;
+            border-radius: 10px 0 0 10px;
         }
 
         .panel-middle {
-            border-top: 1px solid #eee;
-            border-bottom: 1px solid #eee;
+            border-left: 1px solid #eee;
+            border-right: 1px solid #eee;
         }
 
-        .panel-bottom {
-            transform-origin: top center;
-            border-radius: 0 0 10px 10px;
+        .panel-right {
+            transform-origin: left center;
+            border-radius: 0 10px 10px 0;
         }
 
         /* Initial folded state */
-        .card-trifold.folded .panel-top {
-            transform: rotateX(-180deg) translateZ(1px);
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+        .card-trifold.folded .panel-left {
+            transform: rotateY(180deg) translateZ(1px);
+            box-shadow: -4px 0 20px rgba(0,0,0,0.2), inset 20px 0 40px rgba(0,0,0,0.1);
             opacity: 0.8;
         }
 
-        .card-trifold.folded .panel-bottom {
-            transform: rotateX(180deg) translateZ(1px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        .card-trifold.folded .panel-right {
+            transform: rotateY(-180deg) translateZ(1px);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.2), inset -20px 0 40px rgba(0,0,0,0.1);
             opacity: 0.8;
         }
 
         /* Unfolded state */
-        .envelope-3d.opening .panel-top {
-            transform: rotateX(0deg);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        .envelope-3d.opening .panel-left {
+            transform: rotateY(0deg);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.15), inset -10px 0 20px rgba(0,0,0,0.05);
             opacity: 1;
         }
 
-        .envelope-3d.opening .panel-bottom {
-            transform: rotateX(0deg);
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+        .envelope-3d.opening .panel-right {
+            transform: rotateY(0deg);
+            box-shadow: -4px 0 20px rgba(0,0,0,0.15), inset 10px 0 20px rgba(0,0,0,0.05);
             opacity: 1;
+        }
+
+        /* Panel Backs for Realism */
+        .panel::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: #f8f8f8;
+            backface-visibility: hidden;
+            transform: rotateY(180deg);
+            border-radius: inherit;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* Cast Shadow on "Floor" */
+        .card-trifold::before {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: 50%;
+            width: 80%;
+            height: 50px;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, transparent 70%);
+            transform: translate(-50%, 0) rotateX(90deg) translateZ(-275px);
+            opacity: 0;
+            transition: opacity 1.2s ease-out 1.2s, transform 1.2s ease-out 1.2s;
+            z-index: -1;
+        }
+
+        .envelope-3d.opening .card-trifold::before {
+            opacity: 1;
+            transform: translate(-50%, 0) rotateX(90deg) translateZ(-275px) scale(3);
         }
 
         /* Sparkle Effect */
@@ -376,27 +414,34 @@
             opacity: 0;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 800px) {
             .envelope-scene {
                 width: 100%;
-                max-width: 400px;
-                height: 800px;
+                max-width: 600px;
+                height: 600px;
             }
 
             .envelope-wrapper {
                 height: 300px;
-                top: 200px;
+                top: 100px;
             }
 
             .card-trifold {
-                width: 90%;
-                height: 500px;
-                left: 50%;
-                margin-left: -45%;
+                width: 300px;
+                height: 400px;
+                margin-left: -150px;
             }
 
             .envelope-3d.opening .card-trifold {
-                transform: translateY(-450px) translateZ(50px);
+                    width: 900px;
+                    margin-left: -450px;
+                    transform: translateY(-200px) translateZ(50px);
+                }
+
+            .panel {
+                width: 300px;
+                height: 400px;
+                padding: 20px;
             }
 
             .envelope-flap {
@@ -408,7 +453,7 @@
             }
 
             .card-affirmation {
-                font-size: 20px;
+                font-size: 18px;
             }
 
             .card-actions {
@@ -428,6 +473,15 @@
                 transition-duration: 1.4s;
                 transition-delay: 1.4s;
             }
+
+            .card-trifold::before {
+                bottom: -50px;
+                height: 30px;
+            }
+
+            .envelope-3d.opening .card-trifold::before {
+                transform: translate(-50%, 0) rotateX(90deg) translateZ(-200px) scale(3);
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -446,13 +500,13 @@
             Loading your personalized vibe check...
         </div>
         
-        <div id="cardContainer" style="display: none; width: 100%; max-width: 500px;">
+        <div id="cardContainer" style="display: none; width: 100%; max-width: 800px;">
             <div class="envelope-scene">
                 <div class="envelope-wrapper">
                     <div class="envelope-3d" id="envelope3d">
                         <div class="envelope-body">
                             <div class="card-trifold folded" id="cardTrifold">
-                                <div class="panel panel-top">
+                                <div class="panel panel-left">
                                     <div class="card-recipient" id="cardRecipient">FOR YOU</div>
                                     <div class="card-from" id="cardFrom">Someone really wanted you to know...</div>
                                 </div>
@@ -460,7 +514,7 @@
                                     <div class="card-affirmation" id="cardAffirmation">"You're trying, and that's what counts."</div>
                                     <div class="card-message" id="cardMessage"></div>
                                 </div>
-                                <div class="panel panel-bottom">
+                                <div class="panel panel-right">
                                     <div class="card-sender" id="cardSender">- From Someone</div>
                                     <div class="card-actions">
                                         <button class="card-action-btn btn-primary-action" onclick="location.href='index.html'">

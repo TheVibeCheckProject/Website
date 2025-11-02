@@ -68,19 +68,20 @@
             }
         }
 
-        /* 3D Envelope Container */
+        /* 3D Envelope Container - INCREASED HEIGHT */
         .envelope-scene {
             width: 500px;
-            height: 350px;
+            height: 450px;
             perspective: 2000px;
             position: relative;
             z-index: 10;
             margin-bottom: 100px;
+            overflow: visible;
         }
 
         .envelope-3d {
             width: 100%;
-            height: 100%;
+            height: 380px;
             position: relative;
             transform-style: preserve-3d;
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -120,6 +121,7 @@
                 0 15px 40px rgba(0, 0, 0, 0.3),
                 0 0 0 1px rgba(255, 255, 255, 0.15) inset;
             cursor: pointer;
+            z-index: 10;
         }
 
         .envelope-flap::before {
@@ -150,13 +152,13 @@
             transform: translate(-50%, -50%) scale(0) rotate(180deg);
         }
 
-        /* Card inside envelope */
+        /* Card inside envelope - COMPLETELY HIDDEN INITIALLY */
         .card-inner {
             position: absolute;
             width: 92%;
             height: 88%;
             left: 4%;
-            top: 60%;
+            top: 100%;
             background: white;
             border-radius: 10px;
             box-shadow: 
@@ -172,10 +174,12 @@
             padding: 40px 30px;
             text-align: center;
             overflow: visible;
+            z-index: 5;
         }
 
         .envelope-3d.opening .card-inner {
-            transform: translateY(-250px) translateZ(50px) scale(1.1);
+            top: 50%;
+            transform: translateY(-360px) translateZ(50px) scale(1.15);
         }
 
         /* Card content reveal */
@@ -296,7 +300,7 @@
             50% { opacity: 1; transform: scale(1.05); }
         }
 
-        /* Click prompt */
+        /* Click prompt - PROPERLY HIDDEN WHEN OPENING */
         .click-prompt {
             position: absolute;
             bottom: -80px;
@@ -306,13 +310,15 @@
             font-size: 16px;
             font-weight: 600;
             animation: promptPulse 2s ease-in-out infinite;
-            pointer-events: none;
             font-family: var(--font-display);
             background: rgba(255, 107, 157, 0.2);
             padding: 12px 24px;
             border-radius: 30px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 107, 157, 0.3);
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            visibility: visible;
+            z-index: 20;
         }
 
         @keyframes promptPulse {
@@ -326,10 +332,13 @@
             }
         }
 
+        /* FIXED: Properly hide the click prompt */
         .envelope-3d.opening .click-prompt,
         .envelope-3d.opened .click-prompt {
-            opacity: 0;
-            pointer-events: none;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            animation: none !important;
+            display: none !important;
         }
 
         /* Sparkle effects when opening */
@@ -342,6 +351,7 @@
             pointer-events: none;
             animation: sparkleAnim 1s ease-out forwards;
             opacity: 0;
+            z-index: 100;
         }
 
         @keyframes sparkleAnim {
@@ -359,8 +369,12 @@
         @media (max-width: 768px) {
             .envelope-scene {
                 width: 90vw;
-                height: 280px;
+                height: 360px;
                 margin-bottom: 120px;
+            }
+
+            .envelope-3d {
+                height: 280px;
             }
 
             .card-inner {
@@ -368,7 +382,7 @@
             }
 
             .envelope-3d.opening .card-inner {
-                transform: translateY(-200px) translateZ(50px) scale(1.05);
+                transform: translateY(-240px) translateZ(50px) scale(1.05);
             }
 
             .card-affirmation {
@@ -386,6 +400,12 @@
             
             .card-view-page {
                 padding: 40px 15px 80px;
+            }
+
+            .click-prompt {
+                bottom: -60px;
+                font-size: 14px;
+                padding: 10px 20px;
             }
         }
     </style>
@@ -511,6 +531,7 @@
         function setupCardInteraction() {
             const envelope = document.getElementById('envelope3d');
             const flap = document.getElementById('envelopeFlap');
+            const clickPrompt = document.getElementById('clickPrompt');
             let opened = false;
 
             // Click to open
@@ -526,6 +547,12 @@
             function openCard() {
                 if (opened) return;
                 opened = true;
+                
+                // Hide click prompt immediately
+                if (clickPrompt) {
+                    clickPrompt.style.display = 'none';
+                    clickPrompt.style.visibility = 'hidden';
+                }
                 
                 // Add opening class
                 envelope.classList.add('opening');

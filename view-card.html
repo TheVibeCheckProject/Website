@@ -14,21 +14,21 @@
     <style>
         body {
             margin: 0;
-            overflow-x: hidden;
-            perspective: 1500px;
+            overflow: hidden;
+            perspective: 2000px;
+            background: linear-gradient(135deg, #1A1625 0%, #2D2438 50%, #3F3449 100%);
         }
 
         .card-view-page {
             min-height: 100vh;
-            background: linear-gradient(135deg, #1A1625 0%, #2D2438 50%, #3F3449 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: var(--space-lg);
+            padding: 20px;
             position: relative;
         }
 
-        /* Floating particles background */
+        /* Magical floating particles */
         .particles {
             position: fixed;
             top: 0;
@@ -37,269 +37,362 @@
             height: 100%;
             pointer-events: none;
             z-index: 1;
+            overflow: hidden;
         }
 
         .particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 107, 157, 0.6);
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle, #FF6B9D 0%, transparent 70%);
             border-radius: 50%;
-            animation: float 10s ease-in-out infinite;
+            animation: floatParticle 15s ease-in-out infinite;
+            opacity: 0;
         }
 
-        @keyframes float {
-            0%, 100% { 
-                transform: translateY(0) translateX(0);
-                opacity: 0.6;
+        @keyframes floatParticle {
+            0% { 
+                transform: translate(0, 100vh) scale(0);
+                opacity: 0;
             }
-            50% { 
-                transform: translateY(-100px) translateX(50px);
+            10% {
                 opacity: 1;
             }
+            90% {
+                opacity: 1;
+            }
+            100% { 
+                transform: translate(var(--tx), -100vh) scale(1.5);
+                opacity: 0;
+            }
         }
 
-        /* 3D Card Container */
-        .card-container {
+        /* 3D Envelope Container */
+        .envelope-scene {
+            width: 500px;
+            height: 350px;
+            perspective: 2000px;
             position: relative;
             z-index: 10;
-            transform-style: preserve-3d;
         }
 
-        .card-envelope {
-            width: 400px;
-            max-width: 90vw;
-            height: 300px;
+        .envelope-3d {
+            width: 100%;
+            height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            cursor: pointer;
-            transition: transform 0.6s ease;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .card-envelope:hover {
-            transform: scale(1.05);
+        .envelope-3d.opening {
+            transform: rotateY(5deg) rotateX(-5deg) scale(1.1);
         }
 
-        /* Envelope parts */
-        .envelope-back {
+        /* Envelope Body */
+        .envelope-body {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #FF6B9D, #FEC84A);
-            border-radius: 8px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, #FF6B9D 0%, #FEC84A 100%);
+            border-radius: 12px;
+            transform-style: preserve-3d;
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
         }
 
+        /* Envelope Flap (Top part that opens) */
         .envelope-flap {
             position: absolute;
             width: 100%;
-            height: 60%;
+            height: 55%;
             top: 0;
             left: 0;
-            background: linear-gradient(135deg, #E85285, #F5B82E);
-            transform-origin: top;
-            transform: rotateX(0deg);
-            transition: transform 1s ease;
-            border-radius: 8px 8px 0 0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #E85285 0%, #F5B82E 100%);
+            border-radius: 12px 12px 0 0;
+            transform-origin: top center;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 15px 40px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+            cursor: pointer;
         }
 
         .envelope-flap::before {
-            content: '✨';
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .envelope-flap-decoration {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 48px;
-            transition: opacity 0.3s;
+            font-size: 72px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.5));
         }
 
-        .card-envelope.opening .envelope-flap {
-            transform: rotateX(-180deg);
+        .envelope-3d.opening .envelope-flap {
+            transform: rotateX(-180deg) translateZ(1px);
         }
 
-        .card-envelope.opening .envelope-flap::before {
+        .envelope-3d.opening .envelope-flap-decoration {
             opacity: 0;
+            transform: translate(-50%, -50%) scale(0) rotate(180deg);
         }
 
-        /* The actual card inside */
-        .greeting-card {
+        /* Card inside envelope */
+        .card-inner {
             position: absolute;
-            width: 90%;
-            height: 85%;
-            left: 5%;
-            top: 40%;
+            width: 92%;
+            height: 88%;
+            left: 4%;
+            top: 50%;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-            transform: translateY(0);
-            transition: transform 1.2s ease 0.3s;
+            border-radius: 10px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(0, 0, 0, 0.1);
+            transform: translateY(0) translateZ(-10px);
+            transform-style: preserve-3d;
+            transition: all 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: var(--space-xl);
+            padding: 40px 30px;
             text-align: center;
+            overflow: hidden;
+        }
+
+        .envelope-3d.opening .card-inner {
+            transform: translateY(-180px) translateZ(50px);
+        }
+
+        /* Card content reveal */
+        .card-content-wrapper {
             opacity: 0;
+            transform: scale(0.7);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 1.8s;
         }
 
-        .card-envelope.opening .greeting-card {
-            transform: translateY(-120px);
-            opacity: 1;
-        }
-
-        .card-content {
-            opacity: 0;
-            transform: scale(0.8);
-            transition: all 0.6s ease 1.5s;
-        }
-
-        .card-envelope.opened .card-content {
+        .envelope-3d.opened .card-content-wrapper {
             opacity: 1;
             transform: scale(1);
         }
 
         .card-recipient {
             font-family: var(--font-display);
-            font-size: 14px;
+            font-size: 12px;
             color: #FF6B9D;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: var(--space-md);
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            font-weight: 700;
         }
 
         .card-from {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: var(--space-lg);
-            line-height: 1.6;
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 30px;
+            line-height: 1.5;
         }
 
         .card-affirmation {
-            font-size: 28px;
+            font-size: 32px;
             font-style: italic;
             color: #1A1625;
-            margin: var(--space-xl) 0;
-            line-height: 1.4;
-            font-weight: 500;
+            margin: 30px 0;
+            line-height: 1.3;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .card-affirmation::before,
+        .card-affirmation::after {
+            content: '"';
+            font-size: 48px;
+            color: #FF6B9D;
+            opacity: 0.3;
+            font-family: Georgia, serif;
         }
 
         .card-message {
             font-size: 16px;
-            color: #666;
-            margin-top: var(--space-lg);
+            color: #777;
+            margin-top: 25px;
             line-height: 1.6;
             font-style: italic;
+            max-width: 90%;
         }
 
         .card-signature {
-            margin-top: var(--space-xl);
+            margin-top: 30px;
             font-size: 14px;
             color: #999;
         }
 
         .card-actions {
-            margin-top: var(--space-2xl);
+            margin-top: 40px;
             display: flex;
-            gap: var(--space-sm);
+            gap: 12px;
             flex-wrap: wrap;
             justify-content: center;
         }
 
         .card-action-btn {
-            padding: 12px 24px;
-            border-radius: 8px;
+            padding: 14px 28px;
+            border-radius: 10px;
             border: none;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-family: var(--font-display);
+            font-size: 15px;
         }
 
         .btn-primary-action {
-            background: linear-gradient(135deg, #FF6B9D, #FEC84A);
+            background: linear-gradient(135deg, #FF6B9D 0%, #FEC84A 100%);
             color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
         }
 
         .btn-primary-action:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 107, 157, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
         }
 
         .btn-secondary-action {
-            background: transparent;
+            background: white;
             border: 2px solid #FF6B9D;
             color: #FF6B9D;
         }
 
         .btn-secondary-action:hover {
             background: rgba(255, 107, 157, 0.1);
+            transform: translateY(-3px);
         }
 
         /* Loading state */
         .loading {
             text-align: center;
             color: white;
-            font-size: 24px;
+            font-size: 28px;
             font-family: var(--font-display);
+            animation: loadingPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes loadingPulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
         }
 
         /* Click prompt */
         .click-prompt {
             position: absolute;
-            bottom: -60px;
+            bottom: -80px;
             left: 50%;
             transform: translateX(-50%);
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 14px;
-            font-weight: 500;
-            animation: pulse 2s ease-in-out infinite;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            font-weight: 600;
+            animation: promptPulse 2s ease-in-out infinite;
+            pointer-events: none;
+            font-family: var(--font-display);
+            background: rgba(255, 107, 157, 0.2);
+            padding: 12px 24px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 107, 157, 0.3);
+        }
+
+        @keyframes promptPulse {
+            0%, 100% { 
+                opacity: 0.7; 
+                transform: translateX(-50%) translateY(0); 
+            }
+            50% { 
+                opacity: 1; 
+                transform: translateX(-50%) translateY(-8px); 
+            }
+        }
+
+        .envelope-3d.opening .click-prompt,
+        .envelope-3d.opened .click-prompt {
+            opacity: 0;
             pointer-events: none;
         }
 
-        .card-envelope.opening .click-prompt,
-        .card-envelope.opened .click-prompt {
-            display: none;
+        /* Sparkle effects when opening */
+        .sparkle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #FFF 0%, #FF6B9D 100%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkleAnim 1s ease-out forwards;
+            opacity: 0;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.6; transform: translateX(-50%) translateY(0); }
-            50% { opacity: 1; transform: translateX(-50%) translateY(-5px); }
+        @keyframes sparkleAnim {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--sparkle-x), var(--sparkle-y)) scale(1.5);
+            }
         }
 
         /* Mobile responsive */
         @media (max-width: 768px) {
-            .card-envelope {
-                width: 320px;
-                height: 240px;
+            .envelope-scene {
+                width: 90vw;
+                height: 300px;
             }
 
             .card-affirmation {
-                font-size: 22px;
+                font-size: 24px;
             }
 
             .card-from {
-                font-size: 16px;
+                font-size: 14px;
+            }
+
+            .card-action-btn {
+                padding: 12px 20px;
+                font-size: 14px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Floating particles -->
+    <!-- Magical particles -->
     <div class="particles" id="particles"></div>
 
     <div class="card-view-page">
         <div id="loadingState" class="loading">
-            Loading your vibe check... ✨
+            ✨ Loading your vibe check ✨
         </div>
 
-        <div id="cardContainer" class="card-container" style="display: none;">
-            <div class="card-envelope" id="cardEnvelope">
-                <div class="envelope-back"></div>
-                <div class="envelope-flap"></div>
+        <div id="cardContainer" class="envelope-scene" style="display: none;">
+            <div class="envelope-3d" id="envelope3d">
+                <div class="envelope-body">
+                    <div class="envelope-flap" id="envelopeFlap">
+                        <div class="envelope-flap-decoration">✨</div>
+                    </div>
+                </div>
                 
-                <div class="greeting-card">
-                    <div class="card-content" id="cardContent">
+                <div class="card-inner">
+                    <div class="card-content-wrapper" id="cardContent">
                         <div class="card-recipient" id="cardRecipient">
                             FOR SOMEONE SPECIAL
                         </div>
@@ -309,7 +402,7 @@
                         </div>
                         
                         <div class="card-affirmation" id="cardAffirmation">
-                            "You're trying, and that's what counts."
+                            You're trying, and that's what counts.
                         </div>
                         
                         <div class="card-message" id="cardMessage">
@@ -331,7 +424,7 @@
                     </div>
                 </div>
                 
-                <div class="click-prompt">
+                <div class="click-prompt" id="clickPrompt">
                     👆 Click to open your card
                 </div>
             </div>
@@ -339,15 +432,15 @@
     </div>
 
     <script>
-        // Create floating particles
+        // Create magical floating particles
         const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 40; i++) {
             const particle = document.createElement('div');
             particle.className = 'particle';
             particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 10 + 's';
-            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particle.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
             particlesContainer.appendChild(particle);
         }
 
@@ -369,7 +462,7 @@
                     document.getElementById('cardFrom').textContent = 
                         `${data.senderName} really wanted you to know...`;
                     document.getElementById('cardAffirmation').textContent = 
-                        `"${data.affirmation}"`;
+                        data.affirmation;
                     document.getElementById('cardSender').textContent = data.senderName;
                     
                     if (data.personalMessage) {
@@ -388,32 +481,66 @@
                 } else {
                     // Card not found
                     document.getElementById('loadingState').innerHTML = 
-                        'Oops! This card link is invalid or expired. 💔<br><br>' +
-                        '<a href="index.html" style="color: #FF6B9D;">Visit The Vibe Check Project</a>';
+                        '💔 Oops! This card link is invalid or expired.<br><br>' +
+                        '<a href="index.html" style="color: #FF6B9D; text-decoration: underline;">Visit The Vibe Check Project</a>';
                 }
             } else {
                 // No card ID
                 document.getElementById('loadingState').innerHTML = 
-                    'No card ID provided. 💔<br><br>' +
-                    '<a href="send-card.html" style="color: #FF6B9D;">Send a Vibe Check Card</a>';
+                    '💔 No card ID provided<br><br>' +
+                    '<a href="send-card.html" style="color: #FF6B9D; text-decoration: underline;">Send a Vibe Check Card</a>';
             }
-        }, 1000);
+        }, 1200);
 
         function setupCardInteraction() {
-            const envelope = document.getElementById('cardEnvelope');
+            const envelope = document.getElementById('envelope3d');
+            const flap = document.getElementById('envelopeFlap');
             let opened = false;
 
-            envelope.addEventListener('click', () => {
+            // Click to open
+            flap.addEventListener('click', openCard);
+            
+            // Auto-open after 3 seconds if user doesn't click
+            setTimeout(() => {
                 if (!opened) {
-                    envelope.classList.add('opening');
-                    opened = true;
-                    
-                    // Mark as fully opened after animation
-                    setTimeout(() => {
-                        envelope.classList.add('opened');
-                    }, 1500);
+                    openCard();
                 }
-            });
+            }, 3000);
+
+            function openCard() {
+                if (opened) return;
+                opened = true;
+                
+                // Add opening class
+                envelope.classList.add('opening');
+                
+                // Create sparkles
+                createSparkles();
+                
+                // Mark as fully opened after animation
+                setTimeout(() => {
+                    envelope.classList.add('opened');
+                }, 1800);
+            }
+
+            function createSparkles() {
+                const sparkleCount = 20;
+                const envelopeRect = envelope.getBoundingClientRect();
+                
+                for (let i = 0; i < sparkleCount; i++) {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.style.left = '50%';
+                    sparkle.style.top = '30%';
+                    sparkle.style.setProperty('--sparkle-x', (Math.random() - 0.5) * 300 + 'px');
+                    sparkle.style.setProperty('--sparkle-y', (Math.random() - 0.5) * 300 + 'px');
+                    sparkle.style.animationDelay = (i * 0.05) + 's';
+                    envelope.appendChild(sparkle);
+                    
+                    // Remove sparkle after animation
+                    setTimeout(() => sparkle.remove(), 1000 + (i * 50));
+                }
+            }
         }
     </script>
 </body>

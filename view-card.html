@@ -14,7 +14,7 @@
     <style>
         body {
             margin: 0;
-            overflow: hidden;
+            overflow-x: hidden;
             perspective: 2000px;
             background: linear-gradient(135deg, #1A1625 0%, #2D2438 50%, #3F3449 100%);
         }
@@ -24,8 +24,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 60px 20px;
             position: relative;
+            overflow-y: auto;
         }
 
         /* Magical floating particles */
@@ -74,6 +75,7 @@
             perspective: 2000px;
             position: relative;
             z-index: 10;
+            margin-bottom: 100px;
         }
 
         .envelope-3d {
@@ -99,6 +101,7 @@
             box-shadow: 
                 0 30px 60px rgba(0, 0, 0, 0.4),
                 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            overflow: hidden;
         }
 
         /* Envelope Flap (Top part that opens) */
@@ -153,7 +156,7 @@
             width: 92%;
             height: 88%;
             left: 4%;
-            top: 50%;
+            top: 60%;
             background: white;
             border-radius: 10px;
             box-shadow: 
@@ -168,11 +171,11 @@
             justify-content: center;
             padding: 40px 30px;
             text-align: center;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .envelope-3d.opening .card-inner {
-            transform: translateY(-180px) translateZ(50px);
+            transform: translateY(-250px) translateZ(50px) scale(1.1);
         }
 
         /* Card content reveal */
@@ -356,11 +359,20 @@
         @media (max-width: 768px) {
             .envelope-scene {
                 width: 90vw;
-                height: 300px;
+                height: 280px;
+                margin-bottom: 120px;
+            }
+
+            .card-inner {
+                padding: 30px 20px;
+            }
+
+            .envelope-3d.opening .card-inner {
+                transform: translateY(-200px) translateZ(50px) scale(1.05);
             }
 
             .card-affirmation {
-                font-size: 24px;
+                font-size: 22px;
             }
 
             .card-from {
@@ -370,6 +382,10 @@
             .card-action-btn {
                 padding: 12px 20px;
                 font-size: 14px;
+            }
+            
+            .card-view-page {
+                padding: 40px 15px 80px;
             }
         }
     </style>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You've Got a Vibe Check! ✨</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            perspective: 1500px;
+        }
+
+        .card-view-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1A1625 0%, #2D2438 50%, #3F3449 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-lg);
+            position: relative;
+        }
+
+        /* Floating particles background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 107, 157, 0.6);
+            border-radius: 50%;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0) translateX(0);
+                opacity: 0.6;
+            }
+            50% { 
+                transform: translateY(-100px) translateX(50px);
+                opacity: 1;
+            }
+        }
+
+        /* 3D Card Container */
+        .card-container {
+            position: relative;
+            z-index: 10;
+            transform-style: preserve-3d;
+        }
+
+        .card-envelope {
+            width: 400px;
+            max-width: 90vw;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            transition: transform 0.6s ease;
+        }
+
+        .card-envelope:hover {
+            transform: scale(1.05);
+        }
+
+        /* Envelope parts */
+        .envelope-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #FF6B9D, #FEC84A);
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            width: 100%;
+            height: 60%;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, #E85285, #F5B82E);
+            transform-origin: top;
+            transform: rotateX(0deg);
+            transition: transform 1s ease;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .envelope-flap::before {
+            content: '✨';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            transition: opacity 0.3s;
+        }
+
+        .card-envelope.opening .envelope-flap {
+            transform: rotateX(-180deg);
+        }
+
+        .card-envelope.opening .envelope-flap::before {
+            opacity: 0;
+        }
+
+        /* The actual card inside */
+        .greeting-card {
+            position: absolute;
+            width: 90%;
+            height: 85%;
+            left: 5%;
+            top: 40%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            transform: translateY(0);
+            transition: transform 1.2s ease 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-xl);
+            text-align: center;
+            opacity: 0;
+        }
+
+        .card-envelope.opening .greeting-card {
+            transform: translateY(-120px);
+            opacity: 1;
+        }
+
+        .card-content {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.6s ease 1.5s;
+        }
+
+        .card-envelope.opened .card-content {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .card-recipient {
+            font-family: var(--font-display);
+            font-size: 14px;
+            color: #FF6B9D;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: var(--space-md);
+        }
+
+        .card-from {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: var(--space-lg);
+            line-height: 1.6;
+        }
+
+        .card-affirmation {
+            font-size: 28px;
+            font-style: italic;
+            color: #1A1625;
+            margin: var(--space-xl) 0;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        .card-message {
+            font-size: 16px;
+            color: #666;
+            margin-top: var(--space-lg);
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .card-signature {
+            margin-top: var(--space-xl);
+            font-size: 14px;
+            color: #999;
+        }
+
+        .card-actions {
+            margin-top: var(--space-2xl);
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card-action-btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: var(--font-display);
+        }
+
+        .btn-primary-action {
+            background: linear-gradient(135deg, #FF6B9D, #FEC84A);
+            color: white;
+        }
+
+        .btn-primary-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 157, 0.3);
+        }
+
+        .btn-secondary-action {
+            background: transparent;
+            border: 2px solid #FF6B9D;
+            color: #FF6B9D;
+        }
+
+        .btn-secondary-action:hover {
+            background: rgba(255, 107, 157, 0.1);
+        }
+
+        /* Loading state */
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            font-family: var(--font-display);
+        }
+
+        /* Click prompt */
+        .click-prompt {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            font-weight: 500;
+            animation: pulse 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .card-envelope.opening .click-prompt,
+        .card-envelope.opened .click-prompt {
+            display: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; transform: translateX(-50%) translateY(0); }
+            50% { opacity: 1; transform: translateX(-50%) translateY(-5px); }
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .card-envelope {
+                width: 320px;
+                height: 240px;
+            }
+
+            .card-affirmation {
+                font-size: 22px;
+            }
+
+            .card-from {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+
+    <div class="card-view-page">
+        <div id="loadingState" class="loading">
+            Loading your vibe check... ✨
+        </div>
+
+        <div id="cardContainer" class="card-container" style="display: none;">
+            <div class="card-envelope" id="cardEnvelope">
+                <div class="envelope-back"></div>
+                <div class="envelope-flap"></div>
+                
+                <div class="greeting-card">
+                    <div class="card-content" id="cardContent">
+                        <div class="card-recipient" id="cardRecipient">
+                            FOR SOMEONE SPECIAL
+                        </div>
+                        
+                        <div class="card-from" id="cardFrom">
+                            Someone really wanted you to know...
+                        </div>
+                        
+                        <div class="card-affirmation" id="cardAffirmation">
+                            "You're trying, and that's what counts."
+                        </div>
+                        
+                        <div class="card-message" id="cardMessage">
+                            <!-- Personal message if any -->
+                        </div>
+                        
+                        <div class="card-signature">
+                            With love, <span id="cardSender">a friend</span> ✨
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="card-action-btn btn-primary-action" onclick="location.href='index.html'">
+                                Get Daily Vibe Checks
+                            </button>
+                            <button class="card-action-btn btn-secondary-action" onclick="location.href='send-card.html'">
+                                Send One Too
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="click-prompt">
+                    👆 Click to open your card
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Get card ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const cardId = urlParams.get('id');
+
+        // Load card data
+        setTimeout(() => {
+            if (cardId) {
+                const cardData = localStorage.getItem(`card_${cardId}`);
+                
+                if (cardData) {
+                    const data = JSON.parse(cardData);
+                    
+                    // Populate card
+                    document.getElementById('cardRecipient').textContent = 
+                        `FOR ${data.recipientName.toUpperCase()}`;
+                    document.getElementById('cardFrom').textContent = 
+                        `${data.senderName} really wanted you to know...`;
+                    document.getElementById('cardAffirmation').textContent = 
+                        `"${data.affirmation}"`;
+                    document.getElementById('cardSender').textContent = data.senderName;
+                    
+                    if (data.personalMessage) {
+                        document.getElementById('cardMessage').textContent = 
+                            `"${data.personalMessage}"`;
+                    } else {
+                        document.getElementById('cardMessage').remove();
+                    }
+                    
+                    // Show card
+                    document.getElementById('loadingState').style.display = 'none';
+                    document.getElementById('cardContainer').style.display = 'block';
+                    
+                    // Set up card opening interaction
+                    setupCardInteraction();
+                } else {
+                    // Card not found
+                    document.getElementById('loadingState').innerHTML = 
+                        'Oops! This card link is invalid or expired. 💔<br><br>' +
+                        '<a href="index.html" style="color: #FF6B9D;">Visit The Vibe Check Project</a>';
+                }
+            } else {
+                // No card ID
+                document.getElementById('loadingState').innerHTML = 
+                    'No card ID provided. 💔<br><br>' +
+                    '<a href="send-card.html" style="color: #FF6B9D;">Send a Vibe Check Card</a>';
+            }
+        }, 1000);
+
+        function setupCardInteraction() {
+            const envelope = document.getElementById('cardEnvelope');
+            let opened = false;
+
+            envelope.addEventListener('click', () => {
+                if (!opened) {
+                    envelope.classList.add('opening');
+                    opened = true;
+                    
+                    // Mark as fully opened after animation
+                    setTimeout(() => {
+                        envelope.classList.add('opened');
+                    }, 1500);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

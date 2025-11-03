@@ -1,231 +1,510 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Card</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You've Got a Vibe Check! ✨</title>
+  
+  <!-- Preconnect to Google Fonts for improved performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Primary typefaces used throughout the page -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
-<style>
-  :root{
-    --pink:#FF6B9D; --gold:#FEC84A; --bg:#251f2d;
-    --paper:#ffffff; --paper2:#fbfbfb; --ink:#1A1625;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{
-    min-height:100vh; display:flex; align-items:center; justify-content:center;
-    background:radial-gradient(1200px 800px at 50% 10%, #342b3d 0%, var(--bg) 60%, #201a26 100%);
-    font-family: system-ui, -apple-system, Segoe UI, Inter, Roboto, sans-serif;
-    overflow-x:hidden; perspective:2200px;
-  }
+  <style>
+    /*
+      Core palette and typography variables. Feel free to tweak these
+      values if you'd like to adjust the look and feel of the page.
+    */
+    :root {
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --color-primary: #FF6B9D;
+      --color-secondary: #FEC84A;
+      --color-dark-bg: #1A1625;
+      --color-dark-bg-2: #2D2438;
+      --color-dark-bg-3: #3F3449;
+      --color-light: #ffffff;
+    }
 
-  /* Scene */
-  .scene{width:900px; max-width:92vw; position:relative;}
-  .envelope{height:360px; position:relative; transform-style:preserve-3d;}
-  .env-3d{height:100%; position:relative; transform-style:preserve-3d;}
+    /* Reset default spacing and enable border-box sizing */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  /* Back body (holds the card) */
-  .env-body{
-    position:absolute; inset:0;
-    background:linear-gradient(135deg, var(--pink) 0%, var(--gold) 100%);
-    border-radius:14px;
-    box-shadow:
-      0 28px 70px rgba(0,0,0,.55),
-      0 0 0 1px rgba(255,255,255,.12) inset,
-      0 -6px 40px rgba(255,255,255,.12) inset;
-    overflow:hidden;                    /* keeps the card inside until it slides out */
-    z-index:1;
-  }
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
 
-  /* Front pocket mask */
-  .env-front{
-    position:absolute; left:0; top:47%; width:100%; height:53%;
-    background:linear-gradient(135deg, #ff6b9d 0%, #fec84a 100%);
-    border-radius:0 0 14px 14px;
-    box-shadow:
-      0 -8px 22px rgba(0,0,0,.28) inset,
-      0 16px 38px rgba(0,0,0,.28);
-    transform:translateZ(8px);
-    z-index:8; pointer-events:none;
-  }
+    body {
+      font-family: var(--font-body);
+      background: linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-2) 50%, var(--color-dark-bg-3) 100%);
+      overflow-x: hidden;
+      position: relative;
+      perspective: 2000px;
+    }
 
-  /* Flap */
-  .env-flap{
-    position:absolute; inset:0 0 45% 0;
-    background:linear-gradient(135deg, #e85285 0%, #f5b82e 100%);
-    border-radius:14px 14px 0 0;
-    transform-origin:top center;
-    transform:rotateX(0deg);
-    transition:transform 1.2s cubic-bezier(.4,.2,.2,1);
-    z-index:10; cursor:pointer;
-    box-shadow:0 22px 50px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.15) inset;
-  }
-  .env-3d.open .env-flap{ transform:rotateX(-185deg) translateZ(1px); }
+    /* Container for the liquid background canvas.  The mask applied here
+       ensures the liquid effect is only visible around the edges of
+       the viewport.  The centre of the page is masked out so that
+       content placed above remains clearly visible. */
+    #liquid-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+    #liquid-container canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* Mask out the centre so the liquid appears only along the borders */
+      /* Only show the liquid near the page edges.  The inner 65% of the
+         viewport is transparent so the card and content remain visible,
+         while the region between 65% and 85% radius fades from
+         transparent to opaque. */
+      -webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,0) 65%, rgba(0,0,0,1) 85%);
+      mask-image: radial-gradient(circle at center, rgba(0,0,0,0) 65%, rgba(0,0,0,1) 85%);
+    }
 
-  /* ===== Tri-fold as ONE sheet ===== */
-  .trifold{
-    position:absolute; left:50%; top:100%;
-    width:1020px; height:560px; margin-left:-510px;   /* full unfolded size */
-    transform:translateY(10px) translateZ(-12px);     /* start barely inside */
-    transform-style:preserve-3d;
-    display:flex;
-    transition:transform 1.4s cubic-bezier(.4,.2,.2,1) .2s;
-    z-index:5; will-change:transform;
-    /* one continuous paper */
-    background:linear-gradient(180deg, var(--paper) 0%, var(--paper2) 100%);
-    border-radius:12px; overflow:visible;
-    box-shadow:0 10px 38px rgba(0,0,0,.25);
-  }
+    /* Particle confetti container. These floating hearts are drawn in
+       pure CSS and triggered when the card is opened. */
+    #particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
 
-  /* Fold seams drawn on the parent to unify the look */
-  .trifold::before{
-    content:"";
-    position:absolute; inset:0;
-    background:
-      linear-gradient(90deg, rgba(0,0,0,.12), rgba(0,0,0,0) 12%) 33.333% / 1px 100% no-repeat,
-      linear-gradient(90deg, rgba(0,0,0,.12), rgba(0,0,0,0) 12%) 66.666% / 1px 100% no-repeat;
-    opacity:.35; pointer-events:none;
-  }
+    .particle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: radial-gradient(circle, #FF6B9D 0%, transparent 70%);
+      border-radius: 50%;
+      animation: floatParticle 14s ease-in-out infinite;
+      opacity: 0;
+    }
 
-  /* hinge shadows when open */
-  .env-3d.open .trifold::after{
-    content:"";
-    position:absolute; inset:0;
-    background:
-      radial-gradient(120px 80px at 33.333% 50%, rgba(0,0,0,.18), transparent 70%) no-repeat,
-      radial-gradient(120px 80px at 66.666% 50%, rgba(0,0,0,.18), transparent 70%) no-repeat;
-    pointer-events:none; filter:blur(6px); opacity:.6;
-  }
+    @keyframes floatParticle {
+      0%   { transform: translate(0, 100vh) scale(0.2); opacity: 0; }
+      15%  { opacity: 1; }
+      85%  { opacity: 1; }
+      100% { transform: translate(var(--tx), -100vh) scale(1.2); opacity: 0; }
+    }
 
-  /* Three panels are transparent, so the parent’s paper is continuous */
-  .panel{
-    flex:1; position:relative; height:100%;
-    background:transparent; /* critical for continuity */
-    transform-style:preserve-3d;
-    backface-visibility:hidden;
-    padding:48px; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    transition:transform 1.0s cubic-bezier(.34,1.2,.56,1) .9s, box-shadow .9s ease .9s, opacity .6s ease .9s;
-  }
-  .panel-left{ transform-origin:right center; border-radius:12px 0 0 12px; }
-  .panel-right{ transform-origin:left center;  border-radius:0 12px 12px 0; }
+    /* Main content wrapper.  Ensures the card and ring appear above
+       everything else. */
+    .main-content {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 20px;
+      text-align: center;
+    }
 
-  /* folded state */
-  .trifold.folded .panel-left{
-    transform:rotateY(176deg) translateZ(2px);
-    box-shadow:-12px 0 30px rgba(0,0,0,.28), inset 28px 0 55px rgba(0,0,0,.12);
-    opacity:.85;
-  }
-  .trifold.folded .panel-right{
-    transform:rotateY(-176deg) translateZ(2px);
-    box-shadow:12px 0 30px rgba(0,0,0,.28), inset -28px 0 55px rgba(0,0,0,.12);
-    opacity:.85;
-  }
+    /* 3D rotating text ring.  Letters are absolutely positioned in
+       three-dimensional space around a central axis.  Animation is
+       applied to rotate the entire ring. */
+    .text-ring {
+      position: absolute;
+      top: -240px;
+      left: 50%;
+      width: 550px;
+      height: 550px;
+      transform: translateX(-50%);
+      transform-style: preserve-3d;
+      animation: rotateRing 20s linear infinite;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .text-ring span {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform-origin: 0 0;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 26px;
+      color: #ff6b9d;
+      text-shadow: 0 0 8px rgba(255,255,255,0.4);
+      white-space: pre;
+    }
+    @keyframes rotateRing {
+      from { transform: translateX(-50%) rotateY(0deg); }
+      to   { transform: translateX(-50%) rotateY(360deg); }
+    }
 
-  /* OPEN state — slide out + unfold */
-  .env-3d.open .trifold{
-    transform:translateY(-320px) translateZ(60px);
-  }
-  .env-3d.open .panel-left{
-    transform:rotateY(-10deg) translateZ(24px);
-    box-shadow:8px 0 28px rgba(0,0,0,.18);
-    opacity:1;
-  }
-  .env-3d.open .panel-mid{
-    transform:translateZ(28px);
-    box-shadow:0 10px 34px rgba(0,0,0,.22);
-  }
-  .env-3d.open .panel-right{
-    transform:rotateY(10deg) translateZ(24px);
-    box-shadow:-8px 0 28px rgba(0,0,0,.18);
-    opacity:1;
-  }
+    /* Flip card container.  The card flips around its vertical axis
+       when the user clicks on it.  The wrapper sets up the
+       perspective for the 3D flip. */
+    .flip-card {
+      width: 480px;
+      height: 320px;
+      perspective: 1000px;
+      margin: 0 auto 80px;
+      position: relative;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 1s cubic-bezier(0.42, 0, 0.58, 1);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+      border-radius: 16px;
+    }
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .flip-card-front {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .flip-card-back {
+      background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+      color: var(--color-dark-bg);
+      transform: rotateY(180deg);
+      padding: 40px;
+    }
+    /* Neon glow effect on the affirmation text.  Uses a pseudo-element
+       with a blurred text shadow to create a halo around the letters.
+       Inspired by FreeFrontend's glow text effects【872271793956380†L23-L31】. */
+    .affirmation {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--color-dark-bg);
+      position: relative;
+      text-align: center;
+    }
+    .affirmation::before {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      filter: blur(8px);
+      color: #ff6b9d;
+      opacity: 0.6;
+    }
 
-  /* Content bits */
-  .to{letter-spacing:3px; color:#ff5e98; font-weight:800; font-size:12px; margin-bottom:18px;}
-  .sub{color:#6b6b6b; margin-bottom:20px}
-  .bigq{font-weight:800; font-size:40px; color:var(--ink); line-height:1.25; text-align:center; margin:12px 0 18px}
-  .tiny{color:#7a7a7a; font-style:italic}
-  .btns{display:flex; gap:14px; width:100%; margin-top:auto; flex-wrap:wrap; justify-content:center}
-  .btn{padding:14px 22px; border-radius:10px; font-weight:700; cursor:pointer}
-  .primary{background:linear-gradient(135deg, var(--pink), var(--gold)); color:#fff; border:none}
-  .ghost{background:#fff; color:var(--pink); border:2px solid var(--pink)}
+    /* Call-to-action buttons inside the back of the card */
+    .card-actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+    .btn {
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: var(--font-display);
+      cursor: pointer;
+      border: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(255,107,157,0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 26px rgba(255,107,157,0.45);
+    }
+    .btn-secondary {
+      background: #fff;
+      color: var(--color-primary);
+      border: 2px solid var(--color-primary);
+    }
+    .btn-secondary:hover {
+      background: rgba(255,107,157,0.1);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 18px rgba(255,107,157,0.2);
+    }
 
-  /* Click prompt */
-  .prompt{
-    margin-top:28px; align-self:center;
-    color:#ffd7ea; background:rgba(255,107,157,.22); padding:12px 20px; border-radius:24px;
-    border:1px solid rgba(255,107,157,.38); box-shadow:0 8px 22px rgba(255,107,157,.28);
-    font-weight:700
-  }
-  .prompt.hide{opacity:0; visibility:hidden; transition:.35s ease}
+    /* Product card grid.  Adapted from the animated sneakers card
+       on FreeFrontend: each card flips on hover to reveal the front
+       and uses a rotated pseudo-element for depth【718306371606563†screenshot】. */
+    .product-grid {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-top: 60px;
+    }
+    .product-card {
+      width: 280px;
+      height: 400px;
+      perspective: 800px;
+    }
+    .product-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.8s ease;
+      border-radius: 16px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+    }
+    .product-card:hover .product-inner {
+      transform: rotateY(180deg);
+    }
+    .product-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .product-front {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+      color: #fff;
+    }
+    .product-back {
+      background: #fff;
+      color: var(--color-dark-bg);
+      transform: rotateY(180deg);
+    }
+    .product-icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+    }
+    .product-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .product-text {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .product-price {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 10px;
+    }
 
-  /* Responsive */
-  @media (max-width:900px){
-    .envelope{height:310px}
-    .trifold{width:780px; height:470px; margin-left:-390px}
-  }
-</style>
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .text-ring {
+        width: 400px;
+        height: 400px;
+        top: -180px;
+      }
+      .flip-card {
+        width: 90%;
+        height: auto;
+        aspect-ratio: 16/9;
+      }
+      .product-card {
+        width: 80%;
+        max-width: 300px;
+      }
+    }
+  </style>
 </head>
 <body>
-
-  <div class="scene">
-    <div class="envelope">
-      <div class="env-3d" id="env3d">
-        <div class="env-body">
-          <!-- TRI-FOLD -->
-          <div class="trifold folded" id="trifold">
-            <section class="panel panel-left">
-              <div class="to">FOR SARAH</div>
-              <div class="sub">Alex really wanted you to know…</div>
-              <div style="font-size:46px; opacity:.28">💖</div>
-            </section>
-            <section class="panel panel-mid">
-              <div class="bigq">You're stronger than<br/>you know.</div>
-              <div class="tiny">"Hope you're doing well! Keep being amazing."</div>
-            </section>
-            <section class="panel panel-right">
-              <div style="font-size:42px; opacity:.35; margin-bottom:34px">✨</div>
-              <div class="sub" style="margin-top:auto">With love, Alex</div>
-              <div class="btns">
-                <button class="btn primary" onclick="alert('Daily Vibe Checks')">Get Daily Vibe Checks</button>
-                <button class="btn ghost" onclick="alert('Send One Too')">Send One Too</button>
-              </div>
-            </section>
-          </div>
-        </div>
-
-        <!-- pocket overlay and flap -->
-        <div class="env-front" aria-hidden="true"></div>
-        <div class="env-flap" id="flap" title="Open the envelope"></div>
-      </div>
-    </div>
-    <div class="prompt" id="prompt">👆 Click to open your card</div>
+  <!-- Liquid effect only visible around edges -->
+  <div id="liquid-container">
+    <canvas id="canvas"></canvas>
   </div>
 
-<script>
-  const env = document.getElementById('env3d');
-  const flap = document.getElementById('flap');
-  const tri = document.getElementById('trifold');
-  const prompt = document.getElementById('prompt');
-  let opened = false;
+  <!-- Confetti hearts container -->
+  <div id="particles"></div>
 
-  flap.addEventListener('click', open);
-  flap.tabIndex = 0;
-  flap.addEventListener('keydown', e=>{
-    if(e.key==='Enter' || e.key===' '){ e.preventDefault(); open(); }
-  });
+  <div class="main-content">
+    <!-- 3D rotating text ring -->
+    <div class="text-ring" id="textRing"></div>
 
-  function open(){
-    if(opened) return;
-    opened = true;
-    env.classList.add('open');
-    prompt.classList.add('hide');
-    // unfold a bit after the slide starts (feels like it's clearing the pocket)
-    setTimeout(()=> tri.classList.remove('folded'), 650);
-  }
+    <!-- Flipping card with front/back faces -->
+    <div class="flip-card" id="flipCard">
+      <div class="flip-card-inner" id="flipCardInner">
+        <div class="flip-card-face flip-card-front">
+          <div>👆 Click to reveal your vibe</div>
+        </div>
+        <div class="flip-card-face flip-card-back">
+          <div class="affirmation" data-text="You're stronger than you know.">
+            You're stronger than you know.
+          </div>
+          <div class="product-text">Hope you're doing well! Keep being amazing.</div>
+          <div class="card-actions">
+            <button class="btn btn-primary" onclick="alert('Get Daily Vibe Checks!')">Get Daily Vibe Checks</button>
+            <button class="btn btn-secondary" onclick="alert('Send A Vibe!')">Send One Too</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  // Gentle auto-open if untouched
-  const t = setTimeout(()=>{ if(!opened) open(); }, 4200);
-  flap.addEventListener('mouseover', ()=> clearTimeout(t), {once:true});
-</script>
+    <!-- Product cards inspired by FreeFrontend's sneaker cards -->
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-inner">
+          <div class="product-face product-front">
+            <div class="product-icon">✨</div>
+            <div class="product-title">Daily Vibe</div>
+            <div class="product-text">Receive uplifting vibes every day.</div>
+            <div class="product-price">Free</div>
+          </div>
+          <div class="product-face product-back">
+            <div class="product-title">Daily Vibe</div>
+            <div class="product-text">Start your day with a positive affirmation tailored just for you!</div>
+            <button class="btn btn-primary" onclick="alert('Subscribed!')">Subscribe</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-inner">
+          <div class="product-face product-front">
+            <div class="product-icon">💌</div>
+            <div class="product-title">Send A Card</div>
+            <div class="product-text">Share the vibe with someone special.</div>
+            <div class="product-price">Free</div>
+          </div>
+          <div class="product-face product-back">
+            <div class="product-title">Send A Card</div>
+            <div class="product-text">Write a heartfelt message and brighten someone’s day.</div>
+            <button class="btn btn-primary" onclick="alert('Card Sent!')">Compose Now</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-inner">
+          <div class="product-face product-front">
+            <div class="product-icon">🌟</div>
+            <div class="product-title">Boost Your Vibe</div>
+            <div class="product-text">Uplift your mood anytime.</div>
+            <div class="product-price">Free</div>
+          </div>
+          <div class="product-face product-back">
+            <div class="product-title">Boost Your Vibe</div>
+            <div class="product-text">Need a quick pick‑me‑up? We’re here for you!</div>
+            <button class="btn btn-primary" onclick="alert('Boost Activated!')">Boost Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Module script to initialise the liquid background and interactive elements -->
+  <script type="module">
+    import LiquidBackground from 'https://cdn.jsdelivr.net/npm/threejs-components@0.0.22/build/backgrounds/liquid1.min.js';
+
+    // Initialise the liquid effect on the canvas
+    const liquidApp = LiquidBackground(document.getElementById('canvas'));
+    // Load a liquid texture (public domain placeholder).  If the
+    // network is unreachable the liquid will default to a colour.
+    liquidApp.loadImage('https://assets.codepen.io/33787/liquid.webp');
+    // Tune material properties for a metallic sheen
+    liquidApp.liquidPlane.material.metalness = 0.75;
+    liquidApp.liquidPlane.material.roughness = 0.25;
+    liquidApp.liquidPlane.uniforms.displacementScale.value = 5;
+    // Disable raindrop effect
+    liquidApp.setRain(false);
+
+    // Generate floating particles (hearts and stars) when the card opens
+    function createParticles(count = 30) {
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        // Random horizontal start position and travel distance
+        p.style.left = Math.random() * 100 + '%';
+        p.style.setProperty('--tx', (Math.random() - 0.5) * 300 + 'px');
+        // Random animation delay and duration
+        p.style.animationDelay = (Math.random() * 3) + 's';
+        p.style.animationDuration = (Math.random() * 8 + 8) + 's';
+        document.getElementById('particles').appendChild(p);
+        // Remove particle after animation ends
+        setTimeout(() => p.remove(), 15000);
+      }
+    }
+
+    // Build the 3D rotating text ring
+    const ringContainer = document.getElementById('textRing');
+    const phrase = '✨ You\'ve Got A Vibe Check ✨ ';
+    const totalChars = phrase.length;
+    for (let i = 0; i < totalChars; i++) {
+      const span = document.createElement('span');
+      span.textContent = phrase[i];
+      // Set custom properties for positioning in CSS
+      const angle = (360 / totalChars) * i;
+      span.style.transform = `rotateY(${angle}deg) translateZ(260px)`;
+      ringContainer.appendChild(span);
+    }
+
+    // Flip card behaviour
+    const card = document.getElementById('flipCard');
+    const cardInner = document.getElementById('flipCardInner');
+    let cardOpen = false;
+    card.addEventListener('click', () => {
+      cardOpen = !cardOpen;
+      card.classList.toggle('flipped', cardOpen);
+      if (cardOpen) createParticles(40);
+    });
+
+    // Accessibility: allow flipping via keyboard when focused
+    card.setAttribute('tabindex', '0');
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.click();
+      }
+    });
+
+    // Generate initial floating particles (ambient animation)
+    for (let i = 0; i < 40; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.setProperty('--tx', (Math.random() - 0.5) * 300 + 'px');
+      p.style.animationDelay = (Math.random() * 15) + 's';
+      p.style.animationDuration = (Math.random() * 10 + 15) + 's';
+      document.getElementById('particles').appendChild(p);
+      setTimeout(() => p.remove(), 25000);
+    }
+  </script>
 </body>
 </html>

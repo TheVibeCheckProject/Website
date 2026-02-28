@@ -1,15 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>You've Got a Vibe Check! ✨</title>
-  
+
+  <!-- Open Graph / Twitter Card -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.thevibecheckproject.com/view-card.html">
+  <meta property="og:title" content="Someone Sent You a Vibe Check ✨">
+  <meta property="og:description" content="You've got an affirmation card waiting for you. Open it and feel the good vibes.">
+  <meta property="og:image" content="https://www.thevibecheckproject.com/assets/og-image.png">
+  <meta property="og:site_name" content="The Vibe Check Project">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Someone Sent You a Vibe Check ✨">
+  <meta name="twitter:description" content="You've got an affirmation card waiting for you. Open it and feel the good vibes.">
+  <meta name="twitter:image" content="https://www.thevibecheckproject.com/assets/og-image.png">
+
+  <!-- Analytics (Microsoft Clarity) -->
+  <script defer data-domain="thevibecheckproject.com" src="https://plausible.io/js/script.js"></script>
+
   <!-- Preconnect to Google Fonts for improved performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Primary typefaces used throughout the page -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet">
 
   <style>
     /*
@@ -34,7 +52,8 @@
       box-sizing: border-box;
     }
 
-    html, body {
+    html,
+    body {
       width: 100%;
       height: 100%;
     }
@@ -60,6 +79,7 @@
       z-index: 1;
       pointer-events: none;
     }
+
     #liquid-container canvas {
       position: absolute;
       top: 0;
@@ -71,8 +91,8 @@
          viewport is transparent so the card and content remain visible,
          while the region between 65% and 85% radius fades from
          transparent to opaque. */
-      -webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,0) 65%, rgba(0,0,0,1) 85%);
-      mask-image: radial-gradient(circle at center, rgba(0,0,0,0) 65%, rgba(0,0,0,1) 85%);
+      -webkit-mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0) 65%, rgba(0, 0, 0, 1) 85%);
+      mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0) 65%, rgba(0, 0, 0, 1) 85%);
     }
 
     /* Particle confetti container. These floating hearts are drawn in
@@ -98,10 +118,23 @@
     }
 
     @keyframes floatParticle {
-      0%   { transform: translate(0, 100vh) scale(0.2); opacity: 0; }
-      15%  { opacity: 1; }
-      85%  { opacity: 1; }
-      100% { transform: translate(var(--tx), -100vh) scale(1.2); opacity: 0; }
+      0% {
+        transform: translate(0, 100vh) scale(0.2);
+        opacity: 0;
+      }
+
+      15% {
+        opacity: 1;
+      }
+
+      85% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translate(var(--tx), -100vh) scale(1.2);
+        opacity: 0;
+      }
     }
 
     /* Main content wrapper.  Ensures the card and ring appear above
@@ -131,6 +164,7 @@
       pointer-events: none;
       z-index: 3;
     }
+
     .text-ring span {
       position: absolute;
       left: 50%;
@@ -140,12 +174,18 @@
       font-weight: 700;
       font-size: 26px;
       color: #ff6b9d;
-      text-shadow: 0 0 8px rgba(255,255,255,0.4);
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
       white-space: pre;
     }
+
     @keyframes rotateRing {
-      from { transform: translateX(-50%) rotateY(0deg); }
-      to   { transform: translateX(-50%) rotateY(360deg); }
+      from {
+        transform: translateX(-50%) rotateY(0deg);
+      }
+
+      to {
+        transform: translateX(-50%) rotateY(360deg);
+      }
     }
 
     /* Flip card container.  The card flips around its vertical axis
@@ -158,18 +198,21 @@
       margin: 0 auto 80px;
       position: relative;
     }
+
     .flip-card-inner {
       position: relative;
       width: 100%;
       height: 100%;
       transform-style: preserve-3d;
       transition: transform 1s cubic-bezier(0.42, 0, 0.58, 1);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
       border-radius: 16px;
     }
+
     .flip-card.flipped .flip-card-inner {
       transform: rotateY(180deg);
     }
+
     .flip-card-face {
       position: absolute;
       width: 100%;
@@ -181,20 +224,23 @@
       align-items: center;
       justify-content: center;
     }
+
     .flip-card-front {
       background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
       color: #fff;
       font-family: var(--font-display);
       font-size: 28px;
       font-weight: 700;
-      text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
+
     .flip-card-back {
       background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
       color: var(--color-dark-bg);
       transform: rotateY(180deg);
       padding: 40px;
     }
+
     /* Neon glow effect on the affirmation text.  Uses a pseudo-element
        with a blurred text shadow to create a halo around the letters.
        Inspired by FreeFrontend's glow text effects【872271793956380†L23-L31】. */
@@ -207,6 +253,7 @@
       position: relative;
       text-align: center;
     }
+
     .affirmation::before {
       content: attr(data-text);
       position: absolute;
@@ -226,6 +273,7 @@
       justify-content: center;
       width: 100%;
     }
+
     .btn {
       padding: 14px 28px;
       border-radius: 10px;
@@ -236,24 +284,28 @@
       border: none;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+
     .btn-primary {
       background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
       color: #fff;
-      box-shadow: 0 4px 18px rgba(255,107,157,0.35);
+      box-shadow: 0 4px 18px rgba(255, 107, 157, 0.35);
     }
+
     .btn-primary:hover {
       transform: translateY(-3px);
-      box-shadow: 0 8px 26px rgba(255,107,157,0.45);
+      box-shadow: 0 8px 26px rgba(255, 107, 157, 0.45);
     }
+
     .btn-secondary {
       background: #fff;
       color: var(--color-primary);
       border: 2px solid var(--color-primary);
     }
+
     .btn-secondary:hover {
-      background: rgba(255,107,157,0.1);
+      background: rgba(255, 107, 157, 0.1);
       transform: translateY(-3px);
-      box-shadow: 0 4px 18px rgba(255,107,157,0.2);
+      box-shadow: 0 4px 18px rgba(255, 107, 157, 0.2);
     }
 
     /* Product card grid.  Adapted from the animated sneakers card
@@ -266,11 +318,13 @@
       gap: 24px;
       margin-top: 60px;
     }
+
     .product-card {
       width: 280px;
       height: 400px;
       perspective: 800px;
     }
+
     .product-inner {
       position: relative;
       width: 100%;
@@ -278,11 +332,13 @@
       transform-style: preserve-3d;
       transition: transform 0.8s ease;
       border-radius: 16px;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
     }
+
     .product-card:hover .product-inner {
       transform: rotateY(180deg);
     }
+
     .product-face {
       position: absolute;
       width: 100%;
@@ -296,36 +352,134 @@
       align-items: center;
       padding: 20px;
     }
+
     .product-front {
       background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
       color: #fff;
     }
+
     .product-back {
       background: #fff;
       color: var(--color-dark-bg);
       transform: rotateY(180deg);
     }
+
     .product-icon {
       font-size: 60px;
       margin-bottom: 20px;
     }
+
     .product-title {
       font-family: var(--font-display);
       font-size: 20px;
       font-weight: 700;
       margin-bottom: 10px;
     }
+
     .product-text {
       font-size: 14px;
       color: #666;
       margin-bottom: 20px;
       text-align: center;
     }
+
     .product-price {
       font-size: 18px;
       font-weight: 700;
       color: var(--color-primary);
       margin-bottom: 10px;
+    }
+
+    /* Email capture section */
+    .email-capture-section {
+      max-width: 560px;
+      margin: 60px auto 0;
+      padding: 40px 36px;
+      background: rgba(255, 107, 157, 0.07);
+      border: 1px solid rgba(255, 107, 157, 0.22);
+      border-radius: 20px;
+      text-align: center;
+    }
+
+    .capture-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--color-primary);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .capture-headline {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--color-light);
+      margin-bottom: 10px;
+    }
+
+    .capture-sub {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.55);
+      margin-bottom: 22px;
+      line-height: 1.6;
+    }
+
+    .capture-form {
+      display: flex;
+      gap: 8px;
+      max-width: 400px;
+      margin: 0 auto 16px;
+    }
+
+    .capture-form input {
+      flex: 1;
+      padding: 13px 16px;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1.5px solid rgba(255, 107, 157, 0.3);
+      border-radius: 10px;
+      color: #fff;
+      font-family: var(--font-body);
+    }
+
+    .capture-form input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+
+    .capture-form button {
+      padding: 13px 20px;
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: var(--font-display);
+      transition: opacity 0.2s;
+    }
+
+    .capture-form button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .capture-upgrade {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .capture-upgrade a {
+      color: var(--color-primary);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .capture-upgrade a:hover {
+      text-decoration: underline;
     }
 
     /* Responsive adjustments */
@@ -335,18 +489,25 @@
         height: 400px;
         top: -180px;
       }
+
       .flip-card {
         width: 90%;
         height: auto;
         aspect-ratio: 16/9;
       }
+
       .product-card {
         width: 80%;
         max-width: 300px;
       }
+
+      .capture-form {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
+
 <body>
   <!-- Liquid effect only visible around edges -->
   <div id="liquid-container">
@@ -367,13 +528,13 @@
           <div>👆 Click to reveal your vibe</div>
         </div>
         <div class="flip-card-face flip-card-back">
-          <div class="affirmation" data-text="You're stronger than you know.">
-            You're stronger than you know.
+          <div class="affirmation" id="cardAffirmation" data-text="You've got a vibe!">
+            You've got a vibe!
           </div>
-          <div class="product-text">Hope you're doing well! Keep being amazing.</div>
+          <div class="product-text" id="cardMessage">Someone wanted to send you some good vibes ✨</div>
           <div class="card-actions">
-            <button class="btn btn-primary" onclick="alert('Get Daily Vibe Checks!')">Get Daily Vibe Checks</button>
-            <button class="btn btn-secondary" onclick="alert('Send A Vibe!')">Send One Too</button>
+            <button class="btn btn-primary" onclick="window.location.href='index.html'">Get Daily Vibes Free ✨</button>
+            <button class="btn btn-secondary" onclick="window.location.href='send-card.html'">Send One Back</button>
           </div>
         </div>
       </div>
@@ -392,7 +553,7 @@
           <div class="product-face product-back">
             <div class="product-title">Daily Vibe</div>
             <div class="product-text">Start your day with a positive affirmation tailored just for you!</div>
-            <button class="btn btn-primary" onclick="alert('Subscribed!')">Subscribe</button>
+            <button class="btn btn-primary" onclick="window.location.href='index.html'">Subscribe</button>
           </div>
         </div>
       </div>
@@ -407,7 +568,7 @@
           <div class="product-face product-back">
             <div class="product-title">Send A Card</div>
             <div class="product-text">Write a heartfelt message and brighten someone’s day.</div>
-            <button class="btn btn-primary" onclick="alert('Card Sent!')">Compose Now</button>
+            <button class="btn btn-primary" onclick="window.location.href='send-card.html'">Compose Now</button>
           </div>
         </div>
       </div>
@@ -422,12 +583,183 @@
           <div class="product-face product-back">
             <div class="product-title">Boost Your Vibe</div>
             <div class="product-text">Need a quick pick‑me‑up? We’re here for you!</div>
-            <button class="btn btn-primary" onclick="alert('Boost Activated!')">Boost Now</button>
+            <button class="btn btn-primary" onclick="window.location.href='send-card.html'">Boost Now</button>
           </div>
         </div>
       </div>
+      <div class="product-card">
+        <div class="product-inner">
+          <div class="product-face product-front">
+            <div class="product-icon">👑</div>
+            <div class="product-title">Go Premium</div>
+            <div class="product-text">500+ affirmations, custom wallpapers & more.</div>
+            <div class="product-price">$3.99/mo</div>
+          </div>
+          <div class="product-face product-back">
+            <div class="product-title">Premium Membership</div>
+            <div class="product-text">Unlock the full library, personalized timing, ad-free experience, and community
+              access.</div>
+            <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.5rem;">
+              <button class="btn btn-primary"
+                onclick="window.open('https://ko-fi.com/thevibecheckproject/membership?utm_source=website&utm_campaign=card-view','_blank')">Join on Ko-fi
+                ✨</button>
+              <button class="btn btn-secondary"
+                onclick="window.open('https://vibecheck2.gumroad.com/l/toyjkt?utm_source=website&utm_campaign=card-view','_blank')">Get on Gumroad</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Gamified Share Button Section -->
+      <div class="share-gamification-section"
+        style="max-width: 560px; margin: 60px auto -30px; text-align: center; background: rgba(254, 200, 74, 0.08); border: 1px dashed rgba(254, 200, 74, 0.3); border-radius: 20px; padding: 30px;">
+        <h3
+          style="font-family: var(--font-display); font-size: 22px; color: var(--color-secondary); margin-bottom: 10px;">
+          Unlock a Secret Design 🎁</h3>
+        <p style="color: rgba(255,255,255,0.7); font-size: 15px; margin-bottom: 20px; line-height: 1.5;">Share this card
+          with 3 friends to instantly reveal and download a secret premium background.</p>
+        <button id="gamifiedShareBtn" class="btn btn-primary"
+          style="background: linear-gradient(135deg, var(--color-secondary) 0%, #FF9A44 100%); color: #1A1625; box-shadow: 0 4px 18px rgba(254,200,74,0.35);">
+          Share Card (<span id="shareCount">0</span>/3)
+        </button>
+        <div id="shareReward"
+          style="display: none; margin-top: 16px; padding: 16px; background: rgba(255,255,255,0.05); border-radius: 12px;">
+          <p style="color: var(--color-light); font-size: 14px; margin-bottom: 10px;">🎉 Unlocked! Here is your secret
+            design:</p>
+          <a href="#" download
+            style="color: var(--color-secondary); font-weight: 700; text-decoration: none; font-size: 16px;">Download
+            Secret Design (.ZIP) ↓</a>
+        </div>
+      </div>
+
+      <!-- Email capture — shown below product cards -->
+      <div class="email-capture-section">
+        <p class="capture-eyebrow">Free Weekly Drops</p>
+        <h3 class="capture-headline">Get vibes like this in your inbox every week</h3>
+        <p class="capture-sub">A curated affirmation card pack, delivered free every Sunday. No strings attached.</p>
+        <form class="capture-form" id="viewCardSignupForm" onsubmit="handleViewCardSignup(event)">
+          <input type="email" placeholder="your@email.com" required>
+          <button type="submit">Get Free Packs</button>
+        </form>
+        <p class="capture-upgrade">
+          Want more? <a href="https://ko-fi.com/thevibecheckproject/membership?utm_source=website&utm_campaign=card-view" target="_blank" rel="noopener">Join
+            Premium on Ko-fi</a> — daily affirmations + exclusive monthly drops for $3.99/mo
+        </p>
+      </div>
     </div>
   </div>
+
+  <!-- Email capture handler -->
+  <script>
+    async function handleViewCardSignup(e) {
+      e.preventDefault();
+      const email = e.target.querySelector('input').value;
+      const btn = e.target.querySelector('button');
+      btn.textContent = 'Joining...';
+      btn.disabled = true;
+
+      try {
+        const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiNWU3ZWZhOTcyMjRlZTg4OWNkMWZiYzA2NThlZjFjMDA5OWYwOGIxZDYzMzk4YWNjYmIwMDQ0YjgzNWI3ODBjNWQ2YTI2NWEzNmE1MGE4ZDkiLCJpYXQiOjE3NzIyNjEyNzQuMTQ2Mzg1LCJuYmYiOjE3NzIyNjEyNzQuMTQ2Mzg5LCJleHAiOjQ5Mjc5MzQ4NzQuMTQwNTI4LCJzdWIiOiIyMTY4Njg0Iiwic2NvcGVzIjpbXX0.b-_FJ38aNok7ORlkP5qXVgYzccw-JJm5wQyZnXMinhCAban5EIC5R7hzCFAc4LVbBnoT4AToEpkIFeNEmpaUS7Okm9NvvUg8y18T4oVdJDfToHqwzSOd21fAExTunMK8yKbklVlbbYM1r4wwkhEg-ByX6GqiNAuttGKNFKhlGYFC0OVt67WMqe-P3b5TDtUNW_zXu-kCiyNAAgFEZGHuGB2SM7KASKGcO3rUcBtxClzl6bNKlwvLYqMPDkQUGo1zKsm7wuxn5fzUQhTQPqWIGg1q3IPbCinu-44KJhtEmagO2EEFwpBx2mQWR2iqa7RO_IKIdtRiTu305yrQheKaFx8Xkbm0jcgST2cn8iPK7N3ESrfcCq1BgLigXBbh7TMQstRRccqCuAwuftz4cZVL5hcMKnQI7lgQ_FMmdgYKQdnzYi0RMEGaSC_iwm0-a5oTNSSkDwsL1yNGNODdEImelISvCVcMM9gsK3A-f-zaRwwHvyaz8erIfASnlmCGXfrgcZW6lpHBM0XE8r-eiGS_vGY'
+          },
+          body: JSON.stringify({
+            email: email,
+            groups: ['180628908682512348'],
+            fields: { signup_source: 'view-card' }
+          })
+        });
+        if (response.ok) {
+          e.target.innerHTML = '<p style="color:#FF6B9D;font-size:17px;font-weight:700;">✨ You\'re in! Check your inbox to confirm.</p>';
+        } else {
+          btn.textContent = 'Get Free Packs';
+          btn.disabled = false;
+        }
+      } catch (err) {
+        btn.textContent = 'Get Free Packs';
+        btn.disabled = false;
+      }
+    }
+  </script>
+
+  <!-- Load card data from URL and populate the card -->
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const encoded = params.get('data');
+      if (!encoded) return;
+      try {
+        const card = JSON.parse(decodeURIComponent(atob(encoded)));
+        const affirmationEl = document.getElementById('cardAffirmation');
+        const messageEl = document.getElementById('cardMessage');
+        if (affirmationEl) {
+          affirmationEl.textContent = card.affirmation;
+          affirmationEl.setAttribute('data-text', card.affirmation);
+        }
+        if (messageEl) {
+          const sender = card.senderName || 'Someone';
+          messageEl.textContent = card.personalMessage
+            ? `${sender} says: "${card.personalMessage}"`
+            : `${sender} wanted to send you some good vibes ✨`;
+        }
+        if (card.recipientName) {
+          document.title = `${card.recipientName}, You've Got a Vibe Check! ✨`;
+        }
+      } catch (e) { }
+    })();
+  </script>
+
+  <!-- Gamified Share Button Logic -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let shareCount = parseInt(localStorage.getItem('vibeCheckShareCount') || '0');
+
+      function updateShareUI() {
+        const countSpan = document.getElementById('shareCount');
+        const rewardDiv = document.getElementById('shareReward');
+        const shareBtn = document.getElementById('gamifiedShareBtn');
+
+        if (countSpan) countSpan.textContent = shareCount;
+
+        if (shareCount >= 3 && rewardDiv && shareBtn) {
+          shareBtn.style.display = 'none';
+          rewardDiv.style.display = 'block';
+        }
+      }
+
+      document.getElementById('gamifiedShareBtn')?.addEventListener('click', async () => {
+        const shareData = {
+          title: 'I got a Vibe Check! ✨',
+          text: 'Someone sent me some good vibes. Send your own anonymous affirmation card!',
+          url: window.location.href
+        };
+
+        try {
+          if (navigator.share) {
+            await navigator.share(shareData);
+          } else {
+            // Fallback to copy link
+            await navigator.clipboard.writeText(window.location.href);
+            alert('Card link copied to clipboard!');
+          }
+
+          // Increment after share intent
+          if (shareCount < 3) {
+            shareCount++;
+            localStorage.setItem('vibeCheckShareCount', shareCount.toString());
+            updateShareUI();
+          }
+        } catch (err) {
+          console.log('Error sharing:', err);
+        }
+      });
+
+      // Initialize UI on load
+      updateShareUI();
+    });
+  </script>
 
   <!-- Module script to initialise the liquid background and interactive elements -->
   <script type="module">
@@ -507,4 +839,5 @@
     }
   </script>
 </body>
+
 </html>

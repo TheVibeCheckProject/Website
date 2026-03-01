@@ -40,7 +40,7 @@ const affirmations = [
     "Take a deep breath. You are safe, and you are entirely up to you."
 ];
 
-const csvPath = path.join(rootDir, 'affirmations_database.csv');
+const csvPath = path.join(rootDir, 'data', 'affirmations_database.csv');
 
 // Create the CSV content: Day of Month, Quote
 let csvContent = 'Day_of_Month,Affirmation\n';

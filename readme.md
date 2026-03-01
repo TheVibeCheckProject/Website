@@ -36,34 +36,35 @@ The Vibe Check Project lets anyone send a personalized encouragement card via sh
 ```
 Website/
 ├── index.html               # Homepage — hero, how it works, stats, blog CTA, footer
-├── send-card.html           # Card composer — theme picker, message input, MailerLite capture
-├── view-card.html           # Card viewer — shareable recipient page, share + tip buttons
+├── send-card.html           # Card composer — theme picker, message input, EmailJS
+├── view-card.html           # Card viewer — shareable recipient page, share + tip
 ├── about.html               # About page
-├── contact.html             # Contact page (mailto: hello@thevibecheckproject.com)
+├── contact.html             # Contact page
 ├── privacy.html             # Privacy policy
 ├── terms.html               # Terms of service
 ├── cookies.html             # Cookie policy
 ├── careers.html             # Careers / contributors page
-├── sitemap.xml              # SEO sitemap (submit to Google Search Console)
+├── sitemap.xml              # SEO sitemap
 ├── CNAME                    # GitHub Pages custom domain
 ├── assets/
-│   └── og-image.png         # Open Graph preview image
-├── blog/
-│   ├── index.html           # Blog listing page
-│   ├── free-encouragement-card-online.html
-│   ├── what-to-say-when-friend-struggling.html
-│   ├── anonymous-encouragement-card.html
-│   ├── send-virtual-hug-online.html
-│   └── words-of-encouragement-new-job.html
+│   ├── og-image.png         # Open Graph preview image
+│   ├── downloads/           # Downloadable bundles (premium ZIP)
+│   ├── logos/               # Brand logos + profile images
+│   ├── media/               # Blog + social media assets
+│   ├── premium-themes/      # Premium theme source files
+│   └── wallpapers/          # Wallpaper PNGs
+├── blog/                    # Blog articles
 ├── css/
-│   └── styles.css           # All site styling (CSS variables, dark theme)
+│   └── styles.css           # All site styling
+├── data/
+│   └── affirmations_database.csv
+├── docs/
+│   ├── templates/           # Email + content templates
+│   └── *.md                 # Setup guides
 ├── js/
-│   └── script.js            # Site JS — card builder, counter fetch, share logic
-├── docs/                    # Archived setup guides (Buttondown-era, kept for reference)
-├── scripts/                 # Utility scripts
-├── MONETIZATION_WORKFLOW.md # Internal build roadmap
-├── WELCOME_EMAIL_SEQUENCE.md
-└── WEEKLY_CARD_PACK_TEMPLATE.md
+│   └── script.js            # Site JS
+├── newsletter-content/      # Daily newsletter batch data
+└── scripts/                 # Utility scripts (newsletter sender, etc.)
 ```
 
 ---

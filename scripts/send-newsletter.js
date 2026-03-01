@@ -80,8 +80,8 @@ async function main() {
   const campaignId = campaign.data.id;
   console.log(`Campaign created: ${campaignId}`);
 
-  // Send immediately
-  await mailerlite('POST', `/campaigns/${campaignId}/actions/send`);
+  // Send immediately using V3 schedule endpoint
+  await mailerlite('POST', `/campaigns/${campaignId}/schedule`, { delivery: 'instant' });
   console.log(`Newsletter sent for ${today}: "${email.subject}"`);
 }
 

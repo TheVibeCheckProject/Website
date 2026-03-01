@@ -29,6 +29,12 @@
         })(window, document, "clarity", "script", "vohl4gduni"); 
     </script>
 
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function () { emailjs.init('kR9IPQkDu9CqMfnYy'); })();
+    </script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -608,7 +614,7 @@
         }
 
         // Handle form submission
-        document.getElementById('cardForm').addEventListener('submit', function (e) {
+        document.getElementById('cardForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
             if (!selectedAffirmation) {
@@ -620,6 +626,11 @@
             const senderName = document.getElementById('senderName').value;
             const personalMessage = document.getElementById('personalMessage').value;
             const recipientEmail = document.getElementById('recipientEmail').value;
+
+            // Disable button while processing
+            const sendBtn = document.getElementById('sendButton');
+            sendBtn.textContent = recipientEmail ? 'Sending... ✨' : 'Creating... ✨';
+            sendBtn.disabled = true;
 
             // Create card data
             const cardData = {
@@ -637,6 +648,23 @@
 
             // Increment live counter
             fetch('https://api.counterapi.dev/v1/thevibecheckproject/cards-sent/up').catch(() => { });
+
+            // If recipient email provided, send via EmailJS
+            if (recipientEmail) {
+                try {
+                    await emailjs.send('service_uak2ohw', 'template_bpj8rue', {
+                        to_email: recipientEmail,
+                        to_name: recipientName || 'Friend',
+                        from_name: senderName || 'Someone special',
+                        message: personalMessage || selectedAffirmation,
+                        card_link: cardUrl,
+                    });
+                    console.log('Email sent successfully!');
+                } catch (err) {
+                    console.error('EmailJS error:', err);
+                    // Still show success — they can share the link manually
+                }
+            }
 
             // Show success
             document.querySelector('.card-form').style.display = 'none';

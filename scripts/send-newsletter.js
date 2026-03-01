@@ -23,29 +23,35 @@ function getTodayEST() {
 }
 
 async function mailerlite(method, endpoint, body) {
-  const res = await fetch(`${BASE_URL}${endpoint}`, {
+  const options = {
     method,
     headers: {
       'Authorization': `Bearer ${API_KEY}`,
       'Content-Type': 'application/json',
       'Accept': 'application/json',
     },
-    body: body ? JSON.stringify(body) : undefined,
-  });
-  const data = await res.json();
+  };
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+  const res = await fetch(`${BASE_URL}${endpoint}`, options);
+  const text = await res.text();
+  let data;
+  try { data = JSON.parse(text); } catch { data = { raw: text }; }
   if (!res.ok) {
-    throw new Error(`MailerLite ${method} ${endpoint} failed: ${JSON.stringify(data)}`);
+    console.error(`Response ${res.status}:`, JSON.stringify(data, null, 2));
+    throw new Error(`MailerLite ${method} ${endpoint} failed (${res.status})`);
   }
   return data;
 }
 
 async function main() {
   const today = process.env.DATE_OVERRIDE || getTodayEST();
-  console.log(`Checking newsletter batch for date: ${today}`);
+  console.log(`📅 Date: ${today}`);
 
   const batchPath = path.join(__dirname, '..', 'newsletter-content', 'batch.json');
   if (!fs.existsSync(batchPath)) {
-    console.error('batch.json not found — run the newsletter-content-generator skill first');
+    console.error('batch.json not found');
     process.exit(1);
   }
 
@@ -53,40 +59,45 @@ async function main() {
   const email = batch.emails.find(e => e.date === today);
 
   if (!email) {
-    console.log(`No email scheduled for ${today} — skipping send.`);
+    console.log(`No email scheduled for ${today} — skipping.`);
     process.exit(0);
   }
 
-  console.log(`Sending: "${email.subject}" (type: ${email.type})`);
+  console.log(`📧 Subject: "${email.subject}" (${email.type})`);
 
-  // Create campaign
-  const campaignBody = {
-    name: `Daily Vibe — ${today}`,
+  // Step 1: Create campaign
+  // Format matches official MailerLite Node.js SDK CreateUpdateCampaignParams:
+  //   emails: Array<{ subject: string; from_name: string; from: string; content?: string }>
+  const requestBody = {
+    name: `Daily Vibe ${today} ${Date.now()}`,
     type: 'regular',
     emails: [
       {
         subject: email.subject,
         from_name: 'The Vibe Check',
         from: 'wecare@thevibecheckproject.com',
-        reply_to: 'wecare@thevibecheckproject.com',
         content: email.body_html,
-        plain_text: email.body_text || `${email.subject}\n\nUnsubscribe: {$unsubscribe}`,
       }
     ],
     groups: [GROUP_ID],
   };
-  console.log(`Creating campaign: "${email.subject}" for ${today}`);
-  const campaign = await mailerlite('POST', '/campaigns', campaignBody);
 
+  console.log('Creating campaign...');
+  const campaign = await mailerlite('POST', '/campaigns', requestBody);
   const campaignId = campaign.data.id;
-  console.log(`Campaign created: ${campaignId}`);
+  console.log(`✅ Campaign created: ${campaignId}`);
 
-  // Send immediately using V3 schedule endpoint
-  await mailerlite('POST', `/campaigns/${campaignId}/schedule`, { delivery: 'instant' });
-  console.log(`Newsletter sent for ${today}: "${email.subject}"`);
+  // Step 2: Schedule for immediate send
+  // Format matches official MailerLite Node.js SDK ScheduleCampaignParams:
+  //   delivery: "instant" | "scheduled" | "timezone_based" | "smart_sending"
+  console.log('Scheduling for immediate delivery...');
+  await mailerlite('POST', `/campaigns/${campaignId}/schedule`, {
+    delivery: 'instant',
+  });
+  console.log(`🚀 Newsletter sent for ${today}: "${email.subject}"`);
 }
 
 main().catch(err => {
-  console.error(err.message);
+  console.error('❌', err.message);
   process.exit(1);
 });

@@ -60,19 +60,22 @@ async function main() {
   console.log(`Sending: "${email.subject}" (type: ${email.type})`);
 
   // Create campaign
-  const campaign = await mailerlite('POST', '/campaigns', {
+  const campaignBody = {
     name: `Daily Vibe — ${today}`,
     type: 'regular',
-    status: 'draft',
     emails: [{
       subject: email.subject,
       from_name: 'The Vibe Check',
-      from: 'wecare@thevibecheck.com',
+      from: 'wecare@thevibecheckproject.com',
       content: email.body_html,
-      plain_text: email.body_text,
     }],
     groups: [GROUP_ID],
-  });
+  };
+  console.log('Campaign body (truncated):', JSON.stringify({
+    ...campaignBody,
+    emails: campaignBody.emails.map(e => ({ ...e, content: e.content?.slice(0, 100) + '...' })),
+  }, null, 2));
+  const campaign = await mailerlite('POST', '/campaigns', campaignBody);
 
   const campaignId = campaign.data.id;
   console.log(`Campaign created: ${campaignId}`);

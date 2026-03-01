@@ -20,34 +20,31 @@
     content="You've got an affirmation card waiting for you. Open it and feel the good vibes.">
   <meta name="twitter:image" content="https://www.thevibecheckproject.com/assets/og-image.png">
 
-  <!-- Analytics (Microsoft Clarity) -->
+  <!-- Analytics -->
   <script defer data-domain="thevibecheckproject.com" src="https://plausible.io/js/script.js"></script>
 
-  <!-- Preconnect to Google Fonts for improved performance -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Primary typefaces used throughout the page -->
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
     rel="stylesheet">
 
   <style>
-    /*
-      Core palette and typography variables. Feel free to tweak these
-      values if you'd like to adjust the look and feel of the page.
-    */
     :root {
       --font-display: 'Space Grotesk', sans-serif;
       --font-body: 'Inter', sans-serif;
-      --color-primary: #FF6B9D;
-      --color-secondary: #FEC84A;
-      --color-dark-bg: #1A1625;
-      --color-dark-bg-2: #2D2438;
-      --color-dark-bg-3: #3F3449;
-      --color-light: #ffffff;
+      --green: #a3e635;
+      --green-dim: rgba(163, 230, 53, 0.15);
+      --green-glow: rgba(163, 230, 53, 0.4);
+      --bg-deep: #0a0a0a;
+      --bg-card: #141414;
+      --bg-card-2: #1a1a1a;
+      --text-primary: #f0f0f0;
+      --text-secondary: #999;
+      --text-muted: #555;
     }
 
-    /* Reset default spacing and enable border-box sizing */
     * {
       margin: 0;
       padding: 0;
@@ -57,148 +54,164 @@
     html,
     body {
       width: 100%;
-      height: 100%;
+      min-height: 100vh;
     }
 
     body {
       font-family: var(--font-body);
-      background: linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-2) 50%, var(--color-dark-bg-3) 100%);
+      background: var(--bg-deep);
+      color: var(--text-primary);
       overflow-x: hidden;
       position: relative;
-      perspective: 2000px;
     }
 
-    /* Container for the liquid background canvas.  The mask applied here
-       ensures the liquid effect is only visible around the edges of
-       the viewport.  The centre of the page is masked out so that
-       content placed above remains clearly visible. */
-    #liquid-container {
+    /* ── Ambient background orbs (CSS only, no Three.js) ── */
+    .bg-orbs {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
+      inset: 0;
+      z-index: 0;
       pointer-events: none;
+      overflow: hidden;
     }
 
-    #liquid-container canvas {
+    .bg-orbs::before,
+    .bg-orbs::after {
+      content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      /* Mask out the centre so the liquid appears only along the borders */
-      /* Only show the liquid near the page edges.  The inner 65% of the
-         viewport is transparent so the card and content remain visible,
-         while the region between 65% and 85% radius fades from
-         transparent to opaque. */
-      -webkit-mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0) 65%, rgba(0, 0, 0, 1) 85%);
-      mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0) 65%, rgba(0, 0, 0, 1) 85%);
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.3;
+      animation: orbFloat 12s ease-in-out infinite alternate;
     }
 
-    /* Particle confetti container. These floating hearts are drawn in
-       pure CSS and triggered when the card is opened. */
+    .bg-orbs::before {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--green) 0%, transparent 70%);
+      top: -100px;
+      left: -100px;
+    }
+
+    .bg-orbs::after {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, #22c55e 0%, transparent 70%);
+      bottom: -80px;
+      right: -80px;
+      animation-delay: 6s;
+    }
+
+    @keyframes orbFloat {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      100% {
+        transform: translate(40px, -30px) scale(1.15);
+      }
+    }
+
+    /* ── Floating particles ── */
     #particles {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       pointer-events: none;
-      z-index: 2;
+      z-index: 1;
     }
 
     .particle {
       position: absolute;
-      width: 10px;
-      height: 10px;
-      background: radial-gradient(circle, #FF6B9D 0%, transparent 70%);
+      width: 6px;
+      height: 6px;
+      background: var(--green);
       border-radius: 50%;
-      animation: floatParticle 14s ease-in-out infinite;
       opacity: 0;
+      animation: floatUp 10s ease-in-out infinite;
     }
 
-    @keyframes floatParticle {
+    @keyframes floatUp {
       0% {
-        transform: translate(0, 100vh) scale(0.2);
+        transform: translateY(100vh) scale(0.3);
         opacity: 0;
       }
 
       15% {
-        opacity: 1;
+        opacity: 0.7;
       }
 
       85% {
-        opacity: 1;
+        opacity: 0.7;
       }
 
       100% {
-        transform: translate(var(--tx), -100vh) scale(1.2);
+        transform: translateY(-10vh) scale(0.6);
         opacity: 0;
       }
     }
 
-    /* Main content wrapper.  Ensures the card and ring appear above
-       everything else. */
+    /* ── Main layout ── */
     .main-content {
       position: relative;
       z-index: 10;
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 100px 20px;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 60px 20px 40px;
     }
 
-    /* 3D rotating text ring.  Letters are absolutely positioned in
-       three-dimensional space around a central axis.  Animation is
-       applied to rotate the entire ring. */
-    .text-ring {
-      position: absolute;
-      top: -240px;
-      left: 50%;
-      width: 550px;
-      height: 550px;
-      transform: translateX(-50%);
-      transform-style: preserve-3d;
-      animation: rotateRing 20s linear infinite;
-      pointer-events: none;
-      z-index: 3;
-    }
-
-    .text-ring span {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform-origin: 0 0;
+    /* ── Header badge ── */
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--green-dim);
+      border: 1px solid rgba(163, 230, 53, 0.25);
+      border-radius: 50px;
+      padding: 8px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--green);
       font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 26px;
-      color: #ff6b9d;
-      text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
-      white-space: pre;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      animation: fadeInDown 0.6s ease-out;
     }
 
-    @keyframes rotateRing {
+    @keyframes fadeInDown {
       from {
-        transform: translateX(-50%) rotateY(0deg);
+        opacity: 0;
+        transform: translateY(-20px);
       }
 
       to {
-        transform: translateX(-50%) rotateY(360deg);
+        opacity: 1;
+        transform: translateY(0);
       }
     }
 
-    /* Flip card container.  The card flips around its vertical axis
-       when the user clicks on it.  The wrapper sets up the
-       perspective for the 3D flip. */
+    /* ── Flip card ── */
     .flip-card {
-      width: 480px;
-      height: 320px;
-      perspective: 1000px;
-      margin: 0 auto 80px;
-      position: relative;
+      width: 520px;
+      max-width: 90vw;
+      aspect-ratio: 3 / 2;
+      perspective: 1200px;
+      cursor: pointer;
+      margin-bottom: 40px;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .flip-card-inner {
@@ -206,9 +219,8 @@
       width: 100%;
       height: 100%;
       transform-style: preserve-3d;
-      transition: transform 1s cubic-bezier(0.42, 0, 0.58, 1);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-      border-radius: 16px;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 20px;
     }
 
     .flip-card.flipped .flip-card-inner {
@@ -220,437 +232,427 @@
       width: 100%;
       height: 100%;
       backface-visibility: hidden;
-      border-radius: 16px;
+      border-radius: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
 
+    /* Front face */
     .flip-card-front {
-      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-      color: #fff;
-      font-family: var(--font-display);
-      font-size: 28px;
-      font-weight: 700;
-      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      background: var(--bg-card);
+      border: 1px solid rgba(163, 230, 53, 0.2);
+      box-shadow:
+        0 0 60px rgba(163, 230, 53, 0.08),
+        0 20px 60px rgba(0, 0, 0, 0.5);
     }
 
+    .flip-card-front::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+    }
+
+    .front-emoji {
+      font-size: 48px;
+      margin-bottom: 16px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.15);
+      }
+    }
+
+    .front-label {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .front-hint {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* Back face */
     .flip-card-back {
-      background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
-      color: var(--color-dark-bg);
+      background: var(--bg-card);
+      border: 1px solid rgba(163, 230, 53, 0.15);
+      box-shadow:
+        0 0 80px rgba(163, 230, 53, 0.1),
+        0 20px 60px rgba(0, 0, 0, 0.5);
       transform: rotateY(180deg);
-      padding: 40px;
-    }
-
-    /* Neon glow effect on the affirmation text.  Uses a pseudo-element
-       with a blurred text shadow to create a halo around the letters.
-       Inspired by FreeFrontend's glow text effects【872271793956380†L23-L31】. */
-    .affirmation {
-      font-family: var(--font-display);
-      font-size: 40px;
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: var(--color-dark-bg);
-      position: relative;
+      padding: 40px 32px;
       text-align: center;
     }
 
-    .affirmation::before {
-      content: attr(data-text);
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      filter: blur(8px);
-      color: #ff6b9d;
-      opacity: 0.6;
+    .affirmation {
+      font-family: var(--font-display);
+      font-size: clamp(20px, 4vw, 32px);
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.4;
+      margin-bottom: 20px;
+      text-shadow: 0 0 30px rgba(163, 230, 53, 0.15);
     }
 
-    /* Call-to-action buttons inside the back of the card */
-    .card-actions {
+    .card-message {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      padding: 12px 16px;
+      background: rgba(163, 230, 53, 0.05);
+      border-left: 3px solid var(--green);
+      border-radius: 0 8px 8px 0;
+      text-align: left;
+    }
+
+    /* ── Action buttons below card ── */
+    .card-ctas {
       display: flex;
-      gap: 16px;
-      margin-top: 30px;
+      gap: 12px;
       flex-wrap: wrap;
       justify-content: center;
-      width: 100%;
+      margin-bottom: 48px;
+      animation: fadeInUp 0.8s ease-out 0.4s both;
     }
 
     .btn {
       padding: 14px 28px;
-      border-radius: 10px;
-      font-size: 16px;
+      border-radius: 12px;
+      font-size: 15px;
       font-weight: 600;
       font-family: var(--font-display);
       cursor: pointer;
       border: none;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-      color: #fff;
-      box-shadow: 0 4px 18px rgba(255, 107, 157, 0.35);
+      background: linear-gradient(135deg, var(--green), #84cc16);
+      color: #0a0a0a;
+      box-shadow: 0 4px 20px rgba(163, 230, 53, 0.3);
     }
 
     .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 26px rgba(255, 107, 157, 0.45);
+      box-shadow: 0 8px 30px rgba(163, 230, 53, 0.45);
     }
 
-    .btn-secondary {
-      background: #fff;
-      color: var(--color-primary);
-      border: 2px solid var(--color-primary);
+    .btn-outline {
+      background: transparent;
+      color: var(--green);
+      border: 1.5px solid rgba(163, 230, 53, 0.4);
     }
 
-    .btn-secondary:hover {
-      background: rgba(255, 107, 157, 0.1);
-      transform: translateY(-3px);
-      box-shadow: 0 4px 18px rgba(255, 107, 157, 0.2);
+    .btn-outline:hover {
+      background: var(--green-dim);
+      box-shadow: 0 4px 20px rgba(163, 230, 53, 0.15);
     }
 
-    /* Product card grid.  Adapted from the animated sneakers card
-       on FreeFrontend: each card flips on hover to reveal the front
-       and uses a rotated pseudo-element for depth【718306371606563†screenshot】. */
-    .product-grid {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 24px;
-      margin-top: 60px;
-    }
-
-    .product-card {
-      width: 280px;
-      height: 400px;
-      perspective: 800px;
-    }
-
-    .product-inner {
-      position: relative;
+    /* ── Gamified share section ── */
+    .share-section {
+      max-width: 480px;
       width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      transition: transform 0.8s ease;
+      padding: 28px;
+      background: var(--bg-card-2);
+      border: 1px solid #222;
       border-radius: 16px;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      margin-bottom: 32px;
+      animation: fadeInUp 0.8s ease-out 0.6s both;
     }
 
-    .product-card:hover .product-inner {
-      transform: rotateY(180deg);
-    }
-
-    .product-face {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border-radius: 16px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .product-front {
-      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-      color: #fff;
-    }
-
-    .product-back {
-      background: #fff;
-      color: var(--color-dark-bg);
-      transform: rotateY(180deg);
-    }
-
-    .product-icon {
-      font-size: 60px;
-      margin-bottom: 20px;
-    }
-
-    .product-title {
+    .share-section h3 {
       font-family: var(--font-display);
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .product-text {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    .product-price {
       font-size: 18px;
-      font-weight: 700;
-      color: var(--color-primary);
-      margin-bottom: 10px;
+      color: var(--green);
+      margin-bottom: 8px;
     }
 
-    /* Email capture section */
-    .email-capture-section {
-      max-width: 560px;
-      margin: 60px auto 0;
-      padding: 40px 36px;
-      background: rgba(255, 107, 157, 0.07);
-      border: 1px solid rgba(255, 107, 157, 0.22);
-      border-radius: 20px;
+    .share-section p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .share-progress {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .share-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #222;
+      border: 1.5px solid #333;
+      transition: all 0.3s;
+    }
+
+    .share-dot.filled {
+      background: var(--green);
+      border-color: var(--green);
+      box-shadow: 0 0 8px var(--green-glow);
+    }
+
+    /* ── Email capture ── */
+    .email-section {
+      max-width: 480px;
+      width: 100%;
+      padding: 28px;
+      background: var(--green-dim);
+      border: 1px solid rgba(163, 230, 53, 0.15);
+      border-radius: 16px;
       text-align: center;
+      margin-bottom: 32px;
+      animation: fadeInUp 0.8s ease-out 0.8s both;
     }
 
-    .capture-eyebrow {
+    .email-section .eyebrow {
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 2px;
-      color: var(--color-primary);
+      color: var(--green);
       text-transform: uppercase;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
-    .capture-headline {
+    .email-section h3 {
       font-family: var(--font-display);
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--color-light);
-      margin-bottom: 10px;
+      font-size: 20px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
     }
 
-    .capture-sub {
+    .email-section .subtext {
       font-size: 14px;
-      color: rgba(255, 255, 255, 0.55);
-      margin-bottom: 22px;
-      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      line-height: 1.5;
     }
 
-    .capture-form {
+    .email-form {
       display: flex;
       gap: 8px;
-      max-width: 400px;
-      margin: 0 auto 16px;
+      max-width: 380px;
+      margin: 0 auto 12px;
     }
 
-    .capture-form input {
+    .email-form input {
       flex: 1;
-      padding: 13px 16px;
+      padding: 12px 16px;
       font-size: 14px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1.5px solid rgba(255, 107, 157, 0.3);
+      background: rgba(0, 0, 0, 0.3);
+      border: 1.5px solid rgba(163, 230, 53, 0.2);
       border-radius: 10px;
       color: #fff;
       font-family: var(--font-body);
-    }
-
-    .capture-form input:focus {
       outline: none;
-      border-color: var(--color-primary);
     }
 
-    .capture-form button {
-      padding: 13px 20px;
-      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-      color: #fff;
+    .email-form input:focus {
+      border-color: var(--green);
+    }
+
+    .email-form button {
+      padding: 12px 20px;
+      background: linear-gradient(135deg, var(--green), #84cc16);
+      color: #0a0a0a;
       border: none;
       border-radius: 10px;
       font-size: 14px;
       font-weight: 700;
       cursor: pointer;
-      white-space: nowrap;
       font-family: var(--font-display);
+      white-space: nowrap;
       transition: opacity 0.2s;
     }
 
-    .capture-form button:disabled {
-      opacity: 0.6;
+    .email-form button:disabled {
+      opacity: 0.5;
       cursor: not-allowed;
     }
 
-    .capture-upgrade {
+    .premium-link {
       font-size: 13px;
-      color: rgba(255, 255, 255, 0.45);
+      color: var(--text-muted);
     }
 
-    .capture-upgrade a {
-      color: var(--color-primary);
+    .premium-link a {
+      color: var(--green);
       font-weight: 600;
       text-decoration: none;
     }
 
-    .capture-upgrade a:hover {
+    .premium-link a:hover {
       text-decoration: underline;
     }
 
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      .text-ring {
-        width: 400px;
-        height: 400px;
-        top: -180px;
+    /* ── Footer ── */
+    .page-footer {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 24px 20px;
+      animation: fadeInUp 0.8s ease-out 1s both;
+    }
+
+    .page-footer a {
+      color: var(--green);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .main-content {
+        padding: 40px 16px 32px;
       }
 
       .flip-card {
-        width: 90%;
-        height: auto;
-        aspect-ratio: 16/9;
+        max-width: 95vw;
       }
 
-      .product-card {
-        width: 80%;
-        max-width: 300px;
+      .flip-card-back {
+        padding: 28px 20px;
       }
 
-      .capture-form {
+      .card-ctas {
         flex-direction: column;
+        width: 100%;
+        max-width: 320px;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .email-form {
+        flex-direction: column;
+      }
+
+      .share-section,
+      .email-section {
+        padding: 24px 20px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
       }
     }
   </style>
 </head>
 
 <body>
-  <!-- Liquid effect only visible around edges -->
-  <div id="liquid-container">
-    <canvas id="canvas"></canvas>
-  </div>
-
-  <!-- Confetti hearts container -->
+  <!-- Ambient background -->
+  <div class="bg-orbs"></div>
   <div id="particles"></div>
 
   <div class="main-content">
-    <!-- 3D rotating text ring -->
-    <div class="text-ring" id="textRing"></div>
+    <!-- Header -->
+    <div class="header-badge">✨ Someone sent you a vibe</div>
 
-    <!-- Flipping card with front/back faces -->
-    <div class="flip-card" id="flipCard">
+    <!-- Flip Card -->
+    <div class="flip-card" id="flipCard" tabindex="0">
       <div class="flip-card-inner" id="flipCardInner">
         <div class="flip-card-face flip-card-front">
-          <div>👆 Click to reveal your vibe</div>
+          <div class="front-emoji">💚</div>
+          <div class="front-label">You've got a Vibe Check!</div>
+          <div class="front-hint">Tap to reveal your message</div>
         </div>
         <div class="flip-card-face flip-card-back">
-          <div class="affirmation" id="cardAffirmation" data-text="You've got a vibe!">
-            You've got a vibe!
-          </div>
-          <div class="product-text" id="cardMessage">Someone wanted to send you some good vibes ✨</div>
-          <div class="card-actions">
-            <button class="btn btn-primary" onclick="window.location.href='index.html'">Get Daily Vibes Free ✨</button>
-            <button class="btn btn-secondary" onclick="window.location.href='send-card.html'">Send One Back</button>
-          </div>
+          <div class="affirmation" id="cardAffirmation">You've got a vibe!</div>
+          <div class="card-message" id="cardMessage">Someone wanted to send you some good vibes ✨</div>
         </div>
       </div>
     </div>
 
-    <!-- Product cards inspired by FreeFrontend's sneaker cards -->
-    <div class="product-grid">
-      <div class="product-card">
-        <div class="product-inner">
-          <div class="product-face product-front">
-            <div class="product-icon">✨</div>
-            <div class="product-title">Daily Vibe</div>
-            <div class="product-text">Receive uplifting vibes every day.</div>
-            <div class="product-price">Free</div>
-          </div>
-          <div class="product-face product-back">
-            <div class="product-title">Daily Vibe</div>
-            <div class="product-text">Start your day with a positive affirmation tailored just for you!</div>
-            <button class="btn btn-primary" onclick="window.location.href='index.html'">Subscribe</button>
-          </div>
-        </div>
-      </div>
-      <div class="product-card">
-        <div class="product-inner">
-          <div class="product-face product-front">
-            <div class="product-icon">💌</div>
-            <div class="product-title">Send A Card</div>
-            <div class="product-text">Share the vibe with someone special.</div>
-            <div class="product-price">Free</div>
-          </div>
-          <div class="product-face product-back">
-            <div class="product-title">Send A Card</div>
-            <div class="product-text">Write a heartfelt message and brighten someone’s day.</div>
-            <button class="btn btn-primary" onclick="window.location.href='send-card.html'">Compose Now</button>
-          </div>
-        </div>
-      </div>
-      <div class="product-card">
-        <div class="product-inner">
-          <div class="product-face product-front">
-            <div class="product-icon">🌟</div>
-            <div class="product-title">Boost Your Vibe</div>
-            <div class="product-text">Uplift your mood anytime.</div>
-            <div class="product-price">Free</div>
-          </div>
-          <div class="product-face product-back">
-            <div class="product-title">Boost Your Vibe</div>
-            <div class="product-text">Need a quick pick‑me‑up? We’re here for you!</div>
-            <button class="btn btn-primary" onclick="window.location.href='send-card.html'">Boost Now</button>
-          </div>
-        </div>
-      </div>
-      <div class="product-card">
-        <div class="product-inner">
-          <div class="product-face product-front">
-            <div class="product-icon">👑</div>
-            <div class="product-title">Go Premium</div>
-            <div class="product-text">500+ affirmations, custom wallpapers & more.</div>
-            <div class="product-price">$3.99/mo</div>
-          </div>
-          <div class="product-face product-back">
-            <div class="product-title">Premium Membership</div>
-            <div class="product-text">Unlock the full library, personalized timing, ad-free experience, and community
-              access.</div>
-            <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.5rem;">
-              <button class="btn btn-primary"
-                onclick="window.open('https://ko-fi.com/thevibecheckproject/membership?utm_source=website&utm_campaign=card-view','_blank')">Join
-                on Ko-fi
-                ✨</button>
-              <button class="btn btn-secondary"
-                onclick="window.open('https://vibecheck2.gumroad.com/l/ycmxxb?utm_source=website&utm_campaign=card-view','_blank')">Get
-                on Gumroad</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Gamified Share Button Section -->
-      <div class="share-gamification-section"
-        style="max-width: 560px; margin: 60px auto -30px; text-align: center; background: rgba(254, 200, 74, 0.08); border: 1px dashed rgba(254, 200, 74, 0.3); border-radius: 20px; padding: 30px;">
-        <h3
-          style="font-family: var(--font-display); font-size: 22px; color: var(--color-secondary); margin-bottom: 10px;">
-          Unlock a Secret Design 🎁</h3>
-        <p style="color: rgba(255,255,255,0.7); font-size: 15px; margin-bottom: 20px; line-height: 1.5;">Share this card
-          with 3 friends to instantly reveal and download a secret premium background.</p>
-        <button id="gamifiedShareBtn" class="btn btn-primary"
-          style="background: linear-gradient(135deg, var(--color-secondary) 0%, #FF9A44 100%); color: #1A1625; box-shadow: 0 4px 18px rgba(254,200,74,0.35);">
-          Share Card (<span id="shareCount">0</span>/3)
-        </button>
-        <div id="shareReward"
-          style="display: none; margin-top: 16px; padding: 16px; background: rgba(255,255,255,0.05); border-radius: 12px;">
-          <p style="color: var(--color-light); font-size: 14px; margin-bottom: 10px;">🎉 Unlocked! Here is your secret
-            design:</p>
-          <a href="#" download
-            style="color: var(--color-secondary); font-weight: 700; text-decoration: none; font-size: 16px;">Download
-            Secret Design (.ZIP) ↓</a>
-        </div>
-      </div>
+    <!-- Action buttons -->
+    <div class="card-ctas">
+      <a href="send-card.html" class="btn btn-primary">Send One Back 💌</a>
+      <a href="index.html" class="btn btn-outline">Get Daily Vibes Free ✨</a>
+    </div>
 
-      <!-- Email capture — shown below product cards -->
-      <div class="email-capture-section">
-        <p class="capture-eyebrow">Free Weekly Drops</p>
-        <h3 class="capture-headline">Get vibes like this in your inbox every week</h3>
-        <p class="capture-sub">A curated affirmation card pack, delivered free every Sunday. No strings attached.</p>
-        <form class="capture-form" id="viewCardSignupForm" onsubmit="handleViewCardSignup(event)">
-          <input type="email" placeholder="your@email.com" required>
-          <button type="submit">Get Free Packs</button>
-        </form>
-        <p class="capture-upgrade">
-          Want more? <a
-            href="https://ko-fi.com/thevibecheckproject/membership?utm_source=website&utm_campaign=card-view"
-            target="_blank" rel="noopener">Join
-            Premium on Ko-fi</a> — daily affirmations + exclusive monthly drops for $3.99/mo
-        </p>
+    <!-- Gamified Share -->
+    <div class="share-section">
+      <h3>Unlock a Secret Design 🎁</h3>
+      <p>Share this card with 3 friends to reveal a secret premium background.</p>
+      <div class="share-progress">
+        <div class="share-dot" id="dot1"></div>
+        <div class="share-dot" id="dot2"></div>
+        <div class="share-dot" id="dot3"></div>
       </div>
+      <button id="gamifiedShareBtn" class="btn btn-outline" style="width:100%;justify-content:center;">
+        Share Card (<span id="shareCount">0</span>/3)
+      </button>
+      <div id="shareReward"
+        style="display:none;margin-top:16px;padding:14px;background:rgba(163,230,53,0.08);border-radius:10px;">
+        <p style="color:var(--text-primary);font-size:14px;margin-bottom:8px;">🎉 Unlocked! Here's your secret design:
+        </p>
+        <a href="#" download style="color:var(--green);font-weight:700;text-decoration:none;font-size:15px;">Download
+          Secret Design (.ZIP) ↓</a>
+      </div>
+    </div>
+
+    <!-- Email capture -->
+    <div class="email-section">
+      <p class="eyebrow">Free Weekly Drops</p>
+      <h3>Get vibes like this in your inbox</h3>
+      <p class="subtext">A curated affirmation card pack, delivered free every Sunday. No strings.</p>
+      <form class="email-form" id="viewCardSignupForm" onsubmit="handleViewCardSignup(event)">
+        <input type="email" placeholder="your@email.com" required>
+        <button type="submit">Join Free</button>
+      </form>
+      <p class="premium-link">
+        Want more? <a href="https://ko-fi.com/thevibecheckproject/membership?utm_source=website&utm_campaign=card-view"
+          target="_blank" rel="noopener">Join Premium on Ko-fi</a> — $3.99/mo
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="page-footer">
+      Made with 💚 by <a href="https://thevibecheckproject.com">The Vibe Check Project</a>
+      <br>
+      <a href="https://vibecheck2.gumroad.com/l/ycmxxb?utm_source=website&utm_campaign=card-view" target="_blank"
+        rel="noopener" style="color:var(--text-muted);font-weight:400;">✨ Premium Card Designs — $4.99</a>
     </div>
   </div>
 
@@ -678,19 +680,19 @@
           })
         });
         if (response.ok) {
-          e.target.innerHTML = '<p style="color:#FF6B9D;font-size:17px;font-weight:700;">✨ You\'re in! Check your inbox to confirm.</p>';
+          e.target.innerHTML = '<p style="color:var(--green);font-size:16px;font-weight:700;">✨ You\'re in! Check your inbox.</p>';
         } else {
-          btn.textContent = 'Get Free Packs';
+          btn.textContent = 'Join Free';
           btn.disabled = false;
         }
       } catch (err) {
-        btn.textContent = 'Get Free Packs';
+        btn.textContent = 'Join Free';
         btn.disabled = false;
       }
     }
   </script>
 
-  <!-- Load card data from URL and populate the card -->
+  <!-- Load card data from URL -->
   <script>
     (function () {
       const params = new URLSearchParams(window.location.search);
@@ -700,10 +702,7 @@
         const card = JSON.parse(decodeURIComponent(atob(encoded)));
         const affirmationEl = document.getElementById('cardAffirmation');
         const messageEl = document.getElementById('cardMessage');
-        if (affirmationEl) {
-          affirmationEl.textContent = card.affirmation;
-          affirmationEl.setAttribute('data-text', card.affirmation);
-        }
+        if (affirmationEl) affirmationEl.textContent = card.affirmation;
         if (messageEl) {
           const sender = card.senderName || 'Someone';
           messageEl.textContent = card.personalMessage
@@ -717,132 +716,70 @@
     })();
   </script>
 
-  <!-- Gamified Share Button Logic -->
+  <!-- Flip card + particles + share logic -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      let shareCount = parseInt(localStorage.getItem('vibeCheckShareCount') || '0');
-
-      function updateShareUI() {
-        const countSpan = document.getElementById('shareCount');
-        const rewardDiv = document.getElementById('shareReward');
-        const shareBtn = document.getElementById('gamifiedShareBtn');
-
-        if (countSpan) countSpan.textContent = shareCount;
-
-        if (shareCount >= 3 && rewardDiv && shareBtn) {
-          shareBtn.style.display = 'none';
-          rewardDiv.style.display = 'block';
-        }
-      }
-
-      document.getElementById('gamifiedShareBtn')?.addEventListener('click', async () => {
-        const shareData = {
-          title: 'I got a Vibe Check! ✨',
-          text: 'Someone sent me some good vibes. Send your own anonymous affirmation card!',
-          url: window.location.href
-        };
-
-        try {
-          if (navigator.share) {
-            await navigator.share(shareData);
-          } else {
-            // Fallback to copy link
-            await navigator.clipboard.writeText(window.location.href);
-            alert('Card link copied to clipboard!');
-          }
-
-          // Increment after share intent
-          if (shareCount < 3) {
-            shareCount++;
-            localStorage.setItem('vibeCheckShareCount', shareCount.toString());
-            updateShareUI();
-          }
-        } catch (err) {
-          console.log('Error sharing:', err);
-        }
-      });
-
-      // Initialize UI on load
-      updateShareUI();
+    // Flip card
+    const flipCard = document.getElementById('flipCard');
+    let cardOpen = false;
+    flipCard.addEventListener('click', () => {
+      cardOpen = !cardOpen;
+      flipCard.classList.toggle('flipped', cardOpen);
+      if (cardOpen) burstParticles(30);
     });
-  </script>
+    flipCard.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flipCard.click(); }
+    });
 
-  <!-- Module script to initialise the liquid background and interactive elements -->
-  <script type="module">
-    import LiquidBackground from 'https://cdn.jsdelivr.net/npm/threejs-components@0.0.22/build/backgrounds/liquid1.min.js';
-
-    // Initialise the liquid effect on the canvas
-    const liquidApp = LiquidBackground(document.getElementById('canvas'));
-    // Load a liquid texture (public domain placeholder).  If the
-    // network is unreachable the liquid will default to a colour.
-    liquidApp.loadImage('https://assets.codepen.io/33787/liquid.webp');
-    // Tune material properties for a metallic sheen
-    liquidApp.liquidPlane.material.metalness = 0.75;
-    liquidApp.liquidPlane.material.roughness = 0.25;
-    liquidApp.liquidPlane.uniforms.displacementScale.value = 5;
-    // Disable raindrop effect
-    liquidApp.setRain(false);
-
-    // Generate floating particles (hearts and stars) when the card opens
-    function createParticles(count = 30) {
+    // Particles
+    function burstParticles(count) {
+      const container = document.getElementById('particles');
       for (let i = 0; i < count; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
-        // Random horizontal start position and travel distance
         p.style.left = Math.random() * 100 + '%';
-        p.style.setProperty('--tx', (Math.random() - 0.5) * 300 + 'px');
-        // Random animation delay and duration
-        p.style.animationDelay = (Math.random() * 3) + 's';
-        p.style.animationDuration = (Math.random() * 8 + 8) + 's';
-        document.getElementById('particles').appendChild(p);
-        // Remove particle after animation ends
-        setTimeout(() => p.remove(), 15000);
+        p.style.animationDelay = (Math.random() * 2) + 's';
+        p.style.animationDuration = (Math.random() * 6 + 6) + 's';
+        container.appendChild(p);
+        setTimeout(() => p.remove(), 12000);
       }
     }
+    // Ambient particles
+    burstParticles(15);
 
-    // Build the 3D rotating text ring
-    const ringContainer = document.getElementById('textRing');
-    const phrase = '✨ You\'ve Got A Vibe Check ✨ ';
-    const totalChars = phrase.length;
-    for (let i = 0; i < totalChars; i++) {
-      const span = document.createElement('span');
-      span.textContent = phrase[i];
-      // Set custom properties for positioning in CSS
-      const angle = (360 / totalChars) * i;
-      span.style.transform = `rotateY(${angle}deg) translateZ(260px)`;
-      ringContainer.appendChild(span);
-    }
-
-    // Flip card behaviour
-    const card = document.getElementById('flipCard');
-    const cardInner = document.getElementById('flipCardInner');
-    let cardOpen = false;
-    card.addEventListener('click', () => {
-      cardOpen = !cardOpen;
-      card.classList.toggle('flipped', cardOpen);
-      if (cardOpen) createParticles(40);
-    });
-
-    // Accessibility: allow flipping via keyboard when focused
-    card.setAttribute('tabindex', '0');
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        card.click();
+    // Gamified share
+    let shareCount = parseInt(localStorage.getItem('vibeCheckShareCount') || '0');
+    function updateShareUI() {
+      document.getElementById('shareCount').textContent = shareCount;
+      for (let i = 1; i <= 3; i++) {
+        const dot = document.getElementById('dot' + i);
+        if (dot) dot.classList.toggle('filled', i <= shareCount);
       }
-    });
-
-    // Generate initial floating particles (ambient animation)
-    for (let i = 0; i < 40; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.style.left = Math.random() * 100 + '%';
-      p.style.setProperty('--tx', (Math.random() - 0.5) * 300 + 'px');
-      p.style.animationDelay = (Math.random() * 15) + 's';
-      p.style.animationDuration = (Math.random() * 10 + 15) + 's';
-      document.getElementById('particles').appendChild(p);
-      setTimeout(() => p.remove(), 25000);
+      if (shareCount >= 3) {
+        document.getElementById('gamifiedShareBtn').style.display = 'none';
+        document.getElementById('shareReward').style.display = 'block';
+      }
     }
+    document.getElementById('gamifiedShareBtn')?.addEventListener('click', async () => {
+      const shareData = {
+        title: 'I got a Vibe Check! ✨',
+        text: 'Someone sent me good vibes. Send your own anonymous affirmation card!',
+        url: window.location.href
+      };
+      try {
+        if (navigator.share) {
+          await navigator.share(shareData);
+        } else {
+          await navigator.clipboard.writeText(window.location.href);
+          alert('Card link copied!');
+        }
+        if (shareCount < 3) {
+          shareCount++;
+          localStorage.setItem('vibeCheckShareCount', shareCount.toString());
+          updateShareUI();
+        }
+      } catch (err) { console.log('Share error:', err); }
+    });
+    updateShareUI();
   </script>
 </body>
 

@@ -59,28 +59,23 @@ async function main() {
 
   console.log(`Sending: "${email.subject}" (type: ${email.type})`);
 
-  // Create campaign — MailerLite V3 expects emails as array of arrays (outer = variants, inner = emails)
+  // Create campaign
   const campaignBody = {
     name: `Daily Vibe — ${today}`,
     type: 'regular',
     emails: [
-      [
-        {
-          subject: email.subject,
-          from_name: 'The Vibe Check',
-          from: 'wecare@thevibecheckproject.com',
-          reply_to: 'wecare@thevibecheckproject.com',
-          content: email.body_html,
-          plain_text: email.body_text || `${email.subject}\n\nUnsubscribe: {$unsubscribe}`,
-        }
-      ]
+      {
+        subject: email.subject,
+        from_name: 'The Vibe Check',
+        from: 'wecare@thevibecheckproject.com',
+        reply_to: 'wecare@thevibecheckproject.com',
+        content: email.body_html,
+        plain_text: email.body_text || `${email.subject}\n\nUnsubscribe: {$unsubscribe}`,
+      }
     ],
     groups: [GROUP_ID],
   };
-  console.log('Campaign body (truncated):', JSON.stringify({
-    ...campaignBody,
-    emails: campaignBody.emails.map(e => ({ ...e, content: e.content?.slice(0, 100) + '...' })),
-  }, null, 2));
+  console.log(`Creating campaign: "${email.subject}" for ${today}`);
   const campaign = await mailerlite('POST', '/campaigns', campaignBody);
 
   const campaignId = campaign.data.id;

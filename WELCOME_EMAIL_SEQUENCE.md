@@ -101,7 +101,7 @@ If you're not ready for that, no pressure at all. The free Sunday pack keeps com
 
 And if you ever want to grab the one-time premium card design pack (10 themes, yours forever):
 
-[Premium Card Designs — $9.99 one-time →](https://vibecheck2.gumroad.com/l/toyjkt?utm_source=email&utm_campaign=welcome-sequence)
+[Premium Card Designs — $4.99 one-time →](https://vibecheck2.gumroad.com/l/ycmxxb?utm_source=email&utm_campaign=welcome-sequence)
 
 Talk soon,
 Devin @ The Vibe Check Project

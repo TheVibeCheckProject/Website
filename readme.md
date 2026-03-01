@@ -13,7 +13,7 @@ The Vibe Check Project lets anyone send a personalized encouragement card via sh
 **Revenue model:**
 - Free card sending — always free, no account needed
 - Ko-fi membership — $3.99/month for premium access
-- Gumroad pack — $9.99 one-time for premium card theme bundle
+- Gumroad pack — $4.99 one-time for premium card theme bundle
 
 ---
 

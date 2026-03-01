@@ -1,7 +1,7 @@
 # Premium Subscription Integration Guide
 
 > **ARCHIVED** — Premium is live. Ko-fi handles $3.99/month memberships.
-> Gumroad handles the $9.99 one-time card pack. This guide references Stripe
+> Gumroad handles the $4.99 one-time card pack. This guide references Stripe
 > and is kept for historical reference only.
 
 ## What You're Offering

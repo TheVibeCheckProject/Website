@@ -46,7 +46,7 @@ Unlock premium card backgrounds for every vibe:
 Each theme has a unique background, font, and color palette.
 
 Delivered as a ZIP with 10 PNG card backgrounds + instructions on how to use them in The Vibe Check Project.`,
-    productPrice: '9.99',
+    productPrice: '4.99',
     coverImagePath: null, // Set this to an absolute path if you have the image ready
   },
 };

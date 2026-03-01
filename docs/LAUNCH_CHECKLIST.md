@@ -11,7 +11,7 @@
 - [x] Live card counter via counterapi.dev
 - [x] MailerLite email capture (group `180628908682512348`) + 3-email welcome sequence
 - [x] Ko-fi membership — $3.99/month (`ko-fi.com/thevibecheckproject`)
-- [x] Gumroad one-time pack — $9.99
+- [x] Gumroad one-time pack — $4.99
 - [x] Locked premium design preview in card sender
 - [x] Share button + tip jar on view-card page
 - [x] Microsoft Clarity analytics (project `vohl4gduni`) — on all 13 HTML pages

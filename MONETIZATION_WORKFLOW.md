@@ -24,7 +24,7 @@
 - ✅ **Rewrite support section** in `index.html`
   - Renamed "Support The Mission" → "Three Ways to Get More Good Vibes"
   - "Buy Us a Coffee" card → "✨ Premium Membership" (Ko-fi)
-  - "Share the Love" card → "🎨 Premium Card Designs" (Gumroad, $9.99 one-time)
+  - "Share the Love" card → "🎨 Premium Card Designs" (Gumroad, $4.99 one-time)
   - "Gift a Subscription" card → kept, improved copy
 - ✅ **Update Ko-fi membership page** — AUTOMATED
   - Run: `node scripts/setup-platforms.mjs --kofi`
@@ -33,7 +33,7 @@
 - ✅ **Update Gumroad listing** — AUTOMATED
   - Run: `node scripts/setup-platforms.mjs --gumroad`
   - OR Antigravity: follow AUTOMATION GUIDE → Gumroad section
-  - Script sets: name, description, $9.99 price, publishes listing
+  - Script sets: name, description, $4.99 price, publishes listing
   - ⚠️ Cover image still needs Canva design first — set `CONFIG.gumroad.coverImagePath` in script once ready
 
 ---
@@ -72,7 +72,7 @@
   - Show 3 free affirmation options by default
   - Show 7 locked premium affirmation options with a lock icon + blurred text
   - 🤖 **[Antigravity (Gemini) Suggestion]:** Instead of just blurring text, **show the specific names of the premium themes** (e.g., "Grief Support (Premium)" or "Hype-Up (Premium)"). High specificity increases the likelihood they will buy a pack for a unique situation.
-  - Clicking a locked option → shows a tooltip: "Unlock all 10 premium designs for $9.99 →" → Gumroad link
+  - Clicking a locked option → shows a tooltip: "Unlock all 10 premium designs for $4.99 →" → Gumroad link
   - No backend needed — redirect only
 
 ---
@@ -161,7 +161,7 @@
 | Source | Conversion | Monthly |
 |--------|-----------|---------|
 | Email list → Ko-fi ($3.99/mo) | 500 subs, 2% convert = 10 members | $39.90/mo |
-| Gumroad card pack ($9.99) | 200 visitors/mo, 1% buy = 2 sales | $19.98/mo |
+| Gumroad card pack ($4.99) | 200 visitors/mo, 1% buy = 2 sales | $19.98/mo |
 | Email list growth | 50 new subs/mo from card flow | Compounds |
 | **Total Month 1** | | ~$60/mo |
 | **Total Month 6** | (list at 1,500, 3% convert) | ~$180/mo |
@@ -263,7 +263,7 @@ The email list is the flywheel. Every card sent → email capture → nurture �
 4. Find and click the Vibe Check Project Premium listing, then click **Edit**
 5. Fill in:
    - **Name:** `Premium Card Design Pack`
-   - **Price:** `9.99`
+   - **Price:** `4.99`
    - **Description:**
      ```
      10 exclusive animated card design themes — yours forever, one-time purchase.

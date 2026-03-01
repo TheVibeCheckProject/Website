@@ -54,7 +54,7 @@
       <div class='footer-links'>
         <a href='https://www.thevibecheckproject.com'>Website</a> &bull; 
         <a href='https://ko-fi.com/thevibecheckproject'>Ko-fi</a> &bull; 
-        <a href='https://vibecheck2.gumroad.com/l/toyjkt'>Premium Cards</a>
+        <a href='https://vibecheck2.gumroad.com/l/ycmxxb'>Premium Cards</a>
       </div>
       <p style='margin-top: 20px;'>{$unsubscribe}</p>
     </div>

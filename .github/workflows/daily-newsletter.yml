@@ -1,0 +1,30 @@
+name: Daily Newsletter
+
+on:
+  schedule:
+    # 9:00 AM EST = 14:00 UTC
+    - cron: '0 14 * * *'
+  workflow_dispatch:
+    inputs:
+      date_override:
+        description: 'Send email for this date (YYYY-MM-DD). Leave blank for today.'
+        required: false
+
+jobs:
+  send-newsletter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Send newsletter
+        env:
+          MAILERLITE_API_KEY: ${{ secrets.MAILERLITE_API_KEY }}
+          MAILERLITE_GROUP_ID: ${{ secrets.MAILERLITE_GROUP_ID }}
+          DATE_OVERRIDE: ${{ github.event.inputs.date_override }}
+        run: node scripts/send-newsletter.js

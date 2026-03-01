@@ -10,16 +10,24 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.thevibecheckproject.com/send-card.html">
     <meta property="og:title" content="Send a Vibe Check ✨ — The Vibe Check Project">
-    <meta property="og:description" content="Send an anonymous affirmation card to someone who needs to hear it. Free, fast, and from the heart.">
+    <meta property="og:description"
+        content="Send an anonymous affirmation card to someone who needs to hear it. Free, fast, and from the heart.">
     <meta property="og:image" content="https://www.thevibecheckproject.com/assets/og-image.png">
     <meta property="og:site_name" content="The Vibe Check Project">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Send a Vibe Check ✨ — The Vibe Check Project">
-    <meta name="twitter:description" content="Send an anonymous affirmation card to someone who needs to hear it. Free, fast, and from the heart.">
+    <meta name="twitter:description"
+        content="Send an anonymous affirmation card to someone who needs to hear it. Free, fast, and from the heart.">
     <meta name="twitter:image" content="https://www.thevibecheckproject.com/assets/og-image.png">
 
     <!-- Analytics (Microsoft Clarity) -->
-    <script type="text/javascript">\n        (function(c,l,a,r,i,t,y){\n            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};\n            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;\n            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);\n        })(window, document, "clarity", "script", "vohl4gduni");\n    </script>
+    <script type="text/javascript">
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "vohl4gduni"); 
+    </script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -490,12 +498,15 @@
                     </form>
                     <div class="gumroad-upsell-box">
                         <p>Make their next card <em>extra</em> special — 10 premium animated designs, yours forever.</p>
-                        <a href="https://vibecheck2.gumroad.com/l/toyjkt?utm_source=website&utm_campaign=post-send" target="_blank" rel="noopener">✨ Unlock
-                            Premium Designs — $9.99 →</a>
+                        <a href="https://vibecheck2.gumroad.com/l/ycmxxb?utm_source=website&utm_campaign=post-send"
+                            target="_blank" rel="noopener">✨ Unlock
+                            Premium Designs</a> — $4.99 →
                     </div>
 
                     <div style="margin-top: 1.5rem; font-size: 13px; color: var(--color-text-muted);">
-                        P.S. Just want to say thanks? <a href="https://ko-fi.com/thevibecheckproject?utm_source=website&utm_campaign=tip-jar" target="_blank"
+                        P.S. Just want to say thanks? <a
+                            href="https://ko-fi.com/thevibecheckproject?utm_source=website&utm_campaign=tip-jar"
+                            target="_blank"
                             style="color: var(--color-text-secondary); text-decoration: underline; font-weight: 500;">☕
                             Buy me a coffee.</a>
                     </div>
@@ -552,12 +563,12 @@
                     "${theme.example}"
                 </div>
                 <div class="locked-tooltip">
-                    Unlock all 10 premium designs for $9.99 →
+                    Unlock all 10 premium designs for $4.99 →
                 </div>
             `;
             // Redirect to Gumroad
             option.onclick = () => {
-                window.open('https://vibecheck2.gumroad.com/l/toyjkt?utm_source=website&utm_campaign=locked-design', '_blank');
+                window.open('https://vibecheck2.gumroad.com/l/ycmxxb?utm_source=website&utm_campaign=locked-design', '_blank');
             };
             picker.appendChild(option);
         });
@@ -625,7 +636,7 @@
             const cardUrl = `${base}view-card.html?data=${encoded}`;
 
             // Increment live counter
-            fetch('https://api.counterapi.dev/v1/thevibecheckproject/cards-sent/up').catch(() => {});
+            fetch('https://api.counterapi.dev/v1/thevibecheckproject/cards-sent/up').catch(() => { });
 
             // Show success
             document.querySelector('.card-form').style.display = 'none';

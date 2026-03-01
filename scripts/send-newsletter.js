@@ -40,7 +40,7 @@ async function mailerlite(method, endpoint, body) {
 }
 
 async function main() {
-  const today = getTodayEST();
+  const today = process.env.DATE_OVERRIDE || getTodayEST();
   console.log(`Checking newsletter batch for date: ${today}`);
 
   const batchPath = path.join(__dirname, '..', 'newsletter-content', 'batch.json');

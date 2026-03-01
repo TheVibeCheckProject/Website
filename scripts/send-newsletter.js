@@ -59,19 +59,21 @@ async function main() {
 
   console.log(`Sending: "${email.subject}" (type: ${email.type})`);
 
-  // Create campaign — all fields required so MailerLite marks it can_be_scheduled: true
+  // Create campaign — MailerLite V3 expects emails as array of arrays (outer = variants, inner = emails)
   const campaignBody = {
     name: `Daily Vibe — ${today}`,
     type: 'regular',
     emails: [
-      {
-        subject: email.subject,
-        from_name: 'The Vibe Check',
-        from: 'wecare@thevibecheckproject.com',
-        reply_to: 'wecare@thevibecheckproject.com',
-        content: email.body_html,
-        plain_text: email.body_text || `${email.subject}\n\nUnsubscribe: {$unsubscribe}`,
-      }
+      [
+        {
+          subject: email.subject,
+          from_name: 'The Vibe Check',
+          from: 'wecare@thevibecheckproject.com',
+          reply_to: 'wecare@thevibecheckproject.com',
+          content: email.body_html,
+          plain_text: email.body_text || `${email.subject}\n\nUnsubscribe: {$unsubscribe}`,
+        }
+      ]
     ],
     groups: [GROUP_ID],
   };

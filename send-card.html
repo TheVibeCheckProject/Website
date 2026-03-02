@@ -447,7 +447,11 @@
 
                 <div class="form-section">
                     <label class="form-label">Your Name</label>
-                    <input type="text" class="form-input" id="senderName" placeholder="Alex" required>
+                    <input type="text" class="form-input" id="senderName"
+                        placeholder="Alex (or leave blank to send anonymously)">
+                    <small style="color: var(--color-text-muted); font-size: 12px; margin-top: 4px; display: block;">
+                        Leave blank to send as "Someone special" ✨
+                    </small>
                 </div>
 
                 <div class="form-section">
@@ -470,7 +474,7 @@
                         Select an affirmation above
                     </div>
                     <div class="preview-message" id="previewMessage">
-                        <span id="previewSender">Someone</span> wanted to send you some good vibes ✨
+                        <span id="previewSender">Someone special</span> wanted to send you some good vibes ✨
                     </div>
                 </div>
 
@@ -839,7 +843,7 @@
         document.getElementById('personalMessage').addEventListener('input', updatePreview);
 
         function updatePreview() {
-            const senderName = document.getElementById('senderName').value || 'Someone';
+            const senderName = document.getElementById('senderName').value || 'Someone special';
             const personalMessage = document.getElementById('personalMessage').value;
 
             document.getElementById('previewSender').textContent = senderName;

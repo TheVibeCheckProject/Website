@@ -704,7 +704,7 @@
         const messageEl = document.getElementById('cardMessage');
         if (affirmationEl) affirmationEl.textContent = card.affirmation;
         if (messageEl) {
-          const sender = card.senderName || 'Someone';
+          const sender = card.senderName || 'Someone special';
           messageEl.textContent = card.personalMessage
             ? `${sender} says: "${card.personalMessage}"`
             : `${sender} wanted to send you some good vibes ✨`;

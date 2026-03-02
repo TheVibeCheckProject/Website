@@ -1,23 +1,24 @@
 #!/usr/bin/env node
 // Auto-generates newsletter-content/batch.json for the next calendar month.
-// Uses Claude API to produce varied, on-brand email content.
+// Uses Google Gemini API (free tier) to produce varied, on-brand email content.
 // Run via GitHub Actions on the 25th of each month, or manually:
 //   TARGET_MONTH=2026-05 node scripts/generate-batch.mjs
 
-import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const API_KEY = process.env.ANTHROPIC_API_KEY;
+const API_KEY = process.env.GEMINI_API_KEY;
 if (!API_KEY) {
-  console.error('Missing ANTHROPIC_API_KEY');
+  console.error('Missing GEMINI_API_KEY');
   process.exit(1);
 }
 
-const client = new Anthropic({ apiKey: API_KEY });
+const genAI = new GoogleGenerativeAI(API_KEY);
+const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
 function getTargetMonth() {
   const override = process.env.TARGET_MONTH;
@@ -81,13 +82,8 @@ Brand voice rules:
 - Vary the tone — some energetic, some quiet and reflective
 - Never repeat a subject line or central theme across the month`;
 
-  const message = await client.messages.create({
-    model: 'claude-opus-4-6',
-    max_tokens: 16000,
-    messages: [{ role: 'user', content: prompt }],
-  });
-
-  const raw = message.content[0].text.trim();
+  const result = await model.generateContent(prompt);
+  const raw = result.response.text().trim();
 
   // Strip any markdown code fences if Claude wrapped it
   const jsonMatch = raw.match(/\[[\s\S]*\]/);

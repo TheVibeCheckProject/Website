@@ -30,7 +30,7 @@ jobs:
 
       - name: Generate newsletter batch
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TARGET_MONTH: ${{ github.event.inputs.target_month }}
         run: node scripts/generate-batch.mjs
 

@@ -105,6 +105,9 @@ async function main() {
     delivery: 'instant',
   }));
   console.log(`🚀 Newsletter sent for ${today}: "${email.subject}"`);
+
+  // Increment newsletter send counter (fire-and-forget)
+  fetch('https://api.counterapi.dev/v1/thevibecheckproject/newsletters-sent/up').catch(() => {});
 }
 
 main().catch(err => {

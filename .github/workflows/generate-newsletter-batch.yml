@@ -1,0 +1,60 @@
+name: Generate Newsletter Batch
+
+on:
+  schedule:
+    # 10:00 AM UTC on the 25th of every month
+    - cron: '0 10 25 * *'
+  workflow_dispatch:
+    inputs:
+      target_month:
+        description: 'Month to generate for (YYYY-MM). Leave blank for next month.'
+        required: false
+
+jobs:
+  generate-batch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate newsletter batch
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TARGET_MONTH: ${{ github.event.inputs.target_month }}
+        run: node scripts/generate-batch.mjs
+
+      - name: Commit updated batch.json
+        env:
+          TARGET_MONTH: ${{ github.event.inputs.target_month }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add newsletter-content/batch.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit — batch may already be up to date"
+          else
+            MONTH=$(node -e "
+              const t = process.env.TARGET_MONTH;
+              if (t && /^\d{4}-\d{2}$/.test(t)) { console.log(t); }
+              else { const d = new Date(); d.setMonth(d.getMonth() + 1); console.log(d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0')); }
+            ")
+            git commit -m "chore: auto-generate newsletter batch for $MONTH"
+            git push
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "🚨 Newsletter batch generation FAILED for $(date +'%Y-%m')"
+          echo "Check GitHub Actions logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

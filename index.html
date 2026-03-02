@@ -439,6 +439,10 @@
                         <div class="stat">100%</div>
                         <p class="stat-label">Free to Send</p>
                     </div>
+                    <div class="stat-card reveal">
+                        <div class="stat" id="liveNewsletterCount">—</div>
+                        <p class="stat-label">Newsletters Sent</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -557,6 +561,17 @@
             .then(r => r.json())
             .then(data => {
                 const el = document.getElementById('liveCardCount');
+                if (el && data && typeof data.count === 'number') {
+                    el.textContent = data.count.toLocaleString();
+                }
+            })
+            .catch(() => { /* fail silently */ });
+
+        // Live newsletter counter
+        fetch('https://api.counterapi.dev/v1/thevibecheckproject/newsletters-sent')
+            .then(r => r.json())
+            .then(data => {
+                const el = document.getElementById('liveNewsletterCount');
                 if (el && data && typeof data.count === 'number') {
                     el.textContent = data.count.toLocaleString();
                 }

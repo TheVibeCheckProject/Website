@@ -400,6 +400,99 @@
             }
         }
 
+        /* Sound Picker */
+        .sound-picker {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 8px;
+        }
+
+        .sound-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: var(--color-bg-dark);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .sound-option:hover {
+            border-color: rgba(255, 107, 157, 0.3);
+            background: rgba(255, 107, 157, 0.05);
+        }
+
+        .sound-option.selected {
+            border-color: var(--color-primary);
+            background: rgba(255, 107, 157, 0.1);
+        }
+
+        .sound-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .sound-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            flex: 1;
+            min-width: 0;
+        }
+
+        .sound-preview-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--color-text-secondary);
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .sound-preview-btn:hover {
+            background: rgba(255, 107, 157, 0.2);
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .premium-lock {
+            position: absolute;
+            top: -6px;
+            right: -4px;
+            font-size: 9px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f472b6, #a855f7);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .premium-sound {
+            opacity: 0.7;
+        }
+
+        .premium-sound.selected {
+            opacity: 1;
+        }
+
+        @media (max-width: 480px) {
+            .sound-picker {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         .gumroad-upsell-box {
             background: rgba(255, 107, 157, 0.07);
             border: 1px solid rgba(255, 107, 157, 0.2);
@@ -468,6 +561,81 @@
                     <label class="form-label">Personal Message (Optional)</label>
                     <textarea class="form-textarea" id="personalMessage"
                         placeholder="I was thinking of you today and wanted to send some good vibes your way..."></textarea>
+                </div>
+
+                <div class="form-section">
+                    <label class="form-label">Card Sound</label>
+                    <small style="color: var(--color-text-muted); font-size: 12px; margin-bottom: 8px; display: block;">
+                        Choose the sound that plays when they open your card
+                    </small>
+                    <div class="sound-picker" id="soundPicker">
+                        <!-- Free Sounds -->
+                        <div class="sound-option selected" data-sound="chime" onclick="selectSound('chime', this)">
+                            <span class="sound-icon">🔔</span>
+                            <span class="sound-name">Chime</span>
+                            <button class="sound-preview-btn" onclick="event.stopPropagation(); previewSound('chime')"
+                                title="Preview">▶</button>
+                        </div>
+                        <div class="sound-option" data-sound="bell" onclick="selectSound('bell', this)">
+                            <span class="sound-icon">🛎️</span>
+                            <span class="sound-name">Soft Bell</span>
+                            <button class="sound-preview-btn" onclick="event.stopPropagation(); previewSound('bell')"
+                                title="Preview">▶</button>
+                        </div>
+                        <div class="sound-option" data-sound="sparkle" onclick="selectSound('sparkle', this)">
+                            <span class="sound-icon">✨</span>
+                            <span class="sound-name">Sparkle</span>
+                            <button class="sound-preview-btn" onclick="event.stopPropagation(); previewSound('sparkle')"
+                                title="Preview">▶</button>
+                        </div>
+                        <!-- Premium Sounds -->
+                        <div class="sound-option premium-sound" data-sound="musicbox"
+                            onclick="selectSound('musicbox', this)">
+                            <span class="sound-icon">🎵</span>
+                            <span class="sound-name">Music Box</span>
+                            <span class="premium-lock">Premium</span>
+                            <button class="sound-preview-btn"
+                                onclick="event.stopPropagation(); previewSound('musicbox')" title="Preview">▶</button>
+                        </div>
+                        <div class="sound-option premium-sound" data-sound="harp" onclick="selectSound('harp', this)">
+                            <span class="sound-icon">🎶</span>
+                            <span class="sound-name">Harp</span>
+                            <span class="premium-lock">Premium</span>
+                            <button class="sound-preview-btn" onclick="event.stopPropagation(); previewSound('harp')"
+                                title="Preview">▶</button>
+                        </div>
+                        <div class="sound-option premium-sound" data-sound="piano" onclick="selectSound('piano', this)">
+                            <span class="sound-icon">🎹</span>
+                            <span class="sound-name">Warm Piano</span>
+                            <span class="premium-lock">Premium</span>
+                            <button class="sound-preview-btn" onclick="event.stopPropagation(); previewSound('piano')"
+                                title="Preview">▶</button>
+                        </div>
+                        <div class="sound-option premium-sound" data-sound="celebration"
+                            onclick="selectSound('celebration', this)">
+                            <span class="sound-icon">🎉</span>
+                            <span class="sound-name">Celebration</span>
+                            <span class="premium-lock">Premium</span>
+                            <button class="sound-preview-btn"
+                                onclick="event.stopPropagation(); previewSound('celebration')"
+                                title="Preview">▶</button>
+                        </div>
+                        <div class="sound-option premium-sound" data-sound="ocean" onclick="selectSound('ocean', this)">
+                            <span class="sound-icon">🌊</span>
+                            <span class="sound-name">Ocean</span>
+                            <span class="premium-lock">Premium</span>
+                            <button class="sound-preview-btn" onclick="event.stopPropagation(); previewSound('ocean')"
+                                title="Preview">▶</button>
+                        </div>
+                    </div>
+                    <small class="premium-sound-hint"
+                        style="color: var(--color-text-muted); font-size: 11px; margin-top: 8px; display: block;">
+                        🔓 <a
+                            href="https://vibecheck2.gumroad.com/l/ycmxxb?utm_source=website&utm_campaign=sound-picker"
+                            target="_blank" rel="noopener"
+                            style="color: var(--color-primary); text-decoration: none;">Get Premium</a> to unlock all
+                        sounds
+                    </small>
                 </div>
 
                 <div class="form-section">
@@ -820,6 +988,85 @@
         ];
 
         let selectedAffirmation = '';
+        let selectedSound = 'chime';
+
+        // Sound engine — Web Audio API synthesized sounds
+        const soundEngine = {
+            _ctx() { return new (window.AudioContext || window.webkitAudioContext)(); },
+            _tone(ctx, freq, start, dur, vol = 0.08, type = 'sine') {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = type;
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(vol, ctx.currentTime + start);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + dur);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(ctx.currentTime + start);
+                osc.stop(ctx.currentTime + start + dur + 0.1);
+            },
+            chime() {
+                const ctx = this._ctx();
+                [523.25, 659.25, 783.99].forEach((f, i) => this._tone(ctx, f, i * 0.1, 1.2));
+            },
+            bell() {
+                const ctx = this._ctx();
+                [440, 880, 1320, 1760].forEach((f, i) => this._tone(ctx, f, 0, 2 - i * 0.3, 0.06 / (i + 1)));
+            },
+            sparkle() {
+                const ctx = this._ctx();
+                [1318, 1174, 1046, 987, 880].forEach((f, i) => this._tone(ctx, f, i * 0.08, 0.6, 0.05, 'triangle'));
+            },
+            musicbox() {
+                const ctx = this._ctx();
+                [659, 784, 880, 784, 659, 523, 659].forEach((f, i) => this._tone(ctx, f, i * 0.2, 0.5, 0.06, 'triangle'));
+            },
+            harp() {
+                const ctx = this._ctx();
+                [261, 329, 392, 523, 659, 784, 1046].forEach((f, i) => this._tone(ctx, f, i * 0.1, 1.5, 0.05));
+            },
+            piano() {
+                const ctx = this._ctx();
+                [[261, 329, 392], [349, 440, 523]].forEach((chord, ci) => {
+                    chord.forEach(f => this._tone(ctx, f, ci * 0.6, 1.8, 0.06));
+                });
+            },
+            celebration() {
+                const ctx = this._ctx();
+                [523, 659, 784, 1046, 784, 1046, 1318].forEach((f, i) => this._tone(ctx, f, i * 0.12, 0.4, 0.07, 'square'));
+            },
+            ocean() {
+                const ctx = this._ctx();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                const lfo = ctx.createOscillator();
+                const lfoGain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.value = 220;
+                lfo.type = 'sine';
+                lfo.frequency.value = 0.3;
+                lfoGain.gain.value = 100;
+                lfo.connect(lfoGain);
+                lfoGain.connect(osc.frequency);
+                gain.gain.setValueAtTime(0.06, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 3);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(); lfo.start();
+                osc.stop(ctx.currentTime + 3.5);
+                lfo.stop(ctx.currentTime + 3.5);
+            }
+        };
+
+        function selectSound(soundId, element) {
+            selectedSound = soundId;
+            document.querySelectorAll('.sound-option').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function previewSound(soundId) {
+            try { soundEngine[soundId](); } catch (e) { }
+        }
 
         // Populate affirmations
         const picker = document.getElementById('affirmationPicker');
@@ -918,6 +1165,7 @@
                 recipientName: recipientName,
                 senderName: senderName,
                 personalMessage: personalMessage,
+                sound: selectedSound,
                 createdAt: new Date().toISOString()
             };
 

@@ -928,8 +928,8 @@
                     await emailjs.send('service_cn9gjbv', 'template_bpj8rue', {
                         to_email: recipientEmail,
                         to_name: recipientName || 'Friend',
-                        from_name: senderName || 'Someone special',
-                        message: personalMessage || selectedAffirmation,
+                        from_name: 'Someone',
+                        message: 'Someone sent you a vibe check! Open the card to reveal your message. ✨',
                         card_link: cardUrl,
                     });
                     console.log('Email sent successfully!');

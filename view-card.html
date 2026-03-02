@@ -219,8 +219,11 @@
       width: 100%;
       height: 100%;
       transform-style: preserve-3d;
-      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       border-radius: 20px;
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
 
     .flip-card.flipped .flip-card-inner {
@@ -232,12 +235,14 @@
       width: 100%;
       height: 100%;
       backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
       border-radius: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      transform: translateZ(0);
     }
 
     /* Front face */
@@ -588,7 +593,7 @@
 
   <div class="main-content">
     <!-- Header -->
-    <div class="header-badge">✨ Someone sent you a vibe</div>
+    <div class="header-badge" id="headerBadge">✨ Someone sent you a vibe</div>
 
     <!-- Flip Card -->
     <div class="flip-card" id="flipCard" tabindex="0">
@@ -702,12 +707,27 @@
         const card = JSON.parse(decodeURIComponent(atob(encoded)));
         const affirmationEl = document.getElementById('cardAffirmation');
         const messageEl = document.getElementById('cardMessage');
+        const headerEl = document.getElementById('headerBadge');
         if (affirmationEl) affirmationEl.textContent = card.affirmation;
         if (messageEl) {
-          const sender = card.senderName || 'Someone special';
-          messageEl.textContent = card.personalMessage
-            ? `${sender} says: "${card.personalMessage}"`
-            : `${sender} wanted to send you some good vibes ✨`;
+          const sender = card.senderName;
+          if (sender) {
+            messageEl.textContent = card.personalMessage
+              ? `${sender} says: "${card.personalMessage}"`
+              : `${sender} wanted to send you some good vibes ✨`;
+          } else {
+            messageEl.textContent = card.personalMessage
+              ? `Someone special says: "${card.personalMessage}"`
+              : 'Someone special wanted to send you some good vibes ✨';
+          }
+        }
+        // Personalize header badge
+        if (headerEl) {
+          if (card.senderName) {
+            headerEl.textContent = `✨ ${card.senderName} sent you a vibe`;
+          } else {
+            headerEl.textContent = '✨ Someone anonymously sent you a vibe';
+          }
         }
         if (card.recipientName) {
           document.title = `${card.recipientName}, You've Got a Vibe Check! ✨`;

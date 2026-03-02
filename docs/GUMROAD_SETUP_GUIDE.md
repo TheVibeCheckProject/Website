@@ -281,7 +281,7 @@ Use Canva (free):
 - Show value proposition
 
 ### In Welcome Emails:
-Add to your Buttondown welcome email:
+Add to your MailerLite welcome email:
 ```
 P.S. Want access to 500+ affirmations and exclusive wallpapers? 
 Check out Premium: [link]

@@ -1,5 +1,5 @@
 # Welcome Email Sequence — The Vibe Check Project
-**For:** Buttondown (copy each email into a new automation step)
+**For:** MailerLite (set up as an automation workflow)
 **Trigger:** New subscriber signs up via any form on the site
 **Schedule:** Email 1 immediately, Email 2 on Day 2, Email 3 on Day 5
 
@@ -26,9 +26,9 @@ Save that. Screenshot it. Send it to someone who needs it.
 
 *(You can download and share these however you like)*
 
-1. "You're doing better than you think you are." — [Download Wallpaper 1](https://www.thevibecheckproject.com/assets/wallpaper_1_better.png)
-2. "Rest is not weakness. It's essential." — [Download Wallpaper 2](https://www.thevibecheckproject.com/assets/wallpaper_2_rest.png)
-3. "Your presence makes a difference, even when you don't see it." — [Download Wallpaper 3](https://www.thevibecheckproject.com/assets/wallpaper_3_presence.png)
+1. "You're doing better than you think you are." — [Download Wallpaper 1](https://www.thevibecheckproject.com/assets/wallpapers/wallpaper_1_better.png)
+2. "Rest is not weakness. It's essential." — [Download Wallpaper 2](https://www.thevibecheckproject.com/assets/wallpapers/wallpaper_2_rest.png)
+3. "Your presence makes a difference, even when you don't see it." — [Download Wallpaper 3](https://www.thevibecheckproject.com/assets/wallpapers/wallpaper_3_presence.png)
 
 ---
 
@@ -110,11 +110,11 @@ P.S. Reply to this email anytime. I actually read them.
 
 ---
 
-## HOW TO SET THIS UP IN BUTTONDOWN
+## HOW TO SET THIS UP IN MAILERLITE
 
-1. Go to **buttondown.email** → Log in → **Automations** → **New Automation**
-2. Trigger: **"Subscriber confirmed"** (fires when someone confirms their email)
-3. Add 3 steps:
+1. Go to **app.mailerlite.com** → Log in → **Automations** → **Create workflow**
+2. Trigger: **"When subscriber joins a group"** → select your newsletter group
+3. Add 3 email steps:
    - Step 1: Send Email 1 → Delay: **0 minutes** (immediately)
    - Step 2: Send Email 2 → Delay: **2 days**
    - Step 3: Send Email 3 → Delay: **5 days**

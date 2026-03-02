@@ -52,7 +52,7 @@ I've transformed your website template into **The Vibe Check Project** - a socia
 
 ### 1. **Email Collection Setup**
 Replace the form configuration in `index.html` (line 267-274) with your actual email service:
-- Options: ConvertKit, Mailchimp, Buttondown, Substack
+- Options: ConvertKit, Mailchimp, MailerLite, Substack
 - Free tiers available for most services
 
 ### 2. **Payment Integration**

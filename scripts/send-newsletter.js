@@ -22,6 +22,20 @@ function getTodayEST() {
   return est.toISOString().split('T')[0];
 }
 
+// Retry wrapper with exponential backoff
+async function withRetry(fn, retries = 2, delay = 3000) {
+  for (let attempt = 1; attempt <= retries + 1; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      if (attempt > retries) throw err;
+      console.log(`⚠️ Attempt ${attempt} failed, retrying in ${delay / 1000}s...`);
+      await new Promise(r => setTimeout(r, delay));
+      delay *= 2; // exponential backoff
+    }
+  }
+}
+
 async function mailerlite(method, endpoint, body) {
   const options = {
     method,
@@ -65,9 +79,7 @@ async function main() {
 
   console.log(`📧 Subject: "${email.subject}" (${email.type})`);
 
-  // Step 1: Create campaign
-  // Format matches official MailerLite Node.js SDK CreateUpdateCampaignParams:
-  //   emails: Array<{ subject: string; from_name: string; from: string; content?: string }>
+  // Step 1: Create campaign (with retry)
   const requestBody = {
     name: `Daily Vibe ${today} ${Date.now()}`,
     type: 'regular',
@@ -83,17 +95,15 @@ async function main() {
   };
 
   console.log('Creating campaign...');
-  const campaign = await mailerlite('POST', '/campaigns', requestBody);
+  const campaign = await withRetry(() => mailerlite('POST', '/campaigns', requestBody));
   const campaignId = campaign.data.id;
   console.log(`✅ Campaign created: ${campaignId}`);
 
-  // Step 2: Schedule for immediate send
-  // Format matches official MailerLite Node.js SDK ScheduleCampaignParams:
-  //   delivery: "instant" | "scheduled" | "timezone_based" | "smart_sending"
+  // Step 2: Schedule for immediate send (with retry)
   console.log('Scheduling for immediate delivery...');
-  await mailerlite('POST', `/campaigns/${campaignId}/schedule`, {
+  await withRetry(() => mailerlite('POST', `/campaigns/${campaignId}/schedule`, {
     delivery: 'instant',
-  });
+  }));
   console.log(`🚀 Newsletter sent for ${today}: "${email.subject}"`);
 }
 

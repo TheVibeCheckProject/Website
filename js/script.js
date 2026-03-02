@@ -88,9 +88,9 @@ function createEmailModal() {
             </div>
         </div>
     `;
-    
+
     document.body.insertAdjacentHTML('beforeend', modalHTML);
-    
+
     // Handle form submission
     const form = document.getElementById('email-signup-form');
     form.addEventListener('submit', handleEmailSignup);
@@ -101,7 +101,7 @@ function showEmailModal() {
     if (modal) {
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
-        
+
         // Focus on email input
         setTimeout(() => {
             document.getElementById('signup-email').focus();
@@ -114,7 +114,7 @@ function closeEmailModal() {
     if (modal) {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
-        
+
         // Reset form
         const form = document.getElementById('email-signup-form');
         const success = document.getElementById('signup-success');
@@ -125,7 +125,7 @@ function closeEmailModal() {
 }
 
 // Close modal when clicking outside
-document.addEventListener('click', function(e) {
+document.addEventListener('click', function (e) {
     const modal = document.getElementById('email-modal');
     if (e.target === modal) {
         closeEmailModal();
@@ -134,68 +134,50 @@ document.addEventListener('click', function(e) {
 
 async function handleEmailSignup(e) {
     e.preventDefault();
-    
+
     const email = document.getElementById('signup-email').value;
     const name = document.getElementById('signup-name').value || 'Friend';
-    
+
     // Show loading state
     const submitBtn = e.target.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
     submitBtn.textContent = 'Subscribing...';
     submitBtn.disabled = true;
-    
-    // Create form data for Buttondown's email-only endpoint
-    const formData = new FormData();
-    formData.append('email', email);
-    formData.append('metadata', JSON.stringify({
-        name: name,
-        signup_date: new Date().toISOString(),
-        source: 'website'
-    }));
-    
+
     try {
-        // Use Buttondown's email-only endpoint (no API key needed!)
-        const response = await fetch('https://buttondown.com/api/emails/embed-subscribe/griffin', {
+        // Subscribe via MailerLite API
+        const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiNWU3ZWZhOTcyMjRlZTg4OWNkMWZiYzA2NThlZjFjMDA5OWYwOGIxZDYzMzk4YWNjYmIwMDQ0YjgzNWI3ODBjNWQ2YTI2NWEzNmE1MGE4ZDkiLCJpYXQiOjE3NzIyNjEyNzQuMTQ2Mzg1LCJuYmYiOjE3NzIyNjEyNzQuMTQ2Mzg5LCJleHAiOjQ5Mjc5MzQ4NzQuMTQwNTI4LCJzdWIiOiIyMTY4Njg0Iiwic2NvcGVzIjpbXX0.b-_FJ38aNok7ORlkP5qXVgYzccw-JJm5wQyZnXMinhCAban5EIC5R7hzCFAc4LVbBnoT4AToEpkIFeNEmpaUS7Okm9NvvUg8y18T4oVdJDfToHqwzSOd21fAExTunMK8yKbklVlbbYM1r4wwkhEg-ByX6GqiNAuttGKNFKhlGYFC0OVt67WMqe-P3b5TDtUNW_zXu-kCiyNAAgFEZGHuGB2SM7KASKGcO3rUcBtxClzl6bNKlwvLYqMPDkQUGo1zKsm7wuxn5fzUQhTQPqWIGg1q3IPbCinu-44KJhtEmagO2EEFwpBx2mQWR2iqa7RO_IKIdtRiTu305yrQheKaFx8Xkbm0jcgST2cn8iPK7N3ESrfcCq1BgLigXBbh7TMQstRRccqCuAwuftz4cZVL5hcMKnQI7lgQ_FMmdgYKQdnzYi0RMEGaSC_iwm0-a5oTNSSkDwsL1yNGNODdEImelISvCVcMM9gsK3A-f-zaRwwHvyaz8erIfASnlmCGXfrgcZW6lpHBM0XE8r-eiGS_vGY'
+            },
+            body: JSON.stringify({
+                email: email,
+                fields: { name: name, signup_source: 'homepage' },
+                groups: ['180628908682512348']
+            })
         });
-        
-        // Buttondown returns 200 for success
+
         if (response.ok || response.status === 200) {
             // Success! Show success message
             document.getElementById('email-signup-form').style.display = 'none';
             document.getElementById('signup-success').style.display = 'block';
-            
-            // Also save to localStorage as backup
-            const subscriber = { email, name, signupDate: new Date().toISOString() };
-            let subscribers = JSON.parse(localStorage.getItem('vibeCheckSubscribers') || '[]');
-            subscribers.push(subscriber);
-            localStorage.setItem('vibeCheckSubscribers', JSON.stringify(subscribers));
-            
-            console.log('✅ Subscriber added to Buttondown:', email);
+            console.log('✅ Subscriber added to MailerLite:', email);
         } else {
-            // Try to get error message
-            let errorMessage = 'Something went wrong. Please try again!';
-            try {
-                const errorData = await response.json();
-                if (errorData.email) {
-                    errorMessage = 'You\'re already subscribed! Check your email for daily vibes. ✨';
-                }
-            } catch (e) {
-                // Couldn't parse error
+            const errorData = await response.json().catch(() => ({}));
+            if (errorData.message && errorData.message.includes('already')) {
+                alert('You\'re already subscribed! Check your email for daily vibes. ✨');
+            } else {
+                alert('Something went wrong. Please try again!');
             }
-            
-            alert(errorMessage);
-            
-            // Reset button
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
         }
     } catch (error) {
         console.error('Signup error:', error);
         alert('Connection error. Please check your internet and try again!');
-        
-        // Reset button
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
     }
@@ -217,7 +199,7 @@ function completeSplashScreen() {
     setTimeout(() => {
         mainContent.classList.add('show');
         splashScreen.style.display = 'none';
-        
+
         // Initialize all features
         initParallax();
         initScrollReveal();
@@ -234,20 +216,20 @@ function completeSplashScreen() {
 function initParallax() {
     const heroBg = document.getElementById('hero-bg');
     let ticking = false;
-    
-    window.addEventListener('scroll', function() {
+
+    window.addEventListener('scroll', function () {
         if (!ticking) {
-            window.requestAnimationFrame(function() {
+            window.requestAnimationFrame(function () {
                 const scrolled = window.pageYOffset;
-                
+
                 if (heroBg && scrolled < window.innerHeight) {
                     const parallaxSpeed = 0.5;
                     heroBg.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
                 }
-                
+
                 ticking = false;
             });
-            
+
             ticking = true;
         }
     }, { passive: true });
@@ -268,7 +250,7 @@ function updateScrollProgress() {
 // ====================
 function initCounters() {
     const counters = document.querySelectorAll('.stat[data-target]');
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
@@ -288,7 +270,7 @@ function animateCounter(element, target, suffix) {
     const increment = target / 50;
     const duration = 1500;
     const stepTime = duration / 50;
-    
+
     const timer = setInterval(() => {
         current += increment;
         if (current >= target) {
@@ -305,14 +287,14 @@ function animateCounter(element, target, suffix) {
 // ====================
 function initScrollReveal() {
     const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-    
+
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
             }
         });
-    }, { 
+    }, {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     });
@@ -327,10 +309,10 @@ function initScrollReveal() {
 // ====================
 function initNavigation() {
     const nav = document.getElementById('nav');
-    
-    window.addEventListener('scroll', function() {
+
+    window.addEventListener('scroll', function () {
         const currentScroll = window.pageYOffset;
-        
+
         if (currentScroll > 50) {
             nav.classList.add('scrolled');
         } else {
@@ -358,10 +340,10 @@ function initSmoothScroll() {
         anchor.addEventListener('click', function (e) {
             const href = this.getAttribute('href');
             if (href === '#') return;
-            
+
             e.preventDefault();
             const target = document.querySelector(href);
-            
+
             if (target) {
                 const offsetTop = target.offsetTop - 80;
                 window.scrollTo({
@@ -378,11 +360,11 @@ function initSmoothScroll() {
 // ====================
 function initButtonRipples() {
     document.querySelectorAll('.btn').forEach(button => {
-        button.addEventListener('click', function(e) {
+        button.addEventListener('click', function (e) {
             const rect = this.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            
+
             const ripple = document.createElement('span');
             ripple.style.cssText = `
                 position: absolute;
@@ -396,7 +378,7 @@ function initButtonRipples() {
                 animation: ripple-animation 0.6s ease-out;
                 pointer-events: none;
             `;
-            
+
             this.appendChild(ripple);
             setTimeout(() => ripple.remove(), 600);
         });
@@ -408,39 +390,39 @@ function initButtonRipples() {
 // ====================
 
 // Splash screen
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function (event) {
     if (event.key === 'Enter' && !splashCompleted) {
         event.preventDefault();
         completeSplashScreen();
     }
 });
 
-document.getElementById('enter-prompt')?.addEventListener('click', function() {
+document.getElementById('enter-prompt')?.addEventListener('click', function () {
     if (!splashCompleted) {
         completeSplashScreen();
     }
 });
 
 // CTA buttons - Show email modal
-document.getElementById('hero-cta')?.addEventListener('click', function(e) {
+document.getElementById('hero-cta')?.addEventListener('click', function (e) {
     e.preventDefault();
     showEmailModal();
 });
 
-document.getElementById('cta-button')?.addEventListener('click', function(e) {
+document.getElementById('cta-button')?.addEventListener('click', function (e) {
     e.preventDefault();
     showEmailModal();
 });
 
 // Scroll progress
-window.addEventListener('scroll', function() {
+window.addEventListener('scroll', function () {
     updateScrollProgress();
 }, { passive: true });
 
 // ====================
 // Initialize
 // ====================
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     initNavigation();
     initSmoothScroll();
     initButtonRipples();

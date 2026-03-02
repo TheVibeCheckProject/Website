@@ -1,6 +1,6 @@
 # The Vibe Check Project — Monetization Build Workflow
 **Goal:** Turn this card-sending site into a passive income machine.
-**Stack:** Plain HTML/CSS/JS (no framework), MailerLite (email — FREE tier, replaced Buttondown), Ko-fi (membership), Gumroad (one-time sales), Microsoft Clarity (analytics — FREE), optional Supabase for gating.
+**Stack:** Plain HTML/CSS/JS (no framework), MailerLite (email — FREE tier), Ko-fi (membership), Gumroad (one-time sales), Microsoft Clarity (analytics — FREE), optional Supabase for gating.
 
 > **For AI agents:** This is a shared workflow between Claude Code (Claude) and Antigravity (Gemini).
 > ✅ = completed | 🔲 = pending | 🟡 = was manual — now AUTOMATED (see below) | 🤖 = run the automation script
@@ -42,7 +42,7 @@
 **Why:** The email list is where recurring income actually comes from. Every subscriber is a potential $3.99/month forever.
 
 ### Tasks
-- ✅ **Switched from Buttondown → MailerLite** (free tier, supports automations)
+- ✅ **Email platform: MailerLite** (free tier, supports automations)
   - Group ID: `180628908682512348` (Vibe Check Subscribers)
   - `send-card.html` and `view-card.html` now POST to `https://connect.mailerlite.com/api/subscribers`
   - ⚠️ **SECURITY NOTE for AI agents:** The API key is currently hardcoded in client-side HTML (visible to anyone who views source). This is acceptable for MVP. Long-term fix: move it behind a Netlify/Vercel serverless function. Do NOT rotate the key without updating both files.
@@ -82,8 +82,8 @@
 
 ### Tasks
 - ✅ **`send-card.html` — post-send screen**
-  - Share link → "Get free packs" email capture (Buttondown) → Gumroad premium designs upsell
-  - Email capture submits to `https://buttondown.com/api/emails/embed-subscribe/griffin`
+  - Share link → "Get free packs" email capture (MailerLite) → Gumroad premium designs upsell
+  - Email capture submits to MailerLite subscriber API
 - ✅ **`view-card.html` — recipient upsell**
   - Card back: "Get Daily Vibes Free ✨" → index.html, "Send One Back" → send-card.html
   - Email capture section added below product grid — free weekly pack pitch + Ko-fi upgrade link
@@ -92,7 +92,7 @@
   - Viral loop: recipient shares → new senders → new email captures
   - 🤖 **[Antigravity (Gemini) Suggestion]: Gamify the share button.** Offer a micro-incentive: "Share this card with 3 friends to unlock a secret premium design." We can easily implement this using `localStorage` to track clicks without needing a backend.
   - Place it prominently above the email capture section
-- ✅ **[Antigravity (Gemini) Suggestion]: Add a tiny "Pay What You Want" / Tip Jar early in the funnel.** On the post-send success screen (below Gumroad/Buttondown links), add a quiet link: *"P.S. Just want to say thanks? ☕ Buy me a coffee."* Some people won't want a sub or a layout pack, but will happily throw $5 your way to say thanks for the smile.
+- ✅ **[Antigravity (Gemini) Suggestion]: Add a tiny "Pay What You Want" / Tip Jar early in the funnel.** On the post-send success screen (below Gumroad/MailerLite links), add a quiet link: *"P.S. Just want to say thanks? ☕ Buy me a coffee."* Some people won't want a sub or a layout pack, but will happily throw $5 your way to say thanks for the smile.
 
 ---
 

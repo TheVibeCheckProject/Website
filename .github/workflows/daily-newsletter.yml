@@ -28,3 +28,15 @@ jobs:
           MAILERLITE_GROUP_ID: ${{ secrets.MAILERLITE_GROUP_ID }}
           DATE_OVERRIDE: ${{ github.event.inputs.date_override }}
         run: node scripts/send-newsletter.js
+
+      - name: Notify on failure
+        if: failure()
+        env:
+          MAILERLITE_API_KEY: ${{ secrets.MAILERLITE_API_KEY }}
+        run: |
+          echo "🚨 Newsletter send FAILED for $(date +'%Y-%m-%d')"
+          curl -s -X POST "https://connect.mailerlite.com/api/subscribers" \
+            -H "Authorization: Bearer $MAILERLITE_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"email":"hello@thevibecheckproject.com","fields":{"name":"ALERT","last_failure":"'"$(date +'%Y-%m-%d %H:%M')"'"}}'
+          echo "⚠️ Failure logged — check GitHub Actions for details"

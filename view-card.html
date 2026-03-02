@@ -629,6 +629,10 @@
         <div class="flip-card-face flip-card-back">
           <div class="affirmation" id="cardAffirmation">You've got a vibe!</div>
           <div class="card-message" id="cardMessage">Someone wanted to send you some good vibes ✨</div>
+          <a href="https://thevibecheckproject.com" target="_blank" rel="noopener"
+            style="position:absolute;bottom:10px;font-size:10px;color:rgba(255,255,255,0.3);text-decoration:none;letter-spacing:0.5px;font-family:var(--font-body);">
+            Powered by ✨ The Vibe Check Project
+          </a>
         </div>
       </div>
     </div>
@@ -639,25 +643,17 @@
       <a href="index.html" class="btn btn-outline">Get Daily Vibes Free ✨</a>
     </div>
 
-    <!-- Gamified Share -->
-    <div class="share-section">
-      <h3>Unlock a Secret Design 🎁</h3>
-      <p>Share this card with 3 friends to reveal a secret premium background.</p>
-      <div class="share-progress">
-        <div class="share-dot" id="dot1"></div>
-        <div class="share-dot" id="dot2"></div>
-        <div class="share-dot" id="dot3"></div>
-      </div>
-      <button id="gamifiedShareBtn" class="btn btn-outline" style="width:100%;justify-content:center;">
-        Share Card (<span id="shareCount">0</span>/3)
-      </button>
-      <div id="shareReward"
-        style="display:none;margin-top:16px;padding:14px;background:rgba(163,230,53,0.08);border-radius:10px;">
-        <p style="color:var(--text-primary);font-size:14px;margin-bottom:8px;">🎉 Unlocked! Here's your secret design:
-        </p>
-        <a href="#" download style="color:var(--green);font-weight:700;text-decoration:none;font-size:15px;">Download
-          Secret Design (.ZIP) ↓</a>
-      </div>
+    <!-- Premium upsell — prominent CTA at the highest-intent moment -->
+    <div
+      style="margin:24px 0;padding:20px 24px;background:linear-gradient(135deg,rgba(163,230,53,0.08),rgba(168,85,247,0.08));border:1px solid rgba(163,230,53,0.2);border-radius:14px;text-align:center;">
+      <p style="color:var(--text-primary);font-size:16px;font-weight:600;margin-bottom:6px;">Love this? Go Premium ✨</p>
+      <p style="color:var(--text-secondary);font-size:13px;margin-bottom:14px;">Daily affirmations, exclusive card
+        packs, and 20+ premium designs.</p>
+      <a href="https://ko-fi.com/thevibecheckproject/membership?utm_source=website&utm_campaign=card-view-cta"
+        target="_blank" rel="noopener"
+        style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#a3e635,#84cc16);color:#0a0a0a;font-weight:700;border-radius:10px;text-decoration:none;font-family:var(--font-display);font-size:14px;transition:transform 0.2s,box-shadow 0.2s;">
+        Join Premium — $3.99/mo
+      </a>
     </div>
 
     <!-- Email capture -->
@@ -669,18 +665,11 @@
         <input type="email" placeholder="your@email.com" required>
         <button type="submit">Join Free</button>
       </form>
-      <p class="premium-link">
-        Want more? <a href="https://ko-fi.com/thevibecheckproject/membership?utm_source=website&utm_campaign=card-view"
-          target="_blank" rel="noopener">Join Premium on Ko-fi</a> — $3.99/mo
-      </p>
     </div>
 
     <!-- Footer -->
     <div class="page-footer">
       Made with 💚 by <a href="https://thevibecheckproject.com">The Vibe Check Project</a>
-      <br>
-      <a href="https://vibecheck2.gumroad.com/l/ycmxxb?utm_source=website&utm_campaign=card-view" target="_blank"
-        rel="noopener" style="color:var(--text-muted);font-weight:400;">✨ Premium Card Designs — $4.99</a>
     </div>
   </div>
 
@@ -891,40 +880,7 @@
     // Ambient particles
     burstParticles(15);
 
-    // Gamified share
-    let shareCount = parseInt(localStorage.getItem('vibeCheckShareCount') || '0');
-    function updateShareUI() {
-      document.getElementById('shareCount').textContent = shareCount;
-      for (let i = 1; i <= 3; i++) {
-        const dot = document.getElementById('dot' + i);
-        if (dot) dot.classList.toggle('filled', i <= shareCount);
-      }
-      if (shareCount >= 3) {
-        document.getElementById('gamifiedShareBtn').style.display = 'none';
-        document.getElementById('shareReward').style.display = 'block';
-      }
-    }
-    document.getElementById('gamifiedShareBtn')?.addEventListener('click', async () => {
-      const shareData = {
-        title: 'I got a Vibe Check! ✨',
-        text: 'Someone sent me good vibes. Send your own anonymous affirmation card!',
-        url: window.location.href
-      };
-      try {
-        if (navigator.share) {
-          await navigator.share(shareData);
-        } else {
-          await navigator.clipboard.writeText(window.location.href);
-          alert('Card link copied!');
-        }
-        if (shareCount < 3) {
-          shareCount++;
-          localStorage.setItem('vibeCheckShareCount', shareCount.toString());
-          updateShareUI();
-        }
-      } catch (err) { console.log('Share error:', err); }
-    });
-    updateShareUI();
+
   </script>
 </body>
 

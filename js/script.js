@@ -389,19 +389,18 @@ function initButtonRipples() {
 // Event Listeners
 // ====================
 
-// Splash screen
-document.addEventListener('keydown', function (event) {
-    if (event.key === 'Enter' && !splashCompleted) {
-        event.preventDefault();
-        completeSplashScreen();
-    }
-});
-
-document.getElementById('enter-prompt')?.addEventListener('click', function () {
-    if (!splashCompleted) {
-        completeSplashScreen();
-    }
-});
+// No splash screen — initialize everything immediately
+(function () {
+    const mainContent = document.getElementById('main-content');
+    if (mainContent) mainContent.classList.add('show');
+    document.body.style.overflow = 'auto';
+    initParallax();
+    initScrollReveal();
+    initCounters();
+    initLucideIcons();
+    displayTodaysAffirmation();
+    createEmailModal();
+})();
 
 // CTA buttons - Show email modal
 document.getElementById('hero-cta')?.addEventListener('click', function (e) {

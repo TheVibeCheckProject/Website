@@ -390,6 +390,16 @@
             cursor: not-allowed;
         }
 
+        @media (max-width: 480px) {
+            .inline-email-form {
+                flex-direction: column;
+            }
+
+            .inline-email-form button {
+                width: 100%;
+            }
+        }
+
         .gumroad-upsell-box {
             background: rgba(255, 107, 157, 0.07);
             border: 1px solid rgba(255, 107, 157, 0.2);
@@ -592,6 +602,7 @@
 
                     .success-share-input-row input {
                         flex: 1;
+                        min-width: 0;
                         background: rgba(0, 0, 0, 0.3);
                         border: 1px solid rgba(255, 255, 255, 0.1);
                         border-radius: 10px;
@@ -599,6 +610,8 @@
                         color: #ccc;
                         font-size: 13px;
                         font-family: monospace;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
 
                     .success-copy-btn {
@@ -706,6 +719,16 @@
 
                         .quick-share-btn {
                             justify-content: center;
+                        }
+
+                        .success-email-badge {
+                            font-size: 12px;
+                            padding: 6px 12px;
+                            text-align: center;
+                        }
+
+                        .success-title {
+                            font-size: 24px;
                         }
                     }
                 </style>

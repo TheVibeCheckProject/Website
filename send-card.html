@@ -861,9 +861,15 @@
             document.getElementById('previewAffirmation').textContent = `"${affirmation}"`;
         }
 
-        // Update preview as user types
-        document.getElementById('senderName').addEventListener('input', updatePreview);
-        document.getElementById('personalMessage').addEventListener('input', updatePreview);
+        // Update preview as user types — multiple events for mobile keyboard compatibility
+        const senderInput = document.getElementById('senderName');
+        const messageInput = document.getElementById('personalMessage');
+        ['input', 'keyup', 'change', 'blur', 'compositionend'].forEach(evt => {
+            senderInput.addEventListener(evt, updatePreview);
+            messageInput.addEventListener(evt, updatePreview);
+        });
+        // Polling fallback for mobile predictive text that skips all events
+        setInterval(updatePreview, 500);
 
         function updatePreview() {
             const senderName = document.getElementById('senderName').value || 'Someone special';

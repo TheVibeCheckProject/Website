@@ -106,10 +106,64 @@
                     <button class="btn btn-primary" id="hero-cta">Get Your Daily Vibe Check ✨</button>
                     <a href="send-card.html" class="btn btn-secondary">💌 Send a Card</a>
                 </div>
-                <div class="hero-affirmation">
-                    <p class="affirmation-text">"You're trying, and that's what counts."</p>
-                    <p class="affirmation-label">Today's Vibe Check</p>
+                <div class="hero-affirmation" id="vibeOfDay">
+                    <p class="affirmation-text" id="vibeText">"You're trying, and that's what counts."</p>
+                    <p class="affirmation-label">🌅 Today's Vibe — <span id="vibeDate"></span></p>
+                    <button class="vibe-share-btn" id="vibeShareBtn" title="Share today's vibe">📋 Share This
+                        Vibe</button>
                 </div>
+                <script>
+                    (function () {
+                        const vibes = [
+                            "You're trying, and that's what counts.",
+                            "Your feelings are valid, and you deserve to be heard.",
+                            "Every new day is a fresh chance to try again.",
+                            "You're doing better than you think you are.",
+                            "Your presence makes a difference, even when you don't see it.",
+                            "Rest is not weakness. It's essential.",
+                            "You are allowed to take up space.",
+                            "It's okay to not have it all figured out.",
+                            "Someone out there is grateful you exist.",
+                            "You don't have to earn the right to be loved.",
+                            "Your story isn't over. Keep going.",
+                            "Progress isn't always visible, but it's always happening.",
+                            "You are more resilient than you realize.",
+                            "The hard days make the good ones so much better.",
+                            "You are enough, exactly as you are right now.",
+                            "It's brave to ask for help.",
+                            "You bring something to this world that no one else can.",
+                            "Healing isn't linear, and that's okay.",
+                            "Your best is always enough.",
+                            "Small steps still move you forward.",
+                            "You deserve the kindness you give to others.",
+                            "Today is proof that you're stronger than yesterday.",
+                            "The people who love you aren't keeping score.",
+                            "You're not behind. You're on your own timeline.",
+                            "Breathe. You're exactly where you need to be.",
+                            "It's okay to outgrow things that once fit you.",
+                            "Your value isn't measured by your productivity.",
+                            "You've survived 100% of your worst days so far.",
+                            "Someone needs exactly the energy you bring.",
+                            "You are worthy of good things happening to you."
+                        ];
+                        const now = new Date();
+                        const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
+                        const todayVibe = vibes[dayOfYear % vibes.length];
+                        document.getElementById('vibeText').textContent = `"${todayVibe}"`;
+                        document.getElementById('vibeDate').textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                        document.getElementById('vibeShareBtn').addEventListener('click', async () => {
+                            const shareText = `✨ Today's Vibe Check: "${todayVibe}" — thevibecheckproject.com`;
+                            if (navigator.share) {
+                                try { await navigator.share({ text: shareText }); } catch (e) { }
+                            } else {
+                                await navigator.clipboard.writeText(shareText);
+                                const btn = document.getElementById('vibeShareBtn');
+                                btn.textContent = '✅ Copied!';
+                                setTimeout(() => btn.textContent = '📋 Share This Vibe', 2000);
+                            }
+                        });
+                    })();
+                </script>
             </div>
         </section>
 
@@ -410,7 +464,7 @@
                         <p class="stat-label">Vibe Checks Sent</p>
                     </div>
                     <div class="stat-card reveal">
-                        <div class="stat">13</div>
+                        <div class="stat">20</div>
                         <p class="stat-label">Card Themes</p>
                     </div>
                     <div class="stat-card reveal">

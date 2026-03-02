@@ -67,8 +67,8 @@ Added a `Notify on failure` step to the GitHub Actions workflow that logs a fail
 ### ~~Email Signup Flow Is Unclear~~ ✅ FIXED
 Homepage signup in `js/script.js` now posts directly to MailerLite (group `180628908682512348`). Buttondown references fully removed. `EMAIL_SETUP_GUIDE.md` and `EMAIL_CARD_INTEGRATION.md` deleted.
 
-### `setup-platforms.mjs` Is Fragile
-The Playwright automation for Ko-fi/Gumroad setup depends on CSS selectors that Ko-fi and Gumroad can change at any time. It also requires manual login, which means it's a one-time-use helper, not a repeatable automation. This is fine as a setup tool, but don't rely on it being runnable in the future without maintenance.
+### ~~`setup-platforms.mjs` Is Fragile~~ ✅ RESOLVED
+Script deleted — Ko-fi and Gumroad are both already set up and live. One-time setup tool no longer needed.
 
 ### Counter API Is a Single Point of Failure
 `counterapi.dev` is a free third-party service with no SLA. If it goes down or changes its API, the live card counter breaks silently. Minor, but worth noting.

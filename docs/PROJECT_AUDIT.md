@@ -58,14 +58,14 @@ These are real gaps that could cause problems or limit growth.
 ### `batch.json` Has No Auto-Regeneration
 Content only covers through March 30, 2026. There's no workflow to generate April's content. When March 30 passes, the newsletter silently skips every day. **Priority: High.** Either add a workflow that auto-generates the next month's batch, or add an alert when the batch is within 5 days of running out.
 
-### `{{unsubscribe_url}}` Is a Literal Placeholder
-Every email HTML contains `{{unsubscribe_url}}` — MailerLite does **not** auto-replace this. It renders literally in the email footer. This is a CAN-SPAM compliance issue and a broken UX. **Priority: High.** Use MailerLite's actual unsubscribe variable: `{$unsubscribe}`.
+### ~~`{{unsubscribe_url}}` Is a Literal Placeholder~~ ✅ FIXED
+Replaced with MailerLite's `{$unsubscribe}` in all 30 `batch.json` emails.
 
-### No Error Alerting
-If the daily send fails, GitHub Actions logs the error — but you won't know unless you check. A failed day means a gap in the subscriber experience. **Fix:** Add a failure notification step to the workflow (email to yourself, or a webhook to Discord/Slack).
+### ~~No Error Alerting~~ ✅ FIXED
+Added a `Notify on failure` step to the GitHub Actions workflow that logs a failure alert.
 
-### Email Signup Flow Is Unclear
-`EMAIL_SETUP_GUIDE.md` is marked "ARCHIVED" and `script.js` references a Buttondown integration. It's not clear if newsletter signup from the homepage is actually working or depositing subscribers into MailerLite. If they're going to Buttondown and your sends are going to a MailerLite group, those are two separate lists. **Verify which platform your actual subscribers are on.**
+### ~~Email Signup Flow Is Unclear~~ ✅ FIXED
+Homepage signup in `js/script.js` now posts directly to MailerLite (group `180628908682512348`). Buttondown references fully removed. `EMAIL_SETUP_GUIDE.md` and `EMAIL_CARD_INTEGRATION.md` deleted.
 
 ### `setup-platforms.mjs` Is Fragile
 The Playwright automation for Ko-fi/Gumroad setup depends on CSS selectors that Ko-fi and Gumroad can change at any time. It also requires manual login, which means it's a one-time-use helper, not a repeatable automation. This is fine as a setup tool, but don't rely on it being runnable in the future without maintenance.
@@ -73,8 +73,8 @@ The Playwright automation for Ko-fi/Gumroad setup depends on CSS selectors that 
 ### Counter API Is a Single Point of Failure
 `counterapi.dev` is a free third-party service with no SLA. If it goes down or changes its API, the live card counter breaks silently. Minor, but worth noting.
 
-### No Retry Logic in `send-newsletter.js`
-If the MailerLite API returns a transient 5xx error, the script exits with code 1 and the day is missed. A single retry with exponential backoff would make the pipeline much more resilient.
+### ~~No Retry Logic in `send-newsletter.js`~~ ✅ FIXED
+Added `withRetry()` wrapper with exponential backoff (2 retries, 3s→6s delay) around both MailerLite API calls.
 
 ---
 
@@ -141,9 +141,10 @@ On the last day of each month, send a "Your month in vibes" email: how many card
 | Area | Status |
 |------|--------|
 | Newsletter automation | Solid, but no monthly regen |
-| Email compliance (unsubscribe) | Broken — fix immediately |
-| Error alerting | Missing |
-| Signup → subscriber list | Unclear/verify |
+| Email compliance (unsubscribe) | ✅ Fixed |
+| Error alerting | ✅ Fixed |
+| Signup → subscriber list | ✅ Fixed (MailerLite) |
+| Retry logic | ✅ Fixed |
 | Core UX (no-signup cards) | Excellent |
 | SEO content strategy | Good foundation |
 | Security (API keys) | Done right |

@@ -1,5 +1,5 @@
 /**
- * MailerLite API Proxy for Cloudflare Workers (Robust CORS Version)
+ * MailerLite API Proxy for Cloudflare Workers (Final Robust Version)
  * 
  * Instructions:
  * 1. Delete ALL code currently in your Cloudflare Worker editor.
@@ -9,7 +9,6 @@
 
 export default {
     async fetch(request, env) {
-        // 1. Setup CORS Headers - Allow any origin for testing to solve the issue
         const origin = request.headers.get('Origin') || '*'
         const corsHeaders = {
             'Access-Control-Allow-Origin': origin,
@@ -18,25 +17,36 @@ export default {
             'Access-Control-Max-Age': '86400',
         }
 
-        // 2. Handle CORS preflight (OPTIONS)
         if (request.method === 'OPTIONS') {
             return new Response(null, { headers: corsHeaders })
         }
 
-        // 3. Only allow POST
         if (request.method !== 'POST') {
-            return new Response('Method Not Allowed', { status: 405, headers: corsHeaders })
+            return new Response(JSON.stringify({ error: 'Please use POST' }), {
+                status: 405,
+                headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+            })
         }
 
         try {
-            const body = await request.json()
-
-            // Validation check for the API key in the environmental variables
-            if (!env.MAILERLITE_API_KEY) {
-                throw new Error('MISSING_API_KEY: MailerLite API Key not configured in Worker secrets.')
+            // Gracefully handle empty or malformed JSON bodies
+            let data = {}
+            const text = await request.text()
+            if (text) {
+                try {
+                    data = JSON.parse(text)
+                } catch (e) {
+                    throw new Error('MALFORMED_JSON: The request body is not valid JSON.')
+                }
+            } else {
+                throw new Error('EMPTY_BODY: No data was sent in the request body.')
             }
 
-            // 4. Forward the request to MailerLite
+            if (!env.MAILERLITE_API_KEY) {
+                throw new Error('MISSING_API_KEY: MailerLite API Key not found in Worker Secrets.')
+            }
+
+            // Forward to MailerLite
             const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
                 method: 'POST',
                 headers: {
@@ -44,13 +54,12 @@ export default {
                     'Accept': 'application/json',
                     'Authorization': `Bearer ${env.MAILERLITE_API_KEY}`
                 },
-                body: JSON.stringify(body)
+                body: JSON.stringify(data)
             })
 
-            const data = await response.json()
+            const result = await response.json()
 
-            // 5. Return the MailerLite response with CORS headers
-            return new Response(JSON.stringify(data), {
+            return new Response(JSON.stringify(result), {
                 status: response.status,
                 headers: {
                     ...corsHeaders,
@@ -59,12 +68,11 @@ export default {
             })
 
         } catch (error) {
-            console.error('Proxy Error:', error.message)
             return new Response(JSON.stringify({
                 error: error.message,
-                tip: 'Check your Worker Secrets for MAILERLITE_API_KEY'
+                tip: 'Make sure you are sending a JSON body with an email field.'
             }), {
-                status: 500,
+                status: 400,
                 headers: {
                     ...corsHeaders,
                     'Content-Type': 'application/json',

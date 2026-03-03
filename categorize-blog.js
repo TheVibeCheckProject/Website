@@ -24,7 +24,7 @@ $grid.find('a.blog-card-img').each(function () {
         $el.attr('style', "background-image: url('../assets/blog_cover_new_job_1772534337585.png');");
     }
 
-    posts[href] = $el.parent().html(); // Getting the outerHTML of the element
+    posts[href] = $.html($el); // Getting the outerHTML of the element
 });
 
 const groups = [

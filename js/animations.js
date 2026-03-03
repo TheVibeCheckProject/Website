@@ -136,12 +136,23 @@ document.addEventListener('DOMContentLoaded', () => {
     particleContainer.setAttribute('aria-hidden', 'true');
     document.body.appendChild(particleContainer);
 
-    const smokeWords = ['breathe', 'enough', 'worthy', 'loved', 'capable', 'strong', 'peace', 'calm', 'valid', 'brave', 'seen', 'safe', 'grow', 'rest', 'heal', 'light'];
+    // Expanded dictionary of affirmation words
+    const smokeWords = [
+        'breathe', 'enough', 'worthy', 'loved', 'capable', 'strong', 'peace', 'calm',
+        'valid', 'brave', 'seen', 'safe', 'grow', 'rest', 'heal', 'light',
+        'hope', 'kind', 'true', 'bold', 'free', 'gentle', 'steady', 'warm',
+        'here', 'now', 'okay', 'alive', 'glow', 'rise', 'soar', 'bloom',
+        'trust', 'grace', 'power', 'magic', 'still', 'fluid', 'whole', 'soft',
+        'open', 'clear', 'rooted', 'vast', 'deep', 'real', 'wild', 'held'
+    ];
+
+    // Shuffle array to ensure unique words are picked without repetition
+    const shuffledWords = [...smokeWords].sort(() => 0.5 - Math.random());
 
     // Create subtle drifting emotion words, constructed from large "smoke"
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 12; i++) {
         const wordEl = document.createElement('span');
-        wordEl.textContent = smokeWords[Math.floor(Math.random() * smokeWords.length)];
+        wordEl.textContent = shuffledWords[i]; // Guaranteed unique
         wordEl.classList.add('smoke-word');
         // Spread completely across screen
         wordEl.style.left = `${Math.random() * 90 + 5}vw`;

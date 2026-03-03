@@ -709,6 +709,7 @@
 
         const response = await fetch(PROXY_URL, {
           method: 'POST',
+          mode: 'cors', // Explicitly set CORS mode
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'

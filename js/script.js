@@ -151,6 +151,7 @@ async function handleEmailSignup(e) {
 
         const response = await fetch(PROXY_URL, {
             method: 'POST',
+            mode: 'cors', // Explicit CORS mode
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'

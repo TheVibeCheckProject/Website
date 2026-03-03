@@ -926,11 +926,15 @@
                         <button class="success-copy-btn" onclick="copyLink()">Copy</button>
                     </div>
                     <div class="quick-share-row">
-                        <a class="quick-share-btn" id="whatsappShare" href="#" target="_blank" rel="noopener">💬
-                            WhatsApp</a>
+                        <button class="quick-share-btn" id="textShare" onclick="textFriend(event)"
+                            style="background: rgba(163, 230, 53, 0.15); border-color: rgba(163, 230, 53, 0.4); color: #a3e635; font-weight: 700;">
+                            💬 Text a Friend
+                        </button>
+                        <a class="quick-share-btn" id="whatsappShare" href="#" target="_blank"
+                            rel="noopener">WhatsApp</a>
                         <a class="quick-share-btn" id="twitterShare" href="#" target="_blank" rel="noopener">𝕏
                             Twitter</a>
-                        <button class="quick-share-btn" onclick="copyLink()">📋 Copy</button>
+                        <button class="quick-share-btn" onclick="copyLink(event)">📋 Copy</button>
                     </div>
                 </div>
 
@@ -1208,22 +1212,58 @@
             }
 
             // Set up quick share links
-            const shareText = encodeURIComponent('Someone sent you a Vibe Check! ✨ Open it here:');
+            const shareText = encodeURIComponent('I sent you a Vibe Check! ✨ Open your card here:');
             const shareUrl = encodeURIComponent(cardUrl);
             document.getElementById('whatsappShare').href = `https://wa.me/?text=${shareText}%20${shareUrl}`;
             document.getElementById('twitterShare').href = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
+            document.getElementById('textShare').dataset.url = cardUrl;
         });
 
-        function copyLink() {
+        function copyLink(e) {
             const input = document.getElementById('cardLink');
             input.select();
             document.execCommand('copy');
 
-            const button = event.target;
+            const button = e ? e.target : document.querySelector('.success-copy-btn');
+            const originalText = button.textContent;
             button.textContent = 'Copied!';
             setTimeout(() => {
-                button.textContent = 'Copy';
+                button.textContent = originalText;
             }, 2000);
+        }
+
+        async function textFriend(e) {
+            const btn = e.currentTarget;
+            const url = btn.dataset.url;
+            const text = 'I sent you a Vibe Check! ✨ Open your card here:';
+
+            // Try native Web Share API (Works securely on iOS Safari and Android Chrome)
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'The Vibe Check Project',
+                        text: text,
+                        url: url
+                    });
+                    return; // Success!
+                } catch (err) {
+                    console.log('User cancelled share or share failed.', err);
+                    // Don't fall back, just let them be if they cancelled
+                    if (err.name === 'AbortError') return;
+                }
+            }
+
+            // Fallback for desktops / unsupported browsers
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            const encodedText = encodeURIComponent(text + " " + url);
+
+            if (isIOS) {
+                // iOS requires '&' before body
+                window.location.href = `sms:&body=${encodedText}`;
+            } else {
+                // Android/others use '?'
+                window.location.href = `sms:?body=${encodedText}`;
+            }
         }
 
         async function handleSenderSignup(e) {

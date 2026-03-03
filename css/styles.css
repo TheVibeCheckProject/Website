@@ -2654,3 +2654,58 @@ footer {
     position: relative;
     z-index: 2;
 }
+/* Navbar Crisis Badge Styling */
+.nav-crisis-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 68, 68, 0.08);
+    border: 1px solid rgba(255, 68, 68, 0.2);
+    padding: 5px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none !important;
+    margin-right: 15px;
+}
+
+.nav-crisis-badge:hover {
+    background: rgba(255, 68, 68, 0.15);
+    border-color: rgba(255, 68, 68, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 68, 68, 0.15);
+}
+
+.nav-crisis-heart {
+    font-size: 16px;
+    filter: drop-shadow(0 0 5px rgba(255, 68, 68, 0.5));
+    animation: navHeartbeat 1.5s ease-in-out infinite;
+}
+
+.nav-crisis-text {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 800;
+    color: #ff6b6b;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+@keyframes navHeartbeat {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.25); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.15); }
+    60% { transform: scale(1); }
+}
+
+@media (max-width: 600px) {
+    .nav-crisis-text {
+        display: none;
+    }
+    .nav-crisis-badge {
+        padding: 6px;
+        margin-right: 8px;
+    }
+}
+

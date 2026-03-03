@@ -145,13 +145,15 @@ async function handleEmailSignup(e) {
     submitBtn.disabled = true;
 
     try {
-        // Subscribe via MailerLite API
-        const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
+        // Subscribe via secure Cloudflare Worker proxy (prevents API key exposure)
+        // ⚠️ DEPLOYMENT NOTE: Replace this URL with your actual Cloudflare Worker URL
+        const PROXY_URL = 'https://vibe-check-proxy.caseagent72401.workers.dev/';
+
+        const response = await fetch(PROXY_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiNWU3ZWZhOTcyMjRlZTg4OWNkMWZiYzA2NThlZjFjMDA5OWYwOGIxZDYzMzk4YWNjYmIwMDQ0YjgzNWI3ODBjNWQ2YTI2NWEzNmE1MGE4ZDkiLCJpYXQiOjE3NzIyNjEyNzQuMTQ2Mzg1LCJuYmYiOjE3NzIyNjEyNzQuMTQ2Mzg5LCJleHAiOjQ5Mjc5MzQ4NzQuMTQwNTI4LCJzdWIiOiIyMTY4Njg0Iiwic2NvcGVzIjpbXX0.b-_FJ38aNok7ORlkP5qXVgYzccw-JJm5wQyZnXMinhCAban5EIC5R7hzCFAc4LVbBnoT4AToEpkIFeNEmpaUS7Okm9NvvUg8y18T4oVdJDfToHqwzSOd21fAExTunMK8yKbklVlbbYM1r4wwkhEg-ByX6GqiNAuttGKNFKhlGYFC0OVt67WMqe-P3b5TDtUNW_zXu-kCiyNAAgFEZGHuGB2SM7KASKGcO3rUcBtxClzl6bNKlwvLYqMPDkQUGo1zKsm7wuxn5fzUQhTQPqWIGg1q3IPbCinu-44KJhtEmagO2EEFwpBx2mQWR2iqa7RO_IKIdtRiTu305yrQheKaFx8Xkbm0jcgST2cn8iPK7N3ESrfcCq1BgLigXBbh7TMQstRRccqCuAwuftz4cZVL5hcMKnQI7lgQ_FMmdgYKQdnzYi0RMEGaSC_iwm0-a5oTNSSkDwsL1yNGNODdEImelISvCVcMM9gsK3A-f-zaRwwHvyaz8erIfASnlmCGXfrgcZW6lpHBM0XE8r-eiGS_vGY'
+                'Accept': 'application/json'
             },
             body: JSON.stringify({
                 email: email,

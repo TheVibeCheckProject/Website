@@ -138,21 +138,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const smokeWords = ['breathe', 'enough', 'worthy', 'loved', 'capable', 'strong', 'peace', 'calm', 'valid', 'brave', 'seen', 'safe', 'grow', 'rest', 'heal', 'light'];
 
-    // Create subtle drifting emotion words
-    for (let i = 0; i < 12; i++) {
+    // Create subtle drifting emotion words, constructed from large "smoke"
+    for (let i = 0; i < 8; i++) {
         const wordEl = document.createElement('span');
         wordEl.textContent = smokeWords[Math.floor(Math.random() * smokeWords.length)];
         wordEl.classList.add('smoke-word');
-        wordEl.style.left = `${Math.random() * 90 + 5}vw`;
-        wordEl.style.top = `${Math.random() * 90 + 5}%`;
+        wordEl.style.left = `${Math.random() * 80 + 10}vw`; // Keep away from extreme edges
+        wordEl.style.top = `${Math.random() * 80 + 10}%`;
+
+        // Vastly increase size so it looks like a cloud of text
+        const sizeRem = 3 + Math.random() * 5; // 3rem to 8rem
+        wordEl.style.fontSize = `${sizeRem}rem`;
 
         // Randomize the animation settings for each word to make them unique
-        wordEl.style.animationDuration = `${25 + Math.random() * 25}s`;
-        wordEl.style.animationDelay = `${Math.random() * -30}s`;
+        wordEl.style.animationDuration = `${30 + Math.random() * 30}s`; // Slower drift since they are huge
+        wordEl.style.animationDelay = `${Math.random() * -40}s`;
 
         // Use custom properties to define random start/end rotation in CSS
-        const startRot = Math.random() * 40 - 20;
-        const endRot = startRot + (Math.random() * 40 - 20);
+        const startRot = Math.random() * 20 - 10;
+        const endRot = startRot + (Math.random() * 30 - 15);
         wordEl.style.setProperty('--start-rot', `${startRot}deg`);
         wordEl.style.setProperty('--end-rot', `${endRot}deg`);
 

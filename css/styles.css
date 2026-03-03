@@ -2426,38 +2426,42 @@ footer {
 .smoke-word {
     position: absolute;
     font-family: 'Caveat', cursive;
-    color: var(--color-primary);
+    color: rgba(255, 255, 255, 0.6);
     opacity: 0;
     transform-origin: center;
-    /* Apply a glowing text-shadow for a softer smoke look */
-    text-shadow: 0 0 10px rgba(255, 107, 157, 0.4);
+    /* Heavy, glowing text-shadow for a dense smoke/cloud look */
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 107, 157, 0.3);
     animation: smokeDrift linear infinite;
+    pointer-events: none;
+    z-index: 0;
 }
 
 @keyframes smokeDrift {
     0% {
         opacity: 0;
-        transform: translate(0, 0) rotate(var(--start-rot, 0deg)) scale(0.8);
-        filter: blur(4px);
+        transform: translate(0, 0) rotate(var(--start-rot, 0deg)) scale(0.6);
+        filter: blur(8px);
     }
 
-    20% {
-        opacity: 0.15;
+    30% {
+        opacity: 0.4;
+        filter: blur(3px);
     }
 
     50% {
-        opacity: 0.25;
+        opacity: 0.7;
         filter: blur(1px);
     }
 
-    80% {
-        opacity: 0.15;
+    70% {
+        opacity: 0.4;
+        filter: blur(3px);
     }
 
     100% {
         opacity: 0;
-        transform: translate(0, -250px) rotate(var(--end-rot, 20deg)) scale(1.2);
-        filter: blur(4px);
+        transform: translate(0, -350px) rotate(var(--end-rot, 20deg)) scale(1.5);
+        filter: blur(8px);
     }
 }
 

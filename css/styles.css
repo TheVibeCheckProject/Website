@@ -2279,6 +2279,7 @@ footer {
 /* --- Global Image-Backed Blog Cards --- */
 .blog-card-img {
     max-width: 100%;
+    height: 480px;
     position: relative;
     color: #fff;
     overflow: hidden;

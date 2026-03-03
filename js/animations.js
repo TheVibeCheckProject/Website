@@ -150,13 +150,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const shuffledWords = [...smokeWords].sort(() => 0.5 - Math.random());
 
     // Create subtle drifting emotion words, constructed from large "smoke"
+    // Use a grid system to ensure words don't overlap when spawning
+    const cols = 4;
+    const rows = 3;
+    const cellWidth = 100 / cols;
+    const cellHeight = 100 / rows;
+
+    // Create an array of grid cells [x, y]
+    const cells = [];
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            cells.push({ col: c, row: r });
+        }
+    }
+    // Shuffle the cells to randomize which region gets which word
+    const shuffledCells = cells.sort(() => 0.5 - Math.random());
+
     for (let i = 0; i < 12; i++) {
         const wordEl = document.createElement('span');
         wordEl.textContent = shuffledWords[i]; // Guaranteed unique
         wordEl.classList.add('smoke-word');
-        // Spread completely across screen
-        wordEl.style.left = `${Math.random() * 90 + 5}vw`;
-        wordEl.style.top = `${Math.random() * 95 + 5}%`;
+
+        // Assign to a specific grid cell, with some padding inside the cell
+        const cell = shuffledCells[i];
+        const randomXOffset = Math.random() * (cellWidth * 0.6); // 60% of cell width
+        const randomYOffset = Math.random() * (cellHeight * 0.6);
+
+        wordEl.style.left = `${(cell.col * cellWidth) + randomXOffset}vw`;
+        wordEl.style.top = `${(cell.row * cellHeight) + randomYOffset}%`;
 
         // Vastly increase size so it looks like a cloud of text
         const sizeRem = 3 + Math.random() * 6; // 3rem to 9rem

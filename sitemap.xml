@@ -145,4 +145,19 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/why-you-should-send-affirmations-for-no-reason.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/the-people-who-seem-fine-need-you-most.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/how-a-30-second-text-can-change-someones-day.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>

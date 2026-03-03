@@ -64,10 +64,11 @@
         <!-- Navigation -->
         <nav id="nav">
             <div class="nav-container">
-                <a href="#" class="nav-logo">✨ The Vibe Check</a>
+                <a href="#" class="nav-logo">✨ The Vibe Check Project</a>
                 <ul class="nav-links">
                     <li><a href="#why">Our Mission</a></li>
                     <li><a href="#affirmations">Daily Vibes</a></li>
+                    <li><a href="#blog">Blog</a></li>
                     <li><a href="#join">Join Us</a></li>
                     <li><a href="#support">Support</a></li>
                 </ul>
@@ -306,6 +307,142 @@
                 </div>
             </div>
         </section>
+
+        <!-- Blog Showcase Section -->
+        <section id="blog" class="blog-showcase-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Words When You Need Them</h2>
+                    <p class="section-subtitle">
+                        Real advice, exact scripts, and step-by-step guides for showing up when it matters most — and
+                        even when nothing is wrong.
+                    </p>
+                </div>
+
+                <div class="blog-showcase-grid">
+                    <a href="blog/why-you-should-send-affirmations-for-no-reason.html"
+                        class="blog-showcase-card reveal">
+                        <span class="blog-showcase-tag">Just Because</span>
+                        <h3>Why You Should Send Affirmations For No Reason At All</h3>
+                        <p>You don't need a crisis to tell someone they matter. The most powerful messages arrive when
+                            everything seems "fine."</p>
+                        <span class="blog-showcase-link">Read Guide →</span>
+                    </a>
+
+                    <a href="blog/the-people-who-seem-fine-need-you-most.html" class="blog-showcase-card reveal">
+                        <span class="blog-showcase-tag">Check On Your People</span>
+                        <h3>The People Who Seem Fine Are Often the Ones Struggling Most</h3>
+                        <p>The strongest people carry the heaviest weight in silence. Here's how to check on them.</p>
+                        <span class="blog-showcase-link">Read Guide →</span>
+                    </a>
+
+                    <a href="blog/how-a-30-second-text-can-change-someones-day.html" class="blog-showcase-card reveal">
+                        <span class="blog-showcase-tag">Everyday Kindness</span>
+                        <h3>How a 30-Second Text Can Change Someone's Entire Day</h3>
+                        <p>The science behind why one small message has outsized impact — and 10 texts you can send
+                            right now.</p>
+                        <span class="blog-showcase-link">Read Guide →</span>
+                    </a>
+
+                    <a href="blog/daily-affirmations-for-anxiety.html" class="blog-showcase-card reveal">
+                        <span class="blog-showcase-tag">Anxiety & Wellness</span>
+                        <h3>Daily Affirmations for Anxiety — 30 Phrases That Calm Your Mind</h3>
+                        <p>Not toxic positivity — real, grounding affirmations designed for anxious brains.</p>
+                        <span class="blog-showcase-link">Read Guide →</span>
+                    </a>
+                </div>
+
+                <div style="text-align: center; margin-top: 40px;">
+                    <a href="blog/index.html" class="btn btn-secondary btn-large">See All 23 Guides →</a>
+                </div>
+            </div>
+        </section>
+
+        <style>
+            .blog-showcase-section {
+                padding: 100px 0;
+                background: linear-gradient(180deg, transparent, rgba(205, 255, 96, 0.02), transparent);
+            }
+
+            .blog-showcase-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 24px;
+                margin-top: 40px;
+            }
+
+            .blog-showcase-card {
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                border-radius: 20px;
+                padding: 28px;
+                text-decoration: none;
+                color: var(--color-text-primary);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                overflow: hidden;
+                backdrop-filter: blur(10px);
+            }
+
+            .blog-showcase-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: radial-gradient(circle at top right, rgba(205, 255, 96, 0.06), transparent 60%);
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+            .blog-showcase-card:hover {
+                transform: translateY(-5px);
+                border-color: rgba(205, 255, 96, 0.3);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(205, 255, 96, 0.1);
+            }
+
+            .blog-showcase-card:hover::before {
+                opacity: 1;
+            }
+
+            .blog-showcase-tag {
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                color: var(--color-primary);
+                font-weight: 700;
+                margin-bottom: 12px;
+            }
+
+            .blog-showcase-card h3 {
+                font-size: 1.25rem;
+                line-height: 1.35;
+                margin-bottom: 12px;
+                font-weight: 700;
+            }
+
+            .blog-showcase-card p {
+                color: var(--color-text-secondary);
+                font-size: 0.95rem;
+                line-height: 1.5;
+                flex-grow: 1;
+                margin-bottom: 20px;
+            }
+
+            .blog-showcase-link {
+                color: var(--color-secondary);
+                font-weight: 600;
+                font-size: 0.9rem;
+                transition: color 0.2s;
+            }
+
+            .blog-showcase-card:hover .blog-showcase-link {
+                color: #d9f99d;
+            }
+        </style>
 
         <!-- How It Works Section -->
         <section id="how" class="how-it-works-section">

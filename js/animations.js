@@ -139,26 +139,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const smokeWords = ['breathe', 'enough', 'worthy', 'loved', 'capable', 'strong', 'peace', 'calm', 'valid', 'brave', 'seen', 'safe', 'grow', 'rest', 'heal', 'light'];
 
     // Create subtle drifting emotion words, constructed from large "smoke"
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 10; i++) {
         const wordEl = document.createElement('span');
         wordEl.textContent = smokeWords[Math.floor(Math.random() * smokeWords.length)];
         wordEl.classList.add('smoke-word');
-        wordEl.style.left = `${Math.random() * 80 + 10}vw`; // Keep away from extreme edges
-        wordEl.style.top = `${Math.random() * 80 + 10}%`;
+        // Spread completely across screen
+        wordEl.style.left = `${Math.random() * 90 + 5}vw`;
+        wordEl.style.top = `${Math.random() * 95 + 5}%`;
 
         // Vastly increase size so it looks like a cloud of text
-        const sizeRem = 3 + Math.random() * 5; // 3rem to 8rem
+        const sizeRem = 3 + Math.random() * 6; // 3rem to 9rem
         wordEl.style.fontSize = `${sizeRem}rem`;
 
-        // Randomize the animation settings for each word to make them unique
-        wordEl.style.animationDuration = `${30 + Math.random() * 30}s`; // Slower drift since they are huge
-        wordEl.style.animationDelay = `${Math.random() * -40}s`;
+        // Faster drift so it doesn't look static
+        wordEl.style.animationDuration = `${18 + Math.random() * 15}s`;
+        wordEl.style.animationDelay = `${Math.random() * -30}s`;
 
-        // Use custom properties to define random start/end rotation in CSS
-        const startRot = Math.random() * 20 - 10;
-        const endRot = startRot + (Math.random() * 30 - 15);
+        // Random rotation and horizontal scatter for dynamic drift
+        const startRot = Math.random() * 40 - 20;
+        const endRot = startRot + (Math.random() * 60 - 30);
+        const scatterX = Math.random() * 300 - 150; // Drift left or right by up to 150px
+
         wordEl.style.setProperty('--start-rot', `${startRot}deg`);
         wordEl.style.setProperty('--end-rot', `${endRot}deg`);
+        wordEl.style.setProperty('--scatter-x', `${scatterX}px`);
 
         particleContainer.appendChild(wordEl);
     }

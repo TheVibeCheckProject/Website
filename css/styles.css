@@ -2450,6 +2450,8 @@ footer {
 
     50% {
         opacity: 0.7;
+        /* Drift sideways slightly while moving up */
+        transform: translate(calc(var(--scatter-x, 0px) * 0.4), -150px) scale(1.1);
         filter: blur(1px);
     }
 
@@ -2460,8 +2462,9 @@ footer {
 
     100% {
         opacity: 0;
-        transform: translate(0, -350px) rotate(var(--end-rot, 20deg)) scale(1.5);
-        filter: blur(8px);
+        /* Drift further sideways to terminal position */
+        transform: translate(var(--scatter-x, 100px), -400px) rotate(var(--end-rot, 20deg)) scale(1.6);
+        filter: blur(12px);
     }
 }
 

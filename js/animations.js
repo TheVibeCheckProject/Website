@@ -129,28 +129,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 6. FLOATING PARTICLES — Random decorative elements
+    // 6. FLOATING SMOKE WORDS — Affirmations drifting
     // ==========================================
     const particleContainer = document.createElement('div');
     particleContainer.classList.add('floating-particles');
     particleContainer.setAttribute('aria-hidden', 'true');
     document.body.appendChild(particleContainer);
 
-    const symbols = ['✦', '✧', '·', '~', '°', '✨', '*', '⟡', '◦', '∘'];
-    const colors = ['#FF6B9D', '#FEC84A', '#A78BFA', '#CDFF60', '#FFB5D1'];
+    const smokeWords = ['breathe', 'enough', 'worthy', 'loved', 'capable', 'strong', 'peace', 'calm', 'valid', 'brave', 'seen', 'safe', 'grow', 'rest', 'heal', 'light'];
 
-    for (let i = 0; i < 20; i++) {
-        const particle = document.createElement('span');
-        particle.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-        particle.classList.add('particle');
-        particle.style.left = `${Math.random() * 100}vw`;
-        particle.style.top = `${Math.random() * 100}%`;
-        particle.style.color = colors[Math.floor(Math.random() * colors.length)];
-        particle.style.fontSize = `${8 + Math.random() * 16}px`;
-        particle.style.animationDuration = `${15 + Math.random() * 25}s`;
-        particle.style.animationDelay = `${Math.random() * -20}s`;
-        particle.style.opacity = `${0.08 + Math.random() * 0.12}`;
-        particleContainer.appendChild(particle);
+    // Create subtle drifting emotion words
+    for (let i = 0; i < 12; i++) {
+        const wordEl = document.createElement('span');
+        wordEl.textContent = smokeWords[Math.floor(Math.random() * smokeWords.length)];
+        wordEl.classList.add('smoke-word');
+        wordEl.style.left = `${Math.random() * 90 + 5}vw`;
+        wordEl.style.top = `${Math.random() * 90 + 5}%`;
+
+        // Randomize the animation settings for each word to make them unique
+        wordEl.style.animationDuration = `${25 + Math.random() * 25}s`;
+        wordEl.style.animationDelay = `${Math.random() * -30}s`;
+
+        // Use custom properties to define random start/end rotation in CSS
+        const startRot = Math.random() * 40 - 20;
+        const endRot = startRot + (Math.random() * 40 - 20);
+        wordEl.style.setProperty('--start-rot', `${startRot}deg`);
+        wordEl.style.setProperty('--end-rot', `${endRot}deg`);
+
+        particleContainer.appendChild(wordEl);
     }
 
     // ==========================================

@@ -2411,7 +2411,7 @@ footer {
     width: 80px;
 }
 
-/* --- Floating particles layer --- */
+/* --- Floating smoke words layer --- */
 .floating-particles {
     position: fixed;
     top: 0;
@@ -2423,30 +2423,41 @@ footer {
     overflow: hidden;
 }
 
-.particle {
+.smoke-word {
     position: absolute;
-    animation: particleFloat linear infinite;
+    font-family: 'Caveat', cursive;
+    color: var(--color-primary);
+    opacity: 0;
+    transform-origin: center;
+    /* Apply a glowing text-shadow for a softer smoke look */
+    text-shadow: 0 0 10px rgba(255, 107, 157, 0.4);
+    animation: smokeDrift linear infinite;
 }
 
-@keyframes particleFloat {
+@keyframes smokeDrift {
     0% {
-        transform: translate(0, 0) rotate(0deg);
+        opacity: 0;
+        transform: translate(0, 0) rotate(var(--start-rot, 0deg)) scale(0.8);
+        filter: blur(4px);
     }
 
-    25% {
-        transform: translate(30px, -80px) rotate(90deg);
+    20% {
+        opacity: 0.15;
     }
 
     50% {
-        transform: translate(-20px, -160px) rotate(180deg);
+        opacity: 0.25;
+        filter: blur(1px);
     }
 
-    75% {
-        transform: translate(40px, -240px) rotate(270deg);
+    80% {
+        opacity: 0.15;
     }
 
     100% {
-        transform: translate(0, -320px) rotate(360deg);
+        opacity: 0;
+        transform: translate(0, -250px) rotate(var(--end-rot, 20deg)) scale(1.2);
+        filter: blur(4px);
     }
 }
 

@@ -2654,6 +2654,7 @@ footer {
     position: relative;
     z-index: 2;
 }
+
 /* Navbar Crisis Badge Styling */
 .nav-crisis-badge {
     display: flex;
@@ -2692,20 +2693,96 @@ footer {
 }
 
 @keyframes navHeartbeat {
-    0%, 100% { transform: scale(1); }
-    15% { transform: scale(1.25); }
-    30% { transform: scale(1); }
-    45% { transform: scale(1.15); }
-    60% { transform: scale(1); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    15% {
+        transform: scale(1.25);
+    }
+
+    30% {
+        transform: scale(1);
+    }
+
+    45% {
+        transform: scale(1.15);
+    }
+
+    60% {
+        transform: scale(1);
+    }
 }
 
 @media (max-width: 600px) {
     .nav-crisis-text {
         display: none;
     }
+
     .nav-crisis-badge {
         padding: 6px;
         margin-right: 8px;
     }
 }
 
+
+/* ===================================
+   Goofy Animated Header styles
+   =================================== */
+.goofy-header {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.1em;
+    font-family: var(--font-display);
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 800;
+    margin-bottom: var(--space-md);
+    line-height: 1.2;
+    cursor: default;
+    user-select: none;
+}
+
+.goofy-letter {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: goofy-float 3s ease-in-out infinite;
+    animation-delay: var(--delay);
+    color: var(--color-text-primary);
+}
+
+.goofy-header:hover .goofy-letter {
+    animation-play-state: paused;
+    transform: scale(1.2) rotate(var(--rot));
+    color: var(--color-primary);
+    text-shadow: 0 0 20px rgba(255, 107, 157, 0.4);
+}
+
+@keyframes goofy-float {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    33% {
+        transform: translateY(-10px) rotate(-5deg);
+        color: var(--color-primary-light);
+    }
+
+    66% {
+        transform: translateY(5px) rotate(5deg);
+        color: var(--color-secondary);
+    }
+}
+
+/* Specific offsets for 'Goofy' feel */
+.goofy-letter:nth-child(odd) {
+    --rot: -10deg;
+}
+
+.goofy-letter:nth-child(even) {
+    --rot: 10deg;
+}

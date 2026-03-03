@@ -1,11 +1,10 @@
 const fs = require('fs');
 const path = require('path');
+const cheerio = require('cheerio');
 
 const blogDir = path.join(__dirname, 'blog');
 const files = fs.readdirSync(blogDir).filter(f => f.endsWith('.html') && f !== 'index.html');
 
-// Map of post names to image filenames. We have 14 new images, plus the original panic attack one (15 total).
-// Let's use them and repeat a few for the last 5 posts so they all have a cover image.
 const imageMap = {
     'what-to-text-someone-having-a-panic-attack.html': 'blog_cover_panic.png',
     'how-to-check-on-a-friend-who-went-quiet.html': 'blog_cover_quiet_1772534313015.png',
@@ -24,9 +23,9 @@ const imageMap = {
     'how-to-support-a-friend-with-cancer.html': 'blog_cover_cancer_1772534614299.png',
     'birthday-wishes-for-someone-going-through-a-hard-time.html': 'blog_cover_birthday_1772534627129.png',
     'what-to-say-to-someone-who-feels-like-giving-up.html': 'blog_cover_giving_up_1772534638363.png',
-    'ways-to-show-someone-you-care-without-words.html': 'blog_cover_friendship_1772534526563.png', // Fallback
-    'how-to-write-a-heartfelt-letter-to-a-friend.html': 'blog_cover_success_1772534454340.png', // Fallback
-    'mindfulness-exercises-for-beginners.html': 'blog_cover_quiet_1772534313015.png' // Fallback
+    'ways-to-show-someone-you-care-without-words.html': 'blog_cover_friendship_1772534526563.png',
+    'how-to-write-a-heartfelt-letter-to-a-friend.html': 'blog_cover_success_1772534454340.png',
+    'mindfulness-exercises-for-beginners.html': 'blog_cover_quiet_1772534313015.png'
 };
 
 // 1. Update individual blog post "Keep Reading" sections
@@ -34,44 +33,51 @@ for (const file of files) {
     const filePath = path.join(blogDir, file);
     let html = fs.readFileSync(filePath, 'utf-8');
 
-    // For the small "Keep Reading" links, we can inject a simpler version of the card
-    // The current pattern is: 
-    // <a href="..." style="...">
-    //    <span style="...">Tag</span>
-    //    <h4 style="...">Title</h4>
-    // </a>
+    // Use cheerio to parse and manipulate DOM safely
+    const $ = cheerio.load(html);
 
-    // We will find all related links and upgrade them to use the new CSS classes
-    const relatedLinkRegex = /<a href="([^"]+\.html)"[^>]*>[\s\S]*?<span[^>]*>(.*?)<\/span>[\s\S]*?<h4[^>]*>(.*?)<\/h4>[\s\S]*?<\/a>/g;
-
-    html = html.replace(relatedLinkRegex, (match, href, tag, title) => {
+    // Find related links in the "Keep Reading" container
+    // We can identify them because they are <a> tags within the grid container
+    // The previous structure had: <div style="display:grid; gap:16px;"> <a> ...
+    $('div[style*="display:grid"] > a[href$=".html"]').each(function () {
+        const $el = $(this);
+        const href = $el.attr('href');
+        const tag = $el.find('span').text() || 'Editorial';
+        const title = $el.find('h4').text() || 'Read More';
         const imageName = imageMap[href] || 'blog_cover_panic.png';
-        return `
-                <a href="${href}" class="blog-card-img" style="background-image: url('../assets/${imageName}'); height: 300px; margin-bottom: 20px;">
-                    <div class="color-overlay"></div>
-                    <div class="gradient-overlay"></div>
-                    <div class="title-content" style="margin-top: 60px;">
-                        <span class="blog-tag">${tag}</span>
-                        <h2 style="font-size: 1.4rem;">${title}</h2>
-                    </div>
-                </a>`;
+
+        // Create the new structure string
+        const newHtml = `
+            <a href="${href}" class="blog-card-img" style="background-image: url('../assets/${imageName}'); height: 300px; margin-bottom: 20px;">
+                <div class="color-overlay"></div>
+                <div class="gradient-overlay"></div>
+                <div class="title-content" style="margin-top: 60px;">
+                    <span class="blog-tag">${tag}</span>
+                    <h2 style="font-size: 1.4rem;">${title}</h2>
+                </div>
+            </a>`;
+
+        // Replace old element with new element
+        $el.replaceWith(newHtml);
     });
 
-    // Also inject the CSS link for Baloo 2 if not present (Wait, google fonts are already in the head)
-    // Save file
-    fs.writeFileSync(filePath, html, 'utf-8');
+    fs.writeFileSync(filePath, $.html(), 'utf-8');
 }
 
 // 2. Update blog/index.html to upgrade all existing `.blog-card` elements to `.blog-card-img`
 const indexFilePath = path.join(blogDir, 'index.html');
 let indexHtml = fs.readFileSync(indexFilePath, 'utf-8');
+const $index = cheerio.load(indexHtml);
 
-// Pattern for main index cards
-const mainCardRegex = /<a href="([^"]+\.html)" class="blog-card">[\s\S]*?<span class="blog-tag">(.*?)<\/span>[\s\S]*?<h2>(.*?)<\/h2>[\s\S]*?<p>(.*?)<\/p>[\s]*<div class="read-more">([\s\S]*?)<\/div>[\s]*<\/a>/g;
-
-indexHtml = indexHtml.replace(mainCardRegex, (match, href, tag, title, excerpt, readMoreContent) => {
+$index('.blog-grid > a.blog-card').each(function () {
+    const $el = $index(this);
+    const href = $el.attr('href');
+    const tag = $el.find('.blog-tag').text();
+    const title = $el.find('h2').text();
+    const excerpt = $el.find('p').text();
     const imageName = imageMap[href] || 'blog_cover_panic.png';
-    return `
+
+    const newHtml = `
             <a href="${href}" class="blog-card-img" style="background-image: url('../assets/${imageName}');">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
@@ -92,10 +98,12 @@ indexHtml = indexHtml.replace(mainCardRegex, (match, href, tag, title, excerpt, 
                     </div>
                 </div>
             </a>`;
+
+    $el.replaceWith(newHtml);
 });
 
-// Remove the old CSS block from blog/index.html to rely on styles.css
-indexHtml = indexHtml.replace(/\/\* --- New Image-Backed Card Mockup --- \*\/[\s\S]*?(?=\/\* Banner CTA \*\/)/g, '');
+// Remove inline css if it exists in index
+indexHtml = $index.html().replace(/\/\* --- New Image-Backed Card Mockup --- \*\/[\s\S]*?(?=\/\* Banner CTA \*\/)/g, '');
 
 fs.writeFileSync(indexFilePath, indexHtml, 'utf-8');
-console.log('Blog update complete.');
+console.log('DOM-safe Blog update complete.');

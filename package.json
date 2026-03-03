@@ -23,6 +23,7 @@
   "homepage": "https://github.com/TheVibeCheckProject/Website#readme",
   "dependencies": {
     "@google/generative-ai": "^0.24.0",
+    "cheerio": "^1.2.0",
     "playwright": "^1.58.2"
   }
 }

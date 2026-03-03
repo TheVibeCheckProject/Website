@@ -2276,4 +2276,194 @@ footer {
     }
 }
 
-/* Old organic CSS removed */
+/* ==========================================
+   ALIVE ANIMATION STYLES
+   ========================================== */
+
+/* --- Varied fonts across sections --- */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Fredoka:wght@300;400;500;600;700&display=swap');
+
+.hero-subtitle {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 400;
+}
+
+.why-section .section-subtitle {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem !important;
+}
+
+.send-card-section .section-subtitle {
+    font-family: 'Fredoka', sans-serif;
+}
+
+.cta-section .section-subtitle {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem !important;
+}
+
+.affirmation-text {
+    font-family: 'Caveat', cursive !important;
+    font-size: 1.4rem !important;
+}
+
+/* --- Hero title animated gradient --- */
+.hero-title {
+    background: linear-gradient(135deg, #FF6B9D, #FEC84A, #A78BFA, #CDFF60, #FF6B9D);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 6s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* --- Directional scroll reveals --- */
+.reveal-directional {
+    opacity: 0;
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-directional[data-reveal-dir="left"] {
+    transform: translateX(-60px) rotate(-3deg);
+}
+
+.reveal-directional[data-reveal-dir="right"] {
+    transform: translateX(60px) rotate(3deg);
+}
+
+.reveal-directional[data-reveal-dir="bottom"] {
+    transform: translateY(60px) scale(0.9);
+}
+
+.reveal-directional[data-reveal-dir="rotate-in"] {
+    transform: rotate(-8deg) scale(0.85);
+}
+
+.reveal-directional.revealed {
+    opacity: 1;
+    transform: translateX(0) translateY(0) rotate(0deg) scale(1) !important;
+}
+
+/* Stagger child delays */
+.reveal-directional:nth-child(1) {
+    transition-delay: 0s;
+}
+
+.reveal-directional:nth-child(2) {
+    transition-delay: 0.1s;
+}
+
+.reveal-directional:nth-child(3) {
+    transition-delay: 0.2s;
+}
+
+.reveal-directional:nth-child(4) {
+    transition-delay: 0.3s;
+}
+
+.reveal-directional:nth-child(5) {
+    transition-delay: 0.4s;
+}
+
+.reveal-directional:nth-child(6) {
+    transition-delay: 0.5s;
+}
+
+/* --- Section title animation --- */
+.title-animate {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.title-animate.title-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Animated underline that draws itself */
+.title-animate::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 3px;
+    margin: 12px auto 0;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+    border-radius: 2px;
+    transition: width 0.8s ease 0.3s;
+}
+
+.title-animate.title-visible::after {
+    width: 80px;
+}
+
+/* --- Floating particles layer --- */
+.floating-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    animation: particleFloat linear infinite;
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    25% {
+        transform: translate(30px, -80px) rotate(90deg);
+    }
+
+    50% {
+        transform: translate(-20px, -160px) rotate(180deg);
+    }
+
+    75% {
+        transform: translate(40px, -240px) rotate(270deg);
+    }
+
+    100% {
+        transform: translate(0, -320px) rotate(360deg);
+    }
+}
+
+/* --- Typewriter cursor for vibe text --- */
+#vibeText {
+    font-family: 'Caveat', cursive !important;
+    font-size: 1.5rem !important;
+}
+
+/* --- Hero letter animation base --- */
+.hero-letter {
+    display: inline-block;
+    will-change: transform, opacity;
+}
+
+/* --- Smooth hero section load --- */
+.hero-content {
+    position: relative;
+    z-index: 2;
+}

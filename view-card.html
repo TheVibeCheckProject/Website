@@ -159,7 +159,7 @@
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      padding: 60px 20px 40px;
+      padding: 120px 20px 40px;
     }
 
     /* ── Header badge ── */
@@ -224,8 +224,6 @@
       transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       border-radius: 20px;
       will-change: transform;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
     }
 
     .flip-card.flipped .flip-card-inner {
@@ -254,6 +252,69 @@
       box-shadow:
         0 0 60px rgba(163, 230, 53, 0.08),
         0 20px 60px rgba(0, 0, 0, 0.5);
+      transition: background 0.4s ease, border-color 0.4s ease;
+    }
+
+    .flip-card-front.theme-birthday {
+      background: linear-gradient(135deg, #ff6b6b, #ffa500);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .flip-card-front.theme-grief {
+      background: linear-gradient(135deg, #6b73ff, #9b59b6);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .flip-card-front.theme-anxiety {
+      background: linear-gradient(135deg, #00b4db, #0083b0);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .flip-card-front.theme-hype {
+      background: linear-gradient(135deg, #11998e, #38ef7d);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .flip-card-front.theme-love {
+      background: linear-gradient(135deg, #f953c6, #b91d73);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .shimmer-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+      overflow: hidden;
+      border-radius: 20px;
+    }
+
+    .shimmer-layer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg,
+          transparent 30%,
+          rgba(255, 255, 255, 0.25) 50%,
+          transparent 70%);
+      transform: skewX(-25deg);
+    }
+
+    .flip-card-inner.flipping .shimmer-layer::after {
+      animation: shimmer 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes shimmer {
+      0% {
+        left: -150%;
+      }
+
+      100% {
+        left: 150%;
+      }
     }
 
     .flip-card-front::before {
@@ -541,7 +602,6 @@
       font-weight: 600;
     }
 
-    /* ── Responsive ── */
     @media (max-width: 600px) {
       .main-content {
         padding: 40px 16px 32px;
@@ -573,16 +633,6 @@
       .share-section,
       .email-section {
         padding: 24px 20px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
       }
     }
 
@@ -643,11 +693,13 @@
     <div class="flip-card" id="flipCard" tabindex="0">
       <div class="flip-card-inner" id="flipCardInner">
         <div class="flip-card-face flip-card-front">
+          <div class="shimmer-layer"></div>
           <div class="front-emoji">💚</div>
           <div class="front-label">You've got a Vibe Check!</div>
           <div class="front-hint">Tap to reveal your message</div>
         </div>
         <div class="flip-card-face flip-card-back">
+          <div class="shimmer-layer"></div>
           <div class="affirmation" id="cardAffirmation">You've got a vibe!</div>
           <div class="card-message" id="cardMessage">Someone wanted to send you some good vibes ✨</div>
           <a href="https://thevibecheckproject.com" target="_blank" rel="noopener"
@@ -768,6 +820,10 @@
         if (card.recipientName) {
           document.title = `${card.recipientName}, You've Got a Vibe Check! ✨`;
         }
+        if (card.themeGroup && card.themeGroup !== 'default') {
+          const frontFace = document.querySelector('.flip-card-front');
+          if (frontFace) frontFace.classList.add(`theme-${card.themeGroup}`);
+        }
       } catch (e) { }
     })();
   </script>
@@ -878,6 +934,13 @@
     flipCard.addEventListener('click', () => {
       cardOpen = !cardOpen;
       flipCard.classList.toggle('flipped', cardOpen);
+
+      const inner = document.getElementById('flipCardInner');
+      inner.classList.remove('flipping');
+      void inner.offsetWidth; // trigger reflow
+      inner.classList.add('flipping');
+      setTimeout(() => inner.classList.remove('flipping'), 600);
+
       if (cardOpen) {
         burstParticles(30);
         launchConfetti();

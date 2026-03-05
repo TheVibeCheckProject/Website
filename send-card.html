@@ -206,6 +206,32 @@
             padding: var(--space-xl);
             border: 2px solid rgba(255, 107, 157, 0.2);
             text-align: center;
+            transition: background 0.4s ease, border-color 0.4s ease;
+        }
+
+        .card-preview.theme-birthday {
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            border-color: transparent;
+        }
+
+        .card-preview.theme-grief {
+            background: linear-gradient(135deg, #6b73ff, #9b59b6);
+            border-color: transparent;
+        }
+
+        .card-preview.theme-anxiety {
+            background: linear-gradient(135deg, #00b4db, #0083b0);
+            border-color: transparent;
+        }
+
+        .card-preview.theme-hype {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            border-color: transparent;
+        }
+
+        .card-preview.theme-love {
+            background: linear-gradient(135deg, #f953c6, #b91d73);
+            border-color: transparent;
         }
 
         .preview-label {
@@ -592,67 +618,69 @@
                         <div class="sound-option selected" data-sound="chime" onclick="selectSound('chime', this)">
                             <span class="sound-icon">🔔</span>
                             <span class="sound-name">Chime</span>
-                            <button class="sound-preview-btn" onclick="event.stopPropagation(); previewSound('chime')"
-                                title="Preview">▶</button>
+                            <button type="button" class="sound-preview-btn"
+                                onclick="event.stopPropagation(); previewSound('chime')" title="Preview">▶</button>
                         </div>
                         <div class="sound-option" data-sound="bell" onclick="selectSound('bell', this)">
                             <span class="sound-icon">🛎️</span>
                             <span class="sound-name">Soft Bell</span>
-                            <button class="sound-preview-btn" onclick="event.stopPropagation(); previewSound('bell')"
-                                title="Preview">▶</button>
+                            <button type="button" class="sound-preview-btn"
+                                onclick="event.stopPropagation(); previewSound('bell')" title="Preview">▶</button>
                         </div>
                         <div class="sound-option" data-sound="sparkle" onclick="selectSound('sparkle', this)">
                             <span class="sound-icon">✨</span>
                             <span class="sound-name">Sparkle</span>
-                            <button class="sound-preview-btn" onclick="event.stopPropagation(); previewSound('sparkle')"
-                                title="Preview">▶</button>
+                            <button type="button" class="sound-preview-btn"
+                                onclick="event.stopPropagation(); previewSound('sparkle')" title="Preview">▶</button>
                         </div>
                         <!-- Premium Sounds -->
                         <div class="sound-option premium-sound" data-sound="musicbox"
-                            onclick="selectSound('musicbox', this)">
+                            onclick="selectPremiumSound('musicbox', this)">
                             <span class="sound-icon">🎵</span>
                             <span class="sound-name">Music Box</span>
                             <span class="premium-lock">Premium</span>
-                            <button class="sound-preview-btn"
+                            <button type="button" class="sound-preview-btn"
                                 onclick="event.stopPropagation(); previewSound('musicbox')" title="Preview">▶</button>
                         </div>
-                        <div class="sound-option premium-sound" data-sound="harp" onclick="selectSound('harp', this)">
+                        <div class="sound-option premium-sound" data-sound="harp"
+                            onclick="selectPremiumSound('harp', this)">
                             <span class="sound-icon">🎶</span>
                             <span class="sound-name">Harp</span>
                             <span class="premium-lock">Premium</span>
-                            <button class="sound-preview-btn" onclick="event.stopPropagation(); previewSound('harp')"
-                                title="Preview">▶</button>
+                            <button type="button" class="sound-preview-btn"
+                                onclick="event.stopPropagation(); previewSound('harp')" title="Preview">▶</button>
                         </div>
-                        <div class="sound-option premium-sound" data-sound="piano" onclick="selectSound('piano', this)">
+                        <div class="sound-option premium-sound" data-sound="piano"
+                            onclick="selectPremiumSound('piano', this)">
                             <span class="sound-icon">🎹</span>
                             <span class="sound-name">Warm Piano</span>
                             <span class="premium-lock">Premium</span>
-                            <button class="sound-preview-btn" onclick="event.stopPropagation(); previewSound('piano')"
-                                title="Preview">▶</button>
+                            <button type="button" class="sound-preview-btn"
+                                onclick="event.stopPropagation(); previewSound('piano')" title="Preview">▶</button>
                         </div>
                         <div class="sound-option premium-sound" data-sound="celebration"
-                            onclick="selectSound('celebration', this)">
+                            onclick="selectPremiumSound('celebration', this)">
                             <span class="sound-icon">🎉</span>
                             <span class="sound-name">Celebration</span>
                             <span class="premium-lock">Premium</span>
-                            <button class="sound-preview-btn"
+                            <button type="button" class="sound-preview-btn"
                                 onclick="event.stopPropagation(); previewSound('celebration')"
                                 title="Preview">▶</button>
                         </div>
-                        <div class="sound-option premium-sound" data-sound="ocean" onclick="selectSound('ocean', this)">
+                        <div class="sound-option premium-sound" data-sound="ocean"
+                            onclick="selectPremiumSound('ocean', this)">
                             <span class="sound-icon">🌊</span>
                             <span class="sound-name">Ocean</span>
                             <span class="premium-lock">Premium</span>
-                            <button class="sound-preview-btn" onclick="event.stopPropagation(); previewSound('ocean')"
-                                title="Preview">▶</button>
+                            <button type="button" class="sound-preview-btn"
+                                onclick="event.stopPropagation(); previewSound('ocean')" title="Preview">▶</button>
                         </div>
                     </div>
-                    <small class="premium-sound-hint"
+                    <small class="premium-sound-hint" id="premiumSoundHint"
                         style="color: var(--color-text-muted); font-size: 11px; margin-top: 8px; display: block;">
-                        🔓 <a
-                            href="https://vibecheck2.gumroad.com/l/ycmxxb?utm_source=website&utm_campaign=sound-picker"
-                            target="_blank" rel="noopener"
-                            style="color: var(--color-primary); text-decoration: none;">Get Premium</a> to unlock all
+                        🔓 <a href="https://buy.stripe.com/6oUaEX9OU9NN5mj1r51VK01"
+                            style="color: var(--color-primary); text-decoration: none;">Unlock Premium — $2.99</a> to
+                        use all
                         sounds
                     </small>
                 </div>
@@ -968,8 +996,11 @@
                         <button type="submit">Get Free Packs</button>
                     </form>
                     <p style="margin-top:16px;">
-                        ✨ <a href="https://vibecheck2.gumroad.com/l/ycmxxb?utm_source=website&utm_campaign=post-send"
-                            target="_blank" rel="noopener">Premium Designs — $4.99</a>
+                        ✨ <a href="https://buy.stripe.com/6oUaEX9OU9NN5mj1r51VK01"
+                            style="color: var(--color-primary); font-weight:700;">Unlock Premium — $2.99</a>
+                        <br><br>
+                        💌 <a href="https://vibecheck2.gumroad.com/l/ycmxxb?utm_source=website&utm_campaign=post-send"
+                            target="_blank" rel="noopener">Printable Card Pack — $6.99</a>
                         &nbsp;·&nbsp;
                         ☕ <a href="https://ko-fi.com/thevibecheckproject?utm_source=website&utm_campaign=tip-jar"
                             target="_blank">Buy me a coffee</a>
@@ -984,6 +1015,26 @@
     </div>
 
     <script>
+        // Check for Stripe Premium Unlock
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('premium') === '1') {
+            localStorage.setItem('premium_unlocked', '1');
+            window.history.replaceState({}, document.title, window.location.pathname);
+
+            // Show temporary badge
+            const badge = document.createElement('div');
+            badge.textContent = '✦ Premium Unlocked';
+            badge.style.cssText = 'position:fixed;top:12px;right:12px;background:#6c63ff;color:white;padding:6px 12px;border-radius:20px;font-size:12px;z-index:9999;font-weight:bold;box-shadow:0 4px 12px rgba(108,99,255,0.4);';
+            document.body.appendChild(badge);
+            setTimeout(() => {
+                badge.style.transition = 'opacity 0.5s';
+                badge.style.opacity = '0';
+                setTimeout(() => badge.remove(), 500);
+            }, 4000);
+        }
+
+        const isPremium = localStorage.getItem('premium_unlocked') === '1';
+
         const freeAffirmations = [
             "You're trying, and that's what counts.",
             "Your feelings are valid, and you deserve to be heard.",
@@ -998,20 +1049,21 @@
         ];
 
         const premiumThemes = [
-            { name: "Birthday", example: "Another year of you making the world better." },
-            { name: "Grief Support", example: "There is no timeline for healing." },
-            { name: "Hype-Up", example: "You are absolutely crushing it." },
-            { name: "Love", example: "You are deeply, profoundly loved." },
-            { name: "Anxiety Relief", example: "Breathe. You are safe right now." },
-            { name: "Friendship", example: "I'm so glad we exist at the same time." },
-            { name: "Self-Love", example: "You are entirely up to you." },
-            { name: "Congratulations", example: "All your hard work is paying off!" },
-            { name: "Just Because", example: "Just a reminder that you're awesome." },
-            { name: "I See You", example: "I see how hard you're trying." }
+            { name: "Birthday", example: "Another year of you making the world better.", themeGroup: "birthday" },
+            { name: "Grief Support", example: "There is no timeline for healing.", themeGroup: "grief" },
+            { name: "Hype-Up", example: "You are absolutely crushing it.", themeGroup: "hype" },
+            { name: "Love", example: "You are deeply, profoundly loved.", themeGroup: "love" },
+            { name: "Anxiety Relief", example: "Breathe. You are safe right now.", themeGroup: "anxiety" },
+            { name: "Friendship", example: "I'm so glad we exist at the same time.", themeGroup: "love" },
+            { name: "Self-Love", example: "You are entirely up to you.", themeGroup: "love" },
+            { name: "Congratulations", example: "All your hard work is paying off!", themeGroup: "hype" },
+            { name: "Just Because", example: "Just a reminder that you're awesome.", themeGroup: "love" },
+            { name: "I See You", example: "I see how hard you're trying.", themeGroup: "anxiety" }
         ];
 
         let selectedAffirmation = '';
         let selectedSound = 'chime';
+        let selectedThemeGroup = 'default';
 
         // Sound engine — Web Audio API synthesized sounds
         const soundEngine = {
@@ -1087,6 +1139,20 @@
             element.classList.add('selected');
         }
 
+        if (isPremium) {
+            document.querySelectorAll('.premium-lock').forEach(el => el.style.display = 'none');
+            const hint = document.getElementById('premiumSoundHint');
+            if (hint) hint.style.display = 'none';
+        }
+
+        function selectPremiumSound(soundId, element) {
+            if (isPremium) {
+                selectSound(soundId, element);
+            } else {
+                window.location.href = 'https://buy.stripe.com/6oUaEX9OU9NN5mj1r51VK01';
+            }
+        }
+
         function previewSound(soundId) {
             try { soundEngine[soundId](); } catch (e) { }
         }
@@ -1098,33 +1164,41 @@
             const option = document.createElement('div');
             option.className = 'affirmation-option';
             option.textContent = aff;
-            option.onclick = () => selectAffirmation(aff, option);
+            option.onclick = () => selectAffirmation(aff, option, 'default');
             picker.appendChild(option);
         });
 
         premiumThemes.forEach((theme) => {
             const option = document.createElement('div');
-            option.className = 'affirmation-option locked-option';
-            option.innerHTML = `
-                <div class="locked-header">
-                    🔒 ${theme.name} (Premium)
-                </div>
-                <div class="locked-text" style="filter: blur(4px); opacity: 0.6; user-select: none; font-style: italic;">
-                    "${theme.example}"
-                </div>
-                <div class="locked-tooltip">
-                    Unlock all 10 premium designs for $4.99 →
-                </div>
-            `;
-            // Redirect to Gumroad
-            option.onclick = () => {
-                window.open('https://vibecheck2.gumroad.com/l/ycmxxb?utm_source=website&utm_campaign=locked-design', '_blank');
-            };
+
+            if (isPremium) {
+                option.className = 'affirmation-option';
+                option.textContent = theme.example;
+                option.onclick = () => selectAffirmation(theme.example, option, theme.themeGroup);
+            } else {
+                option.className = 'affirmation-option locked-option';
+                option.innerHTML = `
+                    <div class="locked-header">
+                        🔒 ${theme.name} (Premium)
+                    </div>
+                    <div class="locked-text" style="filter: blur(4px); opacity: 0.6; user-select: none; font-style: italic;">
+                        "${theme.example}"
+                    </div>
+                    <div class="locked-tooltip">
+                        Unlock Premium — $2.99 →
+                    </div>
+                `;
+                // Redirect to Stripe
+                option.onclick = () => {
+                    window.location.href = 'https://buy.stripe.com/6oUaEX9OU9NN5mj1r51VK01';
+                };
+            }
             picker.appendChild(option);
         });
 
-        function selectAffirmation(affirmation, element) {
+        function selectAffirmation(affirmation, element, themeGroup = 'default') {
             selectedAffirmation = affirmation;
+            selectedThemeGroup = themeGroup;
 
             // Remove selected class from all
             document.querySelectorAll('.affirmation-option').forEach(el => {
@@ -1136,6 +1210,11 @@
 
             // Update preview
             document.getElementById('previewAffirmation').textContent = `"${affirmation}"`;
+            const previewBox = document.querySelector('.card-preview');
+            previewBox.className = 'card-preview'; // Reset classes
+            if (themeGroup && themeGroup !== 'default') {
+                previewBox.classList.add(`theme-${themeGroup}`);
+            }
         }
 
         // Update preview as user types — multiple events for mobile keyboard compatibility
@@ -1189,6 +1268,7 @@
                 senderName: senderName,
                 personalMessage: personalMessage,
                 sound: selectedSound,
+                themeGroup: selectedThemeGroup,
                 createdAt: new Date().toISOString()
             };
 

@@ -58,6 +58,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 body {
@@ -477,6 +478,7 @@ nav.scrolled {
     cursor: pointer;
     border: none;
     position: relative;
+    touch-action: manipulation;
     overflow: hidden;
 }
 
@@ -560,6 +562,7 @@ section {
 .why-section {
     background: var(--color-bg-medium);
     position: relative;
+    overflow: hidden;
 }
 
 .why-section::before {
@@ -665,6 +668,8 @@ section {
 /* How It Works Section */
 .how-it-works-section {
     background: var(--color-bg-dark);
+    position: relative;
+    overflow: hidden;
 }
 
 .steps {
@@ -755,6 +760,8 @@ section {
 /* Features Section */
 .features-section {
     background: var(--color-bg-medium);
+    position: relative;
+    overflow: hidden;
 }
 
 .features-grid {
@@ -893,6 +900,8 @@ section {
 /* Affirmations Section */
 .affirmations-section {
     background: var(--color-bg-dark);
+    position: relative;
+    overflow: hidden;
 }
 
 .affirmations-grid {
@@ -1279,8 +1288,8 @@ footer {
 
 @media (max-width: 768px) {
     :root {
-        --space-3xl: 64px;
-        --space-4xl: 80px;
+        --space-3xl: 48px;
+        --space-4xl: 56px;
     }
 
     .nav-links {
@@ -1316,12 +1325,43 @@ footer {
 }
 
 @media (max-width: 480px) {
+    :root {
+        --space-3xl: 28px;
+        --space-4xl: 40px;
+    }
+
     .hero-title {
         font-size: 36px;
     }
 
     .section-title {
         font-size: 32px;
+    }
+}
+
+/* Mobile performance optimizations */
+@media (max-width: 768px) {
+    /* Disable smooth scroll — causes jank on touch devices */
+    html {
+        scroll-behavior: auto;
+    }
+
+    /* Tighten section header spacing */
+    .section-header {
+        margin-bottom: var(--space-xl);
+    }
+
+    /* Disable GPU-intensive backdrop-filter on non-essential elements */
+    .hero-affirmation,
+    .filter-tab,
+    .premium-resource-card {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+
+    /* Hide floating word cloud — continuous GPU animation not worth it on mobile */
+    .floating-particles {
+        display: none !important;
     }
 }
 
@@ -1682,6 +1722,11 @@ footer {
 .feature-card h3,
 .affirmation-quote {
     font-family: 'Baloo 2', 'Space Grotesk', cursive !important;
+}
+
+.blog-showcase-section {
+    position: relative;
+    overflow: hidden;
 }
 
 /* --- BIG Floating Blobs (actually visible) --- */
@@ -2432,6 +2477,57 @@ footer {
     transition: transform 0.2s;
 }
 
+/* Related Post Cards (smaller version for bottom of posts) */
+.related-card {
+    height: 280px !important;
+}
+
+.related-card .title-content {
+    margin-top: 25px !important;
+    /* Pin to top */
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.related-card .blog-tag {
+    margin-bottom: 4px !important;
+    /* Tighten spacing between category and title */
+}
+
+.related-card:hover .title-content {
+    margin-top: 15px !important;
+    /* Subtle upward lift */
+}
+
+.related-card h2 {
+    font-size: 1.15rem !important;
+    line-height: 1.3 !important;
+}
+
+.related-card .card-info {
+    bottom: -150px !important;
+    /* Hide deeper */
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.related-card:hover .card-info {
+    bottom: 20px !important;
+}
+
+.related-card .card-info p {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.related-card .read-more-btn {
+    padding: 5px 12px !important;
+    font-size: 0.75rem !important;
+}
+
 .blog-card-img .read-more-btn:hover svg {
     transform: translateX(4px);
 }
@@ -2736,5 +2832,241 @@ footer {
 @media (max-width: 600px) {
     .blog-title {
         font-size: clamp(28px, 8vw, 42px);
+    }
+}
+
+/* ============================================
+   PREMIUM PRODUCT CARDS (Monetization)
+   ============================================ */
+.premium-resource-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: var(--space-xl);
+    margin: var(--space-2xl) 0;
+    display: flex;
+    gap: var(--space-xl);
+    align-items: center;
+    transition: all var(--transition-base);
+    text-decoration: none !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.premium-resource-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--color-primary);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.product-image-container {
+    flex-shrink: 0;
+    width: 140px;
+    height: 180px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.product-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.premium-resource-card:hover .product-image-container img {
+    transform: scale(1.05);
+}
+
+.product-details {
+    flex-grow: 1;
+}
+
+.product-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 20px;
+    margin-bottom: var(--space-sm);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.product-title {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-xs);
+    font-family: var(--font-display);
+}
+
+.product-description {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-md);
+}
+
+.product-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.product-cta i {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+}
+
+.premium-resource-card:hover .product-cta i {
+    transform: translateX(5px);
+}
+
+@media (max-width: 600px) {
+    .premium-resource-card {
+        flex-direction: column;
+        padding: var(--space-lg);
+        text-align: center;
+    }
+
+    .product-image-container {
+        width: 120px;
+        height: 160px;
+        margin: 0 auto;
+    }
+
+    .product-cta {
+        justify-content: center;
+    }
+}
+/* ===================================
+   Hamburger Navigation Menu
+   =================================== */
+.nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 110;
+    touch-action: manipulation;
+}
+
+.nav-hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--color-text-primary);
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Animate to X when open */
+nav.nav-open .nav-hamburger span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+nav.nav-open .nav-hamburger span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+nav.nav-open .nav-hamburger span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+    .nav-hamburger {
+        display: flex;
+    }
+
+    nav.nav-open .nav-links {
+        display: flex !important;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(26, 22, 37, 0.98);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 8px 24px 20px;
+        gap: 0;
+        border-bottom: 1px solid rgba(255, 107, 157, 0.2);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        align-items: flex-start !important;
+    }
+
+    nav.nav-open .nav-links li {
+        width: 100%;
+    }
+
+    nav.nav-open .nav-links a {
+        display: block;
+        padding: 14px 0;
+        font-size: 17px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    nav.nav-open .nav-links li:last-child a {
+        border-bottom: none;
+    }
+
+    nav.nav-open .nav-crisis-badge {
+        justify-content: flex-start;
+        margin-right: 0;
+        margin: 6px 0;
+        width: fit-content;
+    }
+}
+
+/* ===================================
+   Reduced Motion Accessibility
+   =================================== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    /* Ensure animated-in elements are visible */
+    .hero-title,
+    .hero-subtitle,
+    .hero-cta,
+    .hero-affirmation,
+    .splash-logo,
+    .splash-tagline,
+    .enter-prompt {
+        opacity: 1 !important;
+        animation: none !important;
+    }
+
+    .reveal,
+    .reveal-left,
+    .reveal-right {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
     }
 }

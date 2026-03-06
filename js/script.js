@@ -217,6 +217,9 @@ function completeSplashScreen() {
 // Parallax Effects
 // ====================
 function initParallax() {
+    // Skip parallax on mobile — causes scroll jank on touch devices
+    if (window.innerWidth <= 768) return;
+
     const heroBg = document.getElementById('hero-bg');
     let ticking = false;
 
@@ -312,16 +315,52 @@ function initScrollReveal() {
 // ====================
 function initNavigation() {
     const nav = document.getElementById('nav');
+    let navTicking = false;
 
     window.addEventListener('scroll', function () {
-        const currentScroll = window.pageYOffset;
-
-        if (currentScroll > 50) {
-            nav.classList.add('scrolled');
-        } else {
-            nav.classList.remove('scrolled');
+        if (!navTicking) {
+            window.requestAnimationFrame(function () {
+                const currentScroll = window.pageYOffset;
+                if (currentScroll > 50) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+                navTicking = false;
+            });
+            navTicking = true;
         }
     }, { passive: true });
+}
+
+// ====================
+// Hamburger Menu
+// ====================
+function initHamburgerMenu() {
+    const hamburger = document.getElementById('nav-hamburger');
+    const nav = document.getElementById('nav');
+    if (!hamburger || !nav) return;
+
+    hamburger.addEventListener('click', function () {
+        const isOpen = nav.classList.toggle('nav-open');
+        hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    // Close when a nav link is clicked
+    nav.querySelectorAll('.nav-links a').forEach(function (link) {
+        link.addEventListener('click', function () {
+            nav.classList.remove('nav-open');
+            hamburger.setAttribute('aria-expanded', 'false');
+        });
+    });
+
+    // Close when clicking outside the nav
+    document.addEventListener('click', function (e) {
+        if (!nav.contains(e.target) && nav.classList.contains('nav-open')) {
+            nav.classList.remove('nav-open');
+            hamburger.setAttribute('aria-expanded', 'false');
+        }
+    });
 }
 
 // ====================
@@ -416,9 +455,16 @@ document.getElementById('cta-button')?.addEventListener('click', function (e) {
     showEmailModal();
 });
 
-// Scroll progress
+// Scroll progress — RAF-throttled
+let progressTicking = false;
 window.addEventListener('scroll', function () {
-    updateScrollProgress();
+    if (!progressTicking) {
+        window.requestAnimationFrame(function () {
+            updateScrollProgress();
+            progressTicking = false;
+        });
+        progressTicking = true;
+    }
 }, { passive: true });
 
 // ====================
@@ -426,6 +472,7 @@ window.addEventListener('scroll', function () {
 // ====================
 document.addEventListener('DOMContentLoaded', function () {
     initNavigation();
+    initHamburgerMenu();
     initSmoothScroll();
     initButtonRipples();
 });

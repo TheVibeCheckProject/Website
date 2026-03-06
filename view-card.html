@@ -4,18 +4,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>You've Got a Vibe Check! ✨</title>
+  <title>You've Got a Vibe Check! ✨ - The Vibe Check Project</title>
 
   <!-- Open Graph / Twitter Card -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.thevibecheckproject.com/view-card.html">
-  <meta property="og:title" content="Someone Sent You a Vibe Check ✨">
+  <meta property="og:title" content="Someone Sent You a Vibe Check ✨ — The Vibe Check Project">
   <meta property="og:description"
     content="You've got an affirmation card waiting for you. Open it and feel the good vibes.">
   <meta property="og:image" content="https://www.thevibecheckproject.com/assets/og-image.png">
   <meta property="og:site_name" content="The Vibe Check Project">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Someone Sent You a Vibe Check ✨">
+  <meta name="twitter:title" content="Someone Sent You a Vibe Check ✨ — The Vibe Check Project">
   <meta name="twitter:description"
     content="You've got an affirmation card waiting for you. Open it and feel the good vibes.">
   <meta name="twitter:image" content="https://www.thevibecheckproject.com/assets/og-image.png">
@@ -23,12 +23,18 @@
   <!-- Analytics -->
   <script defer data-domain="thevibecheckproject.com" src="https://plausible.io/js/script.js"></script>
 
-  <!-- Fonts -->
+  <!-- Fonts Performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-    rel="stylesheet">
+    rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet">
+  </noscript>
 
   <link rel="stylesheet" href="css/styles.css">
 
@@ -159,7 +165,25 @@
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      padding: 120px 20px 40px;
+      padding: 0 20px 80px;
+      transition: padding 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── Cinematic Spacer ── */
+    .content-spacer {
+      height: 25vh;
+      /* Center the card initially */
+      transition: height 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+    }
+
+    .is-revealed .content-spacer {
+      height: 80px;
+      /* Move card to top when revealed */
+    }
+
+    .is-revealed .main-content {
+      padding-top: 0;
     }
 
     /* ── Header badge ── */
@@ -360,35 +384,67 @@
 
     /* Back face */
     .flip-card-back {
-      background: var(--bg-card);
-      border: 1px solid rgba(163, 230, 53, 0.15);
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       box-shadow:
         0 0 80px rgba(163, 230, 53, 0.1),
         0 20px 60px rgba(0, 0, 0, 0.5);
       transform: rotateY(180deg);
-      padding: 40px 32px;
+      padding: 48px 32px;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    .flip-card-back::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.15;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      z-index: 1;
+      border-radius: inherit;
     }
 
     .affirmation {
       font-family: var(--font-display);
-      font-size: clamp(20px, 4vw, 32px);
+      font-size: clamp(24px, 5vw, 36px);
       font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1.4;
-      margin-bottom: 20px;
-      text-shadow: 0 0 30px rgba(163, 230, 53, 0.15);
+      color: white;
+      line-height: 1.3;
+      margin-bottom: 24px;
+      font-style: italic;
+      position: relative;
+      z-index: 5;
+      text-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.8),
+        0 4px 20px rgba(0, 0, 0, 0.6),
+        0 0 40px rgba(0, 0, 0, 0.4);
+      letter-spacing: -0.01em;
     }
 
     .card-message {
-      font-size: 15px;
-      color: var(--text-secondary);
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.9);
       line-height: 1.6;
-      padding: 12px 16px;
-      background: rgba(163, 230, 53, 0.05);
-      border-left: 3px solid var(--green);
-      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      background: rgba(0, 0, 0, 0.3);
+      border-left: 4px solid var(--green);
+      border-radius: 0 12px 12px 0;
       text-align: left;
+      position: relative;
+      z-index: 5;
+      text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.8),
+        0 4px 15px rgba(0, 0, 0, 0.5);
+      font-weight: 500;
+      letter-spacing: 0.01em;
     }
 
     /* ── Action buttons below card ── */
@@ -596,6 +652,26 @@
       animation: fadeInUp 0.8s ease-out 1s both;
     }
 
+    /* ── Post-flip reveal ── */
+    #postCardContent {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(30px);
+      pointer-events: none;
+      transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+      transition-delay: 0.3s;
+      /* Delay the buttons slightly after the card starts moving */
+    }
+
+    .is-revealed #postCardContent {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
     .page-footer a {
       color: var(--green);
       text-decoration: none;
@@ -667,7 +743,7 @@
   <!-- Navigation -->
   <nav id="nav">
     <div class="nav-container">
-      <a href="index.html" class="nav-logo">✨ Vibe Check</a>
+      <a href="index.html" class="nav-logo">✨ The Vibe Check Project</a>
       <ul class="nav-links" style="align-items: center;">
         <li>
           <a href="blog/index.html#crisis" class="nav-crisis-badge">
@@ -686,13 +762,14 @@
   <div id="particles"></div>
 
   <div class="main-content">
+    <div class="content-spacer"></div>
     <!-- Header -->
     <div class="header-badge" id="headerBadge">✨ Someone sent you a vibe</div>
 
     <!-- Flip Card -->
     <div class="flip-card" id="flipCard" tabindex="0">
       <div class="flip-card-inner" id="flipCardInner">
-        <div class="flip-card-face flip-card-front">
+        <div class="flip-card-face flip-card-front" id="cardFront">
           <div class="shimmer-layer"></div>
           <div class="front-emoji">💚</div>
           <div class="front-label">You've got a Vibe Check!</div>
@@ -710,34 +787,37 @@
       </div>
     </div>
 
-    <!-- Action buttons -->
-    <div class="card-ctas">
-      <a href="send-card.html" class="btn btn-primary">Send One Back 💌</a>
-      <a href="index.html" class="btn btn-outline">Get Daily Vibes Free ✨</a>
-    </div>
+    <!-- Post-card content (hidden until flip) -->
+    <div id="postCardContent">
+      <!-- Action buttons -->
+      <div class="card-ctas">
+        <a href="send-card.html" class="btn btn-primary">Send One Back 💌</a>
+        <a href="index.html" class="btn btn-outline">Get Daily Vibes Free ✨</a>
+      </div>
 
-    <!-- Premium upsell — prominent CTA at the highest-intent moment -->
-    <div
-      style="margin:24px 0;padding:20px 24px;background:linear-gradient(135deg,rgba(163,230,53,0.08),rgba(168,85,247,0.08));border:1px solid rgba(163,230,53,0.2);border-radius:14px;text-align:center;">
-      <p style="color:var(--text-primary);font-size:16px;font-weight:600;margin-bottom:6px;">Love this? Go Premium ✨</p>
-      <p style="color:var(--text-secondary);font-size:13px;margin-bottom:14px;">Daily affirmations, exclusive card
-        packs, and 20+ premium designs.</p>
-      <a href="https://ko-fi.com/thevibecheckproject/membership?utm_source=website&utm_campaign=card-view-cta"
-        target="_blank" rel="noopener"
-        style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#a3e635,#84cc16);color:#0a0a0a;font-weight:700;border-radius:10px;text-decoration:none;font-family:var(--font-display);font-size:14px;transition:transform 0.2s,box-shadow 0.2s;">
-        Join Premium — $3.99/mo
-      </a>
-    </div>
+      <!-- Premium upsell — prominent CTA at the highest-intent moment -->
+      <div
+        style="margin:24px 0;padding:20px 24px;background:linear-gradient(135deg,rgba(163,230,53,0.08),rgba(168,85,247,0.08));border:1px solid rgba(163,230,53,0.2);border-radius:14px;text-align:center;">
+        <p style="color:var(--text-primary);font-size:16px;font-weight:600;margin-bottom:6px;">Love this? Go Premium ✨
+        </p>
+        <p style="color:var(--text-secondary);font-size:13px;margin-bottom:14px;">Unlock 10 premium card themes and all
+          relaxing sounds — yours forever in your browser.</p>
+        <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener"
+          style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#a3e635,#84cc16);color:#0a0a0a;font-weight:700;border-radius:10px;text-decoration:none;font-family:var(--font-display);font-size:14px;transition:transform 0.2s,box-shadow 0.2s;">
+          Unlock Premium — $4.99
+        </a>
+      </div>
 
-    <!-- Email capture -->
-    <div class="email-section">
-      <p class="eyebrow">Free Weekly Drops</p>
-      <h3>Get vibes like this in your inbox</h3>
-      <p class="subtext">A curated affirmation card pack, delivered free every Sunday. No strings.</p>
-      <form class="email-form" id="viewCardSignupForm" onsubmit="handleViewCardSignup(event)">
-        <input type="email" placeholder="your@email.com" required>
-        <button type="submit">Join Free</button>
-      </form>
+      <!-- Email capture -->
+      <div class="email-section">
+        <p class="eyebrow">Free Weekly Drops</p>
+        <h3>Get vibes like this in your inbox</h3>
+        <p class="subtext">A curated affirmation card pack, delivered free every Sunday. No strings.</p>
+        <form class="email-form" id="viewCardSignupForm" onsubmit="handleViewCardSignup(event)">
+          <input type="email" placeholder="your@email.com" required>
+          <button type="submit">Join Free</button>
+        </form>
+      </div>
     </div>
 
     <!-- Footer -->
@@ -821,8 +901,22 @@
           document.title = `${card.recipientName}, You've Got a Vibe Check! ✨`;
         }
         if (card.themeGroup && card.themeGroup !== 'default') {
-          const frontFace = document.querySelector('.flip-card-front');
+          const frontFace = document.getElementById('cardFront') || document.querySelector('.flip-card-front');
+          const backFace = document.querySelector('.flip-card-back');
           if (frontFace) frontFace.classList.add(`theme-${card.themeGroup}`);
+          if (backFace && !card.background) backFace.classList.add(`theme-${card.themeGroup}`);
+        }
+        if (card.background) {
+          const frontFace = document.getElementById('cardFront') || document.querySelector('.flip-card-front');
+          const backFace = document.querySelector('.flip-card-back');
+          const bgUrl = card.background.includes('assets/') ? `url('${card.background}')` : card.background;
+
+          if (backFace) {
+            backFace.style.backgroundImage = bgUrl;
+            backFace.style.backgroundSize = 'cover';
+            backFace.style.backgroundPosition = 'center';
+            backFace.style.borderColor = 'transparent';
+          }
         }
       } catch (e) { }
     })();
@@ -945,6 +1039,13 @@
         burstParticles(30);
         launchConfetti();
         playCardSound();
+
+        // Cinematic Reveal Sequence
+        if (!document.body.classList.contains('is-revealed')) {
+          setTimeout(() => {
+            document.body.classList.add('is-revealed');
+          }, 1200); // 1.2s pause to read before the world moves
+        }
       }
     });
     flipCard.addEventListener('keydown', (e) => {

@@ -49,11 +49,11 @@
     </p>
 
     <div class='footer'>
-      <p style='margin-bottom: 10px;'>Want these daily instead of weekly? <a href='https://ko-fi.com/thevibecheckproject/membership' style='color:#bef264;'>Upgrade to Premium for .99/mo</a>.</p>
+      <p style='margin-bottom: 10px;'>Want to send better cards? <a href='https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02' style='color:#bef264;'>Unlock Premium for $4.99 one-time</a>.</p>
       <div class='footer-links'>
-        <a href='https://www.thevibecheckproject.com'>Website</a> &bull; 
-        <a href='https://ko-fi.com/thevibecheckproject'>Ko-fi</a> &bull; 
-        <a href='https://vibecheck2.gumroad.com/'>Gumroad</a>
+        <a href='https://www.thevibecheckproject.com'>Website</a> &bull;
+        <a href='https://ko-fi.com/thevibecheckproject'>Ko-fi</a> &bull;
+        <a href='https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02'>Premium Unlock — $4.99</a>
       </div>
       <p style='margin-top: 20px;'>{\}</p>
     </div>

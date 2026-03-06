@@ -41,23 +41,18 @@
     <link rel="icon" type="image/png"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
 
-    <!-- Fonts Performance -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Caveat:wght@400;500;600;700&family=Fredoka:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-        rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Caveat:wght@400;500;600;700&family=Fredoka:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-            rel="stylesheet">
-    </noscript>
+        rel="stylesheet">
 
     <!-- Styles -->
     <link rel="stylesheet" href="css/styles.css">
 
-    <!-- Lucide Icons (Script Removed for Performance, replaced with inline SVGs) -->
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2492108586092522"
         crossorigin="anonymous"></script>
 </head>
@@ -222,13 +217,7 @@
                 <div class="affirmations-grid">
                     <div class="affirmation-card reveal">
                         <div class="affirmation-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-heart">
-                                <path
-                                    d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5">
-                                </path>
-                            </svg>
+                            <i data-lucide="heart"></i>
                         </div>
                         <p class="affirmation-quote">"Your feelings are valid, and you deserve to be heard."</p>
                         <span class="affirmation-category">Self-Compassion</span>
@@ -236,18 +225,7 @@
 
                     <div class="affirmation-card reveal">
                         <div class="affirmation-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-sunrise">
-                                <path d="M12 2v8"></path>
-                                <path d="m4.93 10.93 1.41 1.41"></path>
-                                <path d="M2 18h2"></path>
-                                <path d="M20 18h2"></path>
-                                <path d="m19.07 10.93-1.41 1.41"></path>
-                                <path d="M22 22H2"></path>
-                                <path d="m8 6 4-4 4 4"></path>
-                                <path d="M16 18a4 4 0 0 0-8 0"></path>
-                            </svg>
+                            <i data-lucide="sunrise"></i>
                         </div>
                         <p class="affirmation-quote">"Every new day is a fresh chance to try again."</p>
                         <span class="affirmation-category">Hope</span>
@@ -255,14 +233,7 @@
 
                     <div class="affirmation-card reveal">
                         <div class="affirmation-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-smile">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-                                <line x1="9" x2="9.01" y1="9" y2="9"></line>
-                                <line x1="15" x2="15.01" y1="9" y2="9"></line>
-                            </svg>
+                            <i data-lucide="smile"></i>
                         </div>
                         <p class="affirmation-quote">"You're doing better than you think you are."</p>
                         <span class="affirmation-category">Encouragement</span>
@@ -270,16 +241,7 @@
 
                     <div class="affirmation-card reveal">
                         <div class="affirmation-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-sparkles">
-                                <path
-                                    d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z">
-                                </path>
-                                <path d="M20 2v4"></path>
-                                <path d="M22 4h-4"></path>
-                                <circle cx="4" cy="20" r="2"></circle>
-                            </svg>
+                            <i data-lucide="sparkles"></i>
                         </div>
                         <p class="affirmation-quote">"Your presence makes a difference, even when you don't see it."</p>
                         <span class="affirmation-category">Worth</span>
@@ -287,13 +249,7 @@
 
                     <div class="affirmation-card reveal">
                         <div class="affirmation-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-moon">
-                                <path
-                                    d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401">
-                                </path>
-                            </svg>
+                            <i data-lucide="moon"></i>
                         </div>
                         <p class="affirmation-quote">"Rest is not weakness. It's essential."</p>
                         <span class="affirmation-category">Self-Care</span>
@@ -301,13 +257,7 @@
 
                     <div class="affirmation-card reveal">
                         <div class="affirmation-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-zap">
-                                <path
-                                    d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z">
-                                </path>
-                            </svg>
+                            <i data-lucide="zap"></i>
                         </div>
                         <p class="affirmation-quote">"You're trying, and that's what counts."</p>
                         <span class="affirmation-category">Motivation</span>
@@ -316,256 +266,58 @@
             </div>
         </section>
 
-        <style>
-            /* 3-Card Send Flow Styles */
-            .send-flow-grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 24px;
-                margin-top: 40px;
-            }
-
-            @media (max-width: 900px) {
-                .send-flow-grid {
-                    grid-template-columns: 1fr;
-                    max-width: 500px;
-                    margin: 40px auto 0;
-                }
-            }
-
-            .flow-card {
-                background: rgba(255, 255, 255, 0.03);
-                border: 1px solid rgba(255, 255, 255, 0.08);
-                border-radius: 24px;
-                padding: 32px 24px;
-                text-align: center;
-                position: relative;
-                overflow: hidden;
-                backdrop-filter: blur(10px);
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-            }
-
-            .flow-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-                border-color: rgba(255, 107, 157, 0.3);
-            }
-
-            .flow-step-number {
-                position: absolute;
-                top: 16px;
-                left: 16px;
-                width: 32px;
-                height: 32px;
-                background: rgba(255, 107, 157, 0.15);
-                color: var(--color-primary);
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: 700;
-                font-size: 14px;
-            }
-
-            .flow-card h3 {
-                font-size: 1.25rem;
-                margin: 16px 0 8px;
-                font-family: var(--font-display);
-            }
-
-            .flow-card p {
-                color: var(--color-text-secondary);
-                font-size: 0.95rem;
-                margin-bottom: 24px;
-                line-height: 1.5;
-            }
-
-            /* Vibe Picker */
-            .vibe-options {
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-                width: 100%;
-            }
-
-            .vibe-btn {
-                background: rgba(255, 255, 255, 0.05);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                color: var(--color-text-primary);
-                padding: 12px;
-                border-radius: 12px;
-                font-family: var(--font-body);
-                font-weight: 600;
-                cursor: pointer;
-                transition: all 0.2s;
-            }
-
-            .vibe-btn:hover,
-            .vibe-btn.active {
-                background: rgba(255, 107, 157, 0.15);
-                border-color: var(--color-primary);
-                color: white;
-            }
-
-            /* Static Preview */
-            .static-preview-container {
-                width: 100%;
-                aspect-ratio: 4/5;
-                border-radius: 16px;
-                overflow: hidden;
-                position: relative;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-                background: #1a1625;
-            }
-
-            .static-preview-img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                transition: opacity 0.3s ease;
-            }
-
-            .static-preview-overlay {
-                position: absolute;
-                inset: 0;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                padding: 24px;
-                text-align: center;
-                background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 50%, rgba(0, 0, 0, 0.4));
-            }
-
-            .static-preview-text {
-                font-family: var(--font-display);
-                font-size: 1.1rem;
-                font-weight: 600;
-                line-height: 1.4;
-                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-                margin-bottom: 16px;
-                transition: opacity 0.3s ease;
-            }
-
-            /* Send CTA */
-            .send-cta-wrap {
-                margin-top: auto;
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 16px;
-            }
-
-            .massive-btn {
-                width: 100%;
-                padding: 20px;
-                font-size: 1.2rem;
-                border-radius: 16px;
-                background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-                box-shadow: 0 10px 20px rgba(255, 107, 157, 0.3);
-            }
-
-            .massive-btn:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 15px 30px rgba(255, 107, 157, 0.4);
-            }
-
-            .fun-fact {
-                font-size: 0.85rem;
-                color: rgba(255, 255, 255, 0.5);
-                font-style: italic;
-            }
-        </style>
-
         <!-- Send a Card Section -->
         <section id="send-card" class="send-card-section">
             <div class="section-container">
                 <div class="section-header">
                     <h2 class="section-title">💌 Send a Vibe Check Card</h2>
                     <p class="section-subtitle">
-                        Brighten someone's day with a personalized affirmation card. It's completely free, requires no
-                        login, and takes just 30 seconds.
+                        Brighten someone's day with a personalized affirmation card. Perfect for friends, family, or
+                        anyone who needs a reminder that they matter.
                     </p>
                 </div>
 
-                <div class="send-flow-grid">
-                    <!-- Card 1: The Vibe -->
-                    <div class="flow-card reveal">
-                        <div class="flow-step-number">1</div>
-                        <h3>Pick the Vibe</h3>
-                        <p>Choose the exact energy they need right now.</p>
-                        <div class="vibe-options">
-                            <button class="vibe-btn active" onclick="updateStaticPreview('encouragement', this)">✨
-                                Encouragement</button>
-                            <button class="vibe-btn" onclick="updateStaticPreview('anxiety', this)">🌊 Anxiety
-                                Relief</button>
-                            <button class="vibe-btn" onclick="updateStaticPreview('justbecause', this)">💖 Just
-                                Because</button>
-                        </div>
-                    </div>
-
-                    <!-- Card 2: Preview -->
-                    <div class="flow-card reveal" style="transition-delay: 100ms;">
-                        <div class="flow-step-number">2</div>
-                        <h3>Preview It</h3>
-                        <p>See exactly what they'll open.</p>
-                        <div class="static-preview-container" id="staticPreviewBox"
-                            style="background: linear-gradient(135deg, #2d1b69, #1a1625);">
-                            <div class="static-preview-overlay">
-                                <div class="static-preview-text" id="staticPreviewQuote">
-                                    "You're doing better than you think you are."
-                                </div>
-                                <div style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">
-                                    Someone special wanted to send you some good vibes ✨
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 3: Send -->
-                    <div class="flow-card reveal" style="transition-delay: 200ms;">
-                        <div class="flow-step-number">3</div>
-                        <h3>Send It Off</h3>
-                        <p>Share instantly via text, WhatsApp, or copy the link directly.</p>
-                        <div class="send-cta-wrap">
-                            <div style="font-size: 3rem; margin-bottom: 10px;">🚀</div>
-                            <a href="send-card.html" class="btn btn-primary massive-btn">Make Yours Now ✨</a>
-                            <span class="fun-fact">Zero sign-up required. Free forever.</span>
-                        </div>
+                <div class="send-card-preview">
+                    <!-- TO ADD VIDEO: Replace this comment with:
+                    <video autoplay loop muted playsinline style="width:100%; border-radius:20px; margin-bottom:32px;">
+                        <source src="assets/card-demo.mp4" type="video/mp4">
+                    </video>
+                    -->
+                    <div class="card-example reveal">
+                        <div class="card-envelope-icon">✨</div>
+                        <h3>It Takes 30 Seconds:</h3>
+                        <ol class="card-steps">
+                            <li>Pick an affirmation that hits right</li>
+                            <li>Add a personal message from your heart</li>
+                            <li>Choose a sound for when they open it</li>
+                            <li>Send via link — they get an animated card just for them</li>
+                        </ol>
+                        <a href="send-card.html" class="btn btn-primary btn-large">Create Your Card ✨</a>
                     </div>
                 </div>
 
-                <script>
-                    function updateStaticPreview(category, btnElement) {
-                        // Update active state on buttons
-                        document.querySelectorAll('.vibe-btn').forEach(btn => btn.classList.remove('active'));
-                        btnElement.classList.add('active');
-
-                        // Update text and background based on selection
-                        const textEl = document.getElementById('staticPreviewQuote');
-                        const boxEl = document.getElementById('staticPreviewBox');
-
-                        textEl.style.opacity = 0;
-
-                        setTimeout(() => {
-                            if (category === 'encouragement') {
-                                textEl.textContent = '"You\'re doing better than you think you are."';
-                                boxEl.style.background = 'linear-gradient(135deg, #2d1b69, #1a1625)';
-                            } else if (category === 'anxiety') {
-                                textEl.textContent = '"Breathe. You are safe right now."';
-                                boxEl.style.background = 'linear-gradient(135deg, #0f2027, #2c5364)';
-                            } else if (category === 'justbecause') {
-                                textEl.textContent = '"Just a reminder that you\'re awesome."';
-                                boxEl.style.background = 'linear-gradient(135deg, #1a1625, #0d0a18)';
-                            }
-                            textEl.style.opacity = 1;
-                        }, 300);
-                    }
-                </script>
+                <div class="card-use-cases">
+                    <div class="use-case reveal">
+                        <div class="use-case-icon">🤗</div>
+                        <h4>Thinking of You</h4>
+                        <p>Let someone know you care with an uplifting message</p>
+                    </div>
+                    <div class="use-case reveal">
+                        <div class="use-case-icon">🎉</div>
+                        <h4>Celebrate Wins</h4>
+                        <p>Congratulate friends on their achievements, big or small</p>
+                    </div>
+                    <div class="use-case reveal">
+                        <div class="use-case-icon">💚</div>
+                        <h4>Support During Tough Times</h4>
+                        <p>Send encouragement when words are hard to find</p>
+                    </div>
+                    <div class="use-case reveal">
+                        <div class="use-case-icon">🌈</div>
+                        <h4>Just Because</h4>
+                        <p>Spread positivity for no reason at all</p>
+                    </div>
+                </div>
 
             </div>
         </section>
@@ -762,19 +514,7 @@
                 <div class="features-grid">
                     <div class="feature-card reveal">
                         <div class="feature-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-sun">
-                                <circle cx="12" cy="12" r="4"></circle>
-                                <path d="M12 2v2"></path>
-                                <path d="M12 20v2"></path>
-                                <path d="m4.93 4.93 1.41 1.41"></path>
-                                <path d="m17.66 17.66 1.41 1.41"></path>
-                                <path d="M2 12h2"></path>
-                                <path d="M20 12h2"></path>
-                                <path d="m6.34 17.66-1.41 1.41"></path>
-                                <path d="m19.07 4.93-1.41 1.41"></path>
-                            </svg>
+                            <i data-lucide="sun"></i>
                         </div>
                         <h3>30 Daily Affirmations</h3>
                         <p>
@@ -785,17 +525,7 @@
 
                     <div class="feature-card reveal">
                         <div class="feature-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-palette">
-                                <path
-                                    d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z">
-                                </path>
-                                <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
-                                <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
-                                <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
-                                <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
-                            </svg>
+                            <i data-lucide="palette"></i>
                         </div>
                         <h3>Exclusive Card Packs</h3>
                         <p>
@@ -806,16 +536,7 @@
 
                     <div class="feature-card reveal">
                         <div class="feature-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-sparkles">
-                                <path
-                                    d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z">
-                                </path>
-                                <path d="M20 2v4"></path>
-                                <path d="M22 4h-4"></path>
-                                <circle cx="4" cy="20" r="2"></circle>
-                            </svg>
+                            <i data-lucide="sparkles"></i>
                         </div>
                         <h3>Early Access</h3>
                         <p>
@@ -826,13 +547,7 @@
 
                     <div class="feature-card reveal">
                         <div class="feature-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide lucide-heart">
-                                <path
-                                    d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5">
-                                </path>
-                            </svg>
+                            <i data-lucide="heart"></i>
                         </div>
                         <h3>Support the Mission</h3>
                         <p>
@@ -843,12 +558,11 @@
                 </div>
 
                 <div class="pricing-highlight">
-                    <p class="pricing-text">$4.99 one-time — 10 premium card themes + all sounds • Yours forever in your
-                        browser</p>
+                    <p class="pricing-text">$4.99 one-time — 10 premium card themes + all sounds • Yours forever in your browser</p>
                     <div
                         style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                        <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" class="btn btn-primary btn-large"
-                            target="_blank" rel="noopener">Unlock Premium — $4.99 →</a>
+                        <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" class="btn btn-primary btn-large" target="_blank"
+                            rel="noopener">Unlock Premium — $4.99 →</a>
                     </div>
                 </div>
             </div>
@@ -925,8 +639,8 @@
                         <h3>✨ Premium Unlock</h3>
                         <p>One-time $4.99 — 10 premium card themes, all relaxing sounds, yours forever in your browser.
                             No subscription.</p>
-                        <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener"
-                            class="btn btn-secondary">Unlock Premium →</a>
+                        <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02"
+                            target="_blank" rel="noopener" class="btn btn-secondary">Unlock Premium →</a>
                     </div>
 
                     <div class="support-card reveal">

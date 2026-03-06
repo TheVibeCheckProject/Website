@@ -12,8 +12,8 @@ The Vibe Check Project lets anyone send a personalized encouragement card via sh
 
 **Revenue model:**
 - Free card sending — always free, no account needed
-- Ko-fi membership — $3.99/month for premium access
-- Gumroad pack — $4.99 one-time for premium card theme bundle
+- Premium Unlock — $4.99 one-time for premium card themes & sounds (via Stripe)
+- Ko-fi tips — optional one-time tips to support the project
 
 ---
 
@@ -27,7 +27,7 @@ The Vibe Check Project lets anyone send a personalized encouragement card via sh
 - **Email:** MailerLite (group `180628908682512348`) — email capture + 3-email welcome sequence
 - **Analytics:** Microsoft Clarity (project `vohl4gduni`) — heatmaps, session replay, no advertising cookies
 - **Card counter:** counterapi.dev — live persistent count, no auth required
-- **Payments:** Ko-fi (`ko-fi.com/thevibecheckproject`) + Gumroad
+- **Payments:** Ko-fi (`ko-fi.com/thevibecheckproject`) + Stripe
 
 ---
 
@@ -129,7 +129,6 @@ Fonts: Space Grotesk (headers) / Inter (body)
 ## Still To Do
 
 - [ ] Submit `sitemap.xml` to Google Search Console
-- [ ] Design 10 premium card theme PNGs in Canva → ZIP for Gumroad
 - [ ] Add real testimonials when available
 - [ ] TikTok posting cadence
 

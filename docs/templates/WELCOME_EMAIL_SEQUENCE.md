@@ -78,30 +78,24 @@ Hey [first_name|there],
 
 You've been getting vibes for a few days now. Hopefully they're hitting right.
 
-I want to be straight with you: there's a free tier and a paid tier. Here's the difference — no fluff:
-
-**Free (what you already have):**
-- Weekly card pack every Sunday
-- Access to the card-sending tool
-
-**Premium — $3.99/month:**
-- **30 daily affirmations** — one every morning in your inbox, themed by day (Mondays are Motivation, Fridays are Gratitude, etc.)
-- **4 exclusive card packs per month** — premium designs not available on the free tier
-- Early access to new card designs before they go public
-
-That's it. No upsell funnel, no mystery. Just more good vibes, more consistently.
+There are two ways to go deeper — and they do completely different things. Here's the honest breakdown:
 
 ---
 
-If daily affirmations sound like something you'd actually use:
+**If you want a better tool for sending cards to others:**
 
-[Join Premium on Ko-fi — $3.99/month →](https://ko-fi.com/thevibecheckproject/membership?utm_source=email&utm_campaign=welcome-sequence)
+**Premium Unlock — $4.99 one-time**
+- Unlocks 10 premium card design themes inside the card-sending tool
+- Unlocks all premium sounds (music box, harp, piano, and more)
+- Works instantly in your browser — yours forever, no subscription
 
-If you're not ready for that, no pressure at all. The free Sunday pack keeps coming regardless.
+This is for people who use the card tool regularly and want it to hit harder. One payment, no recurring charges.
 
-And if you ever want to grab the one-time premium card design pack (10 themes, yours forever):
+[Unlock Premium Now — $4.99 →](https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02)
 
-[Premium Card Designs — $4.99 one-time →](https://vibecheck2.gumroad.com/l/ycmxxb?utm_source=email&utm_campaign=welcome-sequence)
+---
+
+Not required. The free newsletter keeps coming no matter what.
 
 Talk soon,
 Devin @ The Vibe Check Project

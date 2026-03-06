@@ -86,7 +86,7 @@ async function main() {
     emails: [
       {
         subject: email.subject,
-        from_name: 'The Vibe Check',
+        from_name: 'The Vibe Check Project',
         from: 'wecare@thevibecheckproject.com',
         content: email.body_html,
       }

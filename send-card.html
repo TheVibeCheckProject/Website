@@ -35,12 +35,19 @@
         (function () { emailjs.init('kR9IPQkDu9CqMfnYy'); })();
     </script>
 
-    <!-- Fonts -->
+    <!-- Fonts Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-        rel="stylesheet">
+        rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+            rel="stylesheet">
+    </noscript>
+
 
     <link rel="stylesheet" href="css/styles.css">
     <style>
@@ -54,7 +61,7 @@
         }
 
         .send-card-container {
-            max-width: 700px;
+            max-width: 1100px;
             width: 100%;
             background: var(--color-bg-medium);
             border-radius: 24px;
@@ -130,51 +137,243 @@
             min-height: 120px;
         }
 
-        .affirmation-picker {
+        .send-card-layout {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: var(--space-sm);
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px;
+            align-items: start;
+            height: calc(100vh - 120px);
+            /* Accounts for typical header height */
+            overflow: hidden;
+            /* Lock body scrolling */
         }
 
-        .affirmation-option {
-            padding: var(--space-md);
-            background: var(--color-bg-dark);
-            border: 2px solid rgba(255, 107, 157, 0.2);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all var(--transition-base);
-            text-align: center;
-            font-size: 14px;
+        .send-card-form-col {
+            min-width: 0;
+            height: 100%;
+            overflow-y: auto;
+            /* Independent internal scrolling */
+            padding-right: 20px;
+            padding-bottom: 60px;
+            /* Space for bottom content */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .send-card-form-col::-webkit-scrollbar {
+            display: none;
+            /* Chrome/Safari */
+        }
+
+        @media (max-width: 960px) {
+            .send-card-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                height: auto;
+                /* Revert to natural flow scrolling for mobile stacking */
+                overflow: visible;
+            }
+
+            .send-card-form-col {
+                overflow-y: visible;
+                height: auto;
+                padding-right: 0;
+            }
+
+            .send-card-preview-col {
+                order: -1;
+                position: relative;
+                z-index: 10;
+            }
+        }
+
+        /* ── Vibe Category Tabs ─────────────────────────────────── */
+        .vibe-category-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .vibe-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 16px;
+            border-radius: 50px;
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
             color: var(--color-text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font-display);
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s, color 0.2s, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+            white-space: nowrap;
         }
 
-        .affirmation-option:hover {
-            border-color: var(--color-primary);
-            background: rgba(255, 107, 157, 0.1);
+        .vibe-tab span:first-child {
+            position: relative;
+            z-index: 1;
         }
 
-        .affirmation-option.selected {
-            border-color: var(--color-primary);
-            background: rgba(255, 107, 157, 0.2);
-            color: var(--color-text-primary);
+        .tab-lock {
+            font-size: 11px;
+            opacity: 0.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .vibe-tab::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--tab-gradient, linear-gradient(135deg, #ff6b9d, #c084fc));
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .vibe-tab:hover {
+            border-color: var(--tab-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--tab-glow, rgba(255, 107, 157, 0.25));
+        }
+
+        .vibe-tab.active {
+            border-color: transparent;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px var(--tab-glow, rgba(255, 107, 157, 0.3));
+        }
+
+        .vibe-tab.active::before {
+            opacity: 1;
+        }
+
+        /* ── Category Lock Banner ───────────────────────────────── */
+        .category-lock-banner {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            background: rgba(168, 85, 247, 0.07);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: 10px;
+            font-size: 13px;
+            color: #c4b5fd;
+            margin-bottom: 10px;
+        }
+
+        .category-lock-banner a {
+            color: #d8b4fe;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .category-lock-banner a:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Affirmation Grid ───────────────────────────────────── */
+        .affirmation-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 9px;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        @media (max-width: 480px) {
+            .affirmation-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes affCardIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .aff-card {
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 1.5px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+            font-size: 13.5px;
+            line-height: 1.55;
+            color: var(--color-text-secondary);
+            font-family: var(--font-body);
+            font-style: italic;
+            transition: border-color 0.2s, background 0.2s, color 0.2s, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+            animation: affCardIn 0.35s ease both;
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        .aff-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 30% 50%, var(--active-glow, rgba(255, 107, 157, 0.15)) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .aff-card:hover {
+            border-color: var(--active-color, rgba(255, 107, 157, 0.5));
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .aff-card:hover::after {
+            opacity: 0.6;
+        }
+
+        .aff-card.selected {
+            border-color: var(--active-color, var(--color-primary));
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            box-shadow: 0 0 0 1px var(--active-color, var(--color-primary)), 0 8px 28px var(--active-glow, rgba(255, 107, 157, 0.3));
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .aff-card.selected::after {
+            opacity: 1;
+        }
+
+        .aff-card.aff-locked {
+            opacity: 0.5;
+            pointer-events: none;
+            filter: blur(3px);
+            user-select: none;
         }
 
         .locked-option {
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            justify-content: center;
+            background: var(--color-bg-dark);
             border-style: dashed;
+            border-color: rgba(168, 85, 247, 0.3);
         }
 
         .locked-header {
-            font-weight: bold;
-            color: var(--color-text-secondary);
+            font-weight: 700;
+            color: #d8b4fe;
+            margin-bottom: 8px;
             font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
         }
 
         .locked-tooltip {
@@ -183,21 +382,25 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(26, 22, 37, 0.9);
+            background: rgba(26, 22, 37, 0.85);
+            backdrop-filter: blur(4px);
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             padding: 1rem;
             opacity: 0;
-            transition: opacity 0.2s;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             font-weight: 600;
-            color: var(--color-primary);
-            border-radius: 10px;
+            color: #d8b4fe;
+            border-radius: inherit;
+            transform: scale(0.95);
         }
 
         .locked-option:hover .locked-tooltip {
             opacity: 1;
+            transform: scale(1);
+            box-shadow: inset 0 0 20px rgba(168, 85, 247, 0.2);
         }
 
         .card-preview {
@@ -207,6 +410,82 @@
             border: 2px solid rgba(255, 107, 157, 0.2);
             text-align: center;
             transition: background 0.4s ease, border-color 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+
+        /* ── Physical Paper Polish: Noise Texture ── */
+        .card-preview::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0.15;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* ── Glassmorphic Text Container ── */
+        .preview-content-wrapper {
+            position: relative;
+            z-index: 5;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 12px;
+            padding: 32px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* ── Foil Shimmer Sweep Animation ── */
+        .card-preview::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 50%;
+            height: 300%;
+            background: linear-gradient(to right,
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.1) 40%,
+                    rgba(255, 255, 255, 0.6) 50%,
+                    rgba(255, 255, 255, 0.1) 60%,
+                    transparent 100%);
+            transform: rotate(35deg);
+            pointer-events: none;
+            opacity: 0;
+            z-index: 2;
+        }
+
+        .card-preview.play-foil::after {
+            animation: foilSweep 0.8s ease-out forwards;
+        }
+
+        @keyframes foilSweep {
+            0% {
+                left: -150%;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 200%;
+                opacity: 0;
+            }
         }
 
         .card-preview.theme-birthday {
@@ -235,24 +514,41 @@
         }
 
         .preview-label {
-            font-size: 12px;
-            color: var(--color-text-muted);
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.9);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             margin-bottom: var(--space-md);
+            position: relative;
+            z-index: 5;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            font-weight: 700;
         }
 
         .preview-affirmation {
-            font-size: 24px;
+            font-size: 26px;
             font-style: italic;
-            color: var(--color-text-primary);
+            color: white;
             margin-bottom: var(--space-md);
+            position: relative;
+            z-index: 5;
+            line-height: 1.3;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8),
+                0 4px 20px rgba(0, 0, 0, 0.6),
+                0 0 40px rgba(0, 0, 0, 0.4);
+            letter-spacing: -0.01em;
         }
 
         .preview-message {
             font-size: 16px;
-            color: var(--color-text-secondary);
+            color: rgba(255, 255, 255, 0.9);
             line-height: 1.6;
+            position: relative;
+            z-index: 5;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8),
+                0 4px 15px rgba(0, 0, 0, 0.5);
+            font-weight: 500;
+            letter-spacing: 0.01em;
         }
 
         .send-button {
@@ -297,11 +593,18 @@
         .success-message {
             display: none;
             text-align: center;
-            padding: var(--space-2xl);
+            padding: var(--space-2xl) 20px;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .success-message.show {
-            display: block;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 120px);
+            animation: fadeSlideIn 0.5s ease-out both;
         }
 
         .success-icon {
@@ -519,7 +822,7 @@
             }
         }
 
-        .gumroad-upsell-box {
+        .premium-upsell-box {
             background: rgba(255, 107, 157, 0.07);
             border: 1px solid rgba(255, 107, 157, 0.2);
             border-radius: 14px;
@@ -532,14 +835,14 @@
             text-align: left;
         }
 
-        .gumroad-upsell-box p {
+        .premium-upsell-box p {
             font-size: 13px;
             color: var(--color-text-muted);
             margin: 0;
             flex: 1;
         }
 
-        .gumroad-upsell-box a {
+        .premium-upsell-box a {
             font-size: 13px;
             font-weight: 700;
             color: var(--color-primary);
@@ -547,8 +850,200 @@
             white-space: nowrap;
         }
 
-        .gumroad-upsell-box a:hover {
+        .premium-upsell-box a:hover {
             text-decoration: underline;
+        }
+
+        /* Background Picker */
+        .bg-picker {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 8px;
+        }
+
+        .bg-option {
+            position: relative;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            overflow: hidden;
+            transition: border-color 0.2s, transform 0.1s;
+        }
+
+        .bg-option:hover {
+            border-color: rgba(255, 107, 157, 0.4);
+            transform: scale(1.02);
+        }
+
+        .bg-option.selected {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 1px var(--color-primary);
+        }
+
+        .bg-thumb {
+            height: 48px;
+            width: 100%;
+        }
+
+        .bg-label {
+            padding: 5px 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            background: var(--color-bg-dark);
+            display: block;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .bg-option.selected .bg-label {
+            color: var(--color-primary);
+        }
+
+        .bg-premium-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            font-size: 8px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f472b6, #a855f7);
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bg-option.bg-locked {
+            opacity: 0.7;
+        }
+
+        /* Stepper UI */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: var(--space-xl);
+            font-family: var(--font-body);
+        }
+
+        .step-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .step-dot.active {
+            background: var(--color-primary);
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(255, 107, 157, 0.4);
+        }
+
+        .step-dot.completed {
+            background: rgba(255, 107, 157, 0.5);
+        }
+
+        .step-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .step-label.active {
+            color: var(--color-primary);
+        }
+
+        /* Sliding Form Container */
+        .form-slider-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            /* min-height will be managed by JS to avoid jumping, or we let it auto stretch */
+        }
+
+        .form-slider-track {
+            display: flex;
+            width: 300%;
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .form-step {
+            width: 33.333%;
+            flex-shrink: 0;
+            padding: 0 4px;
+            /* Slight padding so box-shadows don't clip */
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .form-step.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .step-actions {
+            display: flex;
+            gap: var(--space-md);
+            margin-top: var(--space-xl);
+        }
+
+        .btn-prev {
+            flex: 1;
+            padding: 18px;
+            font-size: 16px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--color-text-secondary);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            font-family: var(--font-body);
+        }
+
+        .btn-prev:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--color-text-primary);
+        }
+
+        .btn-next {
+            flex: 2;
+            padding: 18px;
+            font-size: 16px;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            font-family: var(--font-display);
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(255, 107, 157, 0.3);
+        }
+
+        .btn-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .sticky-preview {
+            position: sticky;
+            top: 20px;
+            z-index: 10;
+            margin-bottom: var(--space-xl);
         }
     </style>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2492108586092522"
@@ -580,439 +1075,528 @@
                 <p class="send-card-subtitle">Send someone you care about a personalized affirmation card</p>
             </div>
 
-            <form class="card-form" id="cardForm">
-                <div class="form-section">
-                    <label class="form-label">Choose an Affirmation</label>
-                    <div class="affirmation-picker" id="affirmationPicker">
-                        <!-- Will be populated by JavaScript -->
-                    </div>
-                </div>
+            <div class="step-indicator" id="stepIndicator">
+                <div class="step-dot active" data-step="1"></div>
+                <div class="step-label active" id="stepLabel">Step 1 of 3: The Look</div>
+                <div class="step-dot" data-step="2"></div>
+                <div class="step-dot" data-step="3"></div>
+            </div>
 
-                <div class="form-section">
-                    <label class="form-label">Recipient's Name</label>
-                    <input type="text" class="form-input" id="recipientName" placeholder="Sarah" required>
-                </div>
+            <!-- 2-Column Layout -->
+            <div class="send-card-layout" id="formLayout">
+                <!-- Left Column: Form -->
+                <div class="send-card-form-col">
+                    <form class="card-form" id="cardForm">
+                        <div class="form-slider-container">
+                            <div class="form-slider-track" id="sliderTrack">
 
-                <div class="form-section">
-                    <label class="form-label">Your Name</label>
-                    <input type="text" class="form-input" id="senderName"
-                        placeholder="Alex (or leave blank to send anonymously)">
-                    <small style="color: var(--color-text-muted); font-size: 12px; margin-top: 4px; display: block;">
-                        Leave blank to send as "Someone special" ✨
-                    </small>
-                </div>
+                                <!-- Step 1: The Look -->
+                                <div class="form-step active" id="step1">
+                                    <div class="form-section">
+                                        <label class="form-label">Choose an Affirmation <span
+                                                style="color:#ff6b6b">*</span></label>
+                                        <div class="vibe-category-tabs" id="categoryTabs"></div>
+                                        <div class="category-lock-banner" id="categoryLockBanner" style="display:none">
+                                            🔒 <strong>Premium vibes</strong> — <a
+                                                href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02"
+                                                style="color:#d8b4fe;font-weight:700;text-decoration:none;">Unlock for
+                                                $4.99</a>
+                                        </div>
+                                        <div class="affirmation-grid" id="affirmationPicker"></div>
+                                    </div>
 
-                <div class="form-section">
-                    <label class="form-label">Personal Message (Optional)</label>
-                    <textarea class="form-textarea" id="personalMessage"
-                        placeholder="I was thinking of you today and wanted to send some good vibes your way..."></textarea>
-                </div>
+                                    <div class="form-section" style="margin-top: var(--space-xl);">
+                                        <label class="form-label">Card Background</label>
+                                        <small
+                                            style="color: var(--color-text-muted); font-size: 12px; margin-bottom: 8px; display: block;">
+                                            Personalize the card's look
+                                        </small>
+                                        <div class="bg-picker" id="bgPicker">
+                                            <!-- Populated by JavaScript -->
+                                        </div>
+                                        <small id="premiumBgHint"
+                                            style="color: var(--color-text-muted); font-size: 11px; margin-top: 8px; display: block;">
+                                            🔓 <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02"
+                                                style="color: var(--color-primary); text-decoration: none;">Unlock
+                                                Premium —
+                                                $4.99</a> for
+                                            premium backgrounds
+                                        </small>
+                                    </div>
 
-                <div class="form-section">
-                    <label class="form-label">Card Sound</label>
-                    <small style="color: var(--color-text-muted); font-size: 12px; margin-bottom: 8px; display: block;">
-                        Choose the sound that plays when they open your card
-                    </small>
-                    <div class="sound-picker" id="soundPicker">
-                        <!-- Free Sounds -->
-                        <div class="sound-option selected" data-sound="chime" onclick="selectSound('chime', this)">
-                            <span class="sound-icon">🔔</span>
-                            <span class="sound-name">Chime</span>
-                            <button type="button" class="sound-preview-btn"
-                                onclick="event.stopPropagation(); previewSound('chime')" title="Preview">▶</button>
+                                    <div class="step-actions">
+                                        <button type="button" class="btn-next" onclick="goToStep(2)"
+                                            id="btnStep1Next">Next:
+                                            Personalize →</button>
+                                    </div>
+                                </div>
+
+                                <!-- Step 2: The Message -->
+                                <div class="form-step" id="step2">
+                                    <div class="form-section">
+                                        <label class="form-label">Recipient's Name <span
+                                                style="color:#ff6b6b">*</span></label>
+                                        <input type="text" class="form-input" id="recipientName" placeholder="Sarah">
+                                    </div>
+
+                                    <div class="form-section">
+                                        <label class="form-label">Your Name</label>
+                                        <input type="text" class="form-input" id="senderName"
+                                            placeholder="Alex (or leave blank to send anonymously)">
+                                        <small
+                                            style="color: var(--color-text-muted); font-size: 12px; margin-top: 4px; display: block;">
+                                            Leave blank to send as "Someone special" ✨
+                                        </small>
+                                    </div>
+
+                                    <div class="form-section">
+                                        <label class="form-label">Personal Message (Optional)</label>
+                                        <textarea class="form-textarea" id="personalMessage"
+                                            placeholder="I was thinking of you today and wanted to send some good vibes your way..."></textarea>
+                                    </div>
+
+                                    <div class="step-actions">
+                                        <button type="button" class="btn-prev" onclick="goToStep(1)">← Back</button>
+                                        <button type="button" class="btn-next" onclick="goToStep(3)"
+                                            id="btnStep2Next">Next:
+                                            Details →</button>
+                                    </div>
+                                </div>
+
+                                <!-- Step 3: Details & Send -->
+                                <div class="form-step" id="step3">
+                                    <div class="form-section">
+                                        <label class="form-label">Card Sound</label>
+                                        <small
+                                            style="color: var(--color-text-muted); font-size: 12px; margin-bottom: 8px; display: block;">
+                                            Choose the sound that plays when they open your card
+                                        </small>
+                                        <div class="sound-picker" id="soundPicker">
+                                            <!-- Free Sounds -->
+                                            <div class="sound-option selected" data-sound="chime"
+                                                onclick="selectSound('chime', this)">
+                                                <span class="sound-icon">🔔</span>
+                                                <span class="sound-name">Chime</span>
+                                                <button type="button" class="sound-preview-btn"
+                                                    onclick="event.stopPropagation(); previewSound('chime')"
+                                                    title="Preview">▶</button>
+                                            </div>
+                                            <div class="sound-option" data-sound="bell"
+                                                onclick="selectSound('bell', this)">
+                                                <span class="sound-icon">🛎️</span>
+                                                <span class="sound-name">Soft Bell</span>
+                                                <button type="button" class="sound-preview-btn"
+                                                    onclick="event.stopPropagation(); previewSound('bell')"
+                                                    title="Preview">▶</button>
+                                            </div>
+                                            <div class="sound-option" data-sound="sparkle"
+                                                onclick="selectSound('sparkle', this)">
+                                                <span class="sound-icon">✨</span>
+                                                <span class="sound-name">Sparkle</span>
+                                                <button type="button" class="sound-preview-btn"
+                                                    onclick="event.stopPropagation(); previewSound('sparkle')"
+                                                    title="Preview">▶</button>
+                                            </div>
+                                            <!-- Premium Sounds -->
+                                            <div class="sound-option premium-sound" data-sound="musicbox"
+                                                onclick="selectPremiumSound('musicbox', this)">
+                                                <span class="sound-icon">🎵</span>
+                                                <span class="sound-name">Music Box</span>
+                                                <span class="premium-lock">Premium</span>
+                                                <button type="button" class="sound-preview-btn"
+                                                    onclick="event.stopPropagation(); previewSound('musicbox')"
+                                                    title="Preview">▶</button>
+                                            </div>
+                                            <div class="sound-option premium-sound" data-sound="harp"
+                                                onclick="selectPremiumSound('harp', this)">
+                                                <span class="sound-icon">🎶</span>
+                                                <span class="sound-name">Harp</span>
+                                                <span class="premium-lock">Premium</span>
+                                                <button type="button" class="sound-preview-btn"
+                                                    onclick="event.stopPropagation(); previewSound('harp')"
+                                                    title="Preview">▶</button>
+                                            </div>
+                                            <div class="sound-option premium-sound" data-sound="piano"
+                                                onclick="selectPremiumSound('piano', this)">
+                                                <span class="sound-icon">🎹</span>
+                                                <span class="sound-name">Warm Piano</span>
+                                                <span class="premium-lock">Premium</span>
+                                                <button type="button" class="sound-preview-btn"
+                                                    onclick="event.stopPropagation(); previewSound('piano')"
+                                                    title="Preview">▶</button>
+                                            </div>
+                                            <div class="sound-option premium-sound" data-sound="celebration"
+                                                onclick="selectPremiumSound('celebration', this)">
+                                                <span class="sound-icon">🎉</span>
+                                                <span class="sound-name">Celebration</span>
+                                                <span class="premium-lock">Premium</span>
+                                                <button type="button" class="sound-preview-btn"
+                                                    onclick="event.stopPropagation(); previewSound('celebration')"
+                                                    title="Preview">▶</button>
+                                            </div>
+                                            <div class="sound-option premium-sound" data-sound="ocean"
+                                                onclick="selectPremiumSound('ocean', this)">
+                                                <span class="sound-icon">🌊</span>
+                                                <span class="sound-name">Ocean</span>
+                                                <span class="premium-lock">Premium</span>
+                                                <button type="button" class="sound-preview-btn"
+                                                    onclick="event.stopPropagation(); previewSound('ocean')"
+                                                    title="Preview">▶</button>
+                                            </div>
+                                        </div>
+                                        <small class="premium-sound-hint" id="premiumSoundHint"
+                                            style="color: var(--color-text-muted); font-size: 11px; margin-top: 8px; display: block;">
+                                            🔓 <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02"
+                                                style="color: var(--color-primary); text-decoration: none;">Unlock
+                                                Premium —
+                                                $4.99</a> to
+                                            use all
+                                            sounds
+                                        </small>
+                                    </div>
+
+                                    <div class="form-section">
+                                        <label class="form-label">Recipient's Email (Optional)</label>
+                                        <input type="email" class="form-input" id="recipientEmail"
+                                            placeholder="sarah@example.com">
+                                        <small style="color: var(--color-text-muted); font-size: 12px;">
+                                            Leave blank to get a shareable link instead
+                                        </small>
+                                    </div>
+
+                                    <div class="step-actions">
+                                        <button type="button" class="btn-prev" onclick="goToStep(2)">← Back</button>
+                                        <button type="submit" class="send-button" id="sendButton">
+                                            Create Card ✨
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="sound-option" data-sound="bell" onclick="selectSound('bell', this)">
-                            <span class="sound-icon">🛎️</span>
-                            <span class="sound-name">Soft Bell</span>
-                            <button type="button" class="sound-preview-btn"
-                                onclick="event.stopPropagation(); previewSound('bell')" title="Preview">▶</button>
-                        </div>
-                        <div class="sound-option" data-sound="sparkle" onclick="selectSound('sparkle', this)">
-                            <span class="sound-icon">✨</span>
-                            <span class="sound-name">Sparkle</span>
-                            <button type="button" class="sound-preview-btn"
-                                onclick="event.stopPropagation(); previewSound('sparkle')" title="Preview">▶</button>
-                        </div>
-                        <!-- Premium Sounds -->
-                        <div class="sound-option premium-sound" data-sound="musicbox"
-                            onclick="selectPremiumSound('musicbox', this)">
-                            <span class="sound-icon">🎵</span>
-                            <span class="sound-name">Music Box</span>
-                            <span class="premium-lock">Premium</span>
-                            <button type="button" class="sound-preview-btn"
-                                onclick="event.stopPropagation(); previewSound('musicbox')" title="Preview">▶</button>
-                        </div>
-                        <div class="sound-option premium-sound" data-sound="harp"
-                            onclick="selectPremiumSound('harp', this)">
-                            <span class="sound-icon">🎶</span>
-                            <span class="sound-name">Harp</span>
-                            <span class="premium-lock">Premium</span>
-                            <button type="button" class="sound-preview-btn"
-                                onclick="event.stopPropagation(); previewSound('harp')" title="Preview">▶</button>
-                        </div>
-                        <div class="sound-option premium-sound" data-sound="piano"
-                            onclick="selectPremiumSound('piano', this)">
-                            <span class="sound-icon">🎹</span>
-                            <span class="sound-name">Warm Piano</span>
-                            <span class="premium-lock">Premium</span>
-                            <button type="button" class="sound-preview-btn"
-                                onclick="event.stopPropagation(); previewSound('piano')" title="Preview">▶</button>
-                        </div>
-                        <div class="sound-option premium-sound" data-sound="celebration"
-                            onclick="selectPremiumSound('celebration', this)">
-                            <span class="sound-icon">🎉</span>
-                            <span class="sound-name">Celebration</span>
-                            <span class="premium-lock">Premium</span>
-                            <button type="button" class="sound-preview-btn"
-                                onclick="event.stopPropagation(); previewSound('celebration')"
-                                title="Preview">▶</button>
-                        </div>
-                        <div class="sound-option premium-sound" data-sound="ocean"
-                            onclick="selectPremiumSound('ocean', this)">
-                            <span class="sound-icon">🌊</span>
-                            <span class="sound-name">Ocean</span>
-                            <span class="premium-lock">Premium</span>
-                            <button type="button" class="sound-preview-btn"
-                                onclick="event.stopPropagation(); previewSound('ocean')" title="Preview">▶</button>
-                        </div>
-                    </div>
-                    <small class="premium-sound-hint" id="premiumSoundHint"
-                        style="color: var(--color-text-muted); font-size: 11px; margin-top: 8px; display: block;">
-                        🔓 <a href="https://buy.stripe.com/6oUaEX9OU9NN5mj1r51VK01"
-                            style="color: var(--color-primary); text-decoration: none;">Unlock Premium — $2.99</a> to
-                        use all
-                        sounds
-                    </small>
-                </div>
-
-                <div class="form-section">
-                    <label class="form-label">Recipient's Email (Optional)</label>
-                    <input type="email" class="form-input" id="recipientEmail" placeholder="sarah@example.com">
-                    <small style="color: var(--color-text-muted); font-size: 12px;">
-                        Leave blank to get a shareable link instead
-                    </small>
-                </div>
-
-                <div class="card-preview">
-                    <div class="preview-label">Preview</div>
-                    <div class="preview-affirmation" id="previewAffirmation">
-                        Select an affirmation above
-                    </div>
-                    <div class="preview-message" id="previewMessage">
-                        <span id="previewSender">Someone special</span> wanted to send you some good vibes ✨
-                    </div>
-                </div>
-
-                <button type="submit" class="send-button" id="sendButton">
-                    Create Card ✨
-                </button>
-            </form>
-
-            <div class="success-message" id="successMessage">
-                <style>
-                    @keyframes checkDraw {
-                        0% {
-                            stroke-dashoffset: 50;
-                        }
-
-                        100% {
-                            stroke-dashoffset: 0;
-                        }
-                    }
-
-                    @keyframes checkPop {
-                        0% {
-                            transform: scale(0.5);
-                            opacity: 0;
-                        }
-
-                        60% {
-                            transform: scale(1.15);
-                        }
-
-                        100% {
-                            transform: scale(1);
-                            opacity: 1;
-                        }
-                    }
-
-                    @keyframes fadeSlideIn {
-                        from {
-                            opacity: 0;
-                            transform: translateY(16px);
-                        }
-
-                        to {
-                            opacity: 1;
-                            transform: translateY(0);
-                        }
-                    }
-
-                    .success-check-wrap {
-                        width: 72px;
-                        height: 72px;
-                        margin: 0 auto 20px;
-                        background: rgba(163, 230, 53, 0.12);
-                        border-radius: 50%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        animation: checkPop 0.5s ease-out both;
-                    }
-
-                    .success-check-wrap svg {
-                        width: 36px;
-                        height: 36px;
-                    }
-
-                    .success-check-wrap svg path {
-                        stroke: #a3e635;
-                        stroke-width: 3;
-                        stroke-linecap: round;
-                        stroke-linejoin: round;
-                        fill: none;
-                        stroke-dasharray: 50;
-                        stroke-dashoffset: 50;
-                        animation: checkDraw 0.6s ease-out 0.3s forwards;
-                    }
-
-                    .success-email-badge {
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 6px;
-                        background: rgba(163, 230, 53, 0.1);
-                        border: 1px solid rgba(163, 230, 53, 0.25);
-                        border-radius: 50px;
-                        padding: 6px 16px;
-                        font-size: 13px;
-                        color: #a3e635;
-                        font-weight: 600;
-                        margin-bottom: 20px;
-                        animation: fadeSlideIn 0.5s ease-out 0.6s both;
-                    }
-
-                    .success-share-box {
-                        background: rgba(255, 255, 255, 0.03);
-                        border: 1px solid rgba(255, 255, 255, 0.08);
-                        border-radius: 14px;
-                        padding: 16px;
-                        margin: 20px 0;
-                        animation: fadeSlideIn 0.5s ease-out 0.8s both;
-                    }
-
-                    .success-share-box label {
-                        font-size: 12px;
-                        font-weight: 600;
-                        color: rgba(255, 255, 255, 0.4);
-                        text-transform: uppercase;
-                        letter-spacing: 1px;
-                        margin-bottom: 10px;
-                        display: block;
-                    }
-
-                    .success-share-input-row {
-                        display: flex;
-                        gap: 8px;
-                    }
-
-                    .success-share-input-row input {
-                        flex: 1;
-                        min-width: 0;
-                        background: rgba(0, 0, 0, 0.3);
-                        border: 1px solid rgba(255, 255, 255, 0.1);
-                        border-radius: 10px;
-                        padding: 10px 14px;
-                        color: #ccc;
-                        font-size: 13px;
-                        font-family: monospace;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                    }
-
-                    .success-copy-btn {
-                        padding: 10px 18px;
-                        background: linear-gradient(135deg, #a3e635, #84cc16);
-                        color: #0a0a0a;
-                        border: none;
-                        border-radius: 10px;
-                        font-size: 13px;
-                        font-weight: 700;
-                        cursor: pointer;
-                        font-family: var(--font-display);
-                        transition: box-shadow 0.2s;
-                        white-space: nowrap;
-                    }
-
-                    .success-copy-btn:hover {
-                        box-shadow: 0 4px 16px rgba(163, 230, 53, 0.35);
-                    }
-
-                    .quick-share-row {
-                        display: flex;
-                        gap: 8px;
-                        justify-content: center;
-                        margin-top: 12px;
-                    }
-
-                    .quick-share-btn {
-                        padding: 10px 16px;
-                        border-radius: 10px;
-                        font-size: 13px;
-                        font-weight: 600;
-                        cursor: pointer;
-                        border: 1px solid rgba(255, 255, 255, 0.1);
-                        background: rgba(255, 255, 255, 0.04);
-                        color: #ccc;
-                        font-family: var(--font-display);
-                        transition: background 0.2s, border-color 0.2s;
-                        text-decoration: none;
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 6px;
-                    }
-
-                    .quick-share-btn:hover {
-                        background: rgba(163, 230, 53, 0.08);
-                        border-color: rgba(163, 230, 53, 0.3);
-                        color: #a3e635;
-                    }
-
-                    .success-upsell {
-                        margin-top: 28px;
-                        padding-top: 24px;
-                        border-top: 1px solid rgba(255, 255, 255, 0.06);
-                        text-align: center;
-                        animation: fadeSlideIn 0.5s ease-out 1s both;
-                    }
-
-                    .success-upsell p {
-                        font-size: 13px;
-                        color: rgba(255, 255, 255, 0.4);
-                        margin-bottom: 12px;
-                    }
-
-                    .success-upsell a {
-                        color: #a3e635;
-                        font-weight: 600;
-                        text-decoration: none;
-                    }
-
-                    .success-upsell a:hover {
-                        text-decoration: underline;
-                    }
-
-                    .success-send-another {
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 8px;
-                        padding: 14px 28px;
-                        background: linear-gradient(135deg, #a3e635, #84cc16);
-                        color: #0a0a0a;
-                        border: none;
-                        border-radius: 12px;
-                        font-size: 15px;
-                        font-weight: 700;
-                        cursor: pointer;
-                        font-family: var(--font-display);
-                        margin-top: 20px;
-                        transition: transform 0.2s, box-shadow 0.2s;
-                    }
-
-                    .success-send-another:hover {
-                        transform: translateY(-2px);
-                        box-shadow: 0 8px 24px rgba(163, 230, 53, 0.3);
-                    }
-
-                    @media (max-width: 480px) {
-                        .success-share-input-row {
-                            flex-direction: column;
-                        }
-
-                        .quick-share-row {
-                            flex-direction: column;
-                        }
-
-                        .quick-share-btn {
-                            justify-content: center;
-                        }
-
-                        .success-email-badge {
-                            font-size: 12px;
-                            padding: 6px 12px;
-                            text-align: center;
-                        }
-
-                        .success-title {
-                            font-size: 24px;
-                        }
-                    }
-                </style>
-
-                <!-- Animated checkmark -->
-                <div class="success-check-wrap">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M4 12l6 6L20 6" />
-                    </svg>
-                </div>
-
-                <h2 class="success-title" id="successTitle">Card Created!</h2>
-                <p class="success-text" id="successSubtext">
-                    Your personalized vibe check is ready to share.
-                </p>
-
-                <!-- Email sent badge (shown conditionally via JS) -->
-                <div class="success-email-badge" id="emailSentBadge" style="display:none;">
-                    ✅ Email sent to <span id="emailSentTo">them</span>
-                </div>
-
-                <!-- Share link -->
-                <div class="success-share-box">
-                    <label>Share Link</label>
-                    <div class="success-share-input-row">
-                        <input type="text" id="cardLink" readonly>
-                        <button class="success-copy-btn" onclick="copyLink()">Copy</button>
-                    </div>
-                    <div class="quick-share-row">
-                        <button class="quick-share-btn" id="textShare" onclick="textFriend(event)"
-                            style="background: rgba(163, 230, 53, 0.15); border-color: rgba(163, 230, 53, 0.4); color: #a3e635; font-weight: 700;">
-                            💬 Text a Friend
-                        </button>
-                        <a class="quick-share-btn" id="whatsappShare" href="#" target="_blank"
-                            rel="noopener">WhatsApp</a>
-                        <a class="quick-share-btn" id="twitterShare" href="#" target="_blank" rel="noopener">𝕏
-                            Twitter</a>
-                        <button class="quick-share-btn" onclick="copyLink(event)">📋 Copy</button>
-                    </div>
-                </div>
-
-                <button class="success-send-another" onclick="location.reload()">
-                    Send Another Card ✨
-                </button>
-
-                <div class="success-upsell">
-                    <p>Want good vibes in your inbox every week? 🌟</p>
-                    <form class="inline-email-form" id="senderSignupForm" onsubmit="handleSenderSignup(event)">
-                        <input type="email" placeholder="your@email.com" required>
-                        <button type="submit">Get Free Packs</button>
                     </form>
-                    <p style="margin-top:16px;">
-                        ✨ <a href="https://buy.stripe.com/6oUaEX9OU9NN5mj1r51VK01"
-                            style="color: var(--color-primary); font-weight:700;">Unlock Premium — $2.99</a>
-                        <br><br>
-                        💌 <a href="https://vibecheck2.gumroad.com/l/ycmxxb?utm_source=website&utm_campaign=post-send"
-                            target="_blank" rel="noopener">Printable Card Pack — $6.99</a>
-                        &nbsp;·&nbsp;
-                        ☕ <a href="https://ko-fi.com/thevibecheckproject?utm_source=website&utm_campaign=tip-jar"
-                            target="_blank">Buy me a coffee</a>
-                    </p>
-                </div>
-            </div>
 
-            <div class="back-link">
-                <a href="index.html">← Back to The Vibe Check Project</a>
-            </div>
-        </div>
-    </div>
+                    <div class="success-message" id="successMessage">
+                        <style>
+                            @keyframes checkDraw {
+                                0% {
+                                    stroke-dashoffset: 50;
+                                }
+
+                                100% {
+                                    stroke-dashoffset: 0;
+                                }
+                            }
+
+                            @keyframes checkPop {
+                                0% {
+                                    transform: scale(0.5);
+                                    opacity: 0;
+                                }
+
+                                60% {
+                                    transform: scale(1.15);
+                                }
+
+                                100% {
+                                    transform: scale(1);
+                                    opacity: 1;
+                                }
+                            }
+
+                            @keyframes fadeSlideIn {
+                                from {
+                                    opacity: 0;
+                                    transform: translateY(16px);
+                                }
+
+                                to {
+                                    opacity: 1;
+                                    transform: translateY(0);
+                                }
+                            }
+
+                            .success-check-wrap {
+                                width: 72px;
+                                height: 72px;
+                                margin: 0 auto 20px;
+                                background: rgba(163, 230, 53, 0.12);
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                animation: checkPop 0.5s ease-out both;
+                            }
+
+                            .success-check-wrap svg {
+                                width: 36px;
+                                height: 36px;
+                            }
+
+                            .success-check-wrap svg path {
+                                stroke: #a3e635;
+                                stroke-width: 3;
+                                stroke-linecap: round;
+                                stroke-linejoin: round;
+                                fill: none;
+                                stroke-dasharray: 50;
+                                stroke-dashoffset: 50;
+                                animation: checkDraw 0.6s ease-out 0.3s forwards;
+                            }
+
+                            .success-email-badge {
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 6px;
+                                background: rgba(163, 230, 53, 0.1);
+                                border: 1px solid rgba(163, 230, 53, 0.25);
+                                border-radius: 50px;
+                                padding: 6px 16px;
+                                font-size: 13px;
+                                color: #a3e635;
+                                font-weight: 600;
+                                margin-bottom: 20px;
+                                animation: fadeSlideIn 0.5s ease-out 0.6s both;
+                            }
+
+                            .success-share-box {
+                                background: rgba(255, 255, 255, 0.03);
+                                border: 1px solid rgba(255, 255, 255, 0.08);
+                                border-radius: 14px;
+                                padding: 16px;
+                                margin: 20px 0;
+                                animation: fadeSlideIn 0.5s ease-out 0.8s both;
+                            }
+
+                            .success-share-box label {
+                                font-size: 12px;
+                                font-weight: 600;
+                                color: rgba(255, 255, 255, 0.4);
+                                text-transform: uppercase;
+                                letter-spacing: 1px;
+                                margin-bottom: 10px;
+                                display: block;
+                            }
+
+                            .success-share-input-row {
+                                display: flex;
+                                gap: 8px;
+                            }
+
+                            .success-share-input-row input {
+                                flex: 1;
+                                min-width: 0;
+                                background: rgba(0, 0, 0, 0.3);
+                                border: 1px solid rgba(255, 255, 255, 0.1);
+                                border-radius: 10px;
+                                padding: 10px 14px;
+                                color: #ccc;
+                                font-size: 13px;
+                                font-family: monospace;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                            }
+
+                            .success-copy-btn {
+                                padding: 10px 18px;
+                                background: linear-gradient(135deg, #a3e635, #84cc16);
+                                color: #0a0a0a;
+                                border: none;
+                                border-radius: 10px;
+                                font-size: 13px;
+                                font-weight: 700;
+                                cursor: pointer;
+                                font-family: var(--font-display);
+                                transition: box-shadow 0.2s;
+                                white-space: nowrap;
+                            }
+
+                            .success-copy-btn:hover {
+                                box-shadow: 0 4px 16px rgba(163, 230, 53, 0.35);
+                            }
+
+                            .quick-share-row {
+                                display: flex;
+                                gap: 8px;
+                                justify-content: center;
+                                margin-top: 12px;
+                            }
+
+                            .quick-share-btn {
+                                padding: 10px 16px;
+                                border-radius: 10px;
+                                font-size: 13px;
+                                font-weight: 600;
+                                cursor: pointer;
+                                border: 1px solid rgba(255, 255, 255, 0.1);
+                                background: rgba(255, 255, 255, 0.04);
+                                color: #ccc;
+                                font-family: var(--font-display);
+                                transition: background 0.2s, border-color 0.2s;
+                                text-decoration: none;
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 6px;
+                            }
+
+                            .quick-share-btn:hover {
+                                background: rgba(163, 230, 53, 0.08);
+                                border-color: rgba(163, 230, 53, 0.3);
+                                color: #a3e635;
+                            }
+
+                            .success-upsell {
+                                margin-top: 28px;
+                                padding-top: 24px;
+                                border-top: 1px solid rgba(255, 255, 255, 0.06);
+                                text-align: center;
+                                animation: fadeSlideIn 0.5s ease-out 1s both;
+                            }
+
+                            .success-upsell p {
+                                font-size: 13px;
+                                color: rgba(255, 255, 255, 0.4);
+                                margin-bottom: 12px;
+                            }
+
+                            .success-upsell a {
+                                color: #a3e635;
+                                font-weight: 600;
+                                text-decoration: none;
+                            }
+
+                            .success-upsell a:hover {
+                                text-decoration: underline;
+                            }
+
+                            .success-send-another {
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 8px;
+                                padding: 14px 28px;
+                                background: linear-gradient(135deg, #a3e635, #84cc16);
+                                color: #0a0a0a;
+                                border: none;
+                                border-radius: 12px;
+                                font-size: 15px;
+                                font-weight: 700;
+                                cursor: pointer;
+                                font-family: var(--font-display);
+                                margin-top: 20px;
+                                transition: transform 0.2s, box-shadow 0.2s;
+                            }
+
+                            .success-send-another:hover {
+                                transform: translateY(-2px);
+                                box-shadow: 0 8px 12px rgba(163, 230, 53, 0.2);
+                            }
+
+                            @media (max-width: 480px) {
+                                .success-share-input-row {
+                                    flex-direction: column;
+                                }
+
+                                .quick-share-row {
+                                    flex-direction: column;
+                                }
+
+                                .quick-share-btn {
+                                    justify-content: center;
+                                }
+
+                                .success-email-badge {
+                                    font-size: 12px;
+                                    padding: 6px 12px;
+                                    text-align: center;
+                                }
+
+                                .success-title {
+                                    font-size: 24px;
+                                }
+                            }
+                        </style>
+
+                        <!-- Animated checkmark -->
+                        <div class="success-check-wrap">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M4 12l6 6L20 6" />
+                            </svg>
+                        </div>
+
+                        <h2 class="success-title" id="successTitle">Card Created!</h2>
+                        <p class="success-text" id="successSubtext">
+                            Your personalized Vibe Check from The Vibe Check Project is ready to share.
+                        </p>
+
+                        <!-- Email sent badge (shown conditionally via JS) -->
+                        <div class="success-email-badge" id="emailSentBadge" style="display:none;">
+                            ✅ Email sent to <span id="emailSentTo">them</span>
+                        </div>
+
+                        <!-- Share link -->
+                        <div class="success-share-box">
+                            <label>Share Link</label>
+                            <div class="success-share-input-row">
+                                <input type="text" id="cardLink" readonly>
+                                <button class="success-copy-btn" onclick="copyLink()">Copy</button>
+                            </div>
+                            <div class="quick-share-row">
+                                <button class="quick-share-btn" id="textShare" onclick="textFriend(event)"
+                                    style="background: rgba(163, 230, 53, 0.15); border-color: rgba(163, 230, 53, 0.4); color: #a3e635; font-weight: 700;">
+                                    💬 Text a Friend
+                                </button>
+                                <a class="quick-share-btn" id="whatsappShare" href="#" target="_blank"
+                                    rel="noopener">WhatsApp</a>
+                                <a class="quick-share-btn" id="twitterShare" href="#" target="_blank" rel="noopener">𝕏
+                                    Twitter</a>
+                                <button class="quick-share-btn" onclick="copyLink(event)">📋 Copy</button>
+                            </div>
+                        </div>
+
+                        <button class="success-send-another" onclick="location.reload()">
+                            Send Another Card ✨
+                        </button>
+
+                        <div class="success-upsell">
+                            <p>Want good vibes in your inbox every week? 🌟</p>
+                            <form class="inline-email-form" id="senderSignupForm" onsubmit="handleSenderSignup(event)">
+                                <input type="email" placeholder="your@email.com" required>
+                                <button type="submit">Get Free Packs</button>
+                            </form>
+                            <p style="margin-top:16px;">
+                                ✨ <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02"
+                                    style="color: var(--color-primary); font-weight:700;">Unlock Premium — $4.99</a>
+                                &nbsp;·&nbsp;
+                                ☕ <a href="https://ko-fi.com/thevibecheckproject?utm_source=website&utm_campaign=tip-jar"
+                                    target="_blank">Buy me a coffee</a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="back-link">
+                        <a href="index.html">← Back to The Vibe Check Project</a>
+                    </div>
+                </div>
+
+                <!-- Right Column: Live Preview -->
+                <div class="send-card-preview-col">
+                    <div class="sticky-preview">
+                        <div class="card-preview" id="cardPreview">
+                            <div class="preview-content-wrapper">
+                                <div class="preview-label">Live Preview</div>
+                                <div class="preview-affirmation" id="previewAffirmation">"Your affirmation will appear
+                                    here"
+                                </div>
+                                <div class="preview-message" id="previewMessage"><strong>Someone special</strong> wanted
+                                    to
+                                    send you some good vibes ✨</div>
+                            </div>
+                            <span id="previewSender" style="display: none;">Someone special</span>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- End send-card-layout -->
+        </div> <!-- End send-card-container -->
+    </div> <!-- End send-card-page -->
 
     <script>
         // Check for Stripe Premium Unlock
@@ -1064,6 +1648,7 @@
         let selectedAffirmation = '';
         let selectedSound = 'chime';
         let selectedThemeGroup = 'default';
+        let selectedBackground = '';
 
         // Sound engine — Web Audio API synthesized sounds
         const soundEngine = {
@@ -1143,13 +1728,15 @@
             document.querySelectorAll('.premium-lock').forEach(el => el.style.display = 'none');
             const hint = document.getElementById('premiumSoundHint');
             if (hint) hint.style.display = 'none';
+            const bgHint = document.getElementById('premiumBgHint');
+            if (bgHint) bgHint.style.display = 'none';
         }
 
         function selectPremiumSound(soundId, element) {
             if (isPremium) {
                 selectSound(soundId, element);
             } else {
-                window.location.href = 'https://buy.stripe.com/6oUaEX9OU9NN5mj1r51VK01';
+                window.location.href = 'https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02';
             }
         }
 
@@ -1157,51 +1744,202 @@
             try { soundEngine[soundId](); } catch (e) { }
         }
 
-        // Populate affirmations
-        const picker = document.getElementById('affirmationPicker');
-
-        freeAffirmations.forEach((aff) => {
-            const option = document.createElement('div');
-            option.className = 'affirmation-option';
-            option.textContent = aff;
-            option.onclick = () => selectAffirmation(aff, option, 'default');
-            picker.appendChild(option);
-        });
-
-        premiumThemes.forEach((theme) => {
-            const option = document.createElement('div');
-
-            if (isPremium) {
-                option.className = 'affirmation-option';
-                option.textContent = theme.example;
-                option.onclick = () => selectAffirmation(theme.example, option, theme.themeGroup);
-            } else {
-                option.className = 'affirmation-option locked-option';
-                option.innerHTML = `
-                    <div class="locked-header">
-                        🔒 ${theme.name} (Premium)
-                    </div>
-                    <div class="locked-text" style="filter: blur(4px); opacity: 0.6; user-select: none; font-style: italic;">
-                        "${theme.example}"
-                    </div>
-                    <div class="locked-tooltip">
-                        Unlock Premium — $2.99 →
-                    </div>
-                `;
-                // Redirect to Stripe
-                option.onclick = () => {
-                    window.location.href = 'https://buy.stripe.com/6oUaEX9OU9NN5mj1r51VK01';
-                };
+        // ── Affirmation Category Picker ──────────────────────────
+        const categoryDefs = [
+            {
+                id: 'general', label: 'General', emoji: '✨',
+                color: '#ff6b9d', glow: 'rgba(255,107,157,0.25)',
+                gradient: 'linear-gradient(135deg,#ff6b9d,#c084fc)',
+                premium: false, themeGroup: 'default',
+                affirmations: freeAffirmations
+            },
+            {
+                id: 'anxiety', label: 'Calm', emoji: '💙',
+                color: '#60a5fa', glow: 'rgba(96,165,250,0.25)',
+                gradient: 'linear-gradient(135deg,#3b82f6,#67e8f9)',
+                premium: true, themeGroup: 'anxiety',
+                affirmations: [
+                    "Breathe. You are safe right now.",
+                    "I see how hard you're trying.",
+                    "You don't have to figure it all out today.",
+                    "Anxiety is lying to you. You are okay.",
+                    "One moment at a time. That's all."
+                ]
+            },
+            {
+                id: 'celebrate', label: 'Celebrate', emoji: '🎉',
+                color: '#fb923c', glow: 'rgba(251,146,60,0.25)',
+                gradient: 'linear-gradient(135deg,#f97316,#eab308)',
+                premium: true, themeGroup: 'birthday',
+                affirmations: [
+                    "Another year of you making the world better.",
+                    "All your hard work is paying off!",
+                    "You are absolutely crushing it.",
+                    "You deserve every good thing coming your way.",
+                    "Celebrating the person you are today."
+                ]
+            },
+            {
+                id: 'love', label: 'Love', emoji: '💖',
+                color: '#f472b6', glow: 'rgba(244,114,182,0.25)',
+                gradient: 'linear-gradient(135deg,#ec4899,#f43f5e)',
+                premium: true, themeGroup: 'love',
+                affirmations: [
+                    "You are deeply, profoundly loved.",
+                    "I'm so glad we exist at the same time.",
+                    "You are entirely enough as you are.",
+                    "You deserve the love you so freely give.",
+                    "Just a reminder: you're awesome."
+                ]
+            },
+            {
+                id: 'healing', label: 'Healing', emoji: '🕊️',
+                color: '#818cf8', glow: 'rgba(129,140,248,0.25)',
+                gradient: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
+                premium: true, themeGroup: 'grief',
+                affirmations: [
+                    "There is no timeline for healing.",
+                    "Grief is love with nowhere to go. That's okay.",
+                    "You are allowed to be a work in progress.",
+                    "Healing isn't linear. You're doing it.",
+                    "You carry them with you, always."
+                ]
             }
-            picker.appendChild(option);
+        ];
+
+        let activeCategory = categoryDefs[0];
+        const tabsEl = document.getElementById('categoryTabs');
+        const pickerEl = document.getElementById('affirmationPicker');
+        const lockBannerEl = document.getElementById('categoryLockBanner');
+
+        function renderCategoryTabs() {
+            tabsEl.innerHTML = '';
+            categoryDefs.forEach(cat => {
+                const tab = document.createElement('button');
+                tab.type = 'button';
+                tab.className = 'vibe-tab' + (cat.id === activeCategory.id ? ' active' : '');
+                tab.style.setProperty('--tab-color', cat.color);
+                tab.style.setProperty('--tab-glow', cat.glow);
+                tab.style.setProperty('--tab-gradient', cat.gradient);
+                tab.innerHTML = `<span>${cat.emoji} ${cat.label}</span>${(cat.premium && !isPremium) ? '<span class="tab-lock">🔒</span>' : ''}`;
+                tab.onclick = () => selectCategory(cat);
+                tabsEl.appendChild(tab);
+            });
+        }
+
+        function renderAffirmationGrid(category, locked) {
+            pickerEl.innerHTML = '';
+            lockBannerEl.style.display = locked ? 'flex' : 'none';
+            category.affirmations.forEach((aff, i) => {
+                const card = document.createElement('div');
+                card.className = 'aff-card' + (locked ? ' aff-locked' : '');
+                card.style.setProperty('--active-color', category.color);
+                card.style.setProperty('--active-glow', category.glow);
+                card.style.animationDelay = `${i * 60}ms`;
+                card.textContent = `"${aff}"`;
+                if (!locked) {
+                    card.onclick = () => selectAffirmation(aff, card, category.themeGroup);
+                }
+                pickerEl.appendChild(card);
+            });
+        }
+
+        function selectCategory(cat) {
+            activeCategory = cat;
+            const locked = cat.premium && !isPremium;
+            if (locked) { selectedAffirmation = ''; }
+            renderCategoryTabs();
+            pickerEl.style.opacity = '0';
+            pickerEl.style.transform = 'translateY(8px)';
+            setTimeout(() => {
+                renderAffirmationGrid(cat, locked);
+                requestAnimationFrame(() => {
+                    pickerEl.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+                    pickerEl.style.opacity = '1';
+                    pickerEl.style.transform = 'translateY(0)';
+                });
+            }, 160);
+        }
+
+        // Init
+        renderCategoryTabs();
+        renderAffirmationGrid(categoryDefs[0], false);
+        setTimeout(() => {
+            const firstCard = pickerEl.querySelector('.aff-card');
+            if (firstCard) firstCard.click();
+        }, 180);
+
+        // Background picker
+        const backgroundDefs = [
+            { id: 'sunset', label: 'Sunset', image: 'assets/backgrounds/bg_free_sunset_1772750341964.png', premium: false },
+            { id: 'dawn', label: 'Dawn', image: 'assets/backgrounds/bg_free_dawn_1772750358328.png', premium: false },
+            { id: 'aurora', label: 'Aurora', image: 'assets/backgrounds/bg_free_aurora_1772750371136.png', premium: false },
+            { id: 'rose', label: 'Rose Garden', image: 'assets/backgrounds/bg_free_rose_1772750381958.png', premium: false },
+            { id: 'nebula', label: 'Nebula', image: 'assets/backgrounds/bg_prem_nebula_1772750433414.png', premium: true },
+            { id: 'gold', label: 'Liquid Gold', image: 'assets/backgrounds/bg_prem_gold_1772750445716.png', premium: true },
+            { id: 'emerald', label: 'Emerald', image: 'assets/backgrounds/bg_prem_emerald_1772750461402.png', premium: true },
+            { id: 'electric', label: 'Electric', image: 'assets/backgrounds/bg_prem_electric_1772750473780.png', premium: true },
+            { id: 'velvet', label: 'Velvet Night', image: 'assets/backgrounds/bg_prem_velvet_1772750498877.png', premium: true },
+            { id: 'cherry', label: 'Cherry', image: 'assets/backgrounds/bg_prem_cherry_1772750510659.png', premium: true },
+            { id: 'ocean', label: 'Ocean', image: 'assets/backgrounds/bg_prem_ocean_1772750521461.png', premium: true },
+            { id: 'crystal', label: 'Crystal', image: 'assets/backgrounds/bg_prem_crystal_1772750533689.png', premium: true },
+        ];
+
+        const bgPickerEl = document.getElementById('bgPicker');
+        backgroundDefs.forEach((bg, index) => {
+            const el = document.createElement('div');
+            const isLocked = bg.premium && !isPremium;
+            el.className = 'bg-option' + (isLocked ? ' bg-locked' : '') + (index === 0 ? ' selected' : '');
+            el.dataset.bgId = bg.id;
+            el.innerHTML = `
+                <div class="bg-thumb" style="background-image:url('${bg.image}'); background-size: cover; background-position: center;"></div>
+                <span class="bg-label">${bg.label}</span>
+                ${bg.premium && !isPremium ? '<span class="bg-premium-badge">Premium</span>' : ''}
+            `;
+            if (isLocked) {
+                el.onclick = () => { window.location.href = 'https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02'; };
+            } else {
+                el.onclick = () => selectBackground(bg.image, el);
+            }
+            bgPickerEl.appendChild(el);
         });
+
+        // Initialize preview with first free background
+        selectedBackground = backgroundDefs[0].image;
+        const previewInitEl = document.querySelector('.card-preview');
+        previewInitEl.style.backgroundImage = `url('${selectedBackground}')`;
+        previewInitEl.style.backgroundSize = 'cover';
+        previewInitEl.style.backgroundPosition = 'center';
+        previewInitEl.style.borderColor = 'transparent';
+
+        function triggerFoilSweep() {
+            const preview = document.querySelector('.card-preview');
+            if (preview) {
+                preview.classList.remove('play-foil');
+                void preview.offsetWidth; // Force a browser reflow to restart the animation
+                preview.classList.add('play-foil');
+            }
+        }
+
+        function selectBackground(imagePath, element) {
+            selectedBackground = imagePath;
+            document.querySelectorAll('.bg-option').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            const preview = document.querySelector('.card-preview');
+            preview.className = 'card-preview';
+            preview.style.backgroundImage = `url('${imagePath}')`;
+            preview.style.backgroundSize = 'cover';
+            preview.style.backgroundPosition = 'center';
+            preview.style.borderColor = 'transparent';
+            triggerFoilSweep();
+        }
 
         function selectAffirmation(affirmation, element, themeGroup = 'default') {
             selectedAffirmation = affirmation;
             selectedThemeGroup = themeGroup;
 
             // Remove selected class from all
-            document.querySelectorAll('.affirmation-option').forEach(el => {
+            document.querySelectorAll('.aff-card').forEach(el => {
                 el.classList.remove('selected');
             });
 
@@ -1212,9 +1950,15 @@
             document.getElementById('previewAffirmation').textContent = `"${affirmation}"`;
             const previewBox = document.querySelector('.card-preview');
             previewBox.className = 'card-preview'; // Reset classes
-            if (themeGroup && themeGroup !== 'default') {
+            if (selectedBackground) {
+                previewBox.style.backgroundImage = `url('${selectedBackground}')`;
+                previewBox.style.backgroundSize = 'cover';
+                previewBox.style.backgroundPosition = 'center';
+                previewBox.style.borderColor = 'transparent';
+            } else if (themeGroup && themeGroup !== 'default') {
                 previewBox.classList.add(`theme-${themeGroup}`);
             }
+            triggerFoilSweep();
         }
 
         // Update preview as user types — multiple events for mobile keyboard compatibility
@@ -1269,6 +2013,7 @@
                 personalMessage: personalMessage,
                 sound: selectedSound,
                 themeGroup: selectedThemeGroup,
+                background: selectedBackground,
                 createdAt: new Date().toISOString()
             };
 
@@ -1287,7 +2032,7 @@
                         to_email: recipientEmail,
                         to_name: recipientName || 'Friend',
                         from_name: 'Someone',
-                        message: 'Someone sent you a vibe check! Open the card to reveal your message. ✨',
+                        message: 'Someone sent you a Vibe Check from The Vibe Check Project! Open the card to reveal your message. ✨',
                         card_link: cardUrl,
                     });
                     console.log('Email sent successfully!');
@@ -1298,14 +2043,15 @@
             }
 
             // Show success
-            document.querySelector('.card-form').style.display = 'none';
+            document.getElementById('cardForm').style.display = 'none'; // Only hide the form
+            document.getElementById('stepIndicator').style.display = 'none'; // Hide step dots
             document.getElementById('successMessage').classList.add('show');
             document.getElementById('cardLink').value = cardUrl;
 
             // Update title and show email badge if email was sent
             if (recipientEmail) {
                 document.getElementById('successTitle').textContent = 'Card Sent! 💚';
-                document.getElementById('successSubtext').textContent = `Your vibe check is on its way.`;
+                document.getElementById('successSubtext').textContent = `Your Vibe Check is on its way.`;
                 document.getElementById('emailSentBadge').style.display = 'inline-flex';
                 document.getElementById('emailSentTo').textContent = recipientName || recipientEmail;
             }
@@ -1398,6 +2144,79 @@
             } catch (err) {
                 btn.textContent = 'Get Free Packs';
                 btn.disabled = false;
+            }
+        }
+
+        // Stepper Logic
+        let currentStep = 1;
+        const totalSteps = 3;
+
+        function goToStep(step) {
+            // Validation before proceeding forward
+            if (step > currentStep) {
+                if (currentStep === 1) {
+                    if (!selectedAffirmation) {
+                        alert("Please choose an affirmation before continuing.");
+                        return;
+                    }
+                }
+
+                if (currentStep === 2) {
+                    const recipientName = document.getElementById('recipientName').value.trim();
+                    if (!recipientName) {
+                        alert("Please enter the recipient's name to personalize the card.");
+                        document.getElementById('recipientName').focus();
+                        return;
+                    }
+                }
+            }
+
+            // Update state
+            currentStep = step;
+
+            // Slide the track
+            const track = document.getElementById('sliderTrack');
+            const translateX = -(currentStep - 1) * 33.333;
+            track.style.transform = `translateX(${translateX}%)`;
+
+            // Update step opacity
+            document.querySelectorAll('.form-step').forEach((el, index) => {
+                if (index + 1 === currentStep) {
+                    el.classList.add('active');
+                } else {
+                    el.classList.remove('active');
+                }
+            });
+
+            // Update step indicators
+            document.getElementById('stepLabel').textContent = `Step ${currentStep} of ${totalSteps}: ${currentStep === 1 ? 'The Look' :
+                currentStep === 2 ? 'The Message' : 'Details'
+                }`;
+
+            document.querySelectorAll('.step-dot').forEach(el => {
+                const dotStep = parseInt(el.dataset.step);
+                el.classList.remove('active');
+                el.classList.remove('completed');
+
+                if (dotStep < currentStep) {
+                    el.classList.add('completed');
+                } else if (dotStep === currentStep) {
+                    el.classList.add('active');
+                }
+            });
+
+            // Scroll to the "Live Preview" slightly so they see form inputs below it clearly on mobile jumps
+            const previewContainer = document.querySelector('.sticky-preview');
+            if (previewContainer) {
+                const rect = previewContainer.getBoundingClientRect();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                // Only scroll if the sticky preview is far off the top
+                if (rect.top < 0 || rect.top > 100) {
+                    window.scrollTo({
+                        top: Math.max(0, rect.top + scrollTop - 20),
+                        behavior: 'smooth'
+                    });
+                }
             }
         }
     </script>

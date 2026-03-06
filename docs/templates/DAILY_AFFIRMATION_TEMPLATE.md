@@ -53,8 +53,8 @@
       <p style='margin-bottom: 10px;'>Thank you for being a Premium Member. Your support keeps this project alive. 💜</p>
       <div class='footer-links'>
         <a href='https://www.thevibecheckproject.com'>Website</a> &bull; 
-        <a href='https://ko-fi.com/thevibecheckproject'>Ko-fi</a> &bull; 
-        <a href='https://vibecheck2.gumroad.com/l/ycmxxb'>Premium Cards</a>
+        <a href='https://ko-fi.com/thevibecheckproject'>Ko-fi</a> &bull;
+        <a href='https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02'>Premium Unlock — $4.99</a>
       </div>
       <p style='margin-top: 20px;'>{$unsubscribe}</p>
     </div>

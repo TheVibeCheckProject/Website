@@ -1,6 +1,6 @@
 # The Vibe Check Project — Monetization Build Workflow
 **Goal:** Turn this card-sending site into a passive income machine.
-**Stack:** Plain HTML/CSS/JS (no framework), MailerLite (email — FREE tier), Ko-fi (membership), Gumroad (one-time sales), Microsoft Clarity (analytics — FREE), optional Supabase for gating.
+**Stack:** Plain HTML/CSS/JS (no framework), MailerLite (email — FREE tier), Ko-fi (membership), Stripe (one-time sales), Microsoft Clarity (analytics — FREE), optional Supabase for gating.
 
 > **For AI agents:** This is a shared workflow between Claude Code (Claude) and Antigravity (Gemini).
 > ✅ = completed | 🔲 = pending | 🟡 = was manual — now AUTOMATED (see below) | 🤖 = run the automation script
@@ -20,16 +20,16 @@
 - ✅ **Rewrite premium section** in `index.html`
   - Section title: "Get Daily Affirmations + Exclusive Card Packs"
   - Subtitle: explains the actual product (30 daily affirmations + 4 card packs/month)
-  - Pricing line: "$3.99/month — 30 daily affirmations + 4 exclusive card packs • Cancel anytime"
+  - Pricing line: "$4.99 one-time — 30 daily affirmations + 4 exclusive card packs • Cancel anytime"
 - ✅ **Rewrite support section** in `index.html`
   - Renamed "Support The Mission" → "Three Ways to Get More Good Vibes"
   - "Buy Us a Coffee" card → "✨ Premium Membership" (Ko-fi)
-  - "Share the Love" card → "🎨 Premium Card Designs" (Gumroad, $4.99 one-time)
+  - "Share the Love" card → "Premium Unlock" (Stripe, $4.99 one-time)
   - "Gift a Subscription" card → kept, improved copy
 - ✅ **Update Ko-fi membership page** — AUTOMATED
   - Run: `node scripts/setup-platforms.mjs --kofi`
   - OR Antigravity: follow AUTOMATION GUIDE → Ko-fi section
-  - Script sets: title, description, $3.99/month price
+  - Script sets: title, description, $4.99 one-time price
 - ✅ **Update Gumroad listing** — AUTOMATED
   - Run: `node scripts/setup-platforms.mjs --gumroad`
   - OR Antigravity: follow AUTOMATION GUIDE → Gumroad section
@@ -39,7 +39,7 @@
 ---
 
 ## PHASE 2 — Email List as the Core Asset
-**Why:** The email list is where recurring income actually comes from. Every subscriber is a potential $3.99/month forever.
+**Why:** The email list is where recurring income actually comes from. Every subscriber is a potential $4.99 one-time forever.
 
 ### Tasks
 - ✅ **Email platform: MailerLite** (free tier, supports automations)
@@ -160,14 +160,14 @@
 
 | Source | Conversion | Monthly |
 |--------|-----------|---------|
-| Email list → Ko-fi ($3.99/mo) | 500 subs, 2% convert = 10 members | $39.90/mo |
+| Email list → Premium Unlock ($4.99) | 500 subs, 2% buy = 10 sales | $49.90 |
 | Gumroad card pack ($4.99) | 200 visitors/mo, 1% buy = 2 sales | $19.98/mo |
 | Email list growth | 50 new subs/mo from card flow | Compounds |
-| **Total Month 1** | | ~$60/mo |
-| **Total Month 6** | (list at 1,500, 3% convert) | ~$180/mo |
-| **Total Month 12** | (list at 5,000, 5% convert) | ~$999/mo |
+| **Total Month 1** | | ~$70/mo |
+| **Total Month 6** | (list at 1,500, 2% buy) | ~$150/mo |
+| **Total Month 12** | (list at 5,000, 2% buy) | ~$500/mo |
 
-The email list is the flywheel. Every card sent → email capture → nurture → Ko-fi conversion.
+The email list is the flywheel. Every card sent → email capture → nurture → Premium Unlock conversion.
 
 ---
 

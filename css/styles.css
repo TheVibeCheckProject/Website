@@ -3116,6 +3116,12 @@ nav.nav-open .nav-hamburger span:nth-child(3) {
         margin-right: 0;
         margin: 6px 0;
         width: fit-content;
+        padding: 10px 16px;
+    }
+
+    nav.nav-open .nav-crisis-text {
+        display: inline-block;
+        font-size: 14px;
     }
 }
 

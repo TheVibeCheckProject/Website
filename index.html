@@ -441,9 +441,20 @@
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                padding: 24px;
+                padding: 32px;
                 text-align: center;
                 background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 50%, rgba(0, 0, 0, 0.4));
+            }
+
+            .static-preview-glass {
+                background: rgba(0, 0, 0, 0.4);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 20px;
+                padding: 24px 20px;
+                width: 100%;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
             }
 
             .static-preview-text {
@@ -511,6 +522,17 @@
                                 Relief</button>
                             <button class="vibe-btn" onclick="updateStaticPreview('justbecause', this)">💖 Just
                                 Because</button>
+                            <button class="vibe-btn" onclick="updateStaticPreview('birthday', this)">🎉
+                                Birthday</button>
+                            <button class="vibe-btn" onclick="updateStaticPreview('grief', this)">🕊️ Healing</button>
+                            <button class="vibe-btn" onclick="updateStaticPreview('selflove', this)">💕
+                                Self-Love</button>
+                            <button class="vibe-btn" onclick="updateStaticPreview('patience', this)">🌱
+                                Patience</button>
+                            <button class="vibe-btn" onclick="updateStaticPreview('validation', this)">🤝
+                                Validation</button>
+                            <button class="vibe-btn" onclick="updateStaticPreview('abundance', this)">🌟
+                                Abundance</button>
                         </div>
                     </div>
 
@@ -520,13 +542,16 @@
                         <h3>Preview It</h3>
                         <p>See exactly what they'll open.</p>
                         <div class="static-preview-container" id="staticPreviewBox"
-                            style="background: linear-gradient(135deg, #2d1b69, #1a1625);">
+                            style="background: linear-gradient(135deg, #11998e, #38ef7d);">
                             <div class="static-preview-overlay">
-                                <div class="static-preview-text" id="staticPreviewQuote">
-                                    "You're doing better than you think you are."
-                                </div>
-                                <div style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">
-                                    Someone special wanted to send you some good vibes ✨
+                                <div class="static-preview-glass">
+                                    <div class="static-preview-text" id="staticPreviewQuote">
+                                        "You're doing better than you think you are."
+                                    </div>
+                                    <div id="staticPreviewSenderText"
+                                        style="font-size: 0.85rem; color: rgba(255,255,255,0.7); transition: opacity 0.3s ease;">
+                                        <strong>Someone special</strong> wanted to send you some good vibes ✨
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -546,31 +571,70 @@
                 </div>
 
                 <script>
-                    function updateStaticPreview(category, btnElement) {
-                        // Update active state on buttons
-                        document.querySelectorAll('.vibe-btn').forEach(btn => btn.classList.remove('active'));
-                        btnElement.classList.add('active');
+                    const previewExamples = {
+                        'encouragement': { text: '"You\'re doing better than you think you are."', bg: 'linear-gradient(135deg, #11998e, #38ef7d)' },
+                        'selflove': { text: '"You are entirely enough as you are."', bg: 'url("assets/backgrounds/bg_prem_nebula_1772750433414.png") center/cover' },
+                        'anxiety': { text: '"Breathe. You are safe right now."', bg: 'linear-gradient(135deg, #00b4db, #0083b0)' },
+                        'patience': { text: '"Healing isn\'t linear. You\'re doing it."', bg: 'url("assets/backgrounds/bg_prem_crystal_1772750533689.png") center/cover' },
+                        'justbecause': { text: '"Just a reminder that you\'re awesome."', bg: 'linear-gradient(135deg, #f953c6, #b91d73)' },
+                        'validation': { text: '"I see how hard you\'re trying."', bg: 'url("assets/backgrounds/bg_prem_velvet_1772750498877.png") center/cover' },
+                        'birthday': { text: '"I am so incredibly glad you exist."', bg: 'linear-gradient(135deg, #ff6b6b, #ffa500)' },
+                        'abundance': { text: '"You deserve every good thing coming your way."', bg: 'url("assets/backgrounds/bg_prem_gold_1772750445716.png") center/cover' },
+                        'grief': { text: '"There is no rush. Take all the time you need."', bg: 'linear-gradient(135deg, #6b73ff, #9b59b6)' }
+                    };
 
-                        // Update text and background based on selection
+                    const rotationKeys = Object.keys(previewExamples);
+                    let currentPreviewIndex = 0;
+                    let previewAutoRotation;
+
+                    function updateStaticPreview(category, btnElement, isAuto = false) {
+                        // Stop rotation if user clicked manually
+                        if (!isAuto && previewAutoRotation) {
+                            clearInterval(previewAutoRotation);
+                        }
+
+                        // Update btn active states only if one of the 3 primary buttons matches
+                        document.querySelectorAll('.vibe-btn').forEach(btn => btn.classList.remove('active'));
+                        if (btnElement) {
+                            btnElement.classList.add('active');
+                        } else {
+                            document.querySelectorAll('.vibe-btn').forEach(btn => {
+                                if (btn.getAttribute('onclick').includes(`'${category}'`)) {
+                                    btn.classList.add('active');
+                                }
+                            });
+                        }
+
+                        const data = previewExamples[category];
+                        if (!data) return;
+
                         const textEl = document.getElementById('staticPreviewQuote');
                         const boxEl = document.getElementById('staticPreviewBox');
+                        const senderEl = document.getElementById('staticPreviewSenderText');
+
+                        const randomSenders = ["Sarah", "Marcus", "Elena", "James", "Aisha", "David", "Chloe", "Someone special", "Mom", "Your Bestie"];
+                        const randomName = randomSenders[Math.floor(Math.random() * randomSenders.length)];
 
                         textEl.style.opacity = 0;
+                        if (senderEl) senderEl.style.opacity = 0;
 
                         setTimeout(() => {
-                            if (category === 'encouragement') {
-                                textEl.textContent = '"You\'re doing better than you think you are."';
-                                boxEl.style.background = 'linear-gradient(135deg, #2d1b69, #1a1625)';
-                            } else if (category === 'anxiety') {
-                                textEl.textContent = '"Breathe. You are safe right now."';
-                                boxEl.style.background = 'linear-gradient(135deg, #0f2027, #2c5364)';
-                            } else if (category === 'justbecause') {
-                                textEl.textContent = '"Just a reminder that you\'re awesome."';
-                                boxEl.style.background = 'linear-gradient(135deg, #1a1625, #0d0a18)';
-                            }
+                            textEl.textContent = data.text;
+                            boxEl.style.background = data.bg;
+                            if (senderEl) senderEl.innerHTML = `<strong>${randomName}</strong> wanted to send you some good vibes ✨`;
                             textEl.style.opacity = 1;
+                            if (senderEl) senderEl.style.opacity = 1;
                         }, 300);
                     }
+
+                    // Start auto-rotation when page loads
+                    document.addEventListener('DOMContentLoaded', () => {
+                        previewAutoRotation = setInterval(() => {
+                            currentPreviewIndex = (currentPreviewIndex + 1) % rotationKeys.length;
+                            const nextCategory = rotationKeys[currentPreviewIndex];
+                            updateStaticPreview(nextCategory, null, true);
+                        }, 3500);
+                    });
                 </script>
 
             </div>

@@ -404,6 +404,9 @@
         }
 
         .card-preview {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             background: var(--color-bg-dark);
             border-radius: 16px;
             padding: var(--space-xl);
@@ -413,6 +416,12 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 960px) {
+            .card-preview {
+                aspect-ratio: 3 / 2;
+            }
         }
 
         /* ── Physical Paper Polish: Noise Texture ── */
@@ -1359,6 +1368,7 @@
                             }
 
                             .success-share-box {
+                                width: 100%;
                                 background: rgba(255, 255, 255, 0.03);
                                 border: 1px solid rgba(255, 255, 255, 0.08);
                                 border-radius: 14px;
@@ -1416,6 +1426,7 @@
 
                             .quick-share-row {
                                 display: flex;
+                                flex-wrap: wrap;
                                 gap: 8px;
                                 justify-content: center;
                                 margin-top: 12px;
@@ -1436,6 +1447,9 @@
                                 display: inline-flex;
                                 align-items: center;
                                 gap: 6px;
+                                flex: 1 1 auto;
+                                justify-content: center;
+                                white-space: nowrap;
                             }
 
                             .quick-share-btn:hover {
@@ -1445,6 +1459,7 @@
                             }
 
                             .success-upsell {
+                                width: 100%;
                                 margin-top: 28px;
                                 padding-top: 24px;
                                 border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -1557,10 +1572,10 @@
                         </button>
 
                         <div class="success-upsell">
-                            <p>Want good vibes in your inbox every week? 🌟</p>
+                            <p>Want good vibes in your inbox every day? 🌟</p>
                             <form class="inline-email-form" id="senderSignupForm" onsubmit="handleSenderSignup(event)">
                                 <input type="email" placeholder="your@email.com" required>
-                                <button type="submit">Get Free Packs</button>
+                                <button type="submit">Get Daily Vibes</button>
                             </form>
                             <p style="margin-top:16px;">
                                 ✨ <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02"
@@ -2138,11 +2153,11 @@
                 if (response.ok) {
                     e.target.innerHTML = '<p style="color:#FF6B9D;font-weight:600;font-size:15px;">✨ You\'re in! Check your inbox to confirm.</p>';
                 } else {
-                    btn.textContent = 'Get Free Packs';
+                    btn.textContent = 'Get Daily Vibes';
                     btn.disabled = false;
                 }
             } catch (err) {
-                btn.textContent = 'Get Free Packs';
+                btn.textContent = 'Get Daily Vibes';
                 btn.disabled = false;
             }
         }

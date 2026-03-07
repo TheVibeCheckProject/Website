@@ -883,6 +883,11 @@ section {
     z-index: 1;
 }
 
+.feature-card .btn {
+    position: relative;
+    z-index: 2;
+}
+
 .pricing-highlight {
     text-align: center;
     margin-top: var(--space-2xl);
@@ -1341,6 +1346,7 @@ footer {
 
 /* Mobile performance optimizations */
 @media (max-width: 768px) {
+
     /* Disable smooth scroll — causes jank on touch devices */
     html {
         scroll-behavior: auto;
@@ -2951,6 +2957,7 @@ footer {
         justify-content: center;
     }
 }
+
 /* ===================================
    Hamburger Navigation Menu
    =================================== */
@@ -3038,6 +3045,7 @@ nav.nav-open .nav-hamburger span:nth-child(3) {
    Reduced Motion Accessibility
    =================================== */
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {

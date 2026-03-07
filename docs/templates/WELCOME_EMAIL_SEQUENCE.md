@@ -32,7 +32,7 @@ Save that. Screenshot it. Send it to someone who needs it.
 
 ---
 
-Every Sunday I send a free card pack — 5 affirmation cards you can send to people you care about.
+Every morning I send a fresh affirmation you can read or send to people you care about.
 
 Talk soon,
 Devin @ The Vibe Check Project
@@ -78,9 +78,7 @@ Hey [first_name|there],
 
 You've been getting vibes for a few days now. Hopefully they're hitting right.
 
-There are two ways to go deeper — and they do completely different things. Here's the honest breakdown:
-
----
+If you want a stronger tool for sending cards to others, here's the honest breakdown of our Premium Unlock:
 
 **If you want a better tool for sending cards to others:**
 

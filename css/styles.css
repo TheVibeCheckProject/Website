@@ -2959,6 +2959,84 @@ footer {
 }
 
 /* ===================================
+   Mobile Card Scaling (Homepage)
+   =================================== */
+@media (max-width: 768px) {
+
+    .why-card,
+    .step,
+    .affirmation-card {
+        padding: var(--space-lg);
+        /* Shrinks from xl */
+    }
+
+    .why-card h3 {
+        font-size: 24px;
+    }
+
+    .why-card .card-emoji {
+        font-size: 36px;
+    }
+
+    .step-number {
+        width: 48px;
+        height: 48px;
+        font-size: 22px;
+    }
+
+    .step h3 {
+        font-size: 20px;
+    }
+
+    .affirmation-icon {
+        width: 52px;
+        height: 52px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .why-card,
+    .step,
+    .affirmation-card {
+        padding: var(--space-md);
+    }
+
+    .why-card h3 {
+        font-size: 20px;
+    }
+
+    .why-card p,
+    .step p,
+    .affirmation-quote {
+        font-size: 14px;
+    }
+
+    .why-card .card-emoji {
+        font-size: 28px;
+    }
+
+    .step-number {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .step h3 {
+        font-size: 18px;
+    }
+
+    .affirmation-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .affirmation-quote {
+        font-size: 16px;
+    }
+}
+
+/* ===================================
    Hamburger Navigation Menu
    =================================== */
 .nav-hamburger {

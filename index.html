@@ -46,11 +46,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link
-        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Caveat:wght@400;500;600;700&family=Fredoka:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Caveat:wght@400;500;600;700&family=Fredoka:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Pacifico&family=Permanent+Marker&family=Space+Grotesk:wght@500;600;700&display=swap"
         rel="stylesheet" media="print" onload="this.media='all'">
     <noscript>
         <link
-            href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Caveat:wght@400;500;600;700&family=Fredoka:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Caveat:wght@400;500;600;700&family=Fredoka:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Pacifico&family=Permanent+Marker&family=Space+Grotesk:wght@500;600;700&display=swap"
             rel="stylesheet">
     </noscript>
 
@@ -71,7 +71,13 @@
         <!-- Navigation -->
         <nav id="nav">
             <div class="nav-container">
-                <a href="#" class="nav-logo">✨ The Vibe Check Project</a>
+                <div class="nav-logo">
+                    <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
+                    <span class="logo-divider">|</span>
+                    <a href="blog/index.html" class="rotating-logo-word-wrap">
+                        <span class="rotating-logo-word in">Advice</span>
+                    </a>
+                </div>
                 <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu"
                     aria-expanded="false">
                     <span></span>
@@ -85,6 +91,8 @@
                             <span class="nav-crisis-text">Emergency Support</span>
                         </a>
                     </li>
+                    <li class="mobile-only-nav-item"><a href="send-card.html"
+                            style="color: var(--color-primary); font-weight: 700;">💌 Send A Card</a></li>
                     <li><a href="#why">Our Mission</a></li>
                     <li><a href="#affirmations">Daily Vibes</a></li>
                     <li><a href="#blog">Blog</a></li>
@@ -1094,6 +1102,57 @@
             .catch(() => { /* fail silently */ });
     </script>
 
+    <script>
+        // ── Rotating Word Animation for Header Logo & Tab Title ──
+        (function () {
+            const words = ["Advice", "Guides", "Blogs"];
+            const fonts = ["'Pacifico', cursive", "'Caveat', cursive", "'Permanent Marker', cursive"];
+            const colors = ["#FEC84A", "#67E8F9", "#FF6B9D"];
+            const shadows = [
+                "0 0 5px rgba(254,200,74,0.5), 0 0 15px rgba(254,200,74,0.3)",
+                "0 0 5px rgba(103,232,249,0.5), 0 0 15px rgba(103,232,249,0.3)",
+                "0 0 5px rgba(255,107,157,0.5), 0 0 15px rgba(255,107,157,0.3)"
+            ];
+            const baseTitle = "The Vibe Check Project";
+            let idx = 0;
+            const spans = document.querySelectorAll('.rotating-logo-word');
+
+            // Set initial styles
+            spans.forEach(span => {
+                span.style.fontFamily = fonts[0];
+                span.style.color = colors[0];
+                span.style.textShadow = shadows[0];
+            });
+            document.title = `${baseTitle} | ${words[0]}`;
+
+            setInterval(() => {
+                const next = (idx + 1) % words.length;
+                spans.forEach(span => {
+                    span.classList.remove('in');
+                    span.classList.add('out');
+                    setTimeout(() => {
+                        span.textContent = words[next];
+                        span.style.fontFamily = fonts[next];
+                        span.style.color = colors[next];
+                        span.style.textShadow = shadows[next];
+
+                        // Update tab title
+                        document.title = `${baseTitle} | ${words[next]}`;
+
+                        span.classList.remove('out');
+                        span.classList.add('waiting');
+                        requestAnimationFrame(() => {
+                            requestAnimationFrame(() => {
+                                span.classList.remove('waiting');
+                                span.classList.add('in');
+                            });
+                        });
+                    }, 500);
+                });
+                idx = next;
+            }, 3000);
+        })();
+    </script>
 </body>
 
 </html>

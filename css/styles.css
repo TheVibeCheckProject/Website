@@ -300,12 +300,89 @@ nav.scrolled {
 }
 
 .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-logo-link {
     font-family: var(--font-display);
     font-size: 20px;
     font-weight: 700;
     color: var(--color-text-primary);
     text-decoration: none;
     transition: color var(--transition-fast);
+}
+
+.nav-logo-link:hover {
+    color: var(--color-primary-light);
+}
+
+.logo-divider {
+    opacity: 0.3;
+    font-weight: 300;
+}
+
+.rotating-logo-word-wrap {
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    /* Extra large height to ensure glow/script fonts are NEVER cut off */
+    height: 4.5em;
+    padding: 0 10px;
+    margin-top: -1.4em;
+    margin-bottom: -1.4em;
+    overflow: hidden;
+    /* Feather only top/bottom to prevent horizontal "box-y" clipping while keeping text sharp */
+    mask-image: linear-gradient(to bottom,
+            transparent 0%,
+            black 30%,
+            black 70%,
+            transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom,
+            transparent 0%,
+            black 30%,
+            black 70%,
+            transparent 100%);
+}
+
+.rotating-logo-word {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    transition: opacity 0.8s ease, filter 0.8s ease, transform 0.8s ease;
+    white-space: nowrap;
+    will-change: opacity, filter, transform;
+}
+
+.rotating-logo-word.out {
+    opacity: 0;
+    filter: blur(12px) brightness(1.2);
+    transform: scale(0.95);
+}
+
+.rotating-logo-word.in {
+    opacity: 1;
+    filter: none;
+    /* Explicitly remove filter for maximum sharpness */
+    transform: scale(1);
+}
+
+.rotating-logo-word.waiting {
+    opacity: 0;
+    filter: blur(12px) brightness(1.2);
+    transform: scale(1.05);
+    transition: none;
+}
+
+/* Hide rotating suffix on very small screens to prevent overflow */
+@media (max-width: 480px) {
+
+    .logo-divider,
+    .rotating-logo-word-wrap {
+        display: none;
+    }
 }
 
 .nav-logo:hover {
@@ -3160,5 +3237,12 @@ nav.nav-open .nav-hamburger span:nth-child(3) {
         opacity: 1 !important;
         transform: none !important;
         transition: none !important;
+    }
+}
+
+/* Mobile Only Nav Item */
+@media (min-width: 769px) {
+    .mobile-only-nav-item {
+        display: none !important;
     }
 }

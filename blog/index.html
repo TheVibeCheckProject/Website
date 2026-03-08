@@ -161,20 +161,23 @@
             .blog-header {
                 min-height: 200px;
                 margin: 60px auto 30px;
+                justify-content: center;
+                text-align: center;
             }
 
             .blog-header .blob-img {
-                width: 90%;
-                left: -5%;
+                width: 100%;
+                left: 0;
                 height: 140px;
             }
 
             .blog-header .title-wrap {
-                margin-left: 12%;
+                margin-left: 0;
+                align-items: center;
             }
 
-            .blog-header .drop-v {
-                font-size: clamp(80px, 18vw, 140px);
+            .blog-header .title-main-line {
+                justify-content: center;
             }
 
             .blog-header .pre-text {
@@ -910,41 +913,53 @@
             }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 600px) {
             .category-slider {
-                height: 300px;
+                height: 400px;
+                /* Taller for centered content */
             }
 
             .category-slider .slide .item {
-                width: 100px;
-                height: 140px;
+                width: 100%;
+                height: 100%;
+                left: 0;
+                top: 0;
+                transform: none;
             }
 
-            .slide .item:nth-child(3) {
-                left: 60%;
-            }
-
-            .slide .item:nth-child(4) {
-                left: calc(60% + 115px);
-            }
-
-            .slide .item:nth-child(5) {
-                left: calc(60% + 230px);
+            /* Hide thumbnails on mobile to let content breathe */
+            .slide .item:nth-child(n+3) {
+                display: none;
             }
 
             .item .cat-content {
-                left: 16px;
-                width: 55%;
+                left: 50%;
+                top: 45%;
+                width: 85%;
+                transform: translate(-50%, -50%);
+                text-align: center;
             }
 
             .cat-content .cat-name {
-                font-size: 18px;
+                font-size: 24px;
+            }
+
+            .cat-content .cat-des {
+                font-size: 14px;
+                -webkit-line-clamp: 4;
+                line-clamp: 4;
+            }
+
+            .slider-buttons {
+                bottom: 20px;
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
             }
 
             .slider-buttons button {
-                width: 36px;
-                height: 32px;
-                font-size: 14px;
+                width: 50px;
+                height: 40px;
             }
         }
     </style>
@@ -966,7 +981,13 @@
     <!-- Navigation -->
     <nav id="nav" class="scrolled">
         <div class="nav-container">
-            <a href="../index.html" class="nav-logo">✨ The Vibe Check Project</a>
+            <div class="nav-logo">
+                <a href="../index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
+                <span class="logo-divider">|</span>
+                <a href="index.html" class="rotating-logo-word-wrap">
+                    <span class="rotating-logo-word in">Advice</span>
+                </a>
+            </div>
             <ul class="nav-links" style="align-items: center;">
                 <li>
                     <a href="#crisis" class="nav-crisis-badge" onclick="showCategory('crisis'); return false;">
@@ -1107,7 +1128,7 @@
 
         <div class="blog-grid">
             <!-- Professional Resource 1 -->
-            <a href="https://suicidesafetyplan.com/create/" target="_blank" rel="noopener" class="blog-card-img"
+            <a href="https://www.mysafetyplan.org/" target="_blank" rel="noopener" class="blog-card-img"
                 style="background-image: url('../assets/blog_cover_panic.png'); filter: saturate(0.5) contrast(1.2);">
                 <div class="color-overlay" style="background: rgba(255, 68, 68, 0.4);"></div>
                 <div class="gradient-overlay"></div>
@@ -1876,17 +1897,34 @@
 
             setInterval(() => {
                 const next = (idx + 1) % words.length;
-                spans.forEach(span => {
+                const allSpans = [
+                    ...document.querySelectorAll('.rotating-word'),
+                    ...document.querySelectorAll('.nav-logo .rotating-logo-word')
+                ];
+
+                allSpans.forEach(span => {
                     span.classList.remove('in');
                     span.classList.add('out');
                     setTimeout(() => {
                         span.textContent = words[next];
                         span.style.fontFamily = fonts[next];
-                        span.style.fontSize = next === 1 ? '130%' : '100%';
+
+                        // Handle font size only for large header, not small navbar logo
+                        if (span.classList.contains('rotating-word')) {
+                            span.style.fontSize = next === 1 ? '130%' : '100%';
+                        }
+
                         span.style.color = colors[next];
-                        span.style.webkitTextFillColor = colors[next];
+                        if (span.style.webkitTextFillColor !== undefined) {
+                            span.style.webkitTextFillColor = colors[next];
+                        }
                         span.style.background = 'none';
                         span.style.textShadow = shadows[next];
+
+                        // Update tab title
+                        const baseTitle = "The Vibe Check Blog";
+                        document.title = `${baseTitle} | ${words[next]}`;
+
                         span.classList.remove('out');
                         span.classList.add('waiting');
                         requestAnimationFrame(() => {

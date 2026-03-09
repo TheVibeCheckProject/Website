@@ -11,13 +11,8 @@ const EXCLUDE_FILES = [
     'robots.txt',
     'package.json',
     'package-lock.json',
-    'categorize-blog.js',
-    'fix-heights.js',
-    'fix-lineclamp.js',
-    'fix-related.js',
-    'migrate-cards.js',
-    'index.html.bak',
-    'send-card.html.bak'
+    'readme.md',
+    'CNAME'
 ];
 
 const EXCLUDE_DIRS = [

@@ -113,12 +113,12 @@ for (const file of files) {
         `;
 
         // Inject link 1 after paragraph 3
-        if ($('main.blog-post p').length >= 3) {
-            $('main.blog-post p').eq(2).after(link1);
+        if ($('main.blog-post > p').length >= 3) {
+            $('main.blog-post > p').eq(2).after(link1);
         }
 
         // Inject link 2 near the end of the post content (before premium resources or CTA)
-        const lastP = $('main.blog-post p').last();
+        const lastP = $('main.blog-post > p').last();
         if (lastP.length) {
             lastP.after(link2);
         }

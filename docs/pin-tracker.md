@@ -1,6 +1,7 @@
 # Pinterest Pin Tracker
 
-Use this checklist to keep track of which pins you've already posted or scheduled.
+> [!NOTE]
+> **Account & Boards Live:** The Pinterest account and all core boards have been created. Use this checklist to keep track of which pins you've already posted or scheduled.
 
 ## 💜 Daily Affirmations (Just Because)
 - [x] just-because-1.png (Posted)

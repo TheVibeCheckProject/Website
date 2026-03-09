@@ -63,7 +63,9 @@ Website/
 ├── js/
 │   └── script.js            # Site JS
 ├── newsletter-content/      # Daily newsletter batch data
-└── scripts/                 # Utility scripts (newsletter sender, etc.)
+├── scripts/                 # Utility scripts (automation, SEO, generation)
+│   └── legacy/              # Archived one-off fix and migration scripts
+└── package.json             # Project dependencies and CLI commands
 ```
 
 ---
@@ -127,7 +129,8 @@ Fonts: Space Grotesk (headers) / Inter (body)
 
 ## Still To Do
 
-- [ ] Submit `sitemap.xml` to Google Search Console
+- [x] Submit `sitemap.xml` to Google Search Console
+- [x] Standardize Blog Layout and SEO (36 files optimized)
 - [ ] Add real testimonials when available
 - [ ] TikTok posting cadence
 

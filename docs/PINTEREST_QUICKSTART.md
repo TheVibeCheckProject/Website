@@ -4,21 +4,17 @@ Since you're new to Pinterest, think of it less like "Social Media" (Instagram/T
 
 ---
 
-## Step 1: Set Up Your Account
-1.  Go to [Pinterest.com](https://www.pinterest.com) and create a **Business Account** (it's free and gives you analytics).
-2.  **Profile Name:** The Vibe Check Project
-3.  **About:** Giving you the right words for the right moment. Daily affirmations, mental health support, and sympathy card messages. ✨
-4.  **Claim Your Website:** Go to Settings > Claimed Accounts > Claim. Follow the steps to link `thevibecheckproject.com`. (This gives you a "Checkmark" and builds trust).
+## Step 1: Set Up Your Account ✅
+> [!NOTE]
+> **Complete:** The "The Vibe Check Project" Business account has been created and the domain `thevibecheckproject.com` has been claimed.
 
 ---
 
-## Step 2: Create Your "Boards"
-Boards are like folders. Create 5-6 boards to categorize the pins I generated for you:
-*   **Anxiety & Grounding** (For the "Anxiety" pins)
-*   **Grief & Sympathy Support** (For the "Grief" pins)
-*   **Encouraging Words** (For the "Encouragement" pins)
-*   **Breakup Healing** (For the "Breakup" pins)
-*   **Daily Affirmations** (For "Just Because" pins)
+## Step 2: Create Your "Boards" ✅
+> [!NOTE]
+> **Complete:** All core boards (Anxiety, Grief, Encouraging Words, Breakup Healing, Daily Affirmations) have been created.
+
+For the current status of each board and which pins have been posted, see the [Pin Tracker](pin-tracker.md).
 
 ---
 

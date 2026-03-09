@@ -27,15 +27,11 @@ The strategy here is simple: **Turn your copyable messages into highly readable,
 5. Screenshot the generator preview area. (On Mac: `Cmd + Shift + 4`, On Windows: `Windows Key + Shift + S`).
 6. Upload to Pinterest with the title of the blog post, a 2-sentence description, and the URL to the exact post.
 
-## Recommended Boards to Create
+## Boards Status ✅
+> [!IMPORTANT]
+> **Complete:** All core boards are live and categorized. 
 
-Create these boards on your Pinterest profile to categorize your pins:
-- Mental Health Reminders
-- What to Text Someone
-- Grief & Loss Support
-- Breakup Advice & Healing
-- Daily Affirmations & Quotes
-- Friendship & Support
+For the current status of each board and which pins have been posted, see the [Pin Tracker](pin-tracker.md).
 
 ## Anatomy of a Perfect Pin Description
 

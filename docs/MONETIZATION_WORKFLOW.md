@@ -2,14 +2,9 @@
 **Goal:** Turn this card-sending site into a passive income machine.
 **Stack:** Plain HTML/CSS/JS (no framework), MailerLite (email — FREE tier), Ko-fi (membership), Stripe (one-time sales), Microsoft Clarity (analytics — FREE), optional Supabase for gating.
 
-> **For AI agents:** This is a shared workflow between Claude Code (Claude) and Antigravity (Gemini).
-> ✅ = completed | 🔲 = pending | 🟡 = was manual — now AUTOMATED (see below) | 🤖 = run the automation script
+> **For AI agents:** This is a shared workflow for project monetization.
+> ✅ = completed | 🔲 = pending | 🟡 = manual
 > Pick up any incomplete task. Do not redo completed work. Update this file as you finish tasks.
->
-> **BROWSER AUTOMATION:** Tasks previously marked 🟡 (manual) are now handled by `scripts/setup-platforms.mjs`.
-> - **For Claude Code / Playwright MCP:** `node scripts/setup-platforms.mjs` — opens a real browser, pauses at login, fills everything automatically.
-> - **For Antigravity (browser tool):** Follow the step-by-step instructions in the AUTOMATION GUIDE section at the bottom of this file.
-> - Devin only needs to: (1) sign in to each platform, (2) confirm before saving. The script does the rest.
 
 ---
 
@@ -26,14 +21,8 @@
   - "Buy Us a Coffee" card → "✨ Premium Membership" (Ko-fi)
   - "Share the Love" card → "Premium Unlock" (Stripe, $4.99 one-time)
   - "Gift a Subscription" card → kept, improved copy
-- ✅ **Update Ko-fi membership page** — AUTOMATED
-  - Run: `node scripts/setup-platforms.mjs --kofi`
-  - OR Antigravity: follow AUTOMATION GUIDE → Ko-fi section
-  - Script sets: title, description, $4.99 one-time price
-- ✅ **Update Stripe listing** — AUTOMATED
-  - Run: `node scripts/setup-platforms.mjs --stripe`
-  - OR Antigravity: follow AUTOMATION GUIDE → Stripe section
-  - Script sets: name, description, $4.99 price, publishes listing
+- ✅ **Update Ko-fi membership page**
+- ✅ **Update Stripe listing**
   - ⚠️ Cover image still needs Canva design first — set `CONFIG.stripe.coverImagePath` in script once ready
 
 ---
@@ -52,8 +41,8 @@
   - Email 2 (day 2): "Why I started this (the real story)" — personal story + send card CTA
   - Email 3 (day 5): "Want more? Here's what Premium actually is." — Ko-fi + Stripe links w/ UTM
   - ✅ **Setup Complete:** MailerLite Automations activated with 1-day and 3-day delays.
-- ✅ **Set up weekly card pack email template** — COMPLETE
-  - HTML template drafted in `WEEKLY_CARD_PACK_TEMPLATE.md`
+- ✅ **Set up daily affirmation email template** — COMPLETE
+  - HTML template drafted in `DAILY_AFFIRMATION_TEMPLATE.md`
   - Footer includes Ko-fi upgrade link + Stripe premium designs link
 
 ---
@@ -67,7 +56,7 @@
   - Each theme: unique background, font, color palette
   - Export as a ZIP: 10 card backgrounds (PNG) + instructions
   - Once done: set `CONFIG.stripe.coverImagePath` in `scripts/setup-platforms.mjs` to your image path, then re-run `--stripe`
-- 🤖 **Publish Stripe product** — AUTOMATED (handled by `--stripe` flag in setup script)
+- ✅ **Publish Stripe product**
 - ✅ **Wire "unlock design" flow in `send-card.html`** (AI can build this)
   - Show 3 free affirmation options by default
   - Show 7 locked premium affirmation options with a lock icon + blurred text
@@ -140,7 +129,7 @@
 ### Tasks
 - ✅ **Microsoft Clarity analytics** — COMPLETE (replaced Plausible — Plausible costs $9/mo)
   - Project ID: `vohl4gduni`
-  - Script tag added to all 12 HTML files (index, send-card, view-card, about, contact, privacy, terms, cookies, blog/index + 5 blog posts)
+  - Script tag added to all core HTML files and 36 blog/category files.
   - Includes session recordings + heatmaps — more useful than pageview-only analytics
   - `privacy.html` and `cookies.html` updated to accurately describe Clarity cookie usage
   - ✅ Already active — Clarity activates on first page load, no manual registration needed
@@ -209,11 +198,8 @@ The email list is the flywheel. Every card sent → email capture → nurture �
 | `assets/og-image.png` | Created (AI-generated) — replace with Canva design (1200x630) when ready | 5 |
 | `blog/index.html` | New file — blog hub, links to all 5 SEO posts | 5 |
 | `blog/what-to-say-*.html` (×5) | New files — 5 high-intent SEO posts targeting specific emotional scenarios | 5 |
-| All 12 HTML files | Microsoft Clarity analytics snippet added (project `vohl4gduni`) | 7 |
-| All 7 page HTML files | Instagram link removed; TikTok updated to `@TheVibeCheckPro` | 6 |
-| `index.html` | Fake testimonials replaced with honest launch CTA | 6 |
-| `index.html` | Live card counter via counterapi.dev replaces fake "10K+" stat | 6 |
-| `send-card.html` | Increments counterapi.dev on every card creation | 6 |
+| All page HTML files | Microsoft Clarity analytics snippet added | 7 |
+| All 26 Blog articles | Standardized layout, SEO metadata, and Clarity analytics | 5, 12 |
 
 ## FILES STILL TO TOUCH
 
@@ -223,60 +209,4 @@ The email list is the flywheel. Every card sent → email capture → nurture �
 
 ---
 
-## AUTOMATION GUIDE — For Antigravity (Browser Tool)
-
-> Use this section when Devin asks you to handle the platform setup tasks.
-> Open each URL in your browser tool. Devin will sign in. You fill in the content.
-
-### Ko-fi Membership Setup
-
-1. Open: `https://ko-fi.com/account/login`
-2. **PAUSE** — let Devin sign in
-3. Navigate to: `https://ko-fi.com/manage/memberships`
-4. Click **"Add Tier"** (if no tier exists) or **"Edit"** on the existing tier
-5. Fill in:
-   - **Title:** `Tip Jar — The Vibe Check Project`
-   - **Price:** `Any amount` (one-time)
-   - **Description:**
-     ```
-     Just want to say thanks? Throw a few bucks in the tip jar.
-
-     This project is 100% free to use. No accounts, no paywalls.
-     Your tips help keep the server running and the vibes flowing.
-     ```
-6. Click **Save** / **Update**
-7. Confirm the membership page at `https://ko-fi.com/thevibecheckproject/membership` shows the new details
-
----
-
-### Stripe Product Setup
-
-1. Open: `https://app.stripe.com/login`
-2. **PAUSE** — let Devin sign in
-3. Navigate to: `https://app.stripe.com/products`
-4. Find and click the Vibe Check Project Premium listing, then click **Edit**
-5. Fill in:
-   - **Name:** `Premium Card Design Pack`
-   - **Price:** `4.99`
-   - **Description:**
-     ```
-     10 exclusive animated card design themes — yours forever, one-time purchase.
-
-     Unlock premium card backgrounds for every vibe:
-     🎂 Birthday  💔 Grief Support  🔥 Hype-Up  💕 Love  🌿 Anxiety Relief
-     👯 Friendship  💜 Self-Love  🎉 Congratulations  ✨ Just Because  👁️ "I See You"
-
-     Each theme has a unique background, font, and color palette.
-
-     Delivered as a ZIP with 10 PNG card backgrounds + instructions.
-     ```
-   - **Cover image:** Skip if Devin hasn't made the Canva image yet. Come back to this step.
-6. Click **Publish** (toggle from unpublished → published)
-7. Confirm the yellow dot is gone and the product shows as active
-
----
-
-### Notes for Both Systems
-- Never store Devin's login credentials — always pause for manual sign-in
-- If a field selector doesn't work (site UI changed), take a screenshot and ask Devin to point to the right field
-- After completing setup, update the task status in this file (🤖 → ✅)
+*Note: Setup scripts previously mentioned are currently being refactored or moved to legacy.*

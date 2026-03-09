@@ -43,7 +43,6 @@ Website/
 ├── privacy.html             # Privacy policy
 ├── terms.html               # Terms of service
 ├── cookies.html             # Cookie policy
-├── careers.html             # Careers / contributors page
 ├── sitemap.xml              # SEO sitemap
 ├── CNAME                    # GitHub Pages custom domain
 ├── assets/

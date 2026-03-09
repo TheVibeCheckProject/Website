@@ -1,62 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.thevibecheckproject.com/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://www.thevibecheckproject.com/send-card.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.thevibecheckproject.com/view-card.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.thevibecheckproject.com/about.html</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.thevibecheckproject.com/contact.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://www.thevibecheckproject.com/privacy.html</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.thevibecheckproject.com/terms.html</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.thevibecheckproject.com/cookies.html</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://www.thevibecheckproject.com/blog/</loc>
-    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.thevibecheckproject.com/blog/what-to-text-someone-having-a-panic-attack.html</loc>
+    <loc>https://www.thevibecheckproject.com/blog/100-encouraging-messages-for-a-friend.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.thevibecheckproject.com/blog/how-to-check-on-a-friend-who-went-quiet.html</loc>
+    <loc>https://www.thevibecheckproject.com/blog/50-texts-to-send-someone-having-a-hard-day.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.thevibecheckproject.com/blog/how-to-support-a-friend-going-through-a-breakup.html</loc>
+    <loc>https://www.thevibecheckproject.com/blog/75-thinking-of-you-messages.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -66,22 +26,12 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.thevibecheckproject.com/blog/words-of-encouragement-for-someone-taking-a-big-risk.html</loc>
+    <loc>https://www.thevibecheckproject.com/blog/birthday-wishes-for-someone-going-through-a-hard-time.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.thevibecheckproject.com/blog/how-to-comfort-someone-who-lost-a-loved-one.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.thevibecheckproject.com/blog/what-to-say-when-someone-is-depressed.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.thevibecheckproject.com/blog/encouraging-words-for-students-during-exams.html</loc>
+    <loc>https://www.thevibecheckproject.com/blog/breakup-support-messages/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -91,7 +41,27 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.thevibecheckproject.com/blog/what-to-write-in-a-get-well-soon-card.html</loc>
+    <loc>https://www.thevibecheckproject.com/blog/encouragement/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/encouraging-messages-for-cards/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/encouraging-words-for-students-during-exams.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/grief-support/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/how-a-30-second-text-can-change-someones-day.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -101,32 +71,22 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.thevibecheckproject.com/blog/self-care-ideas-for-bad-mental-health-days.html</loc>
+    <loc>https://www.thevibecheckproject.com/blog/how-to-celebrate-a-friends-success.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.thevibecheckproject.com/blog/positive-things-to-say-to-yourself-every-morning.html</loc>
+    <loc>https://www.thevibecheckproject.com/blog/how-to-check-on-a-friend-who-went-quiet.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.thevibecheckproject.com/blog/what-to-say-to-someone-who-feels-like-giving-up.html</loc>
+    <loc>https://www.thevibecheckproject.com/blog/how-to-comfort-someone-who-lost-a-loved-one.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.thevibecheckproject.com/blog/ways-to-show-someone-you-care-without-words.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.thevibecheckproject.com/blog/how-to-write-a-heartfelt-letter-to-a-friend.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.thevibecheckproject.com/blog/mindfulness-exercises-for-beginners.html</loc>
+    <loc>https://www.thevibecheckproject.com/blog/how-to-support-a-friend-going-through-a-breakup.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -136,17 +96,52 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.thevibecheckproject.com/blog/birthday-wishes-for-someone-going-through-a-hard-time.html</loc>
+    <loc>https://www.thevibecheckproject.com/blog/how-to-write-a-heartfelt-letter-to-a-friend.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.thevibecheckproject.com/blog/how-to-celebrate-a-friends-success.html</loc>
+    <loc>https://www.thevibecheckproject.com/blog/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/just-because-messages/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.thevibecheckproject.com/blog/why-you-should-send-affirmations-for-no-reason.html</loc>
+    <loc>https://www.thevibecheckproject.com/blog/mental-health/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/mindfulness-exercises-for-beginners.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/positive-things-to-say-to-yourself-every-morning.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/self-care-ideas-for-bad-mental-health-days.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/serious-illness/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/sympathy-card-messages/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/texts-for-anxiety/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -156,7 +151,77 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.thevibecheckproject.com/blog/how-a-30-second-text-can-change-someones-day.html</loc>
+    <loc>https://www.thevibecheckproject.com/blog/ways-to-show-someone-you-care-without-words.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/what-to-say-to-someone-who-feels-like-giving-up.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/what-to-say-when-someone-is-depressed.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/what-to-text-someone-having-a-panic-attack.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/what-to-write-in-a-get-well-soon-card.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/why-you-should-send-affirmations-for-no-reason.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/blog/words-of-encouragement-for-someone-taking-a-big-risk.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/contact.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/cookies.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/privacy.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/send-card.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/situations.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/terms.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.thevibecheckproject.com/view-card.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Situations & Advice Directory | The Vibe Check</title>
+
+    <meta name="description"
+        content="Find exactly what to say for any situation. Guides, texts, and card messages for grief, mental health, breakups, illness, and everyday encouragement.">
+    <meta name="keywords"
+        content="what to say, what to text, grief support, anxiety texts, breakup advice, serious illness support">
+
+    <!-- Open Graph / Twitter Card -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.thevibecheckproject.com/situations.html">
+    <meta property="og:title" content="Situations Directory | The Vibe Check">
+    <meta property="og:description" content="Find the exact words for any situation. Browse our guides and templates.">
+    <meta property="og:image" content="https://www.thevibecheckproject.com/assets/og-image.png">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Fredoka:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Pacifico&family=Permanent+Marker&family=Quicksand:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        .situations-header {
+            text-align: center;
+            padding: 100px 20px 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .situations-header h1 {
+            font-family: 'Fredoka', var(--font-display);
+            font-size: clamp(3rem, 7vw, 4.5rem);
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(167, 139, 250, 0.4);
+            background: linear-gradient(135deg, #FF6B9D 0%, #FEC84A 50%, #67E8F9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .situations-header p {
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        .category-group {
+            max-width: 1000px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+
+        .category-group h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            color: var(--color-text-primary);
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .situation-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 30px;
+            text-decoration: none;
+            color: var(--color-text-primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .situation-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.1), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .situation-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .situation-card:hover::before {
+            opacity: 1;
+        }
+
+        .situation-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.05);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .situation-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .situation-card p {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .situation-link-text {
+            color: var(--color-secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .situation-card:hover .situation-link-text {
+            color: #d9f99d;
+        }
+
+        .premium-bg-1 {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.05), rgba(167, 139, 250, 0.01));
+        }
+
+        .premium-bg-2 {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.05), rgba(255, 107, 157, 0.01));
+        }
+
+        .premium-bg-3 {
+            background: linear-gradient(135deg, rgba(103, 232, 249, 0.05), rgba(103, 232, 249, 0.01));
+        }
+
+        .premium-bg-4 {
+            background: linear-gradient(135deg, rgba(254, 200, 74, 0.05), rgba(254, 200, 74, 0.01));
+        }
+    </style>
+
+    <!-- Analytics -->
+    <script type="text/javascript">
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "vohl4gduni");
+    </script>
+</head>
+
+<body class="dark-theme">
+
+    <nav id="nav" class="scrolled">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
+            </div>
+            <ul class="nav-links" style="align-items: center;">
+                <li>
+                    <a href="blog/index.html#crisis" class="nav-crisis-badge">
+                        <span class="nav-crisis-heart">❤️</span>
+                        <span class="nav-crisis-text">Emergency Support</span>
+                    </a>
+                </li>
+                <li><a href="situations.html">Situations</a></li>
+                <li><a href="blog/index.html">Advice &amp; Guides</a></li>
+                <li><a href="send-card.html" class="btn btn-secondary"
+                        style="padding: 6px 16px; border-width: 1px; font-size: 14px;">💌 Send a Card</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <header class="situations-header">
+            <h1>What's the Situation?</h1>
+            <p>Find the exact words for when your mind goes completely blank. Browse our directory of guides, templates,
+                and copyable text messages below.</p>
+        </header>
+
+        <!-- Category: Grief & Hardship -->
+        <section class="category-group">
+            <h2>🕊️ Grief & Hardship</h2>
+            <div class="situations-grid">
+                <a href="blog/grief-support/index.html" class="situation-card premium-bg-1">
+                    <div class="situation-icon">🌧️</div>
+                    <h3>Grief Support Guide</h3>
+                    <p>Comprehensive guides on what to say when someone loses a loved one, and how to actually help.</p>
+                    <span class="situation-link-text">Read Guide →</span>
+                </a>
+                <a href="blog/sympathy-card-messages/index.html" class="situation-card premium-bg-1">
+                    <div class="situation-icon">📝</div>
+                    <h3>Sympathy Card Messages</h3>
+                    <p>10+ copyable messages to write in a sympathy card when there are simply no words.</p>
+                    <span class="situation-link-text">Get Messages →</span>
+                </a>
+                <a href="blog/serious-illness/index.html" class="situation-card premium-bg-1">
+                    <div class="situation-icon">🏥</div>
+                    <h3>Serious Illness & Hospital</h3>
+                    <p>How to support a friend diagnosed with a severe illness without treating them differently.</p>
+                    <span class="situation-link-text">Read Guide →</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Category: Mental Health & Burnout -->
+        <section class="category-group">
+            <h2>🧠 Mental Health & Burnout</h2>
+            <div class="situations-grid">
+                <a href="blog/mental-health/index.html" class="situation-card premium-bg-2">
+                    <div class="situation-icon">🫂</div>
+                    <h3>Mental Health Hub</h3>
+                    <p>General advice on navigating depression, burnout, and being the "strong friend" who is tired.</p>
+                    <span class="situation-link-text">Explore Topics →</span>
+                </a>
+                <a href="blog/texts-for-anxiety/index.html" class="situation-card premium-bg-2">
+                    <div class="situation-icon">🌊</div>
+                    <h3>Anxiety & Panic Attack Texts</h3>
+                    <p>Grounding texts you can send someone right now who is spiraling or having a panic attack.</p>
+                    <span class="situation-link-text">Copy Texts →</span>
+                </a>
+                <a href="blog/what-to-say-to-someone-who-feels-like-giving-up.html" class="situation-card premium-bg-2">
+                    <div class="situation-icon">❤️</div>
+                    <h3>When They Want to Give Up</h3>
+                    <p>What to say when someone tells you they want to give up, and every word matters.</p>
+                    <span class="situation-link-text">Read Guide →</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Category: Relationships -->
+        <section class="category-group">
+            <h2>💔 Relationships & Heartbreak</h2>
+            <div class="situations-grid">
+                <a href="blog/breakup-support-messages/index.html" class="situation-card premium-bg-3">
+                    <div class="situation-icon">🍦</div>
+                    <h3>Breakup Support Texts</h3>
+                    <p>Messages to send a friend who is devastated over a breakup. No platitudes, just real support.</p>
+                    <span class="situation-link-text">Copy Texts →</span>
+                </a>
+                <a href="blog/how-to-support-a-friend-through-a-breakup.html" class="situation-card premium-bg-3">
+                    <div class="situation-icon">🏠</div>
+                    <h3>The Post-Breakup Playbook</h3>
+                    <p>A full guide on how to support your friend through a messy, emotionally exhausting breakup.</p>
+                    <span class="situation-link-text">Read Guide →</span>
+                </a>
+                <a href="blog/how-to-check-on-a-friend-who-went-quiet.html" class="situation-card premium-bg-3">
+                    <div class="situation-icon">🧭</div>
+                    <h3>When They Go Quiet</h3>
+                    <p>How to check on a friend who dropped off the radar without making them feel guilty.</p>
+                    <span class="situation-link-text">Read Guide →</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Category: Everyday Encouragement -->
+        <section class="category-group">
+            <h2>✨ Everyday Encouragement</h2>
+            <div class="situations-grid">
+                <a href="blog/encouragement/index.html" class="situation-card premium-bg-4">
+                    <div class="situation-icon">🚀</div>
+                    <h3>Motivation & Hype Hub</h3>
+                    <p>Guides on celebrating success, hyping up friends, and providing motivation.</p>
+                    <span class="situation-link-text">Explore Topics →</span>
+                </a>
+                <a href="blog/encouraging-messages-for-cards/index.html" class="situation-card premium-bg-4">
+                    <div class="situation-icon">🏆</div>
+                    <h3>Hype Texts & Card Messages</h3>
+                    <p>Short, powerful copyable texts to encourage someone taking a big step or needing a hype man.</p>
+                    <span class="situation-link-text">Get Messages →</span>
+                </a>
+                <a href="blog/just-because-messages/index.html" class="situation-card premium-bg-4">
+                    <div class="situation-icon">🌻</div>
+                    <h3>"Just Because" Texts</h3>
+                    <p>You don't need a crisis. Texts to make someone's day completely out of nowhere.</p>
+                    <span class="situation-link-text">Copy Texts →</span>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>About</h4>
+                    <p style="color: var(--color-text-muted); font-size: 14px; line-height: 1.7;">
+                        The Vibe Check Project exists to spread positivity through daily affirmations and uplifting
+                        messages. Because small words can make a big impact.
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Project</h4>
+                    <ul class="footer-links">
+                        <li><a href="blog/index.html">Advice &amp; Guides</a></li>
+                        <li><a href="situations.html">Browse by Situation</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="index.html#support">Support Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="cookies.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://x.com/Thevibecheckpro" target="_blank" rel="noopener">X (Twitter)</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>✨ Made with love by The Vibe Check Project • Spreading good since 2025</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

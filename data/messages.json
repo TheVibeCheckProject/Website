@@ -1,0 +1,104 @@
+{
+    "categories": [
+        {
+            "id": "encouragement",
+            "title": "Encouraging Card Messages & Hype Texts",
+            "header_title": "Encouraging Card Messages",
+            "slug": "encouraging-messages-for-cards",
+            "description": "Short, powerful texts and card messages to encourage someone taking a big step, starting a new job, or just needing a hype man.",
+            "color_theme": "#CDFF60",
+            "messages": [
+                "You've survived 100% of your bad days so far. You're going to crush this.",
+                "Take a deep breath. You are so much more capable than you realize.",
+                "I just wanted to remind you how proud I am of the person you are.",
+                "Your potential is endless. Go do what you were made to do.",
+                "I'm in your corner, today and always. You've got this.",
+                "No matter what happens, I am so incredibly proud of you.",
+                "You were literally built for this moment.",
+                "Don't let the imposter syndrome win today. You earned your spot here.",
+                "I believe in you so much it's actually ridiculous.",
+                "Whatever happens, we are getting ice cream after."
+            ]
+        },
+        {
+            "id": "grief",
+            "title": "Grief Support & Sympathy Card Messages",
+            "header_title": "Grief Support Messages",
+            "slug": "sympathy-card-messages",
+            "description": "What to write in a sympathy card when there are no words. Simple, supportive messages for someone who is grieving.",
+            "color_theme": "#A78BFA",
+            "messages": [
+                "There are no words. I'm just so incredibly sorry.",
+                "I am holding you in my heart today.",
+                "You don't have to be strong right now. I'm here for whatever you need.",
+                "I will always remember their wonderful spirit. Sending you all my love.",
+                "Please take all the time you need. I'll be right here when you're ready.",
+                "No need to reply. Just letting you know I'm thinking about you today.",
+                "I am coming over on Tuesday to do your laundry. Do not try to stop me.",
+                "I wish I could take this pain away from you.",
+                "It is completely okay if you are not okay.",
+                "Holding you close in my thoughts and hoping you find some peace."
+            ]
+        },
+        {
+            "id": "anxiety",
+            "title": "Anxiety Support & Grounding Texts",
+            "header_title": "Anxiety Support Texts",
+            "slug": "texts-for-anxiety",
+            "description": "Grounding messages and texts to send someone having a panic attack or struggling with severe anxiety.",
+            "color_theme": "#FF6B9D",
+            "messages": [
+                "I'm right here. You don't have to reply. Just read this and know you are not alone.",
+                "Your body is trying to protect you right now. But you are completely safe.",
+                "This feeling is awful, but it is temporary. It will pass.",
+                "I love you, you are safe, and everything is going to be okay.",
+                "Do you want me to keep distracting you with stories, or do you want space? A or B.",
+                "Take one slow, deep breath for me. Then another.",
+                "Can you tell me three things in the room that are color blue?",
+                "I am not going to leave you. I'll stay on the phone as long as you need.",
+                "It's just adrenaline. Let it wash over you. It cannot hurt you.",
+                "You've felt this before and you survived. You will survive this too."
+            ]
+        },
+        {
+            "id": "just-because",
+            "title": "Just Because & Thinking Of You Messages",
+            "header_title": "Just Because Messages",
+            "slug": "just-because-messages",
+            "description": "Because you don't need a crisis to tell someone they matter. Messages to make their day completely out of nowhere.",
+            "color_theme": "#FEC84A",
+            "messages": [
+                "Just a random reminder that I think you're pretty awesome.",
+                "I saw something today that reminded me of you and it made me smile.",
+                "No need to reply! Just wanted to say I'm so glad we're friends.",
+                "You make the world a little bit brighter just by being in it.",
+                "Hope your day is exactly as wonderful as you are.",
+                "I was just thinking about that time we [memory]. Hope you're having a good day.",
+                "If no one has told you today, you're doing a really good job.",
+                "Just texting to say I appreciate you and I'm lucky to have you in my corner.",
+                "Sending you a quick hug through the phone.",
+                "I hope the rest of your week is incredibly boring and peaceful."
+            ]
+        },
+        {
+            "id": "breakup",
+            "title": "Breakup Support & Heartbreak Messages",
+            "header_title": "Breakup Support Texts",
+            "slug": "breakup-support-messages",
+            "description": "When their world just collapsed, platitudes don't work. Here's what to text a friend crying through a breakup.",
+            "color_theme": "#67E8F9",
+            "messages": [
+                "I am so angry that this is happening to you.",
+                "You are allowed to fall apart right now. I'll help pick up the pieces later.",
+                "I'm ordering pizza to your house. Don't worry about dinner.",
+                "It's okay to miss them and be furious at them at the exact same time.",
+                "I'll be over at 8. We can talk about it, or we can watch mindless TV in silence.",
+                "This hurts so much because it mattered. But it won't hurt this completely forever.",
+                "Block them. Give your phone to me if you need me to do it for you.",
+                "You do not deserve to be treated like an option.",
+                "You are so deeply loved by the people who are actually meant to be in your life.",
+                "Take it one hour at a time today."
+            ]
+        }
+    ]
+}

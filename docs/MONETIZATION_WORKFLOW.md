@@ -140,7 +140,7 @@
 ### Tasks
 - ✅ **Microsoft Clarity analytics** — COMPLETE (replaced Plausible — Plausible costs $9/mo)
   - Project ID: `vohl4gduni`
-  - Script tag added to all 13 HTML files (index, send-card, view-card, about, contact, privacy, terms, cookies, careers, blog/index + 5 blog posts)
+  - Script tag added to all 12 HTML files (index, send-card, view-card, about, contact, privacy, terms, cookies, blog/index + 5 blog posts)
   - Includes session recordings + heatmaps — more useful than pageview-only analytics
   - `privacy.html` and `cookies.html` updated to accurately describe Clarity cookie usage
   - ✅ Already active — Clarity activates on first page load, no manual registration needed
@@ -184,7 +184,7 @@ The email list is the flywheel. Every card sent → email capture → nurture �
 9. ✅ ~~**Phase 6 (partial)** — About, Contact, Privacy, Terms, Cookies pages rewritten with accurate content~~
 10. ✅ ~~**Phase 6** — Fake testimonials replaced with honest launch CTA~~
 11. ✅ ~~**Phase 6** — Live card counter (counterapi.dev) replaces fake "10K+" stat~~
-12. ✅ ~~**Analytics** — Microsoft Clarity installed (project `vohl4gduni`) across all 13 HTML files~~
+12. ✅ ~~**Analytics** — Microsoft Clarity installed (project `vohl4gduni`) across all 12 HTML files~~
 13. **Devin to-do (manual):** Submit `sitemap.xml` to Google Search Console
 14. ✅ ~~**Social links** — Instagram removed (no account), TikTok updated to `@TheVibeCheckPro`~~
 15. ✅ ~~**Phase 5 remainder** — Blog section (3-5 posts, SEO-targeted)~~
@@ -204,13 +204,12 @@ The email list is the flywheel. Every card sent → email capture → nurture �
 | `privacy.html` | Updated — accurate data practices, Clarity/MailerLite/Ko-fi/Stripe disclosure | 6 |
 | `terms.html` | Updated — card-sending service, no accounts, Ko-fi/Stripe payment terms | 6 |
 | `cookies.html` | Updated — Microsoft Clarity (session recording cookie), removed Google Analytics, accurate third-party list | 6 |
-| `careers.html` | Nav + footer updated to match site branding | 6 |
 | `WELCOME_EMAIL_SEQUENCE.md` | New file — 3 welcome emails ready to paste into MailerLite Automations | 2 |
 | `sitemap.xml` | Created — submit to Google Search Console | 5 |
 | `assets/og-image.png` | Created (AI-generated) — replace with Canva design (1200x630) when ready | 5 |
 | `blog/index.html` | New file — blog hub, links to all 5 SEO posts | 5 |
 | `blog/what-to-say-*.html` (×5) | New files — 5 high-intent SEO posts targeting specific emotional scenarios | 5 |
-| All 13 HTML files | Microsoft Clarity analytics snippet added (project `vohl4gduni`) | 7 |
+| All 12 HTML files | Microsoft Clarity analytics snippet added (project `vohl4gduni`) | 7 |
 | All 7 page HTML files | Instagram link removed; TikTok updated to `@TheVibeCheckPro` | 6 |
 | `index.html` | Fake testimonials replaced with honest launch CTA | 6 |
 | `index.html` | Live card counter via counterapi.dev replaces fake "10K+" stat | 6 |

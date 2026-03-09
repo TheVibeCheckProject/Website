@@ -1,0 +1,1329 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Vibe Check Blog - Grief &amp; Loss Support</title>
+
+    <meta name="description" content="When someone you care about is grieving, the wrong words can make it worse. Here are the words that actually help.">
+    <meta name="keywords" content="what to text a friend, how to check on someone, mental health texts, words of encouragement">
+
+    <!-- Open Graph / Twitter Card -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.thevibecheckproject.com/blog/">
+    <meta property="og:title" content="Grief &amp; Loss Support">
+    <meta property="og:description" content="When someone you care about is grieving, the wrong words can make it worse. Here are the words that actually help.">
+    <meta property="og:image" content="https://www.thevibecheckproject.com/assets/og-image.png">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&amp;family=Fredoka:wght@300;400;500;600;700&amp;family=Outfit:wght@300;400;500;600;700;800;900&amp;family=Pacifico&amp;family=Permanent+Marker&amp;family=Quicksand:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+
+    <!-- Main CSS (shared from root) -->
+    <link rel="stylesheet" href="../../css/styles.css">
+
+    <style>
+        /* ── Editorial Blog Header ── */
+        .blog-header {
+            position: relative;
+            max-width: 900px;
+            width: 100%;
+            min-height: 260px;
+            display: flex;
+            align-items: center;
+            margin: 80px auto 0px;
+            padding: 0 20px;
+        }
+
+        .blog-header .blob-img {
+            position: absolute;
+            left: -3%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 75%;
+            height: 180px;
+            object-fit: cover;
+            clip-path: url(#smokeClip);
+            z-index: 1;
+            filter: brightness(0.82) saturate(1.25);
+        }
+
+        .blog-header .title-wrap {
+            position: relative;
+            z-index: 2;
+            margin-left: 22%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-header .title-main-line {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .blog-header .pre-text {
+            font-family: 'Quicksand', sans-serif;
+            font-size: clamp(28px, 4vw, 46px);
+            font-weight: 700;
+            color: #fff;
+            margin-right: -6px;
+            text-shadow:
+                0 0 10px rgba(255, 255, 255, 0.6),
+                0 0 30px rgba(167, 139, 250, 0.5),
+                0 0 60px rgba(167, 139, 250, 0.3),
+                0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .blog-header .drop-v {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(130px, 20vw, 220px);
+            font-weight: 900;
+            line-height: 0.72;
+            margin-right: -6px;
+            background: url('../../assets/media/v-fill-art.png') center/cover;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: brightness(1.2) saturate(1.3) drop-shadow(0 0 20px rgba(100, 200, 255, 0.4)) drop-shadow(0 0 50px rgba(100, 200, 255, 0.2));
+        }
+
+        .blog-header .rest-text {
+            font-family: 'Quicksand', sans-serif;
+            font-size: clamp(30px, 4.5vw, 50px);
+            font-weight: 700;
+            line-height: 1.15;
+            background: linear-gradient(135deg, #FF6B9D 0%, #FEC84A 50%, #67E8F9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 8px rgba(255, 107, 157, 0.5)) drop-shadow(0 0 25px rgba(255, 107, 157, 0.3)) drop-shadow(0 0 50px rgba(254, 200, 74, 0.2)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6));
+        }
+
+        .blog-header .rest-text .rotating-word-wrap {
+            display: block;
+            text-align: center;
+        }
+
+        .blog-header .rest-text .rotating-word {
+            display: inline-block;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            white-space: nowrap;
+        }
+
+        .blog-header .rest-text .rotating-word.out {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        .blog-header .rest-text .rotating-word.in {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .blog-header .rest-text .rotating-word.waiting {
+            transform: translateY(100%);
+            opacity: 0;
+            transition: none;
+        }
+
+        .blog-header .rotating-word-wrap {
+            display: inline-block;
+            position: relative;
+            vertical-align: bottom;
+        }
+
+        .blog-header .rest-text .rotating-word {
+            background: linear-gradient(135deg, #FF6B9D 0%, #FEC84A 50%, #67E8F9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sub-desc {
+            font-family: 'Quicksand', sans-serif;
+            font-size: clamp(14px, 2vw, 18px);
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0 auto 60px;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .blog-header {
+                min-height: 200px;
+                margin: 60px auto 30px;
+                justify-content: center;
+                text-align: center;
+            }
+
+            .blog-header .blob-img {
+                width: 100%;
+                left: 0;
+                height: 140px;
+            }
+
+            .blog-header .title-wrap {
+                margin-left: 0;
+                align-items: center;
+            }
+
+            .blog-header .title-main-line {
+                justify-content: center;
+            }
+
+            .blog-header .pre-text {
+                font-size: clamp(20px, 4vw, 32px);
+            }
+
+            .blog-header .rest-text {
+                font-size: clamp(22px, 4.5vw, 36px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .blog-header {
+                min-height: 160px;
+                margin: 50px auto 20px;
+            }
+
+            .blog-header .blob-img {
+                width: 95%;
+                left: -3%;
+                height: 110px;
+            }
+
+            .blog-header .title-wrap {
+                margin-left: 8%;
+            }
+
+            .blog-header .drop-v {
+                font-size: clamp(60px, 16vw, 100px);
+            }
+
+            .blog-header .pre-text {
+                font-size: clamp(16px, 3.5vw, 24px);
+            }
+
+            .blog-header .rest-text {
+                font-size: clamp(18px, 4vw, 28px);
+            }
+
+            .sub-desc {
+                font-size: 13px;
+            }
+        }
+
+        /* ── Category Slider ── */
+        .category-slider {
+            position: relative;
+            width: 900px;
+            max-width: 95vw;
+            height: 420px;
+            margin: 0 auto 60px;
+            border-radius: 20px;
+            overflow: visible;
+        }
+
+        .category-slider .slide {
+            border-radius: 20px;
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .category-slider .slide .item {
+            width: 200px;
+            height: 260px;
+            position: absolute;
+            top: 50%;
+            transform: translate(0, -50%);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            background-position: 50% 50%;
+            background-size: cover;
+            display: inline-block;
+            transition: all 0.5s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        /* Dark overlay on every slide item */
+        .category-slider .slide .item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.7) 100%);
+            border-radius: 20px;
+            z-index: 1;
+            transition: opacity 0.5s;
+        }
+
+        /* Active slide (background): items 1 & 2 */
+        .slide .item:nth-child(1),
+        .slide .item:nth-child(2) {
+            top: 0;
+            left: 0;
+            transform: translate(0, 0);
+            border-radius: 20px;
+            width: 100%;
+            height: 100%;
+            transition: all 0.5s;
+        }
+
+        .slide .item:nth-child(2)::before {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.75) 100%);
+        }
+
+        /* Thumbnail positions (items 3+) */
+        .slide .item:nth-child(3) {
+            left: 50%;
+        }
+
+        .slide .item:nth-child(4) {
+            left: calc(50% + 220px);
+        }
+
+        .slide .item:nth-child(5) {
+            left: calc(50% + 440px);
+        }
+
+        .slide .item:nth-child(n + 6) {
+            left: calc(50% + 660px);
+            opacity: 0;
+        }
+
+        /* Content overlay — only visible on active (2nd child) */
+        .item .cat-content {
+            position: absolute;
+            top: 50%;
+            left: 60px;
+            width: 380px;
+            max-width: 70%;
+            text-align: left;
+            color: #eee;
+            transform: translate(0, -50%);
+            font-family: var(--font-display);
+            display: none;
+            z-index: 10;
+        }
+
+        .slide .item:nth-child(2) .cat-content {
+            display: block;
+        }
+
+        .cat-content .cat-name {
+            font-size: clamp(24px, 3.5vw, 36px);
+            text-transform: uppercase;
+            font-weight: 800;
+            opacity: 0;
+            animation: sliderAnimate 0.8s ease-out forwards;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+            line-height: 1.15;
+        }
+
+        .cat-content .cat-des {
+            margin-top: 12px;
+            margin-bottom: 24px;
+            opacity: 0;
+            font-family: var(--font-body, 'Inter', sans-serif);
+            font-size: 15px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.85);
+            animation: sliderAnimate 0.8s ease-out 0.2s forwards;
+        }
+
+        .cat-content .cat-btn {
+            padding: 12px 28px;
+            border: none;
+            cursor: pointer;
+            opacity: 0;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--color-primary, #ff6b9d), var(--color-secondary, #cdff60));
+            color: #0a0a0a;
+            font-weight: 700;
+            font-size: 14px;
+            font-family: var(--font-display);
+            transition: all 0.3s;
+            animation: sliderAnimate 0.8s ease-out 0.4s forwards;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cat-content .cat-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
+        }
+
+        @keyframes sliderAnimate {
+            from {
+                opacity: 0;
+                transform: translate(0, 80px);
+                filter: blur(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(0);
+                filter: blur(0);
+            }
+        }
+
+        /* ── Thumbnail cues (visible on non-active items) ── */
+        .cat-thumb-label {
+            position: absolute;
+            bottom: 12px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+            padding: 0 8px;
+        }
+
+        /* Show label only on thumbnail items (3rd child onward) */
+        .slide .item:nth-child(n+3) .cat-thumb-label {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hide on active slides */
+        .slide .item:nth-child(1) .cat-thumb-label,
+        .slide .item:nth-child(2) .cat-thumb-label {
+            opacity: 0;
+        }
+
+        /* Pulsing glow border on thumbnails */
+        .slide .item:nth-child(n+3) {
+            border: 1.5px solid rgba(255, 107, 157, 0.3);
+            animation: thumbPulse 3s ease-in-out infinite alternate;
+            /* 3D depth */
+            transform: translate(0, -50%) perspective(600px) rotateY(-4deg);
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.7),
+                0 5px 15px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .slide .item:nth-child(n+3):hover {
+            transform: translate(0, -50%) perspective(600px) rotateY(-2deg) scale(1.05);
+            box-shadow:
+                0 30px 60px rgba(0, 0, 0, 0.8),
+                0 8px 20px rgba(0, 0, 0, 0.5),
+                0 0 25px rgba(205, 255, 96, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        .slide .item:nth-child(1),
+        .slide .item:nth-child(2) {
+            border: none;
+            animation: none;
+        }
+
+        @keyframes thumbPulse {
+            0% {
+                border-color: rgba(255, 107, 157, 0.2);
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            }
+
+            100% {
+                border-color: rgba(205, 255, 96, 0.45);
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 20px rgba(205, 255, 96, 0.15);
+            }
+        }
+
+        /* ── Persistent Crisis Chip ── */
+        .slider-wrapper {
+            position: relative;
+            max-width: 1100px;
+            margin: 0 auto 60px;
+        }
+
+        .crisis-chip {
+            position: absolute;
+            top: 50%;
+            right: -80px;
+            transform: translateY(-50%);
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .crisis-chip:hover {
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        .crisis-chip-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff4444, #ff6b6b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow:
+                0 0 20px rgba(255, 68, 68, 0.4),
+                0 0 40px rgba(255, 68, 68, 0.2),
+                0 4px 15px rgba(0, 0, 0, 0.4);
+            animation: crisisPulse 2s ease-in-out infinite;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .crisis-chip-label {
+            font-family: var(--font-display);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #ff6b6b;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.3);
+            white-space: nowrap;
+        }
+
+        @keyframes crisisPulse {
+
+            0%,
+            100% {
+                box-shadow:
+                    0 0 20px rgba(255, 68, 68, 0.4),
+                    0 0 40px rgba(255, 68, 68, 0.2),
+                    0 4px 15px rgba(0, 0, 0, 0.4);
+                transform: scale(1);
+            }
+
+            50% {
+                box-shadow:
+                    0 0 30px rgba(255, 68, 68, 0.6),
+                    0 0 60px rgba(255, 68, 68, 0.3),
+                    0 4px 20px rgba(0, 0, 0, 0.5);
+                transform: scale(1.05);
+            }
+        }
+
+
+
+        /* Crisis grid special styling */
+        .crisis-banner {
+            background: linear-gradient(135deg, rgba(255, 68, 68, 0.1), rgba(255, 107, 107, 0.05));
+            border: 1px solid rgba(255, 68, 68, 0.25);
+            border-radius: 16px;
+            padding: 24px 30px;
+            margin: 0 20px 30px;
+            max-width: 1160px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        .crisis-banner h3 {
+            color: #ff6b6b;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+
+        .crisis-banner p {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .crisis-banner a {
+            color: #ff6b6b;
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .crisis-banner a:hover {
+            color: #ff9999;
+        }
+
+        /* Permanent Crisis Section Styling */
+        .crisis-section {
+            display: none;
+            /* Hidden by default */
+            max-width: 1200px;
+            margin: 0 auto 100px;
+            padding: 40px 20px;
+            background: rgba(255, 68, 68, 0.03);
+            border: 1px solid rgba(255, 68, 68, 0.15);
+            border-radius: 24px;
+            box-shadow: 0 0 30px rgba(255, 68, 68, 0.05);
+            scroll-margin-top: 100px;
+        }
+
+        .crisis-section.active {
+            display: block;
+            animation: gridFadeIn 0.6s ease forwards;
+        }
+
+        .crisis-section h2 {
+            font-size: 2.2rem;
+            color: #ff6b6b;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(255, 68, 68, 0.2);
+        }
+
+        /* Responsive crisis chip */
+        @media (max-width: 1200px) {
+            .crisis-chip {
+                position: static;
+                transform: none;
+                flex-direction: row;
+                margin: 16px auto 0;
+                background: rgba(255, 68, 68, 0.08);
+                border: 1px solid rgba(255, 68, 68, 0.2);
+                border-radius: 50px;
+                padding: 8px 20px 8px 10px;
+                width: fit-content;
+            }
+
+            .crisis-chip:hover {
+                transform: scale(1.05);
+            }
+
+            .crisis-chip-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+            }
+
+            .crisis-chip-label {
+                font-size: 11px;
+            }
+        }
+
+        /* Navigation buttons */
+        .slider-buttons {
+            display: flex;
+            gap: 16px;
+            position: absolute;
+            bottom: 24px;
+            right: 30px;
+            z-index: 20;
+        }
+
+        .slider-buttons button {
+            width: 44px;
+            height: 40px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .slider-buttons button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: scale(1.08);
+        }
+
+        /* ── Blog Grid (shared) ── */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ── Category grid containers ── */
+        .category-grid {
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            display: none;
+            animation: gridFadeIn 0.5s ease-out forwards;
+        }
+
+        .category-grid.active {
+            display: block;
+        }
+
+        .category-grid-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .category-grid-header h2 {
+            font-size: 2rem;
+            font-family: var(--font-display);
+            margin-bottom: 16px;
+            display: inline-block;
+            position: relative;
+            /* Animated gradient text */
+            background: linear-gradient(90deg,
+                    var(--color-primary, #ff6b9d) 0%,
+                    var(--color-secondary, #cdff60) 25%,
+                    #a78bfa 50%,
+                    var(--color-secondary, #cdff60) 75%,
+                    var(--color-primary, #ff6b9d) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShimmer 4s linear infinite;
+            letter-spacing: 1px;
+        }
+
+        /* Glowing animated underline */
+        .category-grid-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            border-radius: 3px;
+            background: linear-gradient(90deg, transparent, var(--color-primary, #ff6b9d), var(--color-secondary, #cdff60), transparent);
+            background-size: 200% auto;
+            animation: textShimmer 4s linear infinite, underlineGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes textShimmer {
+            0% {
+                background-position: 0% center;
+            }
+
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        @keyframes underlineGlow {
+            0% {
+                opacity: 0.5;
+                width: 40%;
+                box-shadow: 0 0 8px rgba(255, 107, 157, 0.3);
+            }
+
+            100% {
+                opacity: 1;
+                width: 70%;
+                box-shadow: 0 0 16px rgba(255, 107, 157, 0.5), 0 0 30px rgba(205, 255, 96, 0.2);
+            }
+        }
+
+        .category-grid-header p {
+            font-size: 1.05rem;
+            color: var(--color-text-secondary);
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        @keyframes gridFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── Existing blog card styles (preserved) ── */
+        .blog-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            text-decoration: none;
+            color: var(--color-text-primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .blog-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(205, 255, 96, 0.05), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(205, 255, 96, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(205, 255, 96, 0.1);
+        }
+
+        .blog-card:hover::before {
+            opacity: 1;
+        }
+
+        .blog-tag {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-primary);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .blog-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .blog-card p {
+            color: var(--color-text-secondary);
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--color-secondary);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .blog-card:hover .read-more {
+            color: #d9f99d;
+        }
+
+        .read-more svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.2s;
+        }
+
+        .blog-card:hover .read-more svg {
+            transform: translateX(4px);
+        }
+
+        /* Banner CTA */
+        .blog-cta {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(205, 255, 96, 0.05));
+            border: 1px solid rgba(255, 107, 157, 0.2);
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            margin: 0 20px 80px;
+            max-width: 1160px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .blog-cta h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .blog-cta p {
+            color: var(--color-text-secondary);
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .category-slider {
+                height: 350px;
+            }
+
+            .category-slider .slide .item {
+                width: 140px;
+                height: 180px;
+            }
+
+            .slide .item:nth-child(3) {
+                left: 55%;
+            }
+
+            .slide .item:nth-child(4) {
+                left: calc(55% + 155px);
+            }
+
+            .slide .item:nth-child(5) {
+                left: calc(55% + 310px);
+            }
+
+            .item .cat-content {
+                left: 24px;
+                width: 55%;
+            }
+
+            .cat-content .cat-name {
+                font-size: 22px;
+            }
+
+            .cat-content .cat-des {
+                font-size: 13px;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .slider-buttons {
+                right: 16px;
+                bottom: 16px;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .category-slider {
+                height: 400px;
+                /* Taller for centered content */
+            }
+
+            .category-slider .slide .item {
+                width: 100%;
+                height: 100%;
+                left: 0;
+                top: 0;
+                transform: none;
+            }
+
+            /* Hide thumbnails on mobile to let content breathe */
+            .slide .item:nth-child(n+3) {
+                display: none;
+            }
+
+            .item .cat-content {
+                left: 50%;
+                top: 45%;
+                width: 85%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+            }
+
+            .cat-content .cat-name {
+                font-size: 24px;
+            }
+
+            .cat-content .cat-des {
+                font-size: 14px;
+                -webkit-line-clamp: 4;
+                line-clamp: 4;
+            }
+
+            .slider-buttons {
+                bottom: 20px;
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+            }
+
+            .slider-buttons button {
+                width: 50px;
+                height: 40px;
+            }
+        }
+    </style>
+
+    <!-- Analytics (Microsoft Clarity) -->
+    <script type="text/javascript">
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "vohl4gduni");
+    </script>
+    <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2492108586092522" crossorigin="anonymous"></script>
+</head>
+
+<body class="dark-theme">
+
+    <!-- Navigation -->
+    <nav id="nav" class="scrolled">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../../index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
+                <span class="logo-divider">|</span>
+                <a href="../index.html" class="rotating-logo-word-wrap">
+                    <span class="rotating-logo-word in">Advice</span>
+                </a>
+            </div>
+            <ul class="nav-links" style="align-items: center;">
+                <li>
+                    <a href="#crisis" class="nav-crisis-badge" onclick="showCategory('crisis'); return false;">
+                        <span class="nav-crisis-heart">❤️</span>
+                        <span class="nav-crisis-text">Emergency Support</span>
+                    </a>
+                </li>
+                <li><a href="../../situations.html">Situations</a></li>
+                <li><a href="../index.html">Advice &amp; Guides</a></li>
+                <li><a href="../../send-card.html" class="btn btn-secondary" style="padding: 6px 16px; border-width: 1px; font-size: 14px;">💌 Send a Card</a></li>
+    </ul>
+        </div>
+    </nav>
+
+    <!-- SVG clip path -->
+    <svg style="position:absolute;width:0;height:0;">
+        <defs>
+            <clipPath id="smokeClip" clipPathUnits="objectBoundingBox">
+                <path d="M -0.03,0.48 C 0.0,0.35 0.03,0.25 0.07,-0.08 C 0.1,-0.18 0.14,0.32 0.18,0.28 C 0.2,0.25 0.22,0.22 0.26,0.2 C 0.3,0.18 0.32,0.15 0.36,-0.1 C 0.4,-0.18 0.44,0.25 0.5,0.15 C 0.54,0.08 0.56,0.2 0.6,0.12 C 0.62,0.08 0.66,0.25 0.7,-0.05 C 0.73,-0.12 0.76,0.22 0.8,0.28 C 0.84,0.32 0.88,0.1 0.92,0.18 C 0.96,0.25 0.99,0.15 1.02,0.35 C 1.03,0.42 1.03,0.48 1.03,0.52 L 1.03,0.55 C 1.02,0.7 0.98,0.62 0.94,0.78 C 0.9,0.92 0.86,0.7 0.82,1.12 C 0.78,1.22 0.74,0.68 0.68,0.75 C 0.64,0.8 0.6,0.72 0.54,1.08 C 0.5,1.18 0.46,0.72 0.4,0.78 C 0.36,0.82 0.32,0.7 0.28,0.68 C 0.24,0.66 0.2,0.85 0.16,1.05 C 0.12,1.15 0.08,0.7 0.04,0.6 C 0.0,0.5 -0.02,0.65 -0.03,0.55 Z"></path>
+            </clipPath>
+        </defs>
+    </svg>
+
+    <header class="blog-header">
+        <img class="blob-img" src="../../assets/media/blog-header-art.png" alt="">
+        <div class="title-wrap">
+            <div class="title-main-line">
+                <span class="pre-text"></span>
+                <span class="drop-v"></span>
+                <span class="rest-text">Grief &amp; Loss Support</span>
+            </div>
+        </div>
+    </header>
+
+    <br><br><br><br>
+    <p class="sub-desc">When someone you care about is grieving, the wrong words can make it worse. Here are the words that actually help.</p>
+    <div class="category-grid active" style="display: block;">
+        <div class="blog-grid">
+            <a href="../how-to-comfort-someone-who-lost-a-loved-one.html" class="blog-card-img" style="background-image: url('../../assets/blog_cover_grief_1772534407866.png');">
+                <div class="color-overlay"></div>
+                <div class="gradient-overlay"></div>
+                <div class="title-content">
+                    <span class="blog-tag">Grief Support</span>
+                    <h2>How to Comfort Someone Who Lost a Loved One</h2>
+                </div>
+                <div class="card-info">
+                    <p>When someone you care about is grieving, the wrong words can make it worse. Here are the
+                        words that
+                        actually help.</p>
+                    <div class="read-more-btn">
+                        Read Guide
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+<a href="../how-to-support-a-friend-going-through-a-breakup.html" class="blog-card-img" style="background-image: url('../../assets/blog_cover_breakup_1772534324219.png');">
+                <div class="color-overlay"></div>
+                <div class="gradient-overlay"></div>
+                <div class="title-content">
+                    <span class="blog-tag">Heartbreak</span>
+                    <h2>How to Actually Support a Friend Through a Breakup</h2>
+                </div>
+                <div class="card-info">
+                    <p>Beyond ice cream and "they didn't deserve you." Tactical ways to show up for a friend whose
+                        world
+                        just collapsed.</p>
+                    <div class="read-more-btn">
+                        Read Guide
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+<a href="../what-to-say-to-someone-who-feels-like-giving-up.html" class="blog-card-img" style="background-image: url('../../assets/blog_cover_giving_up_1772534638363.png');">
+                <div class="color-overlay"></div>
+                <div class="gradient-overlay"></div>
+                <div class="title-content">
+                    <span class="blog-tag">Crisis Guide</span>
+                    <h2>What to Say to Someone Who Feels Like Giving Up</h2>
+                </div>
+                <div class="card-info">
+                    <p>When someone tells you they want to give up, every word matters. Here's exactly what helps —
+                        and what makes it worse.</p>
+                    <div class="read-more-btn">
+                        Read Guide
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- ── Category Slider ─────────────────── -->
+    <!-- ═══════════════════════════════════════ -->
+    
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- ── Category Blog Grids ─────────────── -->
+    <!-- ═══════════════════════════════════════ -->
+
+    <!-- Grid 0: Crisis Support (Emergency Resource Portal) -->
+    
+
+    <!-- Grid 1: Mental Health Support -->
+    
+
+    <!-- Grid 2: Checking In & Showing Up -->
+    
+
+    <!-- Grid 3: Encouragement & Motivation -->
+    
+
+    <!-- Grid 4: Self-Care & Daily Habits -->
+    
+
+    <section class="blog-cta">
+        <h3>Don't just think about them. Send it.</h3>
+        <p>Skip the small talk. Send an anonymous (or signed) digital affirmation card straight to their phone.</p>
+        <a href="../../send-card.html" class="btn btn-primary" style="margin-top: 10px;">Send a Free Card Now ✨</a>
+    </section>
+    
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>About</h4>
+                    <p style="color: var(--color-text-muted); font-size: 14px; line-height: 1.7;">
+                        The Vibe Check Project exists to spread positivity through daily affirmations and uplifting
+                        messages. Because small words can make a big impact.
+                    </p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Project</h4>
+                    <ul class="footer-links">
+                        <li><a href="../index.html">Advice &amp; Guides</a></li>
+                        <li><a href="../../situations.html">Browse by Situation</a></li>
+                        <li><a href="../../about.html">About Us</a></li>
+                        <li><a href="../../contact.html">Contact</a></li>
+                        <li><a href="../../index.html#support">Support Us</a></li>
+        </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="../../privacy.html">Privacy Policy</a></li>
+                        <li><a href="../../terms.html">Terms of Service</a></li>
+                        <li><a href="../../cookies.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <ul class="footer-links">
+                        <li><a href="https://x.com/Thevibecheckpro" target="_blank" rel="noopener">X (Twitter)</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p style="font-size: 0.8rem; color: #a0a0a0; margin-bottom: 10px;">Disclaimer: We do not provide
+                    therapy, counseling, or medical advice. Our content is for positive emotional support and
+                    inspiration only.</p>
+                <p style="font-size: 0.75rem; color: #808080; margin-bottom: 15px; opacity: 0.8;">As an Amazon Associate
+                    I earn from qualifying purchases.</p>
+                <p>✨ Made with love by The Vibe Check Project • Spreading good since 2025</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- ── Slider + Category Logic ─────────── -->
+    <!-- ═══════════════════════════════════════ -->
+    <script>
+        "use strict";
+
+        // ── Slider navigation ──
+        const nextBtn = document.querySelector('.next');
+        const prevBtn = document.querySelector('.prev');
+        const slideContainer = document.querySelector('.category-slider .slide');
+
+        nextBtn.addEventListener('click', function () {
+            const items = document.querySelectorAll('.category-slider .slide .item');
+            slideContainer.appendChild(items[0]);
+        });
+
+        // ── Click on thumbnail to advance to that slide ──
+        slideContainer.addEventListener('click', function (e) {
+            const clickedItem = e.target.closest('.item');
+            if (!clickedItem) return;
+            const items = Array.from(document.querySelectorAll('.category-slider .slide .item'));
+            const index = items.indexOf(clickedItem);
+            // Only advance if clicking a thumbnail (3rd child onward, index >= 2)
+            if (index >= 2) {
+                const stepsNeeded = index - 1;
+                let step = 0;
+                function advanceStep() {
+                    if (step < stepsNeeded) {
+                        const currentItems = document.querySelectorAll('.category-slider .slide .item');
+                        slideContainer.appendChild(currentItems[0]);
+                        step++;
+                        if (step < stepsNeeded) {
+                            setTimeout(advanceStep, 120);
+                        }
+                    }
+                }
+                advanceStep();
+            }
+        });
+
+        prevBtn.addEventListener('click', function () {
+            const items = document.querySelectorAll('.category-slider .slide .item');
+            slideContainer.prepend(items[items.length - 1]);
+        });
+
+        // ── Category grid toggling ──
+        function showCategory(categoryId) {
+            // Hide all potential toggled sections (slider grids + crisis section)
+            document.querySelectorAll('.category-grid, .crisis-section').forEach(grid => {
+                grid.classList.remove('active');
+            });
+
+            // Show the selected one
+            const target = document.getElementById(categoryId);
+            if (target) {
+                target.classList.add('active');
+                // Re-trigger animation
+                target.style.animation = 'none';
+                target.offsetHeight; // force reflow
+                target.style.animation = '';
+
+                // Smooth scroll to the section
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // ── Sync slider active item with grid on slide change ──
+        const observer = new MutationObserver(function () {
+            const activeSlide = slideContainer.children[1]; // 2nd child is the visible one
+            if (activeSlide) {
+                const cat = activeSlide.getAttribute('data-category');
+                // Only sync if it's one of the standard category grids
+                // This will also hide the crisis section if the user scrolls the slider
+                if (cat) {
+                    document.querySelectorAll('.category-grid, .crisis-section').forEach(grid => {
+                        grid.classList.remove('active');
+                    });
+                    const targetGrid = document.getElementById(cat);
+                    if (targetGrid) targetGrid.classList.add('active');
+                }
+            }
+        });
+
+        observer.observe(slideContainer, { childList: true });
+
+        // ── Global Crisis Link Handler ──
+        // If the page is loaded with #crisis, show it immediately
+        window.addEventListener('load', function () {
+            if (window.location.hash === '#crisis') {
+                showCategory('crisis');
+            }
+        });
+    </script>
+
+    <script>
+        // ── Rotating Word Animation for Blog Header ──
+        (function () {
+            const words = ["Blog's", "Guide's", "Advice"];
+            const fonts = ["'Pacifico', cursive", "'Caveat', cursive", "'Permanent Marker', cursive"];
+            const colors = ["#FEC84A", "#67E8F9", "#FF6B9D"];
+            const shadows = [
+                "0 0 10px rgba(254,200,74,0.7), 0 0 30px rgba(254,200,74,0.4), 0 4px 15px rgba(0,0,0,0.5)",
+                "0 0 10px rgba(103,232,249,0.7), 0 0 30px rgba(103,232,249,0.4), 0 4px 15px rgba(0,0,0,0.5)",
+                "0 0 10px rgba(255,107,157,0.7), 0 0 30px rgba(255,107,157,0.4), 0 4px 15px rgba(0,0,0,0.5)"
+            ];
+            let idx = 0;
+            const spans = document.querySelectorAll('.rotating-word');
+
+            // Set initial styles
+            spans.forEach(span => {
+                span.style.fontFamily = fonts[0];
+                span.style.color = colors[0];
+                span.style.webkitTextFillColor = colors[0];
+                span.style.background = 'none';
+                span.style.textShadow = shadows[0];
+            });
+
+            setInterval(() => {
+                const next = (idx + 1) % words.length;
+                const allSpans = [
+                    ...document.querySelectorAll('.rotating-word'),
+                    ...document.querySelectorAll('.nav-logo .rotating-logo-word')
+                ];
+
+                allSpans.forEach(span => {
+                    span.classList.remove('in');
+                    span.classList.add('out');
+                    setTimeout(() => {
+                        span.textContent = words[next];
+                        span.style.fontFamily = fonts[next];
+
+                        // Handle font size only for large header, not small navbar logo
+                        if (span.classList.contains('rotating-word')) {
+                            span.style.fontSize = next === 1 ? '130%' : '100%';
+                        }
+
+                        span.style.color = colors[next];
+                        if (span.style.webkitTextFillColor !== undefined) {
+                            span.style.webkitTextFillColor = colors[next];
+                        }
+                        span.style.background = 'none';
+                        span.style.textShadow = shadows[next];
+
+                        // Update tab title
+                        const baseTitle = "The Vibe Check Blog";
+                        document.title = `${baseTitle} | ${words[next]}`;
+
+                        span.classList.remove('out');
+                        span.classList.add('waiting');
+                        requestAnimationFrame(() => {
+                            requestAnimationFrame(() => {
+                                span.classList.remove('waiting');
+                                span.classList.add('in');
+                            });
+                        });
+                    }, 500);
+                });
+                idx = next;
+            }, 3000);
+        })();
+    </script>
+
+
+
+</body></html>

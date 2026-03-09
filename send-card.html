@@ -1657,6 +1657,10 @@
                 <div class="send-card-preview-col">
                     <div class="sticky-preview">
                         <div class="card-preview" id="cardPreview">
+                            <!-- Animated Background Layer -->
+                            <video id="previewVideo" autoplay loop muted playsinline
+                                style="display: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;"></video>
+
                             <div class="preview-content-wrapper">
                                 <div class="preview-label">Live Preview</div>
                                 <div class="preview-affirmation" id="previewAffirmation">"Your affirmation will appear
@@ -1680,6 +1684,15 @@
         if (urlParams.get('premium') === '1') {
             localStorage.setItem('premium_unlocked', '1');
             window.history.replaceState({}, document.title, window.location.pathname);
+
+            // --- NEW: Read message from URL and pre-fill ---
+            const messageParam = urlParams.get('message');
+            if (messageParam) {
+                const textarea = document.getElementById('personalMessage');
+                if (textarea) {
+                    textarea.value = decodeURIComponent(messageParam);
+                }
+            }
 
             // Show temporary badge
             const badge = document.createElement('div');
@@ -1959,6 +1972,9 @@
             { id: 'cherry', label: 'Cherry', image: 'assets/backgrounds/bg_prem_cherry_1772750510659.png', premium: true },
             { id: 'ocean', label: 'Ocean', image: 'assets/backgrounds/bg_prem_ocean_1772750521461.png', premium: true },
             { id: 'crystal', label: 'Crystal', image: 'assets/backgrounds/bg_prem_crystal_1772750533689.png', premium: true },
+            { id: 'ethereal_anim', label: 'Ethereal Silk', image: 'assets/backgrounds/animated_ethereal.mp4', premium: true, isVideo: true },
+            { id: 'vibrant_anim', label: 'Golden Glow', image: 'assets/backgrounds/animated_vibrant.mp4', premium: true, isVideo: true },
+            { id: 'modern_anim', label: 'Glass Crystals', image: 'assets/backgrounds/animated_modern.mp4', premium: true, isVideo: true },
         ];
 
         const bgPickerEl = document.getElementById('bgPicker');
@@ -1967,15 +1983,30 @@
             const isLocked = bg.premium && !isPremium;
             el.className = 'bg-option' + (isLocked ? ' bg-locked' : '') + (index === 0 ? ' selected' : '');
             el.dataset.bgId = bg.id;
-            el.innerHTML = `
-                <div class="bg-thumb" style="background-image:url('${bg.image}'); background-size: cover; background-position: center;"></div>
-                <span class="bg-label">${bg.label}</span>
-                ${bg.premium && !isPremium ? '<span class="bg-premium-badge">Premium</span>' : ''}
-            `;
+
+            if (bg.isVideo) {
+                el.innerHTML = `
+                    <div class="bg-thumb" style="background: #000; position: relative; overflow: hidden;">
+                        <video src="${bg.image}" autoplay loop muted playsinline 
+                            style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity: 0.8;"></video>
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:white; font-size:10px; font-weight:bold; background:rgba(0,0,0,0.2); z-index:2;">LIVE</div>
+                    </div>
+                    <span class="bg-label">${bg.label}</span>
+                    ${bg.premium && !isPremium ? '<span class="bg-premium-badge">Premium</span>' : ''}
+                `;
+            } else {
+                const thumbStyle = `background-image:url('${bg.image}'); background-size: cover; background-position: center;`;
+                el.innerHTML = `
+                    <div class="bg-thumb" style="${thumbStyle}"></div>
+                    <span class="bg-label">${bg.label}</span>
+                    ${bg.premium && !isPremium ? '<span class="bg-premium-badge">Premium</span>' : ''}
+                `;
+            }
+
             if (isLocked) {
                 el.onclick = () => { window.location.href = 'https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02'; };
             } else {
-                el.onclick = () => selectBackground(bg.image, el);
+                el.onclick = () => selectBackground(bg.image, el, bg.isVideo);
             }
             bgPickerEl.appendChild(el);
         });
@@ -1997,16 +2028,27 @@
             }
         }
 
-        function selectBackground(imagePath, element) {
+        function selectBackground(imagePath, element, isVideo = false) {
             selectedBackground = imagePath;
             document.querySelectorAll('.bg-option').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
-            const preview = document.querySelector('.card-preview');
-            preview.className = 'card-preview';
-            preview.style.backgroundImage = `url('${imagePath}')`;
-            preview.style.backgroundSize = 'cover';
-            preview.style.backgroundPosition = 'center';
-            preview.style.borderColor = 'transparent';
+
+            const preview = document.getElementById('cardPreview');
+            const videoEl = document.getElementById('previewVideo');
+
+            if (isVideo) {
+                preview.style.backgroundImage = 'none';
+                videoEl.src = imagePath;
+                videoEl.style.display = 'block';
+                videoEl.play().catch(e => console.log("Video play blocked:", e));
+            } else {
+                videoEl.style.display = 'none';
+                videoEl.pause();
+                preview.style.backgroundImage = `url('${imagePath}')`;
+                preview.style.backgroundSize = 'cover';
+                preview.style.backgroundPosition = 'center';
+            }
+
             triggerFoilSweep();
         }
 
@@ -2024,28 +2066,16 @@
 
             // Update preview
             document.getElementById('previewAffirmation').textContent = `"${affirmation}"`;
-            const previewBox = document.querySelector('.card-preview');
-            previewBox.className = 'card-preview'; // Reset classes
-            if (selectedBackground) {
-                previewBox.style.backgroundImage = `url('${selectedBackground}')`;
-                previewBox.style.backgroundSize = 'cover';
-                previewBox.style.backgroundPosition = 'center';
-                previewBox.style.borderColor = 'transparent';
-            } else if (themeGroup && themeGroup !== 'default') {
-                previewBox.classList.add(`theme-${themeGroup}`);
-            }
+            updatePreview();
             triggerFoilSweep();
         }
 
-        // Update preview as user types — multiple events for mobile keyboard compatibility
-        const senderInput = document.getElementById('senderName');
-        const messageInput = document.getElementById('personalMessage');
-        ['input', 'keyup', 'change', 'blur', 'compositionend'].forEach(evt => {
-            senderInput.addEventListener(evt, updatePreview);
-            messageInput.addEventListener(evt, updatePreview);
-        });
-        // Polling fallback for mobile predictive text that skips all events
-        setInterval(updatePreview, 500);
+        // --- NEW: Separate logic to check URL param outside premium block too ---
+        const initialMsg = urlParams.get('message');
+        if (initialMsg) {
+            const textarea = document.getElementById('personalMessage');
+            if (textarea) textarea.value = decodeURIComponent(initialMsg);
+        }
 
         function updatePreview() {
             const senderName = document.getElementById('senderName').value || 'Someone special';
@@ -2055,12 +2085,22 @@
 
             if (personalMessage) {
                 document.getElementById('previewMessage').innerHTML =
-                    `<strong>${senderName}</strong> says: "${personalMessage}"`;
+                    `<strong>${senderName}</strong> says:<br><br>${personalMessage}`;
             } else {
                 document.getElementById('previewMessage').innerHTML =
                     `<strong>${senderName}</strong> wanted to send you some good vibes ✨`;
             }
         }
+
+        // Update preview as user types — multiple events for mobile keyboard compatibility
+        const senderInput = document.getElementById('senderName');
+        const messageInput = document.getElementById('personalMessage');
+        ['input', 'keyup', 'change', 'blur', 'compositionend'].forEach(evt => {
+            if (senderInput) senderInput.addEventListener(evt, updatePreview);
+            if (messageInput) messageInput.addEventListener(evt, updatePreview);
+        });
+        // Polling fallback for mobile predictive text that skips all events
+        setInterval(updatePreview, 500);
 
         // Handle form submission
         document.getElementById('cardForm').addEventListener('submit', async function (e) {

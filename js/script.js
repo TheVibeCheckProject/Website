@@ -1,53 +1,72 @@
-/**
- * The Vibe Check Project - Main JavaScript
- * Spreading good vibes, one message at a time
- */
-
-// State management
-let splashCompleted = false;
-
-// Daily affirmations database
+// Daily affirmations database (Consolidated)
 const affirmations = [
-    { text: "You're trying, and that's what counts.", category: "Motivation" },
-    { text: "Your feelings are valid, and you deserve to be heard.", category: "Self-Compassion" },
-    { text: "Every new day is a fresh chance to try again.", category: "Hope" },
-    { text: "You're doing better than you think you are.", category: "Encouragement" },
-    { text: "Your presence makes a difference, even when you don't see it.", category: "Worth" },
-    { text: "Rest is not weakness. It's essential.", category: "Self-Care" },
-    { text: "It's okay to not be okay right now.", category: "Acceptance" },
-    { text: "You don't have to be perfect to be worthy of love.", category: "Self-Love" },
-    { text: "Small steps are still progress.", category: "Growth" },
-    { text: "You're allowed to take up space.", category: "Worth" },
-    { text: "Your story isn't over yet.", category: "Hope" },
-    { text: "You're stronger than you know.", category: "Strength" },
-    { text: "It's okay to ask for help.", category: "Connection" },
-    { text: "You deserve kindness, especially from yourself.", category: "Self-Compassion" },
-    { text: "Your pace is perfect for you.", category: "Acceptance" }
+    "You're trying, and that's what counts.",
+    "Your feelings are valid, and you deserve to be heard.",
+    "Every new day is a fresh chance to try again.",
+    "You're doing better than you think you are.",
+    "Your presence makes a difference, even when you don't see it.",
+    "Rest is not weakness. It's essential.",
+    "You are allowed to take up space.",
+    "It's okay to not have it all figured out.",
+    "Someone out there is grateful you exist.",
+    "You don't have to earn the right to be loved.",
+    "Your story isn't over. Keep going.",
+    "Progress isn't always visible, but it's always happening.",
+    "You are more resilient than you realize.",
+    "The hard days make the good ones so much better.",
+    "You are enough, exactly as you are right now.",
+    "It's brave to ask for help.",
+    "You bring something to this world that no one else can.",
+    "Healing isn't linear, and that's okay.",
+    "Your best is always enough.",
+    "Small steps still move you forward.",
+    "You deserve the kindness you give to others.",
+    "Today is proof that you're stronger than yesterday.",
+    "The people who love you aren't keeping score.",
+    "You're not behind. You're on your own timeline.",
+    "Breathe. You're exactly where you need to be.",
+    "It's okay to outgrow things that once fit you.",
+    "Your value isn't measured by your productivity.",
+    "You've survived 100% of your worst days so far.",
+    "Someone needs exactly the energy you bring.",
+    "You are worthy of good things happening to you."
 ];
 
 // ====================
 // Daily Affirmation System
 // ====================
-function getTodaysAffirmation() {
-    // Use date as seed for consistent daily affirmation
-    const today = new Date();
-    const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-    const index = dayOfYear % affirmations.length;
-    return affirmations[index];
-}
+function initDailyAffirmation() {
+    const vibeText = document.getElementById('vibeText');
+    const vibeDate = document.getElementById('vibeDate');
+    const vibeShareBtn = document.getElementById('vibeShareBtn');
 
-function displayTodaysAffirmation() {
-    const affirmation = getTodaysAffirmation();
-    const affirmationText = document.querySelector('.hero-affirmation .affirmation-text');
-    if (affirmationText) {
-        affirmationText.textContent = `"${affirmation.text}"`;
-    }
+    if (!vibeText) return;
+
+    const now = new Date();
+    const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
+    const todayVibe = affirmations[dayOfYear % affirmations.length];
+
+    vibeText.textContent = `"${todayVibe}"`;
+    if (vibeDate) vibeDate.textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+    vibeShareBtn?.addEventListener('click', async () => {
+        const shareText = `✨ Today's Vibe Check: "${todayVibe}" — thevibecheckproject.com`;
+        if (navigator.share) {
+            try { await navigator.share({ text: shareText }); } catch (e) { }
+        } else {
+            await navigator.clipboard.writeText(shareText);
+            const originalText = vibeShareBtn.textContent;
+            vibeShareBtn.textContent = '✅ Copied!';
+            setTimeout(() => vibeShareBtn.textContent = originalText, 2000);
+        }
+    });
 }
 
 // ====================
 // Email Signup Modal
 // ====================
 function createEmailModal() {
+    if (document.getElementById('email-modal')) return;
     const modalHTML = `
         <div id="email-modal" class="modal-overlay" style="display: none;">
             <div class="modal-content">
@@ -57,26 +76,9 @@ function createEmailModal() {
                     <p>Join thousands receiving daily affirmations. Free, always.</p>
                 </div>
                 <form id="email-signup-form" class="modal-form">
-                    <div class="form-group">
-                        <input 
-                            type="email" 
-                            id="signup-email" 
-                            class="form-input" 
-                            placeholder="your.email@example.com" 
-                            required
-                        />
-                    </div>
-                    <div class="form-group">
-                        <input 
-                            type="text" 
-                            id="signup-name" 
-                            class="form-input" 
-                            placeholder="Your first name (optional)" 
-                        />
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-large btn-block">
-                        Start Getting Good Vibes
-                    </button>
+                    <div class="form-group"><input type="email" id="signup-email" class="form-input" placeholder="your.email@example.com" required /></div>
+                    <div class="form-group"><input type="text" id="signup-name" class="form-input" placeholder="Your first name (optional)" /></div>
+                    <button type="submit" class="btn btn-primary btn-large btn-block">Start Getting Good Vibes</button>
                     <p class="form-note">No spam, ever. Unsubscribe anytime.</p>
                 </form>
                 <div id="signup-success" style="display: none;" class="success-message">
@@ -88,12 +90,8 @@ function createEmailModal() {
             </div>
         </div>
     `;
-
     document.body.insertAdjacentHTML('beforeend', modalHTML);
-
-    // Handle form submission
-    const form = document.getElementById('email-signup-form');
-    form.addEventListener('submit', handleEmailSignup);
+    document.getElementById('email-signup-form').addEventListener('submit', handleEmailSignup);
 }
 
 function showEmailModal() {
@@ -101,11 +99,7 @@ function showEmailModal() {
     if (modal) {
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
-
-        // Focus on email input
-        setTimeout(() => {
-            document.getElementById('signup-email').focus();
-        }, 100);
+        setTimeout(() => document.getElementById('signup-email').focus(), 100);
     }
 }
 
@@ -114,378 +108,197 @@ function closeEmailModal() {
     if (modal) {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
-
-        // Reset form
-        const form = document.getElementById('email-signup-form');
-        const success = document.getElementById('signup-success');
-        if (form) form.style.display = 'block';
-        if (success) success.style.display = 'none';
-        if (form) form.reset();
     }
 }
 
-// Close modal when clicking outside
-document.addEventListener('click', function (e) {
-    const modal = document.getElementById('email-modal');
-    if (e.target === modal) {
-        closeEmailModal();
-    }
-});
-
 async function handleEmailSignup(e) {
     e.preventDefault();
-
-    const email = document.getElementById('signup-email').value;
-    const name = document.getElementById('signup-name').value || 'Friend';
-
-    // Show loading state
     const submitBtn = e.target.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
     submitBtn.textContent = 'Subscribing...';
     submitBtn.disabled = true;
 
     try {
-        // Subscribe via secure Cloudflare Worker proxy (prevents API key exposure)
-        // ⚠️ DEPLOYMENT NOTE: Replace this URL with your actual Cloudflare Worker URL
-        const PROXY_URL = 'https://vibe-check-proxy.caseagent72401.workers.dev/';
-
-        const response = await fetch(PROXY_URL, {
+        const response = await fetch('https://vibe-check-proxy.caseagent72401.workers.dev/', {
             method: 'POST',
-            mode: 'cors', // Explicit CORS mode
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                email: email,
-                fields: { name: name, signup_source: 'homepage' },
+                email: document.getElementById('signup-email').value,
+                fields: { name: document.getElementById('signup-name').value || 'Friend', signup_source: 'homepage' },
                 groups: ['180628908682512348']
             })
         });
 
-        if (response.ok || response.status === 200) {
-            // Success! Show success message
+        if (response.ok) {
             document.getElementById('email-signup-form').style.display = 'none';
             document.getElementById('signup-success').style.display = 'block';
-            console.log('✅ Subscriber added to MailerLite:', email);
         } else {
-            const errorData = await response.json().catch(() => ({}));
-            if (errorData.message && errorData.message.includes('already')) {
-                alert('You\'re already subscribed! Check your email for daily vibes. ✨');
-            } else {
-                alert('Something went wrong. Please try again!');
-            }
+            alert('Something went wrong. Please try again!');
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
         }
-    } catch (error) {
-        console.error('Signup error:', error);
-        alert('Connection error. Please check your internet and try again!');
+    } catch (e) {
+        alert('Connection error. Please try again!');
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
     }
 }
 
 // ====================
-// Splash Screen
+// Static Preview Rotation
 // ====================
-function completeSplashScreen() {
-    if (splashCompleted) return;
-    splashCompleted = true;
+const previewExamples = {
+    'encouragement': { text: '"You\'re doing better than you think you are."', bg: 'linear-gradient(135deg, #11998e, #38ef7d)' },
+    'selflove': { text: '"You are entirely enough as you are."', bg: 'url("assets/backgrounds/bg_prem_nebula_1772750433414.webp") center/cover' },
+    'anxiety': { text: '"Breathe. You are safe right now."', bg: 'linear-gradient(135deg, #00b4db, #0083b0)' },
+    'patience': { text: '"Healing isn\'t linear. You\'re doing it."', bg: 'url("assets/backgrounds/bg_prem_crystal_1772750533689.webp") center/cover' },
+    'justbecause': { text: '"Just a reminder that you\'re awesome."', bg: 'linear-gradient(135deg, #f953c6, #b91d73)' },
+    'validation': { text: '"I see how hard you\'re trying."', bg: 'url("assets/backgrounds/bg_prem_velvet_1772750498877.webp") center/cover' },
+    'birthday': { text: '"I am so incredibly glad you exist."', bg: 'linear-gradient(135deg, #ff6b6b, #ffa500)' },
+    'abundance': { text: '"You deserve every good thing coming your way."', bg: 'url("assets/backgrounds/bg_prem_gold_1772750445716.webp") center/cover' },
+    'grief': { text: '"There is no rush. Take all the time you need."', bg: 'linear-gradient(135deg, #6b73ff, #9b59b6)' }
+};
 
-    const splashScreen = document.getElementById('splash-screen');
-    const mainContent = document.getElementById('main-content');
+let previewAutoRotation;
+function updateStaticPreview(category, btnElement, isAuto = false) {
+    if (!isAuto && previewAutoRotation) clearInterval(previewAutoRotation);
+    document.querySelectorAll('.vibe-btn').forEach(btn => btn.classList.remove('active'));
+    if (btnElement) btnElement.classList.add('active');
 
-    splashScreen.classList.add('hidden');
-    document.body.style.overflow = 'auto';
+    const data = previewExamples[category];
+    if (!data) return;
+
+    const textEl = document.getElementById('staticPreviewQuote');
+    const boxEl = document.getElementById('staticPreviewBox');
+    const senderEl = document.getElementById('staticPreviewSenderText');
+    if (!textEl || !boxEl) return;
+
+    textEl.style.opacity = 0;
+    if (senderEl) senderEl.style.opacity = 0;
 
     setTimeout(() => {
-        mainContent.classList.add('show');
-        splashScreen.style.display = 'none';
+        textEl.textContent = data.text;
+        boxEl.style.background = data.bg;
+        if (senderEl) {
+            const randomSenders = ["Sarah", "Marcus", "Elena", "James", "Aisha", "David", "Chloe", "Someone special", "Mom", "Your Bestie"];
+            senderEl.innerHTML = `<strong>${randomSenders[Math.floor(Math.random() * randomSenders.length)]}</strong> wanted to send you some good vibes ✨`;
+        }
+        textEl.style.opacity = 1;
+        if (senderEl) senderEl.style.opacity = 1;
+    }, 300);
+}
 
-        // Initialize all features
-        initParallax();
-        initScrollReveal();
-        initCounters();
-        initLucideIcons();
-        displayTodaysAffirmation();
-        createEmailModal();
-    }, 600);
+function initPreviewRotation() {
+    const rotationKeys = Object.keys(previewExamples);
+    let idx = 0;
+    previewAutoRotation = setInterval(() => {
+        idx = (idx + 1) % rotationKeys.length;
+        updateStaticPreview(rotationKeys[idx], null, true);
+    }, 3500);
 }
 
 // ====================
-// Parallax Effects
+// Parallax & Features
 // ====================
 function initParallax() {
-    // Skip parallax on mobile — causes scroll jank on touch devices
     if (window.innerWidth <= 768) return;
-
     const heroBg = document.getElementById('hero-bg');
-    let ticking = false;
-
-    window.addEventListener('scroll', function () {
-        if (!ticking) {
-            window.requestAnimationFrame(function () {
-                const scrolled = window.pageYOffset;
-
-                if (heroBg && scrolled < window.innerHeight) {
-                    const parallaxSpeed = 0.5;
-                    heroBg.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
-                }
-
-                ticking = false;
-            });
-
-            ticking = true;
+    if (!heroBg) return;
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        if (scrolled < window.innerHeight) {
+            heroBg.style.transform = `translateY(${scrolled * 0.5}px)`;
         }
     }, { passive: true });
 }
 
-// ====================
-// Scroll Progress Bar
-// ====================
-function updateScrollProgress() {
-    const scrollProgress = document.getElementById('scroll-progress');
-    const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = (window.pageYOffset / windowHeight) * 100;
-    scrollProgress.style.width = Math.min(scrolled, 100) + '%';
-}
+function initRotatingLogo() {
+    const words = ["Advice", "Guides", "Blogs"];
+    const fonts = ["'Pacifico', cursive", "'Caveat', cursive", "'Permanent Marker', cursive"];
+    const colors = ["#FEC84A", "#67E8F9", "#FF6B9D"];
+    const spans = document.querySelectorAll('.rotating-logo-word');
+    if (!spans.length) return;
 
-// ====================
-// Animated Counters
-// ====================
-function initCounters() {
-    const counters = document.querySelectorAll('.stat[data-target]');
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
-                const target = parseInt(entry.target.getAttribute('data-target'));
-                const suffix = entry.target.textContent.match(/[K\+M%]+/)[0];
-                animateCounter(entry.target, target, suffix);
-                entry.target.classList.add('counted');
-            }
+    let idx = 0;
+    setInterval(() => {
+        idx = (idx + 1) % words.length;
+        spans.forEach(span => {
+            span.classList.add('out');
+            setTimeout(() => {
+                span.textContent = words[idx];
+                span.style.fontFamily = fonts[idx];
+                span.style.color = colors[idx];
+                document.title = `The Vibe Check Project | ${words[idx]}`;
+                span.classList.remove('out');
+                span.classList.add('in');
+            }, 500);
         });
-    }, { threshold: 0.5 });
-
-    counters.forEach(counter => observer.observe(counter));
-}
-
-function animateCounter(element, target, suffix) {
-    let current = 0;
-    const increment = target / 50;
-    const duration = 1500;
-    const stepTime = duration / 50;
-
-    const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-            element.textContent = target + suffix;
-            clearInterval(timer);
-        } else {
-            element.textContent = Math.ceil(current) + suffix;
-        }
-    }, stepTime);
+    }, 3000);
 }
 
 // ====================
-// Scroll Reveal Animations
+// Live Counters
 // ====================
-function initScrollReveal() {
-    const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+function initLiveCounters() {
+    const endpoints = {
+        'liveCardCount': 'https://api.counterapi.dev/v1/thevibecheckproject/cards-sent/',
+        'liveNewsletterCount': 'https://api.counterapi.dev/v1/thevibecheckproject/newsletters-sent/'
+    };
 
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    });
+    Object.entries(endpoints).forEach(([id, url]) => {
+        const el = document.getElementById(id);
+        if (!el) return;
 
-    reveals.forEach(reveal => {
-        revealObserver.observe(reveal);
+        fetch(url)
+            .then(r => r.json())
+            .then(data => {
+                if (data && typeof data.count === 'number') {
+                    el.textContent = data.count.toLocaleString();
+                }
+            })
+            .catch(() => { /* fail silently */ });
     });
 }
 
 // ====================
-// Navigation Scroll Effect
+// Initialization
 // ====================
-function initNavigation() {
+document.addEventListener('DOMContentLoaded', () => {
+    // Core Navigation
     const nav = document.getElementById('nav');
-    let navTicking = false;
-
-    window.addEventListener('scroll', function () {
-        if (!navTicking) {
-            window.requestAnimationFrame(function () {
-                const currentScroll = window.pageYOffset;
-                if (currentScroll > 50) {
-                    nav.classList.add('scrolled');
-                } else {
-                    nav.classList.remove('scrolled');
-                }
-                navTicking = false;
-            });
-            navTicking = true;
-        }
-    }, { passive: true });
-}
-
-// ====================
-// Hamburger Menu
-// ====================
-function initHamburgerMenu() {
     const hamburger = document.getElementById('nav-hamburger');
-    const nav = document.getElementById('nav');
-    if (!hamburger || !nav) return;
-
-    hamburger.addEventListener('click', function () {
-        const isOpen = nav.classList.toggle('nav-open');
-        hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    });
-
-    // Close when a nav link is clicked
-    nav.querySelectorAll('.nav-links a').forEach(function (link) {
-        link.addEventListener('click', function () {
-            nav.classList.remove('nav-open');
-            hamburger.setAttribute('aria-expanded', 'false');
-        });
-    });
-
-    // Close when clicking outside the nav
-    document.addEventListener('click', function (e) {
-        if (!nav.contains(e.target) && nav.classList.contains('nav-open')) {
-            nav.classList.remove('nav-open');
-            hamburger.setAttribute('aria-expanded', 'false');
-        }
-    });
-}
-
-// ====================
-// Lucide Icons
-// ====================
-function initLucideIcons() {
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    } else {
-        setTimeout(initLucideIcons, 100);
+    if (nav) {
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.pageYOffset > 50);
+        }, { passive: true });
     }
-}
-
-// ====================
-// Smooth Scroll
-// ====================
-function initSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            const href = this.getAttribute('href');
-            if (href === '#') return;
-
-            e.preventDefault();
-            const target = document.querySelector(href);
-
-            if (target) {
-                const offsetTop = target.offsetTop - 80;
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
-            }
+    if (hamburger && nav) {
+        hamburger.addEventListener('click', () => {
+            const isOpen = nav.classList.toggle('nav-open');
+            hamburger.setAttribute('aria-expanded', isOpen);
         });
-    });
-}
+    }
 
-// ====================
-// Button Ripple Effect
-// ====================
-function initButtonRipples() {
-    document.querySelectorAll('.btn').forEach(button => {
-        button.addEventListener('click', function (e) {
-            const rect = this.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            const ripple = document.createElement('span');
-            ripple.style.cssText = `
-                position: absolute;
-                left: ${x}px;
-                top: ${y}px;
-                width: 0;
-                height: 0;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.5);
-                transform: translate(-50%, -50%);
-                animation: ripple-animation 0.6s ease-out;
-                pointer-events: none;
-            `;
-
-            this.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 600);
-        });
-    });
-}
-
-// ====================
-// Event Listeners
-// ====================
-
-// No splash screen — initialize everything immediately
-(function () {
-    const mainContent = document.getElementById('main-content');
-    if (mainContent) mainContent.classList.add('show');
-    document.body.style.overflow = 'auto';
+    // Features
+    initDailyAffirmation();
+    initPreviewRotation();
+    initRotatingLogo();
     initParallax();
-    initScrollReveal();
-    initCounters();
-    initLucideIcons();
-    displayTodaysAffirmation();
-    createEmailModal();
-})();
+    initLiveCounters();
 
-// CTA buttons - Show email modal
-document.getElementById('hero-cta')?.addEventListener('click', function (e) {
-    e.preventDefault();
-    showEmailModal();
-});
+    // Lazy
+    setTimeout(createEmailModal, 1000);
 
-document.getElementById('cta-button')?.addEventListener('click', function (e) {
-    e.preventDefault();
-    showEmailModal();
-});
-
-// Scroll progress — RAF-throttled
-let progressTicking = false;
-window.addEventListener('scroll', function () {
-    if (!progressTicking) {
-        window.requestAnimationFrame(function () {
-            updateScrollProgress();
-            progressTicking = false;
+    // CTA Listeners
+    document.querySelectorAll('#hero-cta, #cta-button').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            showEmailModal();
         });
-        progressTicking = true;
-    }
-}, { passive: true });
-
-// ====================
-// Initialize
-// ====================
-document.addEventListener('DOMContentLoaded', function () {
-    initNavigation();
-    initHamburgerMenu();
-    initSmoothScroll();
-    initButtonRipples();
+    });
 });
 
-// Add ripple animation to CSS dynamically
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes ripple-animation {
-        to {
-            width: 500px;
-            height: 500px;
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);
+window.closeEmailModal = closeEmailModal;
+window.updateStaticPreview = updateStaticPreview;
+

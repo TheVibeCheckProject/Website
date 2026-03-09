@@ -289,10 +289,17 @@
       width: 520px;
       max-width: 90vw;
       aspect-ratio: 3 / 2;
-      perspective: 1200px;
+      perspective: 2000px;
       cursor: pointer;
       margin-bottom: 40px;
       animation: fadeInUp 0.8s ease-out 0.2s both;
+      transform-style: preserve-3d;
+    }
+
+    @media (min-width: 1024px) {
+      .flip-card {
+        width: 650px;
+      }
     }
 
     @keyframes fadeInUp {
@@ -315,6 +322,11 @@
       transition: transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
       border-radius: 20px;
       will-change: transform;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    .flip-card:hover .flip-card-inner {
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
     }
 
     .flip-card.flipped .flip-card-inner {
@@ -1159,6 +1171,36 @@
       try { soundEngine[cardSound](); } catch (e) { try { soundEngine.chime(); } catch (e2) { } }
     }
 
+    // ── Desktop 3D Tilt ──
+    (function () {
+      if (window.matchMedia("(pointer: fine)").matches) {
+        const inner = document.getElementById('flipCardInner');
+
+        flipCard.addEventListener('mousemove', (e) => {
+          if (cardOpen) return;
+
+          const rect = flipCard.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+
+          const rotateX = (centerY - y) / 10;
+          const rotateY = (x - centerX) / 10;
+
+          inner.style.transition = 'transform 0.1s ease-out';
+          inner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        flipCard.addEventListener('mouseleave', () => {
+          if (cardOpen) return;
+          inner.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+          inner.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        });
+      }
+    })();
+
     // Confetti burst
     function launchConfetti() {
       const colors = ['#cdff60', '#f472b6', '#60a5fa', '#fbbf24', '#c084fc', '#34d399', '#fb7185'];
@@ -1182,6 +1224,11 @@
       flipCard.classList.toggle('flipped', cardOpen);
 
       const inner = document.getElementById('flipCardInner');
+
+      // Reset 3D tilt before flipping
+      inner.style.transform = '';
+      inner.style.transition = 'transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1)';
+
       inner.classList.remove('flipping');
       void inner.offsetWidth; // trigger reflow
       inner.classList.add('flipping');

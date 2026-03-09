@@ -91,27 +91,32 @@ function buildWebSiteSchema() {
 function processBlogPost(filePath) {
   let html = readFile(filePath);
 
-  if (hasCanonical(html)) {
-    console.log(`  SKIP (already has canonical): ${path.relative(ROOT, filePath)}`);
-    return;
-  }
-
-  const ogUrl = extractMeta(html, 'og:url');
-  if (!ogUrl) {
-    console.log(`  WARN (no og:url found): ${path.relative(ROOT, filePath)}`);
-    return;
-  }
-
   const title = extractMeta(html, 'og:title') || extractTitle(html);
   const description = extractMeta(html, 'description') || extractMeta(html, 'og:description') || '';
 
-  const canonical = `<link rel="canonical" href="${ogUrl}">`;
-  const jsonLd = buildArticleSchema(ogUrl, title, description);
+  const relativePath = path.relative(ROOT, filePath).replace(/\\/g, '/');
+  const canonicalUrl = `${BASE_URL}/${relativePath}`;
+  const canonical = `<link rel="canonical" href="${canonicalUrl}">`;
+  const jsonLd = buildArticleSchema(canonicalUrl, title, description);
 
-  // Insert canonical after og:url
-  html = insertAfterOgUrl(html, canonical);
-  // Insert JSON-LD before </head>
-  html = insertBeforeClosingHead(html, jsonLd);
+  // Sync og:url if it exists
+  if (html.includes('og:url')) {
+    html = html.replace(/(<meta[^>]+og:url[^>]+content=["'])([^"']+)(["'])/i, `$1${canonicalUrl}$3`);
+  }
+
+  // If has canonical, replace it. Otherwise insert it.
+  if (hasCanonical(html)) {
+    html = html.replace(/<link rel=["']canonical["'][^>]*>/i, canonical);
+  } else {
+    html = insertAfterOgUrl(html, canonical);
+  }
+
+  // Handle JSON-LD (update if exists OR insert)
+  if (html.includes('application/ld+json')) {
+    html = html.replace(/<script type=["']application\/ld\+json["']>[\s\S]*?<\/script>/i, jsonLd);
+  } else {
+    html = insertBeforeClosingHead(html, jsonLd);
+  }
 
   writeFile(filePath, html);
   console.log(`  OK: ${path.relative(ROOT, filePath)}`);

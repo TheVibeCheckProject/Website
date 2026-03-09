@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Fredoka:wght@300;400;500;600;700&display=swap');
+
 /* ===================================
    Professional Website Template - Styles
    Premium Professional Design
@@ -1796,7 +1799,6 @@ footer {
    ============================================ */
 
 /* --- Playful Font Override --- */
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap');
 
 .section-title,
 .hero-title,
@@ -2620,7 +2622,6 @@ footer {
    ========================================== */
 
 /* --- Varied fonts across sections --- */
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Fredoka:wght@300;400;500;600;700&display=swap');
 
 .hero-subtitle {
     font-family: 'Fredoka', sans-serif;

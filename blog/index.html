@@ -21,7 +21,7 @@
 
     <!-- Google Fonts -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&amp;family=Fredoka:wght@300;400;500;600;700&amp;family=Outfit:wght@300;400;500;600;700;800;900&amp;family=Pacifico&amp;family=Permanent+Marker&amp;family=Quicksand:wght@300;400;500;600;700&amp;display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Fredoka:wght@300;400;500;600;700&family=Caveat:wght@400;700&family=Space+Grotesk:wght@500;600;700&display=swap"
         rel="stylesheet">
 
     <!-- Main CSS (shared from root) -->
@@ -68,7 +68,7 @@
         }
 
         .blog-header .pre-text {
-            font-family: 'Quicksand', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-size: clamp(28px, 4vw, 46px);
             font-weight: 700;
             color: #fff;
@@ -94,7 +94,7 @@
         }
 
         .blog-header .rest-text {
-            font-family: 'Quicksand', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-size: clamp(30px, 4.5vw, 50px);
             font-weight: 700;
             line-height: 1.15;
@@ -146,7 +146,7 @@
         }
 
         .sub-desc {
-            font-family: 'Quicksand', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-size: clamp(14px, 2vw, 18px);
             font-weight: 400;
             color: rgba(255, 255, 255, 0.6);
@@ -249,12 +249,22 @@
             transform: translate(0, -50%);
             border-radius: 20px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-            background-position: 50% 50%;
-            background-size: cover;
             display: inline-block;
             transition: all 0.5s ease;
             cursor: pointer;
             overflow: hidden;
+            background: #1a1625;
+        }
+
+        .category-slider .slide .item .slider-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         /* Dark overlay on every slide item */
@@ -335,7 +345,7 @@
             margin-top: 12px;
             margin-bottom: 24px;
             opacity: 0;
-            font-family: var(--font-body, 'Inter', sans-serif);
+            font-family: var(--font-body, 'Outfit', sans-serif);
             font-size: 15px;
             line-height: 1.6;
             color: rgba(255, 255, 255, 0.85);
@@ -700,7 +710,7 @@
         }
 
         .topic-hub-card span {
-            font-family: 'Quicksand', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-weight: 700;
             color: rgba(255, 255, 255, 0.9);
             font-size: 0.85rem;
@@ -1132,8 +1142,8 @@
         <div class="category-slider">
             <div class="slide">
                 <!-- Slide 1: Mental Health -->
-                <div class="item" data-category="mental-health"
-                    style="background-image: url('../assets/blog_cover_panic.png');">
+                <div class="item" data-category="mental-health">
+                    <img src="../assets/blog_cover_panic.webp" alt="Mental Health Support" class="slider-cover">
                     <div class="cat-content">
                         <div class="cat-name">Mental Health Support</div>
                         <div class="cat-des">Words to help them through the hard days. Support for anxiety,
@@ -1144,8 +1154,8 @@
                 </div>
 
                 <!-- Slide 2: Grief Support -->
-                <div class="item" data-category="grief-support"
-                    style="background-image: url('../assets/blog_cover_grief_1772534407866.png');">
+                <div class="item" data-category="grief-support">
+                    <img src="../assets/blog_cover_grief_1772534407866.webp" alt="Grief Support" class="slider-cover">
                     <div class="cat-content">
                         <div class="cat-name">Grief &amp; Loss Support</div>
                         <div class="cat-des">When someone you care about is grieving, the wrong words can make it worse.
@@ -1156,8 +1166,9 @@
                 </div>
 
                 <!-- Slide 3: Serious Illness -->
-                <div class="item" data-category="serious-illness"
-                    style="background-image: url('../assets/blog_cover_cancer_1772534614299.png');">
+                <div class="item" data-category="serious-illness">
+                    <img src="../assets/blog_cover_cancer_1772534614299.webp" alt="Serious Illness Support"
+                        class="slider-cover">
                     <div class="cat-content">
                         <div class="cat-name">Serious Illness Support</div>
                         <div class="cat-des">What to say, what to do, and what to avoid when someone you love gets a
@@ -1168,8 +1179,9 @@
                 </div>
 
                 <!-- Slide 4: Encouragement -->
-                <div class="item" data-category="encouragement"
-                    style="background-image: url('../assets/blog_cover_new_job_1772534337585.png');">
+                <div class="item" data-category="encouragement">
+                    <img src="../assets/blog_cover_new_job_1772534337585.webp" alt="Encouragement & Motivation"
+                        class="slider-cover">
                     <div class="cat-content">
                         <div class="cat-name">Encouragement &amp; Motivation</div>
                         <div class="cat-des">Hype texts and grounding wisdom for big days, nervous moments, and everyday
@@ -1220,7 +1232,9 @@
         <div class="blog-grid">
             <!-- Professional Resource 1 -->
             <a href="https://www.mysafetyplan.org/" target="_blank" rel="noopener" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_panic.png'); filter: saturate(0.5) contrast(1.2);">
+                style="filter: saturate(0.5) contrast(1.2);">
+                <img src="../assets/blog_cover_panic.webp" alt="Build a Suicide Safety Plan" class="card-cover"
+                    loading="lazy">
                 <div class="color-overlay" style="background: rgba(255, 68, 68, 0.4);"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1238,7 +1252,9 @@
 
             <!-- Professional Resource 2 -->
             <a href="https://findahelpline.com/" target="_blank" rel="noopener" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_quiet_1772534313015.png'); filter: saturate(0.5) contrast(1.2);">
+                style="filter: saturate(0.5) contrast(1.2);">
+                <img src="../assets/blog_cover_quiet_1772534313015.webp" alt="Find A Helpline (International)"
+                    class="card-cover" loading="lazy">
                 <div class="color-overlay" style="background: rgba(255, 68, 68, 0.4);"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1255,8 +1271,9 @@
             </a>
 
             <!-- High Urgency Guide -->
-            <a href="what-to-say-to-someone-who-feels-like-giving-up.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_giving_up_1772534638363.png');">
+            <a href="what-to-say-to-someone-who-feels-like-giving-up.html" class="blog-card-img">
+                <img src="../assets/blog_cover_giving_up_1772534638363.webp"
+                    alt="What to Say to Someone Who Feels Like Giving Up" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1284,8 +1301,9 @@
     <div id="mental-health" class="category-grid active">
         <div class="blog-grid">
 
-            <a href="what-to-text-someone-having-a-panic-attack.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_panic.png');">
+            <a href="what-to-text-someone-having-a-panic-attack.html" class="blog-card-img">
+                <img src="../assets/blog_cover_panic.webp" alt="What to Text Someone Having a Panic Attack"
+                    class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1305,8 +1323,9 @@
                     </div>
                 </div>
             </a>
-            <a href="what-to-say-when-someone-is-depressed.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_depression_1772534420076.png');">
+            <a href="what-to-say-when-someone-is-depressed.html" class="blog-card-img">
+                <img src="../assets/blog_cover_depression_1772534420076.webp"
+                    alt="What to Say When Someone Is Depressed" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1327,7 +1346,7 @@
                 </div>
             </a>
             <a href="what-to-say-to-someone-who-feels-like-giving-up.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_giving_up_1772534638363.png');">
+                style="background-image: url('../assets/blog_cover_giving_up_1772534638363.webp');">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1347,8 +1366,9 @@
                     </div>
                 </div>
             </a>
-            <a href="daily-affirmations-for-anxiety.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_anxiety_1772534512339.png');">
+            <a href="daily-affirmations-for-anxiety.html" class="blog-card-img">
+                <img src="../assets/blog_cover_anxiety_1772534512339.webp" alt="Daily Affirmations for Anxiety"
+                    class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1369,8 +1389,9 @@
                     </div>
                 </div>
             </a>
-            <a href="self-care-ideas-for-bad-mental-health-days.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_self_care_1772534542941.png');">
+            <a href="self-care-ideas-for-bad-mental-health-days.html" class="blog-card-img">
+                <img src="../assets/blog_cover_self_care_1772534542941.webp"
+                    alt="Self-Care Ideas for Bad Mental Health Days" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1391,8 +1412,9 @@
                     </div>
                 </div>
             </a>
-            <a href="mindfulness-exercises-for-beginners.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_quiet_1772534313015.png');">
+            <a href="mindfulness-exercises-for-beginners.html" class="blog-card-img">
+                <img src="../assets/blog_cover_quiet_1772534313015.webp" alt="Mindfulness Exercises for Beginners"
+                    class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1413,8 +1435,9 @@
                     </div>
                 </div>
             </a>
-            <a href="positive-things-to-say-to-yourself-every-morning.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_morning_1772534601600.png');">
+            <a href="positive-things-to-say-to-yourself-every-morning.html" class="blog-card-img">
+                <img src="../assets/blog_cover_morning_1772534601600.webp"
+                    alt="Positive Things to Say to Yourself Every Morning" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1435,8 +1458,9 @@
                     </div>
                 </div>
             </a>
-            <a href="how-to-check-on-a-friend-who-went-quiet.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_quiet_1772534313015.png');">
+            <a href="how-to-check-on-a-friend-who-went-quiet.html" class="blog-card-img">
+                <img src="../assets/blog_cover_quiet_1772534313015.webp"
+                    alt="How to Check On That Friend Who Suddenly Went Quiet" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1457,8 +1481,9 @@
                     </div>
                 </div>
             </a>
-            <a href="the-people-who-seem-fine-need-you-most.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_friendship_1772534526563.png');">
+            <a href="the-people-who-seem-fine-need-you-most.html" class="blog-card-img">
+                <img src="../assets/blog_cover_friendship_1772534526563.webp"
+                    alt="The People Who Seem Fine Are Often the Ones Struggling Most" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1479,8 +1504,9 @@
                     </div>
                 </div>
             </a>
-            <a href="how-to-be-a-better-friend.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_friendship_1772534526563.png');">
+            <a href="how-to-be-a-better-friend.html" class="blog-card-img">
+                <img src="../assets/blog_cover_friendship_1772534526563.webp" alt="How to Be a Better Friend"
+                    class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1512,8 +1538,9 @@
     <div id="grief-support" class="category-grid">
         <div class="blog-grid">
 
-            <a href="how-to-comfort-someone-who-lost-a-loved-one.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_grief_1772534407866.png');">
+            <a href="how-to-comfort-someone-who-lost-a-loved-one.html" class="blog-card-img">
+                <img src="../assets/blog_cover_grief_1772534407866.webp"
+                    alt="How to Comfort Someone Who Lost a Loved One" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1534,8 +1561,9 @@
                     </div>
                 </div>
             </a>
-            <a href="how-to-support-a-friend-going-through-a-breakup.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_breakup_1772534324219.png');">
+            <a href="how-to-support-a-friend-going-through-a-breakup.html" class="blog-card-img">
+                <img src="../assets/blog_cover_breakup_1772534324219.webp"
+                    alt="How to Actually Support a Friend Through a Breakup" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1557,7 +1585,7 @@
                 </div>
             </a>
             <a href="what-to-say-to-someone-who-feels-like-giving-up.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_giving_up_1772534638363.png');">
+                style="background-image: url('../assets/blog_cover_giving_up_1772534638363.webp');">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1588,29 +1616,31 @@
     <div id="encouragement" class="category-grid">
         <div class="blog-grid">
 
-            <a href="words-of-encouragement-for-someone-taking-a-big-risk.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_risk_1772534353037.png');">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Motivation</span>
-                    <h2>Words of Encouragement for Someone Taking a Big Risk</h2>
+            <a href="words-of-encouragement-for-someone-taking-a-big-risk.html" class="blog-card-img"></a>
+            <img src="../assets/blog_cover_risk_1772534353037.webp"
+                alt="Words of Encouragement for Someone Taking a Big Risk" class="card-cover" loading="lazy">
+            <div class="color-overlay"></div>
+            <div class="gradient-overlay"></div>
+            <div class="title-content">
+                <span class="blog-tag">Motivation</span>
+                <h2>Words of Encouragement for Someone Taking a Big Risk</h2>
+            </div>
+            <div class="card-info">
+                <p>Quitting to start a business. Moving across the country. How to be the anchor when they are
+                    terrified.</p>
+                <div class="read-more-btn">
+                    Read Guide
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
                 </div>
-                <div class="card-info">
-                    <p>Quitting to start a business. Moving across the country. How to be the anchor when they are
-                        terrified.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
+            </div>
             </a>
-            <a href="affirmations-to-send-someone-starting-a-new-job.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_new_job_1772534337585.png');">
+            <a href="affirmations-to-send-someone-starting-a-new-job.html" class="blog-card-img">
+                <img src="../assets/blog_cover_new_job_1772534337585.webp"
+                    alt="7 Affirmations to Send Someone Starting a New Job" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1631,8 +1661,9 @@
                     </div>
                 </div>
             </a>
-            <a href="encouraging-words-for-students-during-exams.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_exams_1772534436768.png');">
+            <a href="encouraging-words-for-students-during-exams.html" class="blog-card-img">
+                <img src="../assets/blog_cover_exams_1772534436768.webp"
+                    alt="Encouraging Words for Students During Exams" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1652,8 +1683,9 @@
                     </div>
                 </div>
             </a>
-            <a href="how-to-celebrate-a-friends-success.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_success_1772534454340.png');">
+            <a href="how-to-celebrate-a-friends-success.html" class="blog-card-img">
+                <img src="../assets/blog_cover_success_1772534454340.webp" alt="How to Celebrate a Friend's Success"
+                    class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1672,8 +1704,9 @@
                     </div>
                 </div>
             </a>
-            <a href="why-you-should-send-affirmations-for-no-reason.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_affirmations_random.png');">
+            <a href="why-you-should-send-affirmations-for-no-reason.html" class="blog-card-img">
+                <img src="../assets/blog_cover_affirmations_random.webp"
+                    alt="Why You Should Send Affirmations For No Reason At All" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1694,7 +1727,7 @@
                 </div>
             </a>
             <a href="how-a-30-second-text-can-change-someones-day.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_new_job_1772534337585.png');">
+                style="background-image: url('../assets/blog_cover_new_job_1772534337585.webp');">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1715,8 +1748,9 @@
                     </div>
                 </div>
             </a>
-            <a href="ways-to-show-someone-you-care-without-words.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_friendship_1772534526563.png');">
+            <a href="ways-to-show-someone-you-care-without-words.html" class="blog-card-img">
+                <img src="../assets/blog_cover_friendship_1772534526563.webp"
+                    alt="Ways to Show Someone You Care Without Words" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1737,8 +1771,9 @@
                     </div>
                 </div>
             </a>
-            <a href="how-to-write-a-heartfelt-letter-to-a-friend.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_success_1772534454340.png');">
+            <a href="how-to-write-a-heartfelt-letter-to-a-friend.html" class="blog-card-img">
+                <img src="../assets/blog_cover_success_1772534454340.webp"
+                    alt="How to Write a Heartfelt Letter to a Friend" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1758,8 +1793,9 @@
                     </div>
                 </div>
             </a>
-            <a href="birthday-wishes-for-someone-going-through-a-hard-time.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_birthday_1772534627129.png');">
+            <a href="birthday-wishes-for-someone-going-through-a-hard-time.html" class="blog-card-img">
+                <img src="../assets/blog_cover_birthday_1772534627129.webp"
+                    alt="Birthday Wishes for Someone Going Through a Hard Time" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1790,8 +1826,9 @@
     <div id="serious-illness" class="category-grid">
         <div class="blog-grid">
 
-            <a href="how-to-support-a-friend-with-cancer.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_cancer_1772534614299.png');">
+            <a href="how-to-support-a-friend-with-cancer.html" class="blog-card-img">
+                <img src="../assets/blog_cover_cancer_1772534614299.webp" alt="How to Support a Friend With Cancer"
+                    class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1810,8 +1847,9 @@
                     </div>
                 </div>
             </a>
-            <a href="what-to-write-in-a-get-well-soon-card.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_get_well_1772534500993.png');">
+            <a href="what-to-write-in-a-get-well-soon-card.html" class="blog-card-img">
+                <img src="../assets/blog_cover_get_well_1772534500993.webp" alt="What to Write in a Get Well Soon Card"
+                    class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1832,7 +1870,7 @@
                 </div>
             </a>
             <a href="how-a-30-second-text-can-change-someones-day.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_new_job_1772534337585.png');">
+                style="background-image: url('../assets/blog_cover_new_job_1772534337585.webp');">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -2014,7 +2052,7 @@
         // ── Rotating Word Animation for Blog Header ──
         (function () {
             const words = ["Blog's", "Guide's", "Advice"];
-            const fonts = ["'Pacifico', cursive", "'Caveat', cursive", "'Permanent Marker', cursive"];
+            const fonts = ["'Fredoka', sans-serif", "'Caveat', cursive", "'Playfair Display', serif"];
             const colors = ["#FEC84A", "#67E8F9", "#FF6B9D"];
             const shadows = [
                 "0 0 10px rgba(254,200,74,0.7), 0 0 30px rgba(254,200,74,0.4), 0 4px 15px rgba(0,0,0,0.5)",

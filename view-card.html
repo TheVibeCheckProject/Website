@@ -8,46 +8,48 @@
     content="Someone sent you a Vibe Check — an anonymous affirmation card just for you. Open it and feel the good vibes.">
   <title>You've Got a Vibe Check! ✨ - The Vibe Check Project</title>
 
-  <!-- Open Graph / Twitter Card -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.thevibecheckproject.com/view-card.html">
-  <link rel="canonical" href="https://www.thevibecheckproject.com/view-card.html">
-  <meta property="og:title" content="Someone Sent You a Vibe Check ✨ — The Vibe Check Project">
-  <meta property="og:description"
-    content="You've got an affirmation card waiting for you. Open it and feel the good vibes.">
-  <meta property="og:image" content="https://www.thevibecheckproject.com/assets/og-image.png">
-  <meta property="og:site_name" content="The Vibe Check Project">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Someone Sent You a Vibe Check ✨ — The Vibe Check Project">
-  <meta name="twitter:description"
-    content="You've got an affirmation card waiting for you. Open it and feel the good vibes.">
-  <meta name="twitter:image" content="https://www.thevibecheckproject.com/assets/og-image.png">
-
-  <!-- Analytics -->
-  <script defer data-domain="thevibecheckproject.com" src="https://plausible.io/js/script.js"></script>
-
   <!-- Fonts Performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-    rel="stylesheet" media="print" onload="this.media='all'">
-  <noscript>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-      rel="stylesheet">
-  </noscript>
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Fredoka:wght@300;400;500;600;700&family=Caveat:wght@400;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet">
 
   <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Instant Preloader (Runs before styles/DOM) -->
+  <script>
+    (function () {
+      const p = new URLSearchParams(window.location.search);
+      const d = p.get('data');
+      if (!d) return;
+      try {
+        const card = JSON.parse(decodeURIComponent(atob(d)));
+        if (card.background) {
+          const isVideo = card.background.endsWith('.mp4');
+          if (isVideo) {
+            const v = document.createElement('link');
+            v.rel = 'preload';
+            v.as = 'video';
+            v.href = card.background;
+            document.head.appendChild(v);
+          } else {
+            const img = new Image();
+            img.src = card.background;
+          }
+        }
+      } catch (e) { }
+    })();
+  </script>
 
   <style>
     :root {
       --font-display: 'Space Grotesk', sans-serif;
-      --font-body: 'Inter', sans-serif;
-      --green: #a3e635;
-      --green-dim: rgba(163, 230, 53, 0.15);
-      --green-glow: rgba(163, 230, 53, 0.4);
+      --font-body: 'Outfit', sans-serif;
+      --green: #cdff60;
+      --green-dim: rgba(205, 255, 96, 0.15);
+      --green-glow: rgba(205, 255, 96, 0.35);
       --bg-deep: #0a0a0a;
       --bg-card: #141414;
       --bg-card-2: #1a1a1a;
@@ -76,14 +78,76 @@
       position: relative;
     }
 
-    /* ── Ambient background orbs (CSS only, no Three.js) ── */
-    .bg-orbs {
+    #vibe-loader {
       position: fixed;
       inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      overflow: hidden;
+      background: #050505;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), visibility 1s;
     }
+
+    #vibe-loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-orb {
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, var(--green) 0%, transparent 70%);
+      border-radius: 50%;
+      filter: blur(25px);
+      animation: loaderPulse 2.5s ease-in-out infinite;
+      box-shadow: 0 0 50px var(--green-glow);
+    }
+
+    .loader-text {
+      margin-top: 32px;
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      opacity: 0.9;
+      animation: textPulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes loaderPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.4;
+        filter: blur(25px);
+      }
+
+      50% {
+        transform: scale(1.4);
+        opacity: 1;
+        filter: blur(35px);
+      }
+    }
+
+    @keyframes textPulse {
+
+      0%,
+      100% {
+        opacity: 0.4;
+        letter-spacing: 4px;
+      }
+
+      50% {
+        opacity: 1;
+        letter-spacing: 6px;
+      }
+    }
+
+    /* ── Ambient background orbs ── */
 
     .bg-orbs::before,
     .bg-orbs::after {
@@ -248,7 +312,7 @@
       width: 100%;
       height: 100%;
       transform-style: preserve-3d;
-      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transition: transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
       border-radius: 20px;
       will-change: transform;
     }
@@ -280,6 +344,31 @@
         0 0 60px rgba(163, 230, 53, 0.08),
         0 20px 60px rgba(0, 0, 0, 0.5);
       transition: background 0.4s ease, border-color 0.4s ease;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .flip-card-face video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0.8;
+    }
+
+    .card-face-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 0;
+      backdrop-filter: blur(2px);
+      display: none;
+    }
+
+    .has-bg .card-face-overlay {
+      display: block;
     }
 
     .flip-card-front.theme-birthday {
@@ -319,28 +408,35 @@
     .shimmer-layer::after {
       content: '';
       position: absolute;
-      top: 0;
+      top: -50%;
       left: -150%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(120deg,
-          transparent 30%,
-          rgba(255, 255, 255, 0.25) 50%,
-          transparent 70%);
-      transform: skewX(-25deg);
+      width: 50%;
+      height: 200%;
+      background: linear-gradient(to right,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 0.8) 50%,
+          rgba(255, 255, 255, 0) 100%);
+      transform: rotate(25deg);
+      filter: blur(5px);
     }
 
     .flip-card-inner.flipping .shimmer-layer::after {
-      animation: shimmer 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: glintSweep 0.9s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    @keyframes shimmer {
+    @keyframes glintSweep {
       0% {
         left: -150%;
+        opacity: 0;
+      }
+
+      20% {
+        opacity: 1;
       }
 
       100% {
-        left: 150%;
+        left: 250%;
+        opacity: 0;
       }
     }
 
@@ -387,7 +483,7 @@
 
     /* Back face */
     .flip-card-back {
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(255, 255, 255, 0.15);
@@ -401,6 +497,8 @@
       flex-direction: column;
       justify-content: center;
       position: relative;
+      background-size: cover;
+      background-position: center;
     }
 
     .flip-card-back::before {
@@ -484,7 +582,7 @@
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--green), #84cc16);
+      background: linear-gradient(135deg, var(--green), #b4eb34);
       color: #0a0a0a;
       box-shadow: 0 4px 20px rgba(163, 230, 53, 0.3);
     }
@@ -614,7 +712,7 @@
 
     .email-form button {
       padding: 12px 20px;
-      background: linear-gradient(135deg, var(--green), #84cc16);
+      background: linear-gradient(135deg, var(--green), #b4eb34);
       color: #0a0a0a;
       border: none;
       border-radius: 10px;
@@ -745,6 +843,12 @@
 </head>
 
 <body>
+  <!-- Cinematic Splash Screen -->
+  <div id="vibe-loader">
+    <div class="loader-orb"></div>
+    <div class="loader-text">Preparing your Vibe...</div>
+  </div>
+
   <!-- Navigation -->
   <nav id="nav">
     <div class="nav-container">
@@ -871,17 +975,23 @@
     }
   </script>
 
-  <!-- Load card data from URL -->
+  <!-- Load card data & Handle Initialization -->
   <script>
-    (function () {
+    (async function () {
       const params = new URLSearchParams(window.location.search);
       const encoded = params.get('data');
-      if (!encoded) return;
+      if (!encoded) {
+        document.getElementById('vibe-loader').classList.add('hidden');
+        return;
+      }
+
       try {
         const card = JSON.parse(decodeURIComponent(atob(encoded)));
         const affirmationEl = document.getElementById('cardAffirmation');
         const messageEl = document.getElementById('cardMessage');
         const headerEl = document.getElementById('headerBadge');
+
+        // Apply Text Content
         if (affirmationEl) affirmationEl.textContent = card.affirmation;
         if (messageEl) {
           const sender = card.senderName;
@@ -895,36 +1005,72 @@
               : 'Someone special wanted to send you some good vibes ✨';
           }
         }
-        // Personalize header badge
         if (headerEl) {
-          if (card.senderName) {
-            headerEl.textContent = `✨ ${card.senderName} sent you a vibe`;
-          } else {
-            headerEl.textContent = '✨ Someone anonymously sent you a vibe';
-          }
+          headerEl.textContent = card.senderName
+            ? `✨ ${card.senderName} sent you a vibe`
+            : '✨ Someone anonymously sent you a vibe';
         }
-        if (card.recipientName) {
-          document.title = `${card.recipientName}, You've Got a Vibe Check! ✨`;
-        }
+        if (card.recipientName) document.title = `${card.recipientName}, You've Got a Vibe Check! ✨`;
+
+        // Apply Themes
         if (card.themeGroup && card.themeGroup !== 'default') {
-          const frontFace = document.getElementById('cardFront') || document.querySelector('.flip-card-front');
-          const backFace = document.querySelector('.flip-card-back');
+          const frontFace = document.getElementById('cardFront');
+          const backFace = document.getElementById('cardBack');
           if (frontFace) frontFace.classList.add(`theme-${card.themeGroup}`);
           if (backFace && !card.background) backFace.classList.add(`theme-${card.themeGroup}`);
         }
-        if (card.background) {
-          const frontFace = document.getElementById('cardFront') || document.querySelector('.flip-card-front');
-          const backFace = document.querySelector('.flip-card-back');
-          const bgUrl = card.background.includes('assets/') ? `url('${card.background}')` : card.background;
 
-          if (backFace) {
-            backFace.style.backgroundImage = bgUrl;
-            backFace.style.backgroundSize = 'cover';
-            backFace.style.backgroundPosition = 'center';
-            backFace.style.borderColor = 'transparent';
+        // Apply Backgrounds (Image or Video)
+        if (card.background) {
+          const frontFace = document.getElementById('cardFront');
+          const backFace = document.getElementById('cardBack');
+          const isVideo = card.background.endsWith('.mp4');
+
+          if (isVideo) {
+            const frontVid = document.getElementById('frontVideo');
+            const backVid = document.getElementById('backVideo');
+            frontVid.src = card.background;
+            backVid.src = card.background;
+            frontFace.classList.add('has-bg');
+            backFace.classList.add('has-bg');
+
+            // Wait for video to be ready
+            await new Promise(r => {
+              frontVid.oncanplaythrough = r;
+              frontVid.load();
+              setTimeout(r, 3000); // Safety timeout
+            });
+            frontVid.play().catch(() => { });
+            backVid.play().catch(() => { });
+          } else {
+            const bgUrl = card.background.includes('assets/') ? `url('${card.background}')` : card.background;
+            [frontFace, backFace].forEach(face => {
+              if (face) {
+                face.style.backgroundImage = bgUrl;
+                face.classList.add('has-bg');
+              }
+            });
+
+            // Wait for image to load
+            await new Promise(r => {
+              const img = new Image();
+              img.onload = r;
+              img.onerror = r;
+              img.src = card.background;
+              setTimeout(r, 2000); // Safety timeout
+            });
           }
         }
-      } catch (e) { }
+
+        // Everything is ready
+        setTimeout(() => {
+          document.getElementById('vibe-loader').classList.add('hidden');
+        }, 300);
+
+      } catch (e) {
+        console.error("Card init error:", e);
+        document.getElementById('vibe-loader').classList.add('hidden');
+      }
     })();
   </script>
 
@@ -1015,7 +1161,7 @@
 
     // Confetti burst
     function launchConfetti() {
-      const colors = ['#a3e635', '#f472b6', '#60a5fa', '#fbbf24', '#c084fc', '#34d399', '#fb7185'];
+      const colors = ['#cdff60', '#f472b6', '#60a5fa', '#fbbf24', '#c084fc', '#34d399', '#fb7185'];
       for (let i = 0; i < 50; i++) {
         const piece = document.createElement('div');
         piece.className = 'confetti-piece';
@@ -1039,7 +1185,7 @@
       inner.classList.remove('flipping');
       void inner.offsetWidth; // trigger reflow
       inner.classList.add('flipping');
-      setTimeout(() => inner.classList.remove('flipping'), 600);
+      setTimeout(() => inner.classList.remove('flipping'), 1000);
 
       if (cardOpen) {
         burstParticles(30);

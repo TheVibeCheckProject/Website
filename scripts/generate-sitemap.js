@@ -65,6 +65,8 @@ function generateSitemap() {
             relativePath = relativePath.replace('/index.html', '/');
         } else if (relativePath.endsWith('index.html')) {
             relativePath = relativePath.replace('index.html', '');
+        } else if (relativePath.endsWith('.html')) {
+            relativePath = relativePath.replace('.html', '');
         }
 
         const url = `${BASE_URL}/${relativePath}`;

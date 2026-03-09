@@ -95,7 +95,8 @@ function processBlogPost(filePath) {
   const description = extractMeta(html, 'description') || extractMeta(html, 'og:description') || '';
 
   const relativePath = path.relative(ROOT, filePath).replace(/\\/g, '/');
-  const canonicalUrl = `${BASE_URL}/${relativePath}`;
+  const cleanPath = relativePath.endsWith('.html') ? relativePath.slice(0, -5) : relativePath;
+  const canonicalUrl = `${BASE_URL}/${cleanPath}`;
   const canonical = `<link rel="canonical" href="${canonicalUrl}">`;
   const jsonLd = buildArticleSchema(canonicalUrl, title, description);
 

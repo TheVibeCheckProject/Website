@@ -57,6 +57,8 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="preload" href="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1920&q=80&fm=webp"
+        as="image" fetchpriority="high">
 
     <!-- Lucide Icons (Script Removed for Performance, replaced with inline SVGs) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2492108586092522"
@@ -597,13 +599,13 @@
                 <script>
                     const previewExamples = {
                         'encouragement': { text: '"You\'re doing better than you think you are."', bg: 'linear-gradient(135deg, #11998e, #38ef7d)' },
-                        'selflove': { text: '"You are entirely enough as you are."', bg: 'url("assets/backgrounds/bg_prem_nebula_1772750433414.png") center/cover' },
+                        'selflove': { text: '"You are entirely enough as you are."', bg: 'url("assets/backgrounds/bg_prem_nebula_1772750433414.webp") center/cover' },
                         'anxiety': { text: '"Breathe. You are safe right now."', bg: 'linear-gradient(135deg, #00b4db, #0083b0)' },
-                        'patience': { text: '"Healing isn\'t linear. You\'re doing it."', bg: 'url("assets/backgrounds/bg_prem_crystal_1772750533689.png") center/cover' },
+                        'patience': { text: '"Healing isn\'t linear. You\'re doing it."', bg: 'url("assets/backgrounds/bg_prem_crystal_1772750533689.webp") center/cover' },
                         'justbecause': { text: '"Just a reminder that you\'re awesome."', bg: 'linear-gradient(135deg, #f953c6, #b91d73)' },
-                        'validation': { text: '"I see how hard you\'re trying."', bg: 'url("assets/backgrounds/bg_prem_velvet_1772750498877.png") center/cover' },
+                        'validation': { text: '"I see how hard you\'re trying."', bg: 'url("assets/backgrounds/bg_prem_velvet_1772750498877.webp") center/cover' },
                         'birthday': { text: '"I am so incredibly glad you exist."', bg: 'linear-gradient(135deg, #ff6b6b, #ffa500)' },
-                        'abundance': { text: '"You deserve every good thing coming your way."', bg: 'url("assets/backgrounds/bg_prem_gold_1772750445716.png") center/cover' },
+                        'abundance': { text: '"You deserve every good thing coming your way."', bg: 'url("assets/backgrounds/bg_prem_gold_1772750445716.webp") center/cover' },
                         'grief': { text: '"There is no rush. Take all the time you need."', bg: 'linear-gradient(135deg, #6b73ff, #9b59b6)' }
                     };
 
@@ -1093,8 +1095,8 @@
     </div>
 
     <!-- Main JavaScript -->
-    <script src="js/script.js"></script>
-    <script src="js/animations.js"></script>
+    <script src="js/script.js" defer></script>
+    <script src="js/animations.js" defer></script>
     <script>
         // Live card counter — counterapi.dev (free, no auth)
         fetch('https://api.counterapi.dev/v1/thevibecheckproject/cards-sent/')

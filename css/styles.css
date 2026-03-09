@@ -181,11 +181,11 @@ body {
 
     0%,
     100% {
-        transform: scale(1) rotate(0deg);
+        transform: translateZ(0) scale(1) rotate(0deg);
     }
 
     50% {
-        transform: scale(1.1) rotate(180deg);
+        transform: translateZ(0) scale(1.1) rotate(180deg);
     }
 }
 

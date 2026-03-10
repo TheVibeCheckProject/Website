@@ -184,6 +184,9 @@
 </head>
 
 <body class="dark-theme">
+    <!-- Reading Progress -->
+    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
 
     <nav id="nav" class="scrolled">
         <div class="nav-container">
@@ -569,6 +572,29 @@
         }
     </script>
 
+
+    <script>
+        // Reading + vertical progress bars (no script.js needed on blog pages)
+        (function () {
+            var barX = document.getElementById('scroll-progress');
+            if (!barX) return;
+            var barY = document.createElement('div');
+            barY.id = 'scroll-progress-y';
+            document.body.appendChild(barY);
+            var raf = false;
+            function update() {
+                var st = window.pageYOffset || document.documentElement.scrollTop;
+                var dh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                var pct = (dh > 0 ? Math.min(st / dh * 100, 100) : 0) + '%';
+                barX.style.width = pct;
+                barY.style.height = pct;
+                raf = false;
+            }
+            window.addEventListener('scroll', function () {
+                if (!raf) { raf = true; requestAnimationFrame(update); }
+            }, { passive: true });
+        })();
+    </script>
 </body>
 
 </html>

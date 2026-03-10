@@ -81,25 +81,27 @@ body {
     background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
     z-index: 1001;
     transition: width 0.1s ease;
+    pointer-events: none;
 }
 
-/* Custom scrollbar — matches the horizontal scroll progress bar */
+#scroll-progress-y {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 3px;
+    height: 0%;
+    background: linear-gradient(0deg, var(--color-primary), var(--color-secondary));
+    z-index: 1001;
+    transition: height 0.1s ease;
+    pointer-events: none;
+}
+
+/* Hide native scrollbar — replaced by custom progress bars */
+html {
+    scrollbar-width: none;
+}
 ::-webkit-scrollbar {
-    width: 6px;
-}
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
-    border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, var(--color-primary-dark), var(--color-secondary-dark));
-}
-* {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-primary) transparent;
+    display: none;
 }
 
 

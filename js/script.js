@@ -281,6 +281,34 @@ function initLiveCounters() {
 }
 
 // ====================
+// Scroll Progress Bars
+// ====================
+function initScrollProgress() {
+    const barX = document.getElementById('scroll-progress');
+    if (!barX) return;
+
+    // Create vertical bar via JS — no HTML changes needed
+    const barY = document.createElement('div');
+    barY.id = 'scroll-progress-y';
+    document.body.appendChild(barY);
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            requestAnimationFrame(() => {
+                const scrolled = window.scrollY;
+                const total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const pct = total > 0 ? (scrolled / total) * 100 : 0;
+                barX.style.width = pct + '%';
+                barY.style.height = pct + '%';
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
+}
+
+// ====================
 // Initialization
 // ====================
 document.addEventListener('DOMContentLoaded', () => {
@@ -300,6 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Features
+    initScrollProgress();
     initDailyAffirmation();
     initPreviewRotation();
     initRotatingLogo();

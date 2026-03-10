@@ -77,8 +77,8 @@ body {
     top: 0;
     left: 0;
     width: 0%;
-    height: 3px;
-    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    height: 5px;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-primary), #ff9a3c, var(--color-secondary));
     z-index: 1001;
     transition: width 0.1s ease;
     pointer-events: none;
@@ -88,9 +88,9 @@ body {
     position: fixed;
     right: 0;
     bottom: 0;
-    width: 3px;
+    width: 5px;
     height: 0%;
-    background: linear-gradient(0deg, var(--color-primary), var(--color-secondary));
+    background: linear-gradient(0deg, var(--color-accent), var(--color-primary), #ff9a3c, var(--color-secondary));
     z-index: 1001;
     transition: height 0.1s ease;
     pointer-events: none;

@@ -192,10 +192,29 @@ function updateStaticPreview(category, btnElement, isAuto = false) {
 function initPreviewRotation() {
     const rotationKeys = Object.keys(previewExamples);
     let idx = 0;
-    previewAutoRotation = setInterval(() => {
+
+    function rotate() {
         idx = (idx + 1) % rotationKeys.length;
-        updateStaticPreview(rotationKeys[idx], null, true);
-    }, 3500);
+        const key = rotationKeys[idx];
+        const btn = document.querySelector(`.vibe-btn[onclick*="'${key}'"]`);
+        updateStaticPreview(key, btn, true);
+    }
+
+    // Only run rotation while the section is visible — saves CPU/battery
+    const section = document.querySelector('.send-flow-grid');
+    if (section && 'IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                if (!previewAutoRotation) previewAutoRotation = setInterval(rotate, 3000);
+            } else {
+                clearInterval(previewAutoRotation);
+                previewAutoRotation = null;
+            }
+        }, { threshold: 0.2 });
+        obs.observe(section);
+    } else {
+        previewAutoRotation = setInterval(rotate, 3000);
+    }
 }
 
 // ====================

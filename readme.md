@@ -115,8 +115,8 @@ Fonts: Space Grotesk (headers) / Inter (body)
 
 ## Social
 
-- TikTok: [@TheVibeCheckPro](https://www.tiktok.com/@TheVibeCheckPro)
-- X (Twitter): [@Thevibecheckpro](https://x.com/Thevibecheckpro)
+- TikTok: [@thevibecheckproject](https://www.tiktok.com/@thevibecheckproject)
+- X (Twitter): [@thevibecheckpro](https://x.com/thevibecheckpro)
 
 ---
 

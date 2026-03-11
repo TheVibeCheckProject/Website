@@ -2754,7 +2754,7 @@ footer {
    Blog Header — Clean Standout Title
    =================================== */
 .blog-title {
-    font-family: 'Fredoka', var(--font-display);
+    font-family: var(--font-display);
     font-size: clamp(36px, 7vw, 64px);
     font-weight: 700;
     line-height: 1.2;
@@ -3397,16 +3397,29 @@ nav.nav-open .nav-hamburger span:nth-child(3) {
 }
 
 @keyframes demoFlipOut {
-    from { transform: perspective(900px) rotateY(0deg); }
-    to   { transform: perspective(900px) rotateY(90deg); }
+    from {
+        transform: perspective(900px) rotateY(0deg);
+    }
+
+    to {
+        transform: perspective(900px) rotateY(90deg);
+    }
 }
+
 @keyframes demoFlipIn {
-    from { transform: perspective(900px) rotateY(-90deg); }
-    to   { transform: perspective(900px) rotateY(0deg); }
+    from {
+        transform: perspective(900px) rotateY(-90deg);
+    }
+
+    to {
+        transform: perspective(900px) rotateY(0deg);
+    }
 }
+
 .demo-card.flip-out {
     animation: demoFlipOut 0.2s ease-in forwards !important;
 }
+
 .demo-card.flip-in {
     animation: demoFlipIn 0.2s ease-out forwards !important;
 }
@@ -3604,6 +3617,7 @@ nav.nav-open .nav-hamburger span:nth-child(3) {
 
 /* ── Mobile demo card layout ── */
 @media (max-width: 768px) {
+
     /* Hide the glow — filter:blur creates a compositing layer that
        can sit above the card on some mobile renderers */
     .demo-glow {
@@ -3621,7 +3635,10 @@ nav.nav-open .nav-hamburger span:nth-child(3) {
         justify-content: flex-start;
         max-width: 100%;
     }
-    .demo-pills::-webkit-scrollbar { display: none; }
+
+    .demo-pills::-webkit-scrollbar {
+        display: none;
+    }
 
     /* Make the card slightly smaller */
     .demo-card {

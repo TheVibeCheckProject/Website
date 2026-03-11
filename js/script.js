@@ -230,15 +230,11 @@ function switchDemoVibe(vibe, skipRotationReset) {
     const sender  = document.getElementById('demoSender');
     const shimmer = document.getElementById('demoShimmer');
     const glow    = document.getElementById('demoGlow');
-    const stack1  = document.getElementById('demoStack1');
-    const stack2  = document.getElementById('demoStack2');
     const section = document.querySelector('.send-card-section');
     if (!card || !bg || !quote) return;
 
-    // Ambient + stacks + section wash — update immediately
-    if (glow)    glow.style.background    = data.glow;
-    if (stack1)  stack1.style.background  = data.glow;
-    if (stack2)  stack2.style.background  = data.glow;
+    // Ambient glow + section wash — update immediately
+    if (glow)    glow.style.background = data.glow;
     if (section) section.style.setProperty('--vibe-wash', data.wash);
 
     // Update particle colours
@@ -314,8 +310,6 @@ function initCardDemo() {
     const initBg      = document.getElementById('demoBg');
     const initVideo   = document.getElementById('demoBgVideo');
     const initGlow    = document.getElementById('demoGlow');
-    const initS1      = document.getElementById('demoStack1');
-    const initS2      = document.getElementById('demoStack2');
     const initSection = document.querySelector('.send-card-section');
 
     if (initData.isVideo && initVideo) {
@@ -328,9 +322,7 @@ function initCardDemo() {
         initBg.style.background = initData.bg;
     }
 
-    if (initGlow)    initGlow.style.background    = initData.glow;
-    if (initS1)      initS1.style.background      = initData.glow;
-    if (initS2)      initS2.style.background      = initData.glow;
+    if (initGlow)    initGlow.style.background = initData.glow;
     if (initSection) initSection.style.setProperty('--vibe-wash', initData.wash);
 
     // Pill click handlers

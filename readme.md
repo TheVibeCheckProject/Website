@@ -46,12 +46,11 @@ Website/
 ├── sitemap.xml              # SEO sitemap
 ├── CNAME                    # GitHub Pages custom domain
 ├── assets/
-│   ├── og-image.png         # Open Graph preview image
+│   ├── og-image.webp         # Open Graph preview image
 │   ├── downloads/           # Downloadable bundles (premium ZIP)
 │   ├── logos/               # Brand logos + profile images
 │   ├── media/               # Blog + social media assets
-│   ├── premium-themes/      # Premium theme source files
-│   └── wallpapers/          # Wallpaper PNGs
+│   └── wallpapers/          # Wallpaper WebPs
 ├── blog/                    # Blog articles
 ├── css/
 │   └── styles.css           # All site styling

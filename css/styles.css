@@ -3366,40 +3366,8 @@ nav.nav-open .nav-hamburger span:nth-child(3) {
     transform: translateY(10px) scale(1.08);
 }
 
-/* Ghost stack cards */
-.demo-stack {
-    position: absolute;
-    width: 340px;
-    height: 490px;
-    border-radius: 26px;
-    pointer-events: none;
-    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-    transition: background 0.7s ease;
-}
-
-.demo-stack-1 {
-    transform: translate(14px, 18px) rotate(4.5deg) scale(0.955);
-    opacity: 0.34;
-    filter: blur(1px);
-    z-index: 1;
-    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
-}
-
-.demo-stack-2 {
-    transform: translate(26px, 32px) rotate(8deg) scale(0.905);
-    opacity: 0.17;
-    filter: blur(3px);
-    z-index: 0;
-    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.3);
-}
-
 @media (max-width: 480px) {
     .demo-card {
-        width: 290px;
-        height: 415px;
-    }
-
-    .demo-stack {
         width: 290px;
         height: 415px;
     }

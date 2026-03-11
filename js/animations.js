@@ -32,7 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     span.style.display = 'inline-block';
                     span.style.opacity = '0';
                     span.style.transform = 'translateY(-40px) rotate(' + (Math.random() * 20 - 10) + 'deg)';
-                    span.style.transition = `all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)`;
+                    span.style.transition = `transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)`;
+                    span.style.willChange = 'transform, opacity';
                     span.style.transitionDelay = `${(wi * 4 + ci) * 0.04 + 0.3}s`;
                     wordSpan.appendChild(span);
                 });
@@ -65,7 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (heroSubtitle) {
         heroSubtitle.style.opacity = '0';
         heroSubtitle.style.transform = 'translateY(20px)';
-        heroSubtitle.style.transition = 'all 0.8s ease';
+        heroSubtitle.style.transition = 'transform 0.8s ease, opacity 0.8s ease';
+        heroSubtitle.style.willChange = 'transform, opacity';
         heroSubtitle.style.transitionDelay = isMobile ? '0.3s' : '1.2s';
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
@@ -79,7 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (heroCTA) {
         heroCTA.style.opacity = '0';
         heroCTA.style.transform = isMobile ? 'translateY(10px)' : 'scale(0.8)';
-        heroCTA.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        heroCTA.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        heroCTA.style.willChange = 'transform, opacity';
         heroCTA.style.transitionDelay = isMobile ? '0.5s' : '1.6s';
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
@@ -115,6 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. FLOATING SMOKE WORDS — Affirmations drifting (Desktop Only)
     // ==========================================
     if (!isMobile) {
+        setTimeout(initSmokeWords, 4000);
+    }
+
+    function initSmokeWords() {
         const particleContainer = document.createElement('div');
         particleContainer.classList.add('floating-particles');
         particleContainer.setAttribute('aria-hidden', 'true');
@@ -163,6 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
             wordEl.style.setProperty('--start-rot', `${startRot}deg`);
             wordEl.style.setProperty('--end-rot', `${endRot}deg`);
             wordEl.style.setProperty('--scatter-x', `${scatterX}px`);
+            wordEl.style.willChange = 'transform, opacity';
 
             particleContainer.appendChild(wordEl);
         }

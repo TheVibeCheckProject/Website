@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="The Vibe Check Project - Daily affirmations and uplifting messages to brighten your day. Small words, big impact.">
+    <meta name="keywords"
+        content="affirmations, positive vibes, mental health, motivation, inspiration, daily affirmations">
+    <meta name="author" content="The Vibe Check Project">
+
+    <!-- SEO & Verification -->
+    <meta name="google-site-verification" content="JEgy976fMrsnFUjqI1GPeIwXZfFjNT5vnlrZDtOqvak">
+    <title>The Vibe Check Project - Spread Good Vibes, One Message at a Time</title>
+
+    <!-- Open Graph / Twitter Card -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.thevibecheckproject.com/">
+    <link rel="canonical" href="https://www.thevibecheckproject.com/">
+    <meta property="og:title" content="The Vibe Check Project — Spread Good Vibes, One Card at a Time">
+    <meta property="og:description"
+        content="Send free anonymous affirmation cards, get daily uplifts in your inbox, and share good vibes with everyone who needs it.">
+    <meta property="og:image" content="https://www.thevibecheckproject.com/assets/og-image.png">
+    <meta property="og:site_name" content="The Vibe Check Project">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The Vibe Check Project — Spread Good Vibes, One Card at a Time">
+    <meta name="twitter:description"
+        content="Send free anonymous affirmation cards, get daily uplifts in your inbox, and share good vibes with everyone who needs it.">
+    <meta name="twitter:image" content="https://www.thevibecheckproject.com/assets/og-image.png">
+
+    <!-- Analytics (Microsoft Clarity) -->
+    <script>
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "vohl4gduni"); 
+    </script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E✨%3C/text%3E%3C/svg%3E">
+
+    <!-- Fonts Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Fredoka:wght@300;400;500;600;700&family=Caveat:wght@400;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Fredoka:wght@300;400;500;600;700&family=Caveat:wght@400;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+            rel="stylesheet">
+    </noscript>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css?v=6">
+    <link rel="preload" href="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1920&q=80&fm=webp"
+        as="image" fetchpriority="high">
+
+    <!-- Lucide Icons (Script Removed for Performance, replaced with inline SVGs) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2492108586092522"
+        crossorigin="anonymous"></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "The Vibe Check Project",
+      "url": "https://www.thevibecheckproject.com",
+      "description": "Send free anonymous affirmation cards, get daily uplifts in your inbox, and share good vibes with everyone who needs it.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.thevibecheckproject.com/blog/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+</head>
+
+<body>
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scroll-progress"></div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- Navigation -->
+        <nav id="nav">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
+                    <span class="logo-divider">|</span>
+                    <a href="blog/index.html" class="rotating-logo-word-wrap">
+                        <span class="rotating-logo-word in">Advice</span>
+                    </a>
+                </div>
+                <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu"
+                    aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-links" style="align-items: center;">
+                    <li>
+                        <a href="blog/index.html#crisis" class="nav-crisis-badge">
+                            <span class="nav-crisis-heart">❤️</span>
+                            <span class="nav-crisis-text">Emergency Support</span>
+                        </a>
+                    </li>
+                    <li class="mobile-only-nav-item"><a href="send-card.html"
+                            style="color: var(--color-primary); font-weight: 700;">💌 Send A Card</a></li>
+                    <li><a href="situations.html">Situations</a></li>
+                    <li><a href="#why">Our Mission</a></li>
+                    <li><a href="#affirmations">Daily Vibes</a></li>
+                    <li><a href="blog/index.html">Blog</a></li>
+                    <li><a href="#join">Join Us</a></li>
+                    <li><a href="#support">Support Us</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-bg" id="hero-bg"></div>
+            <div class="hero-content">
+                <h1 class="hero-title">Small Words. Big Impact.</h1>
+                <p class="hero-subtitle">
+                    The world can be tough. But a simple message at the right moment can help someone move mountains.
+                    Get your daily dose of positivity and be part of something good.
+                </p>
+                <div class="hero-cta">
+                    <button class="btn btn-primary" id="hero-cta">Get Your Daily Vibe Check ✨</button>
+                    <a href="send-card.html" class="btn btn-secondary">💌 Send a Card</a>
+                </div>
+                <div class="hero-affirmation" id="vibeOfDay">
+                    <p class="affirmation-text" id="vibeText">"You're trying, and that's what counts."</p>
+                    <p class="affirmation-label">🌅 Today's Vibe — <span id="vibeDate"></span></p>
+                    <button class="vibe-share-btn" id="vibeShareBtn" title="Share today's vibe">📋 Share This
+                        Vibe</button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- The Why Section -->
+        <section id="why" class="why-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Why Small Words Matter</h2>
+                    <p class="section-subtitle">
+                        In a world that can feel overwhelming, sometimes all someone needs is a simple reminder that
+                        they matter.
+                    </p>
+                </div>
+
+                <div class="why-grid">
+                    <div class="why-card reveal">
+                        <div class="card-emoji">💙</div>
+                        <h3>The Hidden Struggles</h3>
+                        <p>
+                            Everyone is fighting battles we can't see. A person struggling with anxiety, grief, burnout,
+                            or just a tough day
+                            might look fine on the outside. But inside? They need a reminder that they're not alone.
+                        </p>
+                    </div>
+
+                    <div class="why-card reveal">
+                        <div class="card-emoji">✨</div>
+                        <h3>The Power of Words</h3>
+                        <p>
+                            "Your feelings are valid." "You're enough just as you are." "It's okay to rest."
+                            These aren't just words—they're lifelines. They can turn someone's entire day around,
+                            giving them the strength to keep going.
+                        </p>
+                    </div>
+
+                    <div class="why-card reveal">
+                        <div class="card-emoji">🌟</div>
+                        <h3>Our Mission</h3>
+                        <p>
+                            The Vibe Check Project exists to spread the good that humans have the potential to spread.
+                            Through daily affirmations and uplifting messages, we're making the
+                            world
+                            smile a little more—one person at a time.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Affirmations Preview Section -->
+        <section id="affirmations" class="affirmations-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Your Daily Vibe Check</h2>
+                    <p class="section-subtitle">
+                        Every day, receive a carefully crafted message designed to uplift, motivate, and remind you of
+                        your worth.
+                    </p>
+                </div>
+
+                <div class="affirmations-grid">
+                    <div class="affirmation-card reveal">
+                        <div class="affirmation-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-heart">
+                                <path
+                                    d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5">
+                                </path>
+                            </svg>
+                        </div>
+                        <p class="affirmation-quote">"Your feelings are valid, and you deserve to be heard."</p>
+                        <span class="affirmation-category">Self-Compassion</span>
+                    </div>
+
+                    <div class="affirmation-card reveal">
+                        <div class="affirmation-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-sunrise">
+                                <path d="M12 2v8"></path>
+                                <path d="m4.93 10.93 1.41 1.41"></path>
+                                <path d="M2 18h2"></path>
+                                <path d="M20 18h2"></path>
+                                <path d="m19.07 10.93-1.41 1.41"></path>
+                                <path d="M22 22H2"></path>
+                                <path d="m8 6 4-4 4 4"></path>
+                                <path d="M16 18a4 4 0 0 0-8 0"></path>
+                            </svg>
+                        </div>
+                        <p class="affirmation-quote">"Every new day is a fresh chance to try again."</p>
+                        <span class="affirmation-category">Hope</span>
+                    </div>
+
+                    <div class="affirmation-card reveal">
+                        <div class="affirmation-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-smile">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                                <line x1="9" x2="9.01" y1="9" y2="9"></line>
+                                <line x1="15" x2="15.01" y1="9" y2="9"></line>
+                            </svg>
+                        </div>
+                        <p class="affirmation-quote">"You're doing better than you think you are."</p>
+                        <span class="affirmation-category">Encouragement</span>
+                    </div>
+
+                    <div class="affirmation-card reveal">
+                        <div class="affirmation-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-sparkles">
+                                <path
+                                    d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z">
+                                </path>
+                                <path d="M20 2v4"></path>
+                                <path d="M22 4h-4"></path>
+                                <circle cx="4" cy="20" r="2"></circle>
+                            </svg>
+                        </div>
+                        <p class="affirmation-quote">"Your presence makes a difference, even when you don't see it."</p>
+                        <span class="affirmation-category">Worth</span>
+                    </div>
+
+                    <div class="affirmation-card reveal">
+                        <div class="affirmation-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-moon">
+                                <path
+                                    d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401">
+                                </path>
+                            </svg>
+                        </div>
+                        <p class="affirmation-quote">"Rest is not weakness. It's essential."</p>
+                        <span class="affirmation-category">Self-Care</span>
+                    </div>
+
+                    <div class="affirmation-card reveal">
+                        <div class="affirmation-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-zap">
+                                <path
+                                    d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z">
+                                </path>
+                            </svg>
+                        </div>
+                        <p class="affirmation-quote">"You're trying, and that's what counts."</p>
+                        <span class="affirmation-category">Motivation</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- Send a Card Section -->
+        <section id="send-card" class="send-card-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">💌 See What They'll Receive</h2>
+                    <p class="section-subtitle">
+                        Pick a vibe below and watch the card come alive. Takes 30 seconds, no sign-up required.
+                    </p>
+                </div>
+
+                <div class="card-demo-wrapper reveal">
+                    <!-- Particle canvas -->
+                    <canvas id="demoCanvas" aria-hidden="true"></canvas>
+
+                    <!-- Category pills -->
+                    <div class="demo-pills" id="demoPills">
+                        <button class="demo-pill active" data-vibe="encouragement">✨ Encouragement</button>
+                        <button class="demo-pill" data-vibe="calm">💙 Calm</button>
+                        <button class="demo-pill" data-vibe="celebrate">🎉 Celebrate</button>
+                        <button class="demo-pill" data-vibe="love">💖 Love</button>
+                        <button class="demo-pill" data-vibe="healing">🕊️ Healing</button>
+                        <button class="demo-pill" data-vibe="selflove">💕 Self-Love</button>
+                    </div>
+
+                    <!-- 3D tilt card stage -->
+                    <div class="demo-stage" id="demoStage">
+                        <!-- Ambient glow (behind everything) -->
+                        <div class="demo-glow" id="demoGlow"></div>
+                        <!-- Main card -->
+                        <div class="demo-card" id="demoCard">
+                            <div class="demo-card-bg" id="demoBg"></div>
+                            <video id="demoBgVideo" class="demo-card-video" autoplay loop muted playsinline></video>
+                            <div class="demo-card-noise"></div>
+                            <!-- Holographic overlay -->
+                            <div class="demo-card-holo" id="demoHolo"></div>
+                            <div class="demo-card-content">
+                                <div class="demo-card-label">Vibe Check ✨</div>
+                                <div class="demo-card-quote" id="demoQuote">"You're doing better than you think you
+                                    are."</div>
+                                <div class="demo-card-from">
+                                    <span>from</span>
+                                    <strong id="demoSender">Someone special</strong>
+                                </div>
+                            </div>
+                            <div class="demo-card-shimmer-clip">
+                                <div class="demo-card-shimmer" id="demoShimmer"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA -->
+                    <div class="demo-cta">
+                        <a href="send-card.html" class="btn btn-primary demo-cta-btn">Send One Now — It's Free ✨</a>
+                        <span class="demo-cta-sub">No account · No fuss · Just good vibes</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Blog Showcase Section -->
+        <section id="blog" class="blog-showcase-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="blog-title">The Vibe Check Project Blog</h2>
+                    <p class="section-subtitle">
+                        Real advice, exact scripts, and step-by-step guides for showing up when it matters most — and
+                        even when nothing is wrong.
+                    </p>
+                </div>
+
+                <div class="blog-showcase-grid">
+                    <a href="blog/why-you-should-send-affirmations-for-no-reason.html"
+                        class="blog-showcase-card reveal">
+                        <span class="blog-showcase-tag">Just Because</span>
+                        <h3>Why You Should Send Affirmations For No Reason At All</h3>
+                        <p>You don't need a crisis to tell someone they matter. The most powerful messages arrive when
+                            everything seems "fine."</p>
+                        <span class="blog-showcase-link">Read Guide →</span>
+                    </a>
+
+                    <a href="blog/the-people-who-seem-fine-need-you-most.html" class="blog-showcase-card reveal">
+                        <span class="blog-showcase-tag">Check On Your People</span>
+                        <h3>The People Who Seem Fine Are Often the Ones Struggling Most</h3>
+                        <p>The strongest people carry the heaviest weight in silence. Here's how to check on them.</p>
+                        <span class="blog-showcase-link">Read Guide →</span>
+                    </a>
+
+                    <a href="blog/how-a-30-second-text-can-change-someones-day.html" class="blog-showcase-card reveal">
+                        <span class="blog-showcase-tag">Everyday Kindness</span>
+                        <h3>How a 30-Second Text Can Change Someone's Entire Day</h3>
+                        <p>The science behind why one small message has outsized impact — and 10 texts you can send
+                            right now.</p>
+                        <span class="blog-showcase-link">Read Guide →</span>
+                    </a>
+
+                    <a href="blog/daily-affirmations-for-anxiety.html" class="blog-showcase-card reveal">
+                        <span class="blog-showcase-tag">Anxiety & Wellness</span>
+                        <h3>Daily Affirmations for Anxiety — 30 Phrases That Calm Your Mind</h3>
+                        <p>Not toxic positivity — real, grounding affirmations designed for anxious brains.</p>
+                        <span class="blog-showcase-link">Read Guide →</span>
+                    </a>
+                </div>
+
+                <div style="text-align: center; margin-top: 40px;">
+                    <a href="blog/index.html" class="btn btn-secondary btn-large">See All 26 Guides →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how" class="how-it-works-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">How It Works</h2>
+                    <p class="section-subtitle">
+                        A fresh affirmation in your inbox every morning. That's literally it.
+                    </p>
+                </div>
+
+                <div class="steps">
+                    <div class="step reveal">
+                        <div class="step-number">1</div>
+                        <h3>Drop Your Email</h3>
+                        <p>
+                            Join our free newsletter and start receiving a daily affirmation every single morning.
+                            No spam, no sales — just a moment of kindness to start your day.
+                        </p>
+                    </div>
+
+                    <div class="step reveal">
+                        <div class="step-number">2</div>
+                        <h3>Wake Up to Good Words</h3>
+                        <p>
+                            Every morning, a thoughtfully crafted message lands in your inbox. Whether you need
+                            encouragement,
+                            validation, hope, or just a smile — we've got you.
+                        </p>
+                    </div>
+
+                    <div class="step reveal">
+                        <div class="step-number">3</div>
+                        <h3>Pass It On</h3>
+                        <p>
+                            Something hit different today? Forward it. Send a card. Text it to a friend.
+                            One message can create a ripple effect you'll never see — but someone will feel.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Premium Features Section -->
+        <section id="premium" class="features-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Support the Project + Unlock Premium Features</h2>
+                    <p class="section-subtitle">
+                        Every morning, a fresh affirmation in your inbox for free. For those who want more, a one-time
+                        unlock gives you lifetime access to 10+ premium themes and browser sounds (with more added
+                        continuously) — no subscriptions,
+                        just good vibes.
+                    </p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card reveal">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-sun">
+                                <circle cx="12" cy="12" r="4"></circle>
+                                <path d="M12 2v2"></path>
+                                <path d="M12 20v2"></path>
+                                <path d="m4.93 4.93 1.41 1.41"></path>
+                                <path d="m17.66 17.66 1.41 1.41"></path>
+                                <path d="M2 12h2"></path>
+                                <path d="M20 12h2"></path>
+                                <path d="m6.34 17.66-1.41 1.41"></path>
+                                <path d="m19.07 4.93-1.41 1.41"></path>
+                            </svg>
+                        </div>
+                        <h3>Daily Newsletter</h3>
+                        <p>
+                            A fresh affirmation delivered to your inbox every single morning. It's completely free to
+                            join and start each day grounded.
+                        </p>
+                    </div>
+
+                    <div class="feature-card reveal">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-palette">
+                                <path
+                                    d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z">
+                                </path>
+                                <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
+                                <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+                                <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+                                <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
+                            </svg>
+                        </div>
+                        <h3>10+ Premium Themes</h3>
+                        <p>
+                            Unlock access to 10 unique, premium card designs for every situation—from grief to hype-ups.
+                        </p>
+                    </div>
+
+                    <div class="feature-card reveal">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-headphones">
+                                <path
+                                    d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3>Browser Sounds</h3>
+                        <p>
+                            Access all relaxing ambient soundscapes directly in the browser while sending or reading
+                            cards.
+                        </p>
+                    </div>
+
+                    <div class="feature-card reveal">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-heart">
+                                <path
+                                    d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3>Support the Mission</h3>
+                        <p>
+                            Your one-time $4.99 Premium Unlock keeps this project alive and free for everyone else.
+                            Every unlock helps us reach more people who need a good vibe.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pricing-highlight">
+                    <p class="pricing-text">$4.99 one-time — 10+ premium card themes (and growing) + all sounds • Yours
+                        forever in your
+                        browser</p>
+                    <div
+                        style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" class="btn btn-primary btn-large"
+                            target="_blank" rel="noopener">Unlock Premium — $4.99 →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Proof Section -->
+        <section class="social-proof-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Spreading Good Vibes Together</h2>
+                </div>
+
+                <div class="testimonials">
+                    <div class="testimonial reveal" style="text-align:center; grid-column: 1 / -1; padding: 2.5rem;">
+                        <p class="testimonial-quote" style="font-size:18px; font-style:normal; margin-bottom: 1rem;">
+                            We just launched. Be one of the first to send a vibe check — and let us know how it went.
+                        </p>
+                        <a href="send-card.html"
+                            style="display:inline-block; margin-top:0.5rem; padding: 12px 28px; background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); color: white; font-weight: 600; border-radius: 10px; text-decoration: none; font-family: var(--font-display);">
+                            Send Your First Card ✨
+                        </a>
+                    </div>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-card reveal">
+                        <div class="stat" id="liveCardCount">—</div>
+                        <p class="stat-label">Vibe Checks Sent</p>
+                    </div>
+                    <div class="stat-card reveal">
+                        <div class="stat">20</div>
+                        <p class="stat-label">Card Themes</p>
+                    </div>
+                    <div class="stat-card reveal">
+                        <div class="stat">100%</div>
+                        <p class="stat-label">Free to Send</p>
+                    </div>
+                    <div class="stat-card reveal">
+                        <div class="stat" id="liveNewsletterCount">—</div>
+                        <p class="stat-label">Newsletters Sent</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Join Section -->
+        <section id="join" class="cta-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Get a Free Affirmation Every Morning</h2>
+                    <p class="section-subtitle">
+                        Join thousands of people who start their day with a moment of kindness in their inbox.
+                        One email. One affirmation. Every morning.
+                    </p>
+                </div>
+                <button class="btn btn-primary btn-large" id="cta-button">Join the Newsletter ✨</button>
+                <p class="cta-note">Free forever • One email a day • Unsubscribe anytime</p>
+            </div>
+        </section>
+
+        <!-- Support Section -->
+        <section id="support" class="support-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Two Ways to Get More Good Vibes</h2>
+                    <p class="section-subtitle">
+                        Whether you want daily affirmations, one-time premium card designs, or just want to
+                        support the mission — there's an option for you.
+                    </p>
+                </div>
+
+                <div class="support-grid">
+                    <div class="support-card reveal">
+                        <h3>✨ Premium Unlock</h3>
+                        <p>One-time $4.99 — 10+ premium card themes (more added constantly), all relaxing sounds, yours
+                            forever in your browser.
+                        </p>
+                        <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener"
+                            class="btn btn-secondary">Unlock Premium →</a>
+                    </div>
+
+                    <div class="support-card reveal">
+                        <h3>☕ Buy Us a Coffee</h3>
+                        <p>A one-time tip helps keep the project running.
+                            Every bit counts and is deeply appreciated.</p>
+                        <a href="https://ko-fi.com/thevibecheckproject?utm_source=website&utm_campaign=tip-jar"
+                            target="_blank" rel="noopener" class="btn btn-secondary">Tip on Ko-fi</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-container">
+                <div class="footer-grid">
+                    <div class="footer-section">
+                        <h4>About</h4>
+                        <p style="color: var(--color-text-muted); font-size: 14px; line-height: 1.7;">
+                            The Vibe Check Project exists to spread positivity through daily affirmations and uplifting
+                            messages.
+                            Because small words can make a big impact.
+                        </p>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Project</h4>
+                        <ul class="footer-links">
+                            <li><a href="blog/index.html">Advice &amp; Guides</a></li>
+                            <li><a href="situations.html">Browse by Situation</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="#support">Support Us</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Legal</h4>
+                        <ul class="footer-links">
+                            <li><a href="privacy.html">Privacy Policy</a></li>
+                            <li><a href="terms.html">Terms of Service</a></li>
+                            <li><a href="cookies.html">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Connect</h4>
+                        <ul class="footer-links">
+                            <li><a href="https://x.com/thevibecheckpro" target="_blank" rel="noopener">X (Twitter)</a>
+                            </li>
+                            <li><a href="https://www.tiktok.com/@thevibecheckproject" target="_blank"
+                                    rel="noopener">TikTok</a></li>
+                            <li><a href="https://ko-fi.com/thevibecheckproject" target="_blank" rel="noopener">Ko-fi</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p style="font-size: 0.8rem; color: #a0a0a0; margin-bottom: 10px;">Disclaimer: We do not provide
+                        therapy, counseling, or medical advice. Our content is for positive emotional support and
+                        inspiration only.</p>
+                    <p style="font-size: 0.75rem; color: #808080; margin-bottom: 15px; opacity: 0.8;">As an Amazon
+                        Associate I earn from qualifying purchases.</p>
+                    <p>✨ Made with love by The Vibe Check Project • Spreading good since 2025</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Main JavaScript -->
+    <script src="js/script.js" defer></script>
+    <script src="js/animations.js" defer></script>
+
+
+
+</body>
+
+</html>

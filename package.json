@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/TheVibeCheckProject/Website/issues"
   },
-  "homepage": "https://github.com/TheVibeCheckProject/Website#readme",
+  "homepage": "https://www.thevibecheckproject.com",
   "dependencies": {
     "@google/generative-ai": "^0.24.0",
     "cheerio": "^1.2.0",

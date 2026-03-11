@@ -56,7 +56,216 @@
     </noscript>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="/css/styles.css?v=6">
+    <style>
+        :root {
+            --color-primary: #FF6B9D;
+            --color-primary-dark: #E85285;
+            --color-primary-light: #FFB5D1;
+            --color-secondary: #FEC84A;
+            --color-secondary-dark: #F5B82E;
+            --color-accent: #A78BFA;
+            --color-bg-dark: #1A1625;
+            --color-bg-medium: #2D2438;
+            --color-bg-light: #3F3449;
+            --color-text-primary: #FEFEFE;
+            --color-text-secondary: #E0D4F0;
+            --color-text-muted: #B4A5C7;
+            --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-display: 'Space Grotesk', sans-serif;
+            --transition-base: 0.3s ease;
+            --transition-fast: 0.2s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            scrollbar-width: none;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-bg-dark);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(26, 22, 37, 0.8);
+            backdrop-filter: blur(6px);
+            border-bottom: 1px solid rgba(255, 107, 157, 0.1);
+            transition: all var(--transition-base);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-logo-link {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            background: url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1920&q=80&fm=webp') center/cover no-repeat;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(26, 22, 37, 0.92) 0%, rgba(45, 36, 56, 0.88) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            padding: 96px 24px;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(48px, 8vw, 72px);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 32px;
+            background: linear-gradient(135deg, #FF6B9D 0%, #FEC84A 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.2s forwards;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(18px, 3vw, 22px);
+            color: var(--color-text-secondary);
+            max-width: 720px;
+            margin: 0 auto 48px;
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.4s forwards;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.6s forwards;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-text-primary);
+            border: 2px solid #3F3449;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="/css/styles.css?v=6" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="/css/styles.css?v=6">
+    </noscript>
     <link rel="preload" href="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1920&q=80&fm=webp"
         as="image" fetchpriority="high">
 

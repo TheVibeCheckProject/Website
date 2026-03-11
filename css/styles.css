@@ -283,6 +283,14 @@ nav.scrolled {
     will-change: transform;
 }
 
+@media (max-width: 768px) {
+    .hero-bg {
+        background-image: url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=600&q=70&fm=webp');
+        /* Disable parallax on mobile — translateZ(0) is enough to promote layer */
+        will-change: auto;
+    }
+}
+
 .hero-bg::after {
     content: '';
     position: absolute;
@@ -506,9 +514,10 @@ section {
     background: var(--color-bg-dark);
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all var(--transition-base);
+    transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
     position: relative;
     overflow: hidden;
+    contain: layout style;
 }
 
 .why-card::before {
@@ -601,8 +610,9 @@ section {
     background: var(--color-bg-medium);
     border-radius: 16px;
     border: 1px solid rgba(99, 102, 241, 0.1);
-    transition: all var(--transition-base);
+    transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
     overflow: hidden;
+    contain: layout style;
 }
 
 .step::before {
@@ -615,7 +625,7 @@ section {
     background-size: cover;
     background-position: center;
     opacity: 0.12;
-    transition: all var(--transition-base);
+    transition: opacity var(--transition-base);
 }
 
 .step:nth-child(1)::before {
@@ -692,9 +702,10 @@ section {
     background: var(--color-bg-dark);
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all var(--transition-base);
+    transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
     position: relative;
     overflow: hidden;
+    contain: layout style;
 }
 
 .feature-card::before {
@@ -707,7 +718,7 @@ section {
     background-size: cover;
     background-position: center;
     opacity: 0.06;
-    transition: all var(--transition-base);
+    transition: opacity var(--transition-base), transform var(--transition-base);
 }
 
 .feature-card:nth-child(1)::before {
@@ -837,11 +848,12 @@ section {
     background: var(--color-bg-medium);
     border-radius: 16px;
     border: 1px solid rgba(255, 107, 157, 0.1);
-    transition: all var(--transition-base);
+    transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    contain: layout style;
 }
 
 .affirmation-card:hover {
@@ -1144,7 +1156,8 @@ footer {
 .reveal {
     opacity: 0;
     transform: translateY(30px);
-    transition: all var(--transition-slow);
+    transition: opacity var(--transition-slow), transform var(--transition-slow);
+    will-change: opacity, transform;
 }
 
 .reveal.active {
@@ -1155,7 +1168,8 @@ footer {
 .reveal-left {
     opacity: 0;
     transform: translateX(-30px);
-    transition: all var(--transition-slow);
+    transition: opacity var(--transition-slow), transform var(--transition-slow);
+    will-change: opacity, transform;
 }
 
 .reveal-left.active {
@@ -1166,7 +1180,8 @@ footer {
 .reveal-right {
     opacity: 0;
     transform: translateX(30px);
-    transition: all var(--transition-slow);
+    transition: opacity var(--transition-slow), transform var(--transition-slow);
+    will-change: opacity, transform;
 }
 
 .reveal-right.active {
@@ -1284,6 +1299,49 @@ footer {
     /* Hide floating word cloud — continuous GPU animation not worth it on mobile */
     .floating-particles {
         display: none !important;
+    }
+
+    /* Disable blob drift animations on mobile — each uses filter:blur(100px) + continuous
+       transform animation, which is expensive on low-end GPUs */
+    .why-section::after,
+    .affirmations-section::after,
+    .features-section::after,
+    .blog-showcase-section::after,
+    .how-it-works-section::after,
+    .cta-section::after {
+        animation: none !important;
+        display: none !important;
+    }
+
+    /* Stop emoji bouncing on mobile — not visible to users and wastes compositor budget */
+    .card-emoji,
+    .use-case-icon,
+    .card-envelope-icon {
+        animation: none !important;
+    }
+
+    /* Remove card tilts on mobile — stacked layout makes rotations look broken */
+    .why-card:nth-child(1),
+    .why-card:nth-child(2),
+    .why-card:nth-child(3),
+    .step:nth-child(1),
+    .step:nth-child(2),
+    .step:nth-child(3),
+    .affirmation-card:nth-child(1),
+    .affirmation-card:nth-child(2),
+    .affirmation-card:nth-child(3),
+    .affirmation-card:nth-child(4),
+    .affirmation-card:nth-child(5),
+    .affirmation-card:nth-child(6),
+    .feature-card:nth-child(1),
+    .feature-card:nth-child(2),
+    .feature-card:nth-child(3),
+    .feature-card:nth-child(4),
+    .blog-showcase-card:nth-child(1),
+    .blog-showcase-card:nth-child(2),
+    .blog-showcase-card:nth-child(3),
+    .blog-showcase-card:nth-child(4) {
+        transform: none !important;
     }
 }
 
@@ -1665,6 +1723,7 @@ footer {
     pointer-events: none;
     z-index: 0;
     animation: blobDrift 20s ease-in-out infinite alternate;
+    will-change: transform;
 }
 
 .why-section::after {
@@ -1985,6 +2044,7 @@ footer {
 .card-envelope-icon {
     display: inline-block;
     animation: emojiBounce 3s ease-in-out infinite;
+    will-change: transform;
 }
 
 .why-card:nth-child(2) .card-emoji {
@@ -3711,13 +3771,14 @@ nav.nav-open .nav-hamburger span:nth-child(3) {
     padding: 28px;
     text-decoration: none;
     color: var(--color-text-primary);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
+    contain: layout style;
 }
 
 @media (max-width: 768px) {

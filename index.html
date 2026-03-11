@@ -303,75 +303,60 @@
         <section id="send-card" class="send-card-section">
             <div class="section-container">
                 <div class="section-header">
-                    <h2 class="section-title">💌 Send a Vibe Check Card</h2>
+                    <h2 class="section-title">💌 See What They'll Receive</h2>
                     <p class="section-subtitle">
-                        Brighten someone's day with a personalized affirmation card. It's completely free, requires no
-                        login, and takes just 30 seconds.
+                        Pick a vibe below and watch the card come alive. Takes 30 seconds, no sign-up required.
                     </p>
                 </div>
 
-                <div class="send-flow-grid">
-                    <!-- Card 1: The Vibe -->
-                    <div class="flow-card reveal">
-                        <div class="flow-step-number">1</div>
-                        <h3>Pick the Vibe</h3>
-                        <p>Choose the exact energy they need right now.</p>
-                        <div class="vibe-options">
-                            <button class="vibe-btn active" onclick="updateStaticPreview('encouragement', this)">✨
-                                Encouragement</button>
-                            <button class="vibe-btn" onclick="updateStaticPreview('anxiety', this)">🌊 Anxiety
-                                Relief</button>
-                            <button class="vibe-btn" onclick="updateStaticPreview('justbecause', this)">💖 Just
-                                Because</button>
-                            <button class="vibe-btn" onclick="updateStaticPreview('birthday', this)">🎉
-                                Birthday</button>
-                            <button class="vibe-btn" onclick="updateStaticPreview('grief', this)">🕊️ Healing</button>
-                            <button class="vibe-btn" onclick="updateStaticPreview('selflove', this)">💕
-                                Self-Love</button>
-                            <button class="vibe-btn" onclick="updateStaticPreview('patience', this)">🌱
-                                Patience</button>
-                            <button class="vibe-btn" onclick="updateStaticPreview('validation', this)">🤝
-                                Validation</button>
-                            <button class="vibe-btn" onclick="updateStaticPreview('abundance', this)">🌟
-                                Abundance</button>
-                        </div>
+                <div class="card-demo-wrapper reveal">
+                    <!-- Particle canvas -->
+                    <canvas id="demoCanvas" aria-hidden="true"></canvas>
+
+                    <!-- Category pills -->
+                    <div class="demo-pills" id="demoPills">
+                        <button class="demo-pill active" data-vibe="encouragement">✨ Encouragement</button>
+                        <button class="demo-pill" data-vibe="calm">💙 Calm</button>
+                        <button class="demo-pill" data-vibe="celebrate">🎉 Celebrate</button>
+                        <button class="demo-pill" data-vibe="love">💖 Love</button>
+                        <button class="demo-pill" data-vibe="healing">🕊️ Healing</button>
+                        <button class="demo-pill" data-vibe="selflove">💕 Self-Love</button>
                     </div>
 
-                    <!-- Card 2: Preview -->
-                    <div class="flow-card reveal" style="transition-delay: 100ms;">
-                        <div class="flow-step-number">2</div>
-                        <h3>Preview It</h3>
-                        <p>See exactly what they'll open.</p>
-                        <div class="static-preview-container" id="staticPreviewBox"
-                            style="background: linear-gradient(135deg, #11998e, #38ef7d);">
-                            <div class="static-preview-overlay">
-                                <div class="static-preview-glass">
-                                    <div class="static-preview-text" id="staticPreviewQuote">
-                                        "You're doing better than you think you are."
-                                    </div>
-                                    <div id="staticPreviewSenderText"
-                                        style="font-size: 0.85rem; color: rgba(255,255,255,0.7); transition: opacity 0.3s ease;">
-                                        <strong>Someone special</strong> wanted to send you some good vibes ✨
-                                    </div>
+                    <!-- 3D tilt card stage -->
+                    <div class="demo-stage" id="demoStage">
+                        <!-- Ambient glow (behind everything) -->
+                        <div class="demo-glow" id="demoGlow"></div>
+                        <!-- Ghost card stack -->
+                        <div class="demo-stack demo-stack-2" id="demoStack2"></div>
+                        <div class="demo-stack demo-stack-1" id="demoStack1"></div>
+                        <!-- Main card -->
+                        <div class="demo-card" id="demoCard">
+                            <div class="demo-card-bg" id="demoBg"></div>
+                            <video id="demoBgVideo" class="demo-card-video" autoplay loop muted playsinline></video>
+                            <div class="demo-card-noise"></div>
+                            <!-- Holographic overlay -->
+                            <div class="demo-card-holo" id="demoHolo"></div>
+                            <div class="demo-card-content">
+                                <div class="demo-card-label">Vibe Check ✨</div>
+                                <div class="demo-card-quote" id="demoQuote">"You're doing better than you think you are."</div>
+                                <div class="demo-card-from">
+                                    <span>from</span>
+                                    <strong id="demoSender">Someone special</strong>
                                 </div>
+                            </div>
+                            <div class="demo-card-shimmer-clip">
+                                <div class="demo-card-shimmer" id="demoShimmer"></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Card 3: Send -->
-                    <div class="flow-card reveal" style="transition-delay: 200ms;">
-                        <div class="flow-step-number">3</div>
-                        <h3>Send It Off</h3>
-                        <p>Share instantly via text, WhatsApp, or copy the link directly.</p>
-                        <div class="send-cta-wrap">
-                            <div style="font-size: 3rem; margin-bottom: 10px;">🚀</div>
-                            <a href="send-card.html" class="btn btn-primary massive-btn">Make Yours Now ✨</a>
-                            <span class="fun-fact">Zero sign-up required. Free forever.</span>
-                        </div>
+                    <!-- CTA -->
+                    <div class="demo-cta">
+                        <a href="send-card.html" class="btn btn-primary demo-cta-btn">Send One Now — It's Free ✨</a>
+                        <span class="demo-cta-sub">No account · No fuss · Just good vibes</span>
                     </div>
                 </div>
-
-
 
             </div>
         </section>

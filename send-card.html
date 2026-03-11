@@ -501,8 +501,8 @@
             position: relative;
             z-index: 5;
             background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             border-radius: 12px;
             padding: 32px 24px;
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -1133,36 +1133,570 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,107,157,0.1);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 107, 157, 0.1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: 9999;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
             white-space: nowrap;
         }
+
         .vibe-toast.visible {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
             pointer-events: auto;
         }
-        .vibe-toast .toast-icon { font-size: 18px; flex-shrink: 0; }
-        @keyframes fieldShake {
-            0%, 100% { transform: translateX(0); }
-            20%       { transform: translateX(-8px); }
-            40%       { transform: translateX(8px); }
-            60%       { transform: translateX(-5px); }
-            80%       { transform: translateX(5px); }
+
+        .vibe-toast .toast-icon {
+            font-size: 18px;
+            flex-shrink: 0;
         }
-        .field-shake { animation: fieldShake 0.45s ease; border-color: rgba(255,107,157,0.7) !important; }
-        .grid-shake  { animation: fieldShake 0.45s ease; }
+
+        @keyframes fieldShake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-8px);
+            }
+
+            40% {
+                transform: translateX(8px);
+            }
+
+            60% {
+                transform: translateX(-5px);
+            }
+
+            80% {
+                transform: translateX(5px);
+            }
+        }
+
+        .field-shake {
+            animation: fieldShake 0.45s ease;
+            border-color: rgba(255, 107, 157, 0.7) !important;
+        }
+
+        .grid-shake {
+            animation: fieldShake 0.45s ease;
+        }
+
+        /* ── Animated Orb Background ─────────────────────────────── */
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.11;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-orb-1 {
+            width: 640px;
+            height: 640px;
+            background: radial-gradient(circle, #ff6b9d 0%, transparent 70%);
+            top: -180px;
+            left: -180px;
+            animation: orbDrift1 24s ease-in-out infinite alternate;
+        }
+
+        .bg-orb-2 {
+            width: 520px;
+            height: 520px;
+            background: radial-gradient(circle, #a855f7 0%, transparent 70%);
+            bottom: -120px;
+            right: -120px;
+            animation: orbDrift2 19s ease-in-out infinite alternate;
+        }
+
+        .bg-orb-3 {
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, #60a5fa 0%, transparent 70%);
+            top: 45%;
+            left: 45%;
+            transform: translate(-50%, -50%);
+            animation: orbDrift3 28s ease-in-out infinite alternate;
+        }
+
+        @keyframes orbDrift1 {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(50px, 30px) scale(1.08);
+            }
+
+            100% {
+                transform: translate(20px, -40px) scale(0.95);
+            }
+        }
+
+        @keyframes orbDrift2 {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(-40px, -30px) scale(1.06);
+            }
+
+            100% {
+                transform: translate(30px, 40px) scale(0.97);
+            }
+        }
+
+        @keyframes orbDrift3 {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            50% {
+                transform: translate(calc(-50% + 60px), calc(-50% - 40px)) scale(1.1);
+            }
+
+            100% {
+                transform: translate(calc(-50% - 30px), calc(-50% + 50px)) scale(0.92);
+            }
+        }
+
+        /* ── Glassmorphic Page & Container ─────────────────────────── */
+        .send-card-page {
+            background: #0c0a13 !important;
+            position: relative;
+        }
+
+        .send-card-container {
+            background: rgba(255, 255, 255, 0.025) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.07) !important;
+            box-shadow: 0 48px 96px rgba(0, 0, 0, 0.65),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── Numbered Step Indicator ──────────────────────────────── */
+        .step-indicator {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 0 !important;
+            margin-bottom: var(--space-xl) !important;
+        }
+
+        .step-num-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-num {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-family: var(--font-body);
+        }
+
+        .step-num-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.25);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.3s;
+            white-space: nowrap;
+        }
+
+        .step-num-wrap.sn-active .step-num {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 0 0 5px rgba(255, 107, 157, 0.12), 0 6px 20px rgba(255, 107, 157, 0.45);
+            transform: scale(1.12);
+        }
+
+        .step-num-wrap.sn-active .step-num-label {
+            color: var(--color-primary);
+        }
+
+        .step-num-wrap.sn-done .step-num {
+            background: rgba(255, 107, 157, 0.15);
+            border-color: rgba(255, 107, 157, 0.35);
+            color: var(--color-primary);
+        }
+
+        .step-num-wrap.sn-done .step-num-label {
+            color: rgba(255, 107, 157, 0.5);
+        }
+
+        .step-connector {
+            width: 64px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.07);
+            margin-bottom: 22px;
+            flex-shrink: 0;
+            transition: background 0.4s;
+            border-radius: 2px;
+        }
+
+        .step-connector.done {
+            background: rgba(255, 107, 157, 0.3);
+        }
+
+        @media (max-width: 480px) {
+            .step-connector {
+                width: 28px;
+            }
+
+            .step-num {
+                width: 32px;
+                height: 32px;
+                font-size: 12px;
+            }
+
+            .step-num-label {
+                font-size: 9px;
+            }
+        }
+
+        /* ── Write Your Own Affirmation ───────────────────────────── */
+        .write-own-card {
+            grid-column: 1 / -1;
+            padding: 15px 18px;
+            border-radius: 14px;
+            border: 1.5px dashed rgba(168, 85, 247, 0.28);
+            background: rgba(168, 85, 247, 0.04);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(168, 85, 247, 0.7);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.25s ease;
+            animation: affCardIn 0.35s ease both;
+            animation-delay: 650ms;
+            position: relative;
+        }
+
+        .write-own-card:hover {
+            border-color: rgba(168, 85, 247, 0.55);
+            background: rgba(168, 85, 247, 0.08);
+            color: #d8b4fe;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.12);
+        }
+
+        .write-own-badge {
+            font-size: 9px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f472b6, #a855f7);
+            color: white;
+            padding: 2px 7px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        .write-own-expanded {
+            grid-column: 1 / -1;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            animation: affCardIn 0.3s ease both;
+        }
+
+        .write-own-expanded.visible {
+            display: flex;
+        }
+
+        .write-own-textarea {
+            width: 100%;
+            padding: 16px;
+            font-size: 15px;
+            font-family: var(--font-body);
+            font-style: italic;
+            background: rgba(168, 85, 247, 0.06);
+            border: 1.5px solid rgba(168, 85, 247, 0.4);
+            border-radius: 14px;
+            color: white;
+            resize: none;
+            min-height: 96px;
+            line-height: 1.6;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .write-own-textarea:focus {
+            outline: none;
+            border-color: #a855f7;
+            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.1);
+        }
+
+        .write-own-back {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.35);
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            padding: 0;
+            font-family: var(--font-body);
+            transition: color 0.2s;
+        }
+
+        .write-own-back:hover {
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        /* ── Premium Unlock Modal ─────────────────────────────────── */
+        .prem-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .prem-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .prem-modal {
+            background: rgba(16, 10, 26, 0.96);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(168, 85, 247, 0.28);
+            border-radius: 24px;
+            padding: 40px 32px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 48px 96px rgba(0, 0, 0, 0.7),
+                0 0 0 1px rgba(168, 85, 247, 0.08);
+            transform: scale(0.93) translateY(12px);
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .prem-overlay.open .prem-modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .prem-modal-icon {
+            font-size: 44px;
+            display: block;
+            margin-bottom: 14px;
+        }
+
+        .prem-modal-title {
+            font-family: var(--font-display);
+            font-size: 22px;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .prem-modal-desc {
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .prem-modal-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 26px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .prem-modal-features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13.5px;
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        .prem-modal-features li .fi {
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .prem-cta {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f472b6, #a855f7);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            font-family: var(--font-display);
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 12px;
+            box-shadow: 0 8px 28px rgba(168, 85, 247, 0.35);
+        }
+
+        .prem-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 40px rgba(168, 85, 247, 0.45);
+        }
+
+        .prem-dismiss {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.28);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: color 0.2s;
+        }
+
+        .prem-dismiss:hover {
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        /* ── Preview Enhancements ─────────────────────────────────── */
+        @keyframes previewFloat {
+
+            0%,
+            100% {
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+            }
+
+            50% {
+                box-shadow: 0 32px 64px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+                transform: translateY(-5px);
+            }
+        }
+
+        .card-preview {
+            animation: previewFloat 5s ease-in-out infinite;
+        }
+
+        .preview-recipient-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 50px;
+            padding: 3px 12px 3px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 14px;
+            transition: all 0.35s ease;
+            backdrop-filter: blur(4px);
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .preview-recipient-chip.hidden {
+            opacity: 0;
+            transform: translateY(-6px);
+            pointer-events: none;
+            margin-bottom: 0;
+            height: 0;
+            padding: 0;
+        }
+
+        /* ── Glass Form Inputs ────────────────────────────────────── */
+        .form-input,
+        .form-select,
+        .form-textarea {
+            background: rgba(255, 255, 255, 0.04) !important;
+            border: 1.5px solid rgba(255, 255, 255, 0.09) !important;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            background: rgba(255, 107, 157, 0.05) !important;
+            border-color: var(--color-primary) !important;
+        }
+
+        /* ── Bigger bg thumbnails ─────────────────────────────────── */
+        .bg-thumb {
+            height: 76px !important;
+        }
+
+        /* ── Confetti canvas ──────────────────────────────────────── */
+        #confetti-canvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9990;
+        }
     </style>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2492108586092522"
         crossorigin="anonymous"></script>
 </head>
 
 <body>
+    <!-- Animated background orbs -->
+    <div class="bg-orb bg-orb-1" aria-hidden="true"></div>
+    <div class="bg-orb bg-orb-2" aria-hidden="true"></div>
+    <div class="bg-orb bg-orb-3" aria-hidden="true"></div>
+
+    <!-- Premium Unlock Modal -->
+    <div class="prem-overlay" id="premOverlay" onclick="hidePremModal(event)">
+        <div class="prem-modal" role="dialog" aria-modal="true">
+            <span class="prem-modal-icon">✨</span>
+            <h2 class="prem-modal-title">Unlock Premium</h2>
+            <p class="prem-modal-desc">Write your own words — plus unlock every background, sound, and affirmation
+                category.</p>
+            <ul class="prem-modal-features">
+                <li><span class="fi">✍️</span><span>Write your own custom affirmation</span></li>
+                <li><span class="fi">🌌</span><span>8 premium backgrounds + 6 animated</span></li>
+                <li><span class="fi">🎵</span><span>5 premium card sounds</span></li>
+                <li><span class="fi">💙</span><span>5 premium affirmation categories</span></li>
+            </ul>
+            <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" class="prem-cta">Unlock for $4.99 — One Time</a>
+            <button class="prem-dismiss" onclick="hidePremModal()">Maybe later</button>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav id="nav">
         <div class="nav-container">
@@ -1188,10 +1722,20 @@
             </div>
 
             <div class="step-indicator" id="stepIndicator">
-                <div class="step-dot active" data-step="1"></div>
-                <div class="step-label active" id="stepLabel">Step 1 of 3: The Look</div>
-                <div class="step-dot" data-step="2"></div>
-                <div class="step-dot" data-step="3"></div>
+                <div class="step-num-wrap sn-active" id="sn1">
+                    <div class="step-num">1</div>
+                    <span class="step-num-label">Your Vibe</span>
+                </div>
+                <div class="step-connector" id="sc1"></div>
+                <div class="step-num-wrap" id="sn2">
+                    <div class="step-num">2</div>
+                    <span class="step-num-label">The Look</span>
+                </div>
+                <div class="step-connector" id="sc2"></div>
+                <div class="step-num-wrap" id="sn3">
+                    <div class="step-num">3</div>
+                    <span class="step-num-label">Send It</span>
+                </div>
             </div>
 
             <!-- 2-Column Layout -->
@@ -1202,89 +1746,50 @@
                         <div class="form-slider-container">
                             <div class="form-slider-track" id="sliderTrack">
 
-                                <!-- Step 1: The Look -->
+                                <!-- Step 1: Your Vibe -->
                                 <div class="form-step active" id="step1">
                                     <div class="form-section">
                                         <label class="form-label">Choose an Affirmation <span
                                                 style="color:#ff6b6b">*</span></label>
                                         <div class="vibe-category-tabs" id="categoryTabs"></div>
                                         <div class="category-lock-banner" id="categoryLockBanner" style="display:none">
-                                            🔒 <strong>Premium vibes</strong> — <a
-                                                href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02"
-                                                style="color:#d8b4fe;font-weight:700;text-decoration:none;">Unlock for
-                                                $4.99</a>
+                                            🔒 <strong>Premium vibes</strong> — <button onclick="showPremModal()"
+                                                style="color:#d8b4fe;font-weight:700;background:none;border:none;cursor:pointer;padding:0;font-size:inherit;font-family:inherit;">Unlock
+                                                for $4.99</button>
                                         </div>
                                         <div class="affirmation-grid" id="affirmationPicker"></div>
                                     </div>
 
-                                    <div class="form-section" style="margin-top: var(--space-xl);">
+                                    <div class="step-actions">
+                                        <button type="button" class="btn-next" onclick="goToStep(2)"
+                                            id="btnStep1Next">Next: The Look →</button>
+                                    </div>
+                                </div>
+
+                                <!-- Step 2: The Look -->
+                                <div class="form-step" id="step2">
+                                    <div class="form-section">
                                         <label class="form-label">Card Background</label>
                                         <small
                                             style="color: var(--color-text-muted); font-size: 12px; margin-bottom: 8px; display: block;">
-                                            Personalize the card's look
+                                            Choose the visual vibe for the card
                                         </small>
-                                        <div class="bg-picker" id="bgPicker">
-                                            <!-- Populated by JavaScript -->
-                                        </div>
+                                        <div class="bg-picker" id="bgPicker"></div>
                                         <small id="premiumBgHint"
                                             style="color: var(--color-text-muted); font-size: 11px; margin-top: 8px; display: block;">
                                             🔓 <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02"
                                                 style="color: var(--color-primary); text-decoration: none;">Unlock
-                                                Premium —
-                                                $4.99</a> for
-                                            premium backgrounds
+                                                Premium — $4.99</a> for animated &amp; premium backgrounds
                                         </small>
                                     </div>
 
-                                    <div class="step-actions">
-                                        <button type="button" class="btn-next" onclick="goToStep(2)"
-                                            id="btnStep1Next">Next:
-                                            Personalize →</button>
-                                    </div>
-                                </div>
-
-                                <!-- Step 2: The Message -->
-                                <div class="form-step" id="step2">
-                                    <div class="form-section">
-                                        <label class="form-label">Recipient's Name <span
-                                                style="color:#ff6b6b">*</span></label>
-                                        <input type="text" class="form-input" id="recipientName" placeholder="Sarah">
-                                    </div>
-
-                                    <div class="form-section">
-                                        <label class="form-label">Your Name</label>
-                                        <input type="text" class="form-input" id="senderName"
-                                            placeholder="Alex (or leave blank to send anonymously)">
-                                        <small
-                                            style="color: var(--color-text-muted); font-size: 12px; margin-top: 4px; display: block;">
-                                            Leave blank to send as "Someone special" ✨
-                                        </small>
-                                    </div>
-
-                                    <div class="form-section">
-                                        <label class="form-label">Personal Message (Optional)</label>
-                                        <textarea class="form-textarea" id="personalMessage"
-                                            placeholder="I was thinking of you today and wanted to send some good vibes your way..."></textarea>
-                                    </div>
-
-                                    <div class="step-actions">
-                                        <button type="button" class="btn-prev" onclick="goToStep(1)">← Back</button>
-                                        <button type="button" class="btn-next" onclick="goToStep(3)"
-                                            id="btnStep2Next">Next:
-                                            Details →</button>
-                                    </div>
-                                </div>
-
-                                <!-- Step 3: Details & Send -->
-                                <div class="form-step" id="step3">
-                                    <div class="form-section">
+                                    <div class="form-section" style="margin-top: var(--space-xl);">
                                         <label class="form-label">Card Sound</label>
                                         <small
                                             style="color: var(--color-text-muted); font-size: 12px; margin-bottom: 8px; display: block;">
-                                            Choose the sound that plays when they open your card
+                                            Plays when they open the card
                                         </small>
                                         <div class="sound-picker" id="soundPicker">
-                                            <!-- Free Sounds -->
                                             <div class="sound-option selected" data-sound="chime"
                                                 onclick="selectSound('chime', this)">
                                                 <span class="sound-icon">🔔</span>
@@ -1309,7 +1814,6 @@
                                                     onclick="event.stopPropagation(); previewSound('sparkle')"
                                                     title="Preview">▶</button>
                                             </div>
-                                            <!-- Premium Sounds -->
                                             <div class="sound-option premium-sound" data-sound="musicbox"
                                                 onclick="selectPremiumSound('musicbox', this)">
                                                 <span class="sound-icon">🎵</span>
@@ -1356,23 +1860,53 @@
                                                     title="Preview">▶</button>
                                             </div>
                                         </div>
-                                        <small class="premium-sound-hint" id="premiumSoundHint"
+                                        <small id="premiumSoundHint"
                                             style="color: var(--color-text-muted); font-size: 11px; margin-top: 8px; display: block;">
                                             🔓 <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02"
                                                 style="color: var(--color-primary); text-decoration: none;">Unlock
-                                                Premium —
-                                                $4.99</a> to
-                                            use all
-                                            sounds
+                                                Premium — $4.99</a> to use all sounds
+                                        </small>
+                                    </div>
+
+                                    <div class="step-actions">
+                                        <button type="button" class="btn-prev" onclick="goToStep(1)">← Back</button>
+                                        <button type="button" class="btn-next" onclick="goToStep(3)"
+                                            id="btnStep2Next">Next: Send It →</button>
+                                    </div>
+                                </div>
+
+                                <!-- Step 3: Send It -->
+                                <div class="form-step" id="step3">
+                                    <div class="form-section">
+                                        <label class="form-label">Who's this for? <span
+                                                style="color:#ff6b6b">*</span></label>
+                                        <input type="text" class="form-input" id="recipientName" placeholder="Sarah"
+                                            autocomplete="off">
+                                    </div>
+
+                                    <div class="form-section">
+                                        <label class="form-label">Your Name</label>
+                                        <input type="text" class="form-input" id="senderName"
+                                            placeholder="Alex (or leave blank to stay anonymous)" autocomplete="off">
+                                        <small
+                                            style="color: var(--color-text-muted); font-size: 12px; margin-top: 4px; display: block;">
+                                            Leave blank to send as "Someone special" ✨
                                         </small>
                                     </div>
 
                                     <div class="form-section">
-                                        <label class="form-label">Recipient's Email (Optional)</label>
+                                        <label class="form-label">Personal Note (Optional)</label>
+                                        <textarea class="form-textarea" id="personalMessage"
+                                            placeholder="I was thinking of you today and wanted to send some good vibes your way..."></textarea>
+                                    </div>
+
+                                    <div class="form-section">
+                                        <label class="form-label">Send to Their Email (Optional)</label>
                                         <input type="email" class="form-input" id="recipientEmail"
                                             placeholder="sarah@example.com">
-                                        <small style="color: var(--color-text-muted); font-size: 12px;">
-                                            Leave blank to get a shareable link instead
+                                        <small
+                                            style="color: var(--color-text-muted); font-size: 12px; margin-top: 4px; display: block;">
+                                            Leave blank and you'll get a shareable link to text or copy
                                         </small>
                                     </div>
 
@@ -1705,12 +2239,14 @@
 
                             <div class="preview-content-wrapper">
                                 <div class="preview-label">Live Preview</div>
-                                <div class="preview-affirmation" id="previewAffirmation">"Your affirmation will appear
-                                    here"
+                                <div class="preview-recipient-chip hidden" id="previewRecipientChip">
+                                    <span>💌</span>
+                                    <span id="previewRecipientName">Sarah</span>
                                 </div>
+                                <div class="preview-affirmation" id="previewAffirmation">"Your affirmation will appear
+                                    here"</div>
                                 <div class="preview-message" id="previewMessage"><strong>Someone special</strong> wanted
-                                    to
-                                    send you some good vibes ✨</div>
+                                    to send you some good vibes ✨</div>
                             </div>
                             <span id="previewSender" style="display: none;">Someone special</span>
                         </div>
@@ -1888,7 +2424,7 @@
             if (isPremium) {
                 selectSound(soundId, element);
             } else {
-                window.location.href = 'https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02';
+                showPremModal();
             }
         }
 
@@ -1994,6 +2530,71 @@
                 }
                 pickerEl.appendChild(card);
             });
+
+            // "Write your own" card — always appended last
+            const writeCard = document.createElement('div');
+            writeCard.className = 'write-own-card';
+            writeCard.id = 'writeOwnCard';
+            writeCard.innerHTML = `<span>✍️</span><span>Write my own...</span>${isPremium ? '' : '<span class="write-own-badge">Premium</span>'}`;
+            writeCard.onclick = () => isPremium ? openWriteOwn() : showPremModal();
+            pickerEl.appendChild(writeCard);
+
+            // Textarea (hidden until writeCard clicked, for premium users)
+            const expanded = document.createElement('div');
+            expanded.className = 'write-own-expanded';
+            expanded.id = 'writeOwnExpanded';
+            expanded.innerHTML = `
+                <textarea class="write-own-textarea" id="writeOwnText" maxlength="200" placeholder="Write something from the heart... (max 200 characters)"></textarea>
+                <button class="write-own-back" type="button" onclick="closeWriteOwn()">← Choose from the library instead</button>`;
+            pickerEl.appendChild(expanded);
+
+            // Live update preview as user types their own affirmation
+            setTimeout(() => {
+                const ta = document.getElementById('writeOwnText');
+                if (ta) {
+                    ta.addEventListener('input', () => {
+                        selectedAffirmation = ta.value.trim();
+                        document.getElementById('previewAffirmation').textContent =
+                            selectedAffirmation ? `"${selectedAffirmation}"` : '"Your affirmation will appear here"';
+                        triggerFoilSweep();
+                    });
+                }
+            }, 50);
+        }
+
+        function openWriteOwn() {
+            const card = document.getElementById('writeOwnCard');
+            const expanded = document.getElementById('writeOwnExpanded');
+            if (card) card.style.display = 'none';
+            if (expanded) expanded.classList.add('visible');
+            const ta = document.getElementById('writeOwnText');
+            if (ta) { ta.focus(); selectedAffirmation = ta.value.trim() || ''; }
+        }
+
+        function closeWriteOwn() {
+            const card = document.getElementById('writeOwnCard');
+            const expanded = document.getElementById('writeOwnExpanded');
+            if (card) card.style.display = '';
+            if (expanded) expanded.classList.remove('visible');
+            // Revert to previously selected library affirmation if any
+            const selected = pickerEl.querySelector('.aff-card.selected');
+            if (selected) {
+                selectedAffirmation = selected.textContent.replace(/^"|"$/g, '');
+            } else {
+                selectedAffirmation = '';
+                document.getElementById('previewAffirmation').textContent = '"Your affirmation will appear here"';
+            }
+        }
+
+        function showPremModal() {
+            document.getElementById('premOverlay').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hidePremModal(e) {
+            if (e && e.target !== document.getElementById('premOverlay')) return;
+            document.getElementById('premOverlay').classList.remove('open');
+            document.body.style.overflow = '';
         }
 
         function selectCategory(cat) {
@@ -2038,6 +2639,9 @@
             { id: 'ethereal_anim', label: 'Ethereal Silk', image: 'assets/backgrounds/animated_ethereal.mp4', premium: true, isVideo: true },
             { id: 'vibrant_anim', label: 'Golden Glow', image: 'assets/backgrounds/animated_vibrant.mp4', premium: true, isVideo: true },
             { id: 'modern_anim', label: 'Glass Crystals', image: 'assets/backgrounds/animated_modern.mp4', premium: true, isVideo: true },
+            { id: 'prism_anim', label: 'Prism Flow', image: 'assets/backgrounds/Iridescent_Liquid_Glass_Video_Generation.mp4', premium: true, isVideo: true },
+            { id: 'biolume_anim', label: 'Biolume Bloom', image: 'assets/backgrounds/Futuristic_Flower_Video_Generation.mp4', premium: true, isVideo: true },
+            { id: 'plasma_anim', label: 'Sunstone Plasma', image: 'assets/backgrounds/Solar_Plasma_and_Flares_Visualization.mp4', premium: true, isVideo: true },
         ];
 
         const bgPickerEl = document.getElementById('bgPicker');
@@ -2067,7 +2671,7 @@
             }
 
             if (isLocked) {
-                el.onclick = () => { window.location.href = 'https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02'; };
+                el.onclick = () => showPremModal();
             } else {
                 el.onclick = () => selectBackground(bg.image, el, bg.isVideo);
             }
@@ -2143,8 +2747,21 @@
         function updatePreview() {
             const senderName = document.getElementById('senderName').value || 'Someone special';
             const personalMessage = document.getElementById('personalMessage').value;
+            const recipientName = document.getElementById('recipientName').value.trim();
 
             document.getElementById('previewSender').textContent = senderName;
+
+            // Recipient chip
+            const chip = document.getElementById('previewRecipientChip');
+            const chipName = document.getElementById('previewRecipientName');
+            if (chip && chipName) {
+                if (recipientName) {
+                    chipName.textContent = recipientName;
+                    chip.classList.remove('hidden');
+                } else {
+                    chip.classList.add('hidden');
+                }
+            }
 
             if (personalMessage) {
                 document.getElementById('previewMessage').innerHTML =
@@ -2171,12 +2788,19 @@
 
             if (!selectedAffirmation) {
                 showToast('Pick an affirmation first — they need to hear something good!', '💌');
+                goToStep(1);
                 const grid = document.querySelector('.affirmation-grid');
                 if (grid) { grid.classList.remove('grid-shake'); void grid.offsetWidth; grid.classList.add('grid-shake'); setTimeout(() => grid.classList.remove('grid-shake'), 500); }
                 return;
             }
 
             const recipientName = document.getElementById('recipientName').value;
+            if (!recipientName.trim()) {
+                showToast("Add their name so they know it's for them 💖", '👤');
+                const field = document.getElementById('recipientName');
+                if (field) { field.classList.remove('field-shake'); void field.offsetWidth; field.classList.add('field-shake'); setTimeout(() => field.classList.remove('field-shake'), 500); field.focus(); }
+                return;
+            }
             const senderName = document.getElementById('senderName').value;
             const personalMessage = document.getElementById('personalMessage').value;
             const recipientEmail = document.getElementById('recipientEmail').value;
@@ -2224,10 +2848,11 @@
             }
 
             // Show success
-            document.getElementById('cardForm').style.display = 'none'; // Only hide the form
-            document.getElementById('stepIndicator').style.display = 'none'; // Hide step dots
+            document.getElementById('cardForm').style.display = 'none';
+            document.getElementById('stepIndicator').style.display = 'none';
             document.getElementById('successMessage').classList.add('show');
             document.getElementById('cardLink').value = cardUrl;
+            launchConfetti();
 
             // Update title and show email badge if email was sent
             if (recipientEmail) {
@@ -2247,15 +2872,67 @@
 
         function copyLink(e) {
             const input = document.getElementById('cardLink');
-            input.select();
-            document.execCommand('copy');
+            const button = e ? e.currentTarget || e.target : document.querySelector('.success-copy-btn');
+            const originalText = button ? button.textContent : 'Copy';
+            const url = input ? input.value : '';
+            if (navigator.clipboard && url) {
+                navigator.clipboard.writeText(url).then(() => {
+                    if (button) { button.textContent = 'Copied! ✓'; setTimeout(() => { button.textContent = originalText; }, 2000); }
+                }).catch(() => {
+                    if (input) { input.select(); document.execCommand('copy'); }
+                    if (button) { button.textContent = 'Copied! ✓'; setTimeout(() => { button.textContent = originalText; }, 2000); }
+                });
+            } else if (input) {
+                input.select();
+                document.execCommand('copy');
+                if (button) { button.textContent = 'Copied! ✓'; setTimeout(() => { button.textContent = originalText; }, 2000); }
+            }
+        }
 
-            const button = e ? e.target : document.querySelector('.success-copy-btn');
-            const originalText = button.textContent;
-            button.textContent = 'Copied!';
-            setTimeout(() => {
-                button.textContent = originalText;
-            }, 2000);
+        // ── Confetti burst ────────────────────────────────────────
+        function launchConfetti() {
+            const canvas = document.createElement('canvas');
+            canvas.id = 'confetti-canvas';
+            document.body.appendChild(canvas);
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const colors = ['#ff6b9d', '#c084fc', '#60a5fa', '#fbbf24', '#34d399', '#f472b6', '#a78bfa'];
+            const pieces = Array.from({ length: 120 }, () => ({
+                x: Math.random() * canvas.width,
+                y: -20 - Math.random() * 200,
+                w: 6 + Math.random() * 8,
+                h: 10 + Math.random() * 6,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                vx: (Math.random() - 0.5) * 4,
+                vy: 2 + Math.random() * 4,
+                rot: Math.random() * Math.PI * 2,
+                vr: (Math.random() - 0.5) * 0.2,
+                opacity: 1,
+            }));
+
+            let frame = 0;
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+                pieces.forEach(p => {
+                    p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.vy += 0.05;
+                    if (frame > 80) p.opacity -= 0.012;
+                    if (p.opacity > 0 && p.y < canvas.height + 40) alive = true;
+                    ctx.save();
+                    ctx.globalAlpha = Math.max(0, p.opacity);
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rot);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                    ctx.restore();
+                });
+                frame++;
+                if (alive && frame < 220) requestAnimationFrame(draw);
+                else canvas.remove();
+            }
+            requestAnimationFrame(draw);
         }
 
         async function textFriend(e) {
@@ -2343,17 +3020,7 @@
                         return;
                     }
                 }
-
-                if (currentStep === 2) {
-                    const recipientName = document.getElementById('recipientName').value.trim();
-                    if (!recipientName) {
-                        showToast("Add their name so they know it's for them 💖", '👤');
-                        const field = document.getElementById('recipientName');
-                        if (field) { field.classList.remove('field-shake'); void field.offsetWidth; field.classList.add('field-shake'); setTimeout(() => field.classList.remove('field-shake'), 500); }
-                        document.getElementById('recipientName').focus();
-                        return;
-                    }
-                }
+                // Step 2 → 3: background & sound are optional, no validation needed
             }
 
             // Update state
@@ -2373,21 +3040,18 @@
                 }
             });
 
-            // Update step indicators
-            document.getElementById('stepLabel').textContent = `Step ${currentStep} of ${totalSteps}: ${currentStep === 1 ? 'The Look' :
-                currentStep === 2 ? 'The Message' : 'Details'
-                }`;
-
-            document.querySelectorAll('.step-dot').forEach(el => {
-                const dotStep = parseInt(el.dataset.step);
-                el.classList.remove('active');
-                el.classList.remove('completed');
-
-                if (dotStep < currentStep) {
-                    el.classList.add('completed');
-                } else if (dotStep === currentStep) {
-                    el.classList.add('active');
-                }
+            // Update numbered step indicator
+            [1, 2, 3].forEach(n => {
+                const wrap = document.getElementById('sn' + n);
+                if (!wrap) return;
+                wrap.classList.remove('sn-active', 'sn-done');
+                if (n < currentStep) wrap.classList.add('sn-done');
+                else if (n === currentStep) wrap.classList.add('sn-active');
+            });
+            [1, 2].forEach(n => {
+                const conn = document.getElementById('sc' + n);
+                if (!conn) return;
+                conn.classList.toggle('done', n < currentStep);
             });
 
             // Scroll to the "Live Preview" slightly so they see form inputs below it clearly on mobile jumps

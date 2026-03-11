@@ -146,76 +146,403 @@ async function handleEmailSignup(e) {
 }
 
 // ====================
-// Static Preview Rotation
+// Interactive Card Demo
 // ====================
-const previewExamples = {
-    'encouragement': { text: '"You\'re doing better than you think you are."', bg: 'linear-gradient(135deg, #11998e, #38ef7d)' },
-    'selflove': { text: '"You are entirely enough as you are."', bg: 'url("assets/backgrounds/bg_prem_nebula_1772750433414.webp") center/cover' },
-    'anxiety': { text: '"Breathe. You are safe right now."', bg: 'linear-gradient(135deg, #00b4db, #0083b0)' },
-    'patience': { text: '"Healing isn\'t linear. You\'re doing it."', bg: 'url("assets/backgrounds/bg_prem_crystal_1772750533689.webp") center/cover' },
-    'justbecause': { text: '"Just a reminder that you\'re awesome."', bg: 'linear-gradient(135deg, #f953c6, #b91d73)' },
-    'validation': { text: '"I see how hard you\'re trying."', bg: 'url("assets/backgrounds/bg_prem_velvet_1772750498877.webp") center/cover' },
-    'birthday': { text: '"I am so incredibly glad you exist."', bg: 'linear-gradient(135deg, #ff6b6b, #ffa500)' },
-    'abundance': { text: '"You deserve every good thing coming your way."', bg: 'url("assets/backgrounds/bg_prem_gold_1772750445716.webp") center/cover' },
-    'grief': { text: '"There is no rush. Take all the time you need."', bg: 'linear-gradient(135deg, #6b73ff, #9b59b6)' }
+const demoVibes = {
+    encouragement: {
+        quote:   '"You\'re doing better than you think you are."',
+        bg:      'url("assets/backgrounds/bg_prem_emerald_1772750461402.webp") center/cover',
+        isVideo: false,
+        glow:    'linear-gradient(135deg, #052e16 0%, #166534 100%)',
+        wash:    'rgba(22, 101, 52, 0.12)',
+        sender:  'Your biggest fan'
+    },
+    calm: {
+        quote:    '"Breathe. You are safe right now."',
+        videoSrc: 'assets/backgrounds/animated_ethereal.mp4',
+        isVideo:  true,
+        glow:     'linear-gradient(135deg, #2e1065 0%, #6d28d9 100%)',
+        wash:     'rgba(109, 40, 217, 0.1)',
+        sender:   'Someone who cares'
+    },
+    celebrate: {
+        quote:    '"All your hard work is paying off!"',
+        videoSrc: 'assets/backgrounds/animated_vibrant.mp4',
+        isVideo:  true,
+        glow:     'linear-gradient(135deg, #451a03 0%, #b45309 100%)',
+        wash:     'rgba(180, 83, 9, 0.1)',
+        sender:   'Your biggest cheerleader'
+    },
+    love: {
+        quote:   '"You are deeply, profoundly loved."',
+        bg:      'url("assets/backgrounds/bg_prem_cherry_1772750510659.webp") center/cover',
+        isVideo: false,
+        glow:    'linear-gradient(135deg, #4c0519 0%, #9f1239 100%)',
+        wash:    'rgba(159, 18, 57, 0.11)',
+        sender:  'Someone special ✨'
+    },
+    healing: {
+        quote:   '"There is no timeline for healing."',
+        bg:      'url("assets/backgrounds/bg_prem_nebula_1772750433414.webp") center/cover',
+        isVideo: false,
+        glow:    'linear-gradient(135deg, #09090b 0%, #3b0764 100%)',
+        wash:    'rgba(88, 28, 135, 0.12)',
+        sender:  'A friend'
+    },
+    selflove: {
+        quote:    '"You are entirely enough as you are."',
+        videoSrc: 'assets/backgrounds/animated_modern.mp4',
+        isVideo:  true,
+        glow:     'linear-gradient(135deg, #0c1445 0%, #1e3a8a 100%)',
+        wash:     'rgba(30, 58, 138, 0.1)',
+        sender:   'Someone who sees you'
+    }
 };
 
-let previewAutoRotation;
-function updateStaticPreview(category, btnElement, isAuto = false) {
-    if (!isAuto && previewAutoRotation) clearInterval(previewAutoRotation);
-    document.querySelectorAll('.vibe-btn').forEach(btn => btn.classList.remove('active'));
-    if (btnElement) btnElement.classList.add('active');
+let demoRotationTimer = null;
+let demoIsHovered    = false;
+let demoIsFlipping   = false;
+let currentVibe      = 'encouragement';
 
-    const data = previewExamples[category];
+// Particle colours per vibe — matched to real background assets
+const demoParticleColors = {
+    encouragement: ['rgba(52,211,153,ALPHA)',  'rgba(167,243,208,ALPHA)'],  // emerald greens
+    calm:          ['rgba(196,181,253,ALPHA)', 'rgba(233,213,255,ALPHA)'],  // soft purples (ethereal silk)
+    celebrate:     ['rgba(251,191,36,ALPHA)',  'rgba(253,230,138,ALPHA)'],  // golds (vibrant)
+    love:          ['rgba(251,113,133,ALPHA)', 'rgba(255,182,193,ALPHA)'],  // cherry pinks
+    healing:       ['rgba(167,139,250,ALPHA)', 'rgba(216,180,254,ALPHA)'],  // nebula purples
+    selflove:      ['rgba(147,197,253,ALPHA)', 'rgba(224,242,254,ALPHA)'],  // crystal blues
+};
+
+function switchDemoVibe(vibe, skipRotationReset) {
+    if (demoIsFlipping) return;
+    const data = demoVibes[vibe];
     if (!data) return;
+    currentVibe = vibe;
 
-    const textEl = document.getElementById('staticPreviewQuote');
-    const boxEl = document.getElementById('staticPreviewBox');
-    const senderEl = document.getElementById('staticPreviewSenderText');
-    if (!textEl || !boxEl) return;
+    // Update pills
+    document.querySelectorAll('.demo-pill').forEach(p =>
+        p.classList.toggle('active', p.dataset.vibe === vibe));
 
-    textEl.style.opacity = 0;
-    if (senderEl) senderEl.style.opacity = 0;
+    const card    = document.getElementById('demoCard');
+    const bg      = document.getElementById('demoBg');
+    const quote   = document.getElementById('demoQuote');
+    const sender  = document.getElementById('demoSender');
+    const shimmer = document.getElementById('demoShimmer');
+    const glow    = document.getElementById('demoGlow');
+    const stack1  = document.getElementById('demoStack1');
+    const stack2  = document.getElementById('demoStack2');
+    const section = document.querySelector('.send-card-section');
+    if (!card || !bg || !quote) return;
+
+    // Ambient + stacks + section wash — update immediately
+    if (glow)    glow.style.background    = data.glow;
+    if (stack1)  stack1.style.background  = data.glow;
+    if (stack2)  stack2.style.background  = data.glow;
+    if (section) section.style.setProperty('--vibe-wash', data.wash);
+
+    // Update particle colours
+    if (window._demoUpdateParticles) window._demoUpdateParticles(vibe);
+
+    // ── 3D card flip ─────────────────────────────────────────
+    demoIsFlipping = true;
+
+    // Phase 1: flip to edge (CSS keyframe handles perspective internally)
+    card.classList.remove('flip-in');
+    void card.offsetWidth;
+    card.classList.add('flip-out');
 
     setTimeout(() => {
-        textEl.textContent = data.text;
-        boxEl.style.background = data.bg;
-        if (senderEl) {
-            const randomSenders = ["Sarah", "Marcus", "Elena", "James", "Aisha", "David", "Chloe", "Someone special", "Mom", "Your Bestie"];
-            senderEl.innerHTML = `<strong>${randomSenders[Math.floor(Math.random() * randomSenders.length)]}</strong> wanted to send you some good vibes ✨`;
-        }
-        textEl.style.opacity = 1;
-        if (senderEl) senderEl.style.opacity = 1;
-    }, 300);
-}
-
-function initPreviewRotation() {
-    const rotationKeys = Object.keys(previewExamples);
-    let idx = 0;
-
-    function rotate() {
-        idx = (idx + 1) % rotationKeys.length;
-        const key = rotationKeys[idx];
-        const btn = document.querySelector(`.vibe-btn[onclick*="'${key}'"]`);
-        updateStaticPreview(key, btn, true);
-    }
-
-    // Only run rotation while the section is visible — saves CPU/battery
-    const section = document.querySelector('.send-flow-grid');
-    if (section && 'IntersectionObserver' in window) {
-        const obs = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                if (!previewAutoRotation) previewAutoRotation = setInterval(rotate, 3000);
-            } else {
-                clearInterval(previewAutoRotation);
-                previewAutoRotation = null;
+        // At edge — swap background invisibly
+        const video = document.getElementById('demoBgVideo');
+        if (data.isVideo && video) {
+            bg.style.background = '#000';
+            video.style.display = 'block';
+            if (video.getAttribute('data-src') !== data.videoSrc) {
+                video.setAttribute('data-src', data.videoSrc);
+                video.src = data.videoSrc;
+                video.play().catch(() => {});
             }
-        }, { threshold: 0.2 });
-        obs.observe(section);
+        } else {
+            if (video) { video.style.display = 'none'; video.pause(); }
+            bg.style.background = data.bg;
+        }
+        quote.textContent = data.quote;
+        if (sender) sender.textContent = data.sender;
+
+        // Phase 2: flip back in
+        card.classList.remove('flip-out');
+        void card.offsetWidth;
+        card.classList.add('flip-in');
+
+        // Shimmer sweep on landing
+        if (shimmer) {
+            shimmer.classList.remove('sweep');
+            void shimmer.offsetWidth;
+            shimmer.classList.add('sweep');
+            setTimeout(() => shimmer.classList.remove('sweep'), 700);
+        }
+
+        setTimeout(() => {
+            card.classList.remove('flip-in');
+            demoIsFlipping = false;
+        }, 210);
+    }, 205);
+
+    if (!skipRotationReset) startDemoRotation();
+}
+
+function startDemoRotation() {
+    clearInterval(demoRotationTimer);
+    if (demoIsHovered) return;
+    const vibeKeys = Object.keys(demoVibes);
+    demoRotationTimer = setInterval(() => {
+        if (demoIsHovered) return;
+        const next = vibeKeys[(vibeKeys.indexOf(currentVibe) + 1) % vibeKeys.length];
+        switchDemoVibe(next, true);
+    }, 3800);
+}
+
+function initCardDemo() {
+    const stage = document.getElementById('demoStage');
+    const card = document.getElementById('demoCard');
+    const pills = document.getElementById('demoPills');
+    if (!stage || !card) return;
+
+    // Initialise all elements with the starting vibe
+    const initData    = demoVibes[currentVibe];
+    const initBg      = document.getElementById('demoBg');
+    const initVideo   = document.getElementById('demoBgVideo');
+    const initGlow    = document.getElementById('demoGlow');
+    const initS1      = document.getElementById('demoStack1');
+    const initS2      = document.getElementById('demoStack2');
+    const initSection = document.querySelector('.send-card-section');
+
+    if (initData.isVideo && initVideo) {
+        if (initBg) initBg.style.background = '#000';
+        initVideo.style.display = 'block';
+        initVideo.src = initData.videoSrc;
+        initVideo.setAttribute('data-src', initData.videoSrc);
+        initVideo.play().catch(() => {});
+    } else if (initBg) {
+        initBg.style.background = initData.bg;
+    }
+
+    if (initGlow)    initGlow.style.background    = initData.glow;
+    if (initS1)      initS1.style.background      = initData.glow;
+    if (initS2)      initS2.style.background      = initData.glow;
+    if (initSection) initSection.style.setProperty('--vibe-wash', initData.wash);
+
+    // Pill click handlers
+    if (pills) {
+        pills.querySelectorAll('.demo-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                clearInterval(demoRotationTimer);
+                switchDemoVibe(pill.dataset.vibe, true);
+                // Resume auto-rotation after 8s of inactivity
+                clearTimeout(pill._resumeTimer);
+                pill._resumeTimer = setTimeout(startDemoRotation, 8000);
+            });
+        });
+    }
+
+    // 3D tilt (desktop only)
+    if (window.innerWidth > 768) {
+        let tiltX = 0, tiltY = 0, targetX = 0, targetY = 0;
+        let tiltRaf = null;
+
+        function tickTilt() {
+            tiltX += (targetX - tiltX) * 0.09;
+            tiltY += (targetY - tiltY) * 0.09;
+            const dist = Math.abs(tiltX - targetX) + Math.abs(tiltY - targetY);
+            card.style.transform = `rotateY(${tiltX}deg) rotateX(${-tiltY}deg)`;
+            if (dist > 0.05) {
+                tiltRaf = requestAnimationFrame(tickTilt);
+            } else {
+                tiltRaf = null;
+                if (!demoIsHovered) card.style.transform = '';
+            }
+        }
+
+        stage.addEventListener('mouseenter', () => {
+            demoIsHovered = true;
+            card.classList.add('is-tilting');
+            clearInterval(demoRotationTimer);
+        });
+
+        stage.addEventListener('mousemove', (e) => {
+            if (demoIsFlipping) return;
+            const r = stage.getBoundingClientRect();
+            targetX = ((e.clientX - r.left - r.width / 2) / (r.width / 2)) * 16;
+            targetY = ((e.clientY - r.top - r.height / 2) / (r.height / 2)) * 12;
+            if (!tiltRaf) tiltRaf = requestAnimationFrame(tickTilt);
+
+            // Shift holographic overlay to follow cursor
+            const holo = document.getElementById('demoHolo');
+            if (holo) {
+                const mx = ((e.clientX - r.left) / r.width) * 100;
+                const my = ((e.clientY - r.top) / r.height) * 100;
+                holo.style.background = `
+                    radial-gradient(ellipse at ${mx}% ${my}%,
+                        rgba(255,255,255,0.25) 0%,
+                        rgba(255,255,255,0.06) 35%,
+                        transparent 65%
+                    )`;
+                holo.style.animation = 'none';
+            }
+        }, { passive: true });
+
+        stage.addEventListener('mouseleave', () => {
+            demoIsHovered = false;
+            targetX = 0; targetY = 0;
+            if (!tiltRaf) tiltRaf = requestAnimationFrame(tickTilt);
+
+            // Restore holo auto-animation
+            const holo = document.getElementById('demoHolo');
+            if (holo) {
+                holo.style.background = '';
+                holo.style.animation  = '';
+            }
+
+            setTimeout(() => {
+                card.classList.remove('is-tilting');
+                startDemoRotation();
+            }, 500);
+        });
+    }
+
+    // Auto-rotate only while section is visible
+    const wrapper = document.querySelector('.card-demo-wrapper');
+    if (wrapper && 'IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) startDemoRotation();
+            else clearInterval(demoRotationTimer);
+        }, { threshold: 0.2 }).observe(wrapper);
     } else {
-        previewAutoRotation = setInterval(rotate, 3000);
+        startDemoRotation();
+    }
+
+    // Sparkle particles
+    initDemoParticles();
+}
+
+// ── Sparkle particle system ───────────────────────────────────
+function initDemoParticles() {
+    const canvas = document.getElementById('demoCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const isMobile = window.innerWidth <= 768;
+    const COUNT = isMobile ? 18 : 32;
+
+    // Size canvas to its CSS layout size
+    function resize() {
+        canvas.width  = canvas.offsetWidth  || 900;
+        canvas.height = canvas.offsetHeight || 700;
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    // Current pair of accent colours for the active vibe
+    let vibeAccents = (demoParticleColors[currentVibe] || demoParticleColors.encouragement)
+                        .map(c => c.replace('ALPHA', '1'));
+
+    // Allow switchDemoVibe to update colours
+    window._demoUpdateParticles = function(vibe) {
+        vibeAccents = (demoParticleColors[vibe] || demoParticleColors.encouragement)
+                        .map(c => c.replace('ALPHA', '1'));
+    };
+
+    function makeParticle() {
+        return {
+            x:        20 + Math.random() * (canvas.width  - 40),
+            y:        canvas.height * 0.2 + Math.random() * canvas.height * 0.65,
+            size:     1.5 + Math.random() * 3.5,
+            maxOp:    0.15 + Math.random() * 0.55,
+            opacity:  0,
+            vx:       (Math.random() - 0.5) * 0.35,
+            vy:       -(0.3 + Math.random() * 0.7),
+            phase:    Math.random() * Math.PI * 2,
+            life:     Math.floor(Math.random() * 160), // stagger initial birth
+            maxLife:  130 + Math.floor(Math.random() * 160),
+            colorIdx: Math.random() < 0.5 ? 0 : 1,
+            type:     Math.random() < 0.6 ? 'cross' : 'dot',
+        };
+    }
+
+    const particles = Array.from({ length: COUNT }, makeParticle);
+
+    function drawCross(x, y, r, color, alpha) {
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.strokeStyle = color;
+        ctx.lineWidth   = 1.2;
+        ctx.lineCap     = 'round';
+        ctx.beginPath();
+        ctx.moveTo(x - r, y); ctx.lineTo(x + r, y);
+        ctx.moveTo(x, y - r); ctx.lineTo(x, y + r);
+        ctx.stroke();
+        const d = r * 0.55;
+        ctx.beginPath();
+        ctx.moveTo(x - d, y - d); ctx.lineTo(x + d, y + d);
+        ctx.moveTo(x + d, y - d); ctx.lineTo(x - d, y + d);
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    function drawDot(x, y, r, color, alpha) {
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle   = color;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+    }
+
+    let rafId;
+    function tick() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach((p, i) => {
+            p.life++;
+            p.x += p.vx + Math.sin(p.phase + p.life * 0.018) * 0.28;
+            p.y += p.vy;
+            p.phase += 0.012;
+
+            const t = p.life / p.maxLife;
+            // Smooth fade in (0–20%) then hold, fade out (75–100%)
+            p.opacity = t < 0.2 ? (t / 0.2) * p.maxOp
+                      : t > 0.75 ? ((1 - t) / 0.25) * p.maxOp
+                      : p.maxOp;
+
+            const col = vibeAccents[p.colorIdx] || vibeAccents[0];
+            if (p.type === 'cross') drawCross(p.x, p.y, p.size, col, p.opacity);
+            else                   drawDot  (p.x, p.y, p.size * 0.7, col, p.opacity);
+
+            // Recycle when dead or drifted off top
+            if (p.life >= p.maxLife || p.y < -20) {
+                particles[i]     = makeParticle();
+                particles[i].y   = canvas.height - 10 + Math.random() * 40; // spawn low
+                particles[i].life = 0;
+            }
+        });
+
+        rafId = requestAnimationFrame(tick);
+    }
+
+    // Only animate while visible to save battery
+    if ('IntersectionObserver' in window) {
+        new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting) { if (!rafId) rafId = requestAnimationFrame(tick); }
+            else { cancelAnimationFrame(rafId); rafId = null; }
+        }, { threshold: 0.1 }).observe(canvas);
+    } else {
+        rafId = requestAnimationFrame(tick);
     }
 }
+
+// Keep old name available in case anything references it
+window.updateStaticPreview = function() {};
 
 // ====================
 // Parallax & Features
@@ -330,7 +657,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Features
     initScrollProgress();
     initDailyAffirmation();
-    initPreviewRotation();
+    initCardDemo();
     initRotatingLogo();
     initParallax();
     initLiveCounters();

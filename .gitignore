@@ -4,3 +4,7 @@ node_modules/
 .DS_Store
 *.log
 .agents/
+.pinterest-profile/
+pinterest_token_response.json
+scripts/exchange-token.js
+scripts/upload-pins.js

@@ -75,13 +75,12 @@
       100% {
         transform: scale(1);
         opacity: 0.4;
-        filter: blur(25px);
+        /* Removed filter:blur animation — animating blur triggers GPU repaint every frame */
       }
 
       50% {
         transform: scale(1.4);
         opacity: 1;
-        filter: blur(35px);
       }
     }
 
@@ -90,12 +89,11 @@
       0%,
       100% {
         opacity: 0.4;
-        letter-spacing: 4px;
+        /* Removed letter-spacing animation — letter-spacing causes layout reflow every frame */
       }
 
       50% {
         opacity: 1;
-        letter-spacing: 6px;
       }
     }
   </style>
@@ -105,11 +103,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <link
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Fredoka:wght@300;400;500;600;700&family=Caveat:wght@400;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,400&family=Space+Grotesk:wght@600;700&display=swap"
     rel="stylesheet" media="print" onload="this.media='all'">
   <noscript>
     <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Fredoka:wght@300;400;500;600;700&family=Caveat:wght@400;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,400&family=Space+Grotesk:wght@600;700&display=swap"
       rel="stylesheet">
   </noscript>
 
@@ -482,10 +480,13 @@
       }
     })();
 
-    // Confetti burst
+    // Confetti burst — capped at 20 on mobile to avoid compositor overload
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
     function launchConfetti() {
       const colors = ['#cdff60', '#f472b6', '#60a5fa', '#fbbf24', '#c084fc', '#34d399', '#fb7185'];
-      for (let i = 0; i < 50; i++) {
+      const count = isMobile ? 20 : 50;
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < count; i++) {
         const piece = document.createElement('div');
         piece.className = 'confetti-piece';
         piece.style.left = Math.random() * 100 + 'vw';
@@ -495,9 +496,10 @@
         piece.style.width = (Math.random() * 8 + 6) + 'px';
         piece.style.height = (Math.random() * 8 + 6) + 'px';
         piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-        document.body.appendChild(piece);
-        setTimeout(() => piece.remove(), 4000);
+        frag.appendChild(piece);
       }
+      document.body.appendChild(frag);
+      setTimeout(() => document.querySelectorAll('.confetti-piece').forEach(p => p.remove()), 4000);
     }
 
     flipCard.addEventListener('click', () => {
@@ -532,20 +534,24 @@
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flipCard.click(); }
     });
 
-    // Particles
+    // Particles — skipped on mobile, batched via DocumentFragment on desktop
     function burstParticles(count) {
+      if (isMobile && count === 15) return; // skip ambient particles on mobile
       const container = document.getElementById('particles');
-      for (let i = 0; i < count; i++) {
+      const frag = document.createDocumentFragment();
+      const actualCount = isMobile ? Math.floor(count / 2) : count;
+      for (let i = 0; i < actualCount; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
         p.style.left = Math.random() * 100 + '%';
         p.style.animationDelay = (Math.random() * 2) + 's';
         p.style.animationDuration = (Math.random() * 6 + 6) + 's';
-        container.appendChild(p);
-        setTimeout(() => p.remove(), 12000);
+        frag.appendChild(p);
       }
+      container.appendChild(frag);
+      setTimeout(() => container.innerHTML = '', 12000);
     }
-    // Ambient particles
+    // Ambient particles (desktop only)
     burstParticles(15);
 
 

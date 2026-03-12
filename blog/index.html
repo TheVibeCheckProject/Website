@@ -250,7 +250,7 @@
             border-radius: 20px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
             display: inline-block;
-            transition: all 0.5s ease;
+            transition: transform 0.5s ease, left 0.5s ease, width 0.5s ease, opacity 0.5s ease;
             cursor: pointer;
             overflow: hidden;
             background: #1a1625;
@@ -287,7 +287,7 @@
             border-radius: 20px;
             width: 100%;
             height: 100%;
-            transition: all 0.5s;
+            transition: transform 0.5s, left 0.5s, width 0.5s, opacity 0.5s;
         }
 
         .slide .item:nth-child(2)::before {
@@ -363,7 +363,7 @@
             font-weight: 700;
             font-size: 14px;
             font-family: var(--font-display);
-            transition: all 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s, border-color 0.3s;
             animation: sliderAnimate 0.8s ease-out 0.4s forwards;
             text-decoration: none;
             display: inline-block;
@@ -648,7 +648,7 @@
             backdrop-filter: blur(10px);
             color: #fff;
             font-size: 16px;
-            transition: all 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s, border-color 0.3s;
         }
 
         .slider-buttons button:hover {
@@ -689,7 +689,7 @@
             padding: 24px 12px;
             border-radius: 20px;
             text-decoration: none;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: background 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -841,7 +841,7 @@
             padding: 30px;
             text-decoration: none;
             color: var(--color-text-primary);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
             position: relative;

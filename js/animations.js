@@ -107,12 +107,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const revealItems = document.querySelectorAll('.why-card, .step, .feature-card, .affirmation-card, .blog-showcase-card, .use-case, .support-card, .stat-card, .flow-card');
     const directions = ['left', 'right', 'bottom', 'rotate-in'];
 
-    revealItems.forEach((card, i) => {
-        const dir = card.getAttribute('data-reveal-dir') || directions[i % directions.length];
-        card.setAttribute('data-reveal-dir', dir);
-        card.classList.add('reveal-directional');
-        revealObserver.observe(card);
-    });
+    // Batch all DOM writes in idle time to avoid style recalculations during initial paint
+    const setupCards = () => {
+        revealItems.forEach((card, i) => {
+            const dir = card.getAttribute('data-reveal-dir') || directions[i % directions.length];
+            card.setAttribute('data-reveal-dir', dir);
+            card.classList.add('reveal-directional');
+            revealObserver.observe(card);
+        });
+    };
+
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(setupCards, { timeout: 1000 });
+    } else {
+        setTimeout(setupCards, 200);
+    }
 
     // ==========================================
     // 4. FLOATING SMOKE WORDS — Affirmations drifting (Desktop Only)

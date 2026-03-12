@@ -2047,6 +2047,14 @@ footer {
     will-change: transform;
 }
 
+@keyframes ripple-animation {
+    to {
+        width: 500px;
+        height: 500px;
+        opacity: 0;
+    }
+}
+
 .why-card:nth-child(2) .card-emoji {
     animation-delay: -1s;
 }

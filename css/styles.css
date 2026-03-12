@@ -1324,13 +1324,24 @@ footer {
         animation: none !important;
     }
 
-    /* Remove card tilts on mobile — stacked layout makes rotations look broken */
-    .why-card,
-    .step,
-    .affirmation-card,
-    .feature-card,
-    .blog-showcase-card {
+    /* Ensure all reveal elements are visible on mobile regardless of JS/IntersectionObserver */
+    .reveal,
+    .reveal-left,
+    .reveal-right,
+    .reveal-directional,
+    .card-demo-wrapper,
+    .demo-card,
+    .demo-stage,
+    .demo-glow {
+        opacity: 1 !important;
         transform: none !important;
+        visibility: visible !important;
+        transition: none !important;
+    }
+
+    /* Keep the demo card relative for child positioning but ensure it's not hidden */
+    .demo-card {
+        display: block !important;
     }
 }
 

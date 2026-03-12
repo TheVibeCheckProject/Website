@@ -1027,30 +1027,31 @@
         /* Sliding Form Container */
         .form-slider-container {
             position: relative;
-            overflow: hidden;
             width: 100%;
-            transition: height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         .form-slider-track {
-            display: flex;
-            width: 300%;
-            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            width: 100%;
         }
 
         .form-step {
-            width: 33.333%;
-            flex-shrink: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
             padding: 0 4px;
-            /* Slight padding so box-shadows don't clip */
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s;
+            transform: translateX(24px);
+            transition: opacity 0.35s ease, transform 0.35s ease;
         }
 
         .form-step.active {
+            position: relative;
             opacity: 1;
             pointer-events: all;
+            transform: translateX(0);
         }
 
         .step-actions {
@@ -2619,13 +2620,6 @@
         requestAnimationFrame(() => {
             const firstCard = pickerEl.querySelector('.aff-card');
             if (firstCard) firstCard.click();
-
-            // Set container height to step 1 height so no empty gap from taller steps
-            const step1 = document.getElementById('step1');
-            const container = document.querySelector('.form-slider-container');
-            if (step1 && container) {
-                container.style.height = step1.scrollHeight + 'px';
-            }
         });
 
         // Background picker
@@ -3032,17 +3026,7 @@
             // Update state
             currentStep = step;
 
-            // Slide the track
-            const track = document.getElementById('sliderTrack');
-            const translateX = -(currentStep - 1) * 33.333;
-            track.style.transform = `translateX(${translateX}%)`;
-
-            // Resize container to active step height so no empty gap
-            const activeStep = document.getElementById('step' + step);
-            const container = document.querySelector('.form-slider-container');
-            if (activeStep && container) {
-                container.style.height = activeStep.scrollHeight + 'px';
-            }
+            // Show active step (inactive steps are position:absolute so they don't affect height)
 
             // Update step opacity
             document.querySelectorAll('.form-step').forEach((el, index) => {

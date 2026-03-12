@@ -1029,7 +1029,7 @@
             position: relative;
             overflow: hidden;
             width: 100%;
-            /* min-height will be managed by JS to avoid jumping, or we let it auto stretch */
+            transition: height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         .form-slider-track {
@@ -2619,6 +2619,13 @@
         requestAnimationFrame(() => {
             const firstCard = pickerEl.querySelector('.aff-card');
             if (firstCard) firstCard.click();
+
+            // Set container height to step 1 height so no empty gap from taller steps
+            const step1 = document.getElementById('step1');
+            const container = document.querySelector('.form-slider-container');
+            if (step1 && container) {
+                container.style.height = step1.scrollHeight + 'px';
+            }
         });
 
         // Background picker
@@ -3029,6 +3036,13 @@
             const track = document.getElementById('sliderTrack');
             const translateX = -(currentStep - 1) * 33.333;
             track.style.transform = `translateX(${translateX}%)`;
+
+            // Resize container to active step height so no empty gap
+            const activeStep = document.getElementById('step' + step);
+            const container = document.querySelector('.form-slider-container');
+            if (activeStep && container) {
+                container.style.height = activeStep.scrollHeight + 'px';
+            }
 
             // Update step opacity
             document.querySelectorAll('.form-step').forEach((el, index) => {

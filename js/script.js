@@ -575,7 +575,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Scroll reveal for .reveal / .reveal-left / .reveal-right elements
-    // (animations.js handles .reveal-directional cards separately)
     const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
     if (revealEls.length && 'IntersectionObserver' in window) {
         const revObs = new IntersectionObserver(entries => {
@@ -585,8 +584,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     revObs.unobserve(e.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        }, { threshold: 0.01, rootMargin: '0px' });
         revealEls.forEach(el => revObs.observe(el));
+
+        // Safety fallback for mobile or slow renderers
+        setTimeout(() => {
+            revealEls.forEach(el => {
+                if (!el.classList.contains('active')) {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        el.classList.add('active');
+                    }
+                }
+            });
+        }, 2000);
     } else {
         // Fallback: just make everything visible
         revealEls.forEach(el => el.classList.add('active'));

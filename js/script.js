@@ -574,6 +574,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Scroll reveal for .reveal / .reveal-left / .reveal-right elements
+    // (animations.js handles .reveal-directional cards separately)
+    const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    if (revealEls.length && 'IntersectionObserver' in window) {
+        const revObs = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('active');
+                    revObs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        revealEls.forEach(el => revObs.observe(el));
+    } else {
+        // Fallback: just make everything visible
+        revealEls.forEach(el => el.classList.add('active'));
+    }
+
     // Critical Features
     initScrollProgress();
     initDailyAffirmation();

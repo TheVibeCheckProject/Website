@@ -91,16 +91,21 @@ const categories = [
 // Helper to fix relative URLs for deeper directory
 function fixUrls(html) {
     let fixed = html;
-    // Fix asset/CSS/JS references
-    fixed = fixed.replace(/(href|src)="(\.\.\/)([^"]+)"/g, '$1="../../$3"');
-    fixed = fixed.replace(/url\(\'\.\.\//g, "url('../../");
 
-    // Fix links to sibling HTML files in the blog/ folder
-    fixed = fixed.replace(/(href)="([a-zA-Z0-9-]+\.html)(#[^"]*)?"/g, '$1="../$2$3"');
-    fixed = fixed.replace(/(href)="(\.\/)?([a-zA-Z0-9-]+\.html)(#[^"]*)?"/g, '$1="../$3$4"');
+    // If the path is relative (doesn't start with / or http), adjust it.
+    // However, since we are moving to absolute paths, we should ideally just
+    // convert everything to absolute.
+
+    // Fix asset/CSS/JS references - if they are relative, make them absolute
+    fixed = fixed.replace(/(href|src)="(\.\.\/)+([^"]+)"/g, '$1="/$3"');
+    fixed = fixed.replace(/url\(\'\.\.\//g, "url('/");
+
+    // Fix links to sibling HTML files in the blog/ folder - make them absolute
+    fixed = fixed.replace(/(href)="([a-zA-Z0-9-]+\.html)(#[^"]*)?"/g, '$1="/blog/$2$3"');
+    fixed = fixed.replace(/(href)="(\.\/)?([a-zA-Z0-9-]+\.html)(#[^"]*)?"/g, '$1="/blog/$3$4"');
 
     // Specifically fix the blog index link
-    fixed = fixed.replace(/href="\.\.\/index\.html"/g, 'href="../index.html"');
+    fixed = fixed.replace(/href="\.\.\/index\.html"/g, 'href="/blog/index.html"');
 
     return fixed;
 }
@@ -146,8 +151,7 @@ categories.forEach(cat => {
     // Fix URLs in the generated HTML
     let finalHtml = fixUrls($hub.html());
 
-    // Make sure 'index.html' points to the main blog root, not itself
-    finalHtml = finalHtml.replace(/href="\.\.\/index\.html"/g, 'href="../index.html"');
+
 
     // Create directory
     const catDir = path.join(BLOG_DIR, cat.id);

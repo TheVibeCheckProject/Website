@@ -1,29 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
+<!DOCTYPE html><html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Vibe Check Blog - Mental Health Support</title>
 
-    <meta name="description"
-        content="Words to help them through the hard days. Support for anxiety, depression, and general mental wellness.">
-    <meta name="keywords"
-        content="what to text a friend, how to check on someone, mental health texts, words of encouragement">
+    <meta name="description" content="Words to help them through the hard days. Support for anxiety, depression, and general mental wellness.">
+    <meta name="keywords" content="what to text a friend, how to check on someone, mental health texts, words of encouragement">
 
     <!-- Open Graph / Twitter Card -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.thevibecheckproject.com/blog/mental-health/index">
-    <link rel="canonical" href="https://www.thevibecheckproject.com/blog/mental-health/index">
+    <meta property="og:url" content="https://www.thevibecheckproject.com/blog/">
+    <link rel="canonical" href="https://www.thevibecheckproject.com/blog/">
     <meta property="og:title" content="Mental Health Support">
-    <meta property="og:description"
-        content="Words to help them through the hard days. Support for anxiety, depression, and general mental wellness.">
+    <meta property="og:description" content="Words to help them through the hard days. Support for anxiety, depression, and general mental wellness.">
     <meta property="og:image" content="https://www.thevibecheckproject.com/assets/og-image.png">
 
     <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Fredoka:wght@300;400;500;600;700&family=Caveat:wght@400;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-        rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Fredoka:wght@300;400;500;600;700&amp;family=Caveat:wght@400;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
     <!-- Main CSS (shared from root) -->
     <link rel="stylesheet" href="/css/styles.css?v=6">
@@ -250,12 +242,22 @@
             transform: translate(0, -50%);
             border-radius: 20px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-            background-position: 50% 50%;
-            background-size: cover;
             display: inline-block;
             transition: transform 0.5s ease, left 0.5s ease, width 0.5s ease, opacity 0.5s ease;
             cursor: pointer;
             overflow: hidden;
+            background: #1a1625;
+        }
+
+        .category-slider .slide .item .slider-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         /* Dark overlay on every slide item */
@@ -336,7 +338,7 @@
             margin-top: 12px;
             margin-bottom: 24px;
             opacity: 0;
-            font-family: var(--font-body, 'Inter', sans-serif);
+            font-family: var(--font-body, 'Outfit', sans-serif);
             font-size: 15px;
             line-height: 1.6;
             color: rgba(255, 255, 255, 0.85);
@@ -648,6 +650,76 @@
             transform: scale(1.08);
         }
 
+        /* ── Topic Hubs (Browse by Category) ── */
+        .topic-hubs-container {
+            max-width: 900px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+            text-align: center;
+            position: relative;
+            z-index: 5;
+        }
+
+        .section-title-small {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+
+        .topic-hubs-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .topic-hub-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 24px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: background 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(5px);
+        }
+
+        .topic-hub-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-8px);
+            border-color: rgba(255, 107, 157, 0.4);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .topic-hub-icon {
+            font-size: 2rem;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        }
+
+        .topic-hub-card span {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 650px) {
+            .topic-hubs-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .topic-hubs-container {
+                margin-bottom: 40px;
+            }
+        }
+
         /* ── Blog Grid (shared) ── */
         .blog-grid {
             display: grid;
@@ -899,6 +971,7 @@
                 font-size: 13px;
                 display: -webkit-box;
                 -webkit-line-clamp: 3;
+                line-clamp: 3;
                 -webkit-box-orient: vertical;
                 overflow: hidden;
             }
@@ -948,6 +1021,7 @@
             .cat-content .cat-des {
                 font-size: 14px;
                 -webkit-line-clamp: 4;
+                line-clamp: 4;
             }
 
             .slider-buttons {
@@ -962,58 +1036,6 @@
                 height: 40px;
             }
         }
-
-        .blog-post {
-            max-width: 800px;
-            margin: 40px auto 80px;
-            padding: 0 20px;
-            line-height: 1.8;
-            font-size: 1.15rem;
-            color: var(--color-text-secondary);
-        }
-
-        .blog-post h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            color: var(--color-text-primary);
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        .blog-post h2 {
-            font-size: 2rem;
-            color: var(--color-text-primary);
-            margin: 50px 0 20px;
-        }
-
-        .blog-post h3 {
-            font-size: 1.5rem;
-            color: var(--color-text-primary);
-            margin: 40px 0 15px;
-        }
-
-        .blog-post p {
-            margin-bottom: 25px;
-        }
-
-        .blog-post ul,
-        .blog-post ol {
-            margin-bottom: 30px;
-            padding-left: 20px;
-        }
-
-        .blog-post li {
-            margin-bottom: 15px;
-        }
-
-        .blog-tag {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--color-primary);
-            font-weight: 700;
-            margin-bottom: 15px;
-            display: block;
-        }
     </style>
 
     <!-- Analytics (Microsoft Clarity) -->
@@ -1024,23 +1046,7 @@
             y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
         })(window, document, "clarity", "script", "vohl4gduni");
     </script>
-    <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2492108586092522"
-        crossorigin="anonymous"></script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "Mental Health Support",
-      "description": "Words to help them through the hard days. Support for anxiety, depression, and general mental wellness.",
-      "url": "https://www.thevibecheckproject.com/blog/mental-health/index",
-      "publisher": {
-        "@type": "Organization",
-        "name": "The Vibe Check Project",
-        "url": "https://www.thevibecheckproject.com"
-      },
-      "image": "https://www.thevibecheckproject.com/assets/og-image.png"
-    }
-    </script>
+    <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2492108586092522" crossorigin="anonymous"></script>
 </head>
 
 <body class="dark-theme">
@@ -1067,8 +1073,7 @@
                 </li>
                 <li><a href="/situations.html">Situations</a></li>
                 <li><a href="/blog/index.html">Advice &amp; Guides</a></li>
-                <li><a href="/send-card.html" class="btn btn-secondary"
-                        style="padding: 6px 16px; border-width: 1px; font-size: 14px;">💌 Send a Card</a></li>
+                <li><a href="/send-card.html" class="btn btn-secondary" style="padding: 6px 16px; border-width: 1px; font-size: 14px;">💌 Send a Card</a></li>
             </ul>
         </div>
     </nav>
@@ -1077,8 +1082,7 @@
     <svg style="position:absolute;width:0;height:0;">
         <defs>
             <clipPath id="smokeClip" clipPathUnits="objectBoundingBox">
-                <path
-                    d="M -0.03,0.48 C 0.0,0.35 0.03,0.25 0.07,-0.08 C 0.1,-0.18 0.14,0.32 0.18,0.28 C 0.2,0.25 0.22,0.22 0.26,0.2 C 0.3,0.18 0.32,0.15 0.36,-0.1 C 0.4,-0.18 0.44,0.25 0.5,0.15 C 0.54,0.08 0.56,0.2 0.6,0.12 C 0.62,0.08 0.66,0.25 0.7,-0.05 C 0.73,-0.12 0.76,0.22 0.8,0.28 C 0.84,0.32 0.88,0.1 0.92,0.18 C 0.96,0.25 0.99,0.15 1.02,0.35 C 1.03,0.42 1.03,0.48 1.03,0.52 L 1.03,0.55 C 1.02,0.7 0.98,0.62 0.94,0.78 C 0.9,0.92 0.86,0.7 0.82,1.12 C 0.78,1.22 0.74,0.68 0.68,0.75 C 0.64,0.8 0.6,0.72 0.54,1.08 C 0.5,1.18 0.46,0.72 0.4,0.78 C 0.36,0.82 0.32,0.7 0.28,0.68 C 0.24,0.66 0.2,0.85 0.16,1.05 C 0.12,1.15 0.08,0.7 0.04,0.6 C 0.0,0.5 -0.02,0.65 -0.03,0.55 Z">
+                <path d="M -0.03,0.48 C 0.0,0.35 0.03,0.25 0.07,-0.08 C 0.1,-0.18 0.14,0.32 0.18,0.28 C 0.2,0.25 0.22,0.22 0.26,0.2 C 0.3,0.18 0.32,0.15 0.36,-0.1 C 0.4,-0.18 0.44,0.25 0.5,0.15 C 0.54,0.08 0.56,0.2 0.6,0.12 C 0.62,0.08 0.66,0.25 0.7,-0.05 C 0.73,-0.12 0.76,0.22 0.8,0.28 C 0.84,0.32 0.88,0.1 0.92,0.18 C 0.96,0.25 0.99,0.15 1.02,0.35 C 1.03,0.42 1.03,0.48 1.03,0.52 L 1.03,0.55 C 1.02,0.7 0.98,0.62 0.94,0.78 C 0.9,0.92 0.86,0.7 0.82,1.12 C 0.78,1.22 0.74,0.68 0.68,0.75 C 0.64,0.8 0.6,0.72 0.54,1.08 C 0.5,1.18 0.46,0.72 0.4,0.78 C 0.36,0.82 0.32,0.7 0.28,0.68 C 0.24,0.66 0.2,0.85 0.16,1.05 C 0.12,1.15 0.08,0.7 0.04,0.6 C 0.0,0.5 -0.02,0.65 -0.03,0.55 Z">
                 </path>
             </clipPath>
         </defs>
@@ -1096,12 +1100,11 @@
     </header>
 
     <br><br><br><br>
-    <p class="sub-desc">Words to help them through the hard days. Support for anxiety, depression, and general mental
-        wellness.</p>
+    <p class="sub-desc">Words to help them through the hard days. Support for anxiety, depression, and general mental wellness.</p>
     <div class="category-grid active" style="display: block;">
         <div class="blog-grid">
-            <a href="../what-to-text-someone-having-a-panic-attack.html" class="blog-card-img"
-                style="background-image: url('../../assets/blog_cover_panic.webp');">
+            <a href="/blog/what-to-text-someone-having-a-panic-attack.html" class="blog-card-img">
+                <img src="/assets/blog_cover_panic.webp" alt="What to Text Someone Having a Panic Attack" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1113,16 +1116,15 @@
                         texts to send instead.</p>
                     <div class="read-more-btn">
                         Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </div>
                 </div>
             </a>
-            <a href="../what-to-say-when-someone-is-depressed.html" class="blog-card-img"
-                style="background-image: url('../../assets/blog_cover_depression_1772534420076.webp');">
+<a href="/blog/what-to-say-when-someone-is-depressed.html" class="blog-card-img">
+                <img src="/assets/blog_cover_depression_1772534420076.webp" alt="What to Say When Someone Is Depressed" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1134,16 +1136,15 @@
                         say.</p>
                     <div class="read-more-btn">
                         Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </div>
                 </div>
             </a>
-            <a href="../what-to-say-to-someone-who-feels-like-giving-up.html" class="blog-card-img"
-                style="background-image: url('../../assets/blog_cover_giving_up_1772534638363.webp');">
+<a href="/blog/what-to-say-to-someone-who-feels-like-giving-up.html" class="blog-card-img">
+                <img src="/assets/blog_cover_giving_up_1772534638363.webp" alt="What to Say to Someone Who Feels Like Giving Up" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1155,16 +1156,15 @@
                         and what makes it worse.</p>
                     <div class="read-more-btn">
                         Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </div>
                 </div>
             </a>
-            <a href="../daily-affirmations-for-anxiety.html" class="blog-card-img"
-                style="background-image: url('../../assets/blog_cover_anxiety_1772534512339.webp');">
+<a href="/blog/daily-affirmations-for-anxiety.html" class="blog-card-img">
+                <img src="/assets/blog_cover_anxiety_1772534512339.webp" alt="Daily Affirmations for Anxiety" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1177,16 +1177,15 @@
                         them daily.</p>
                     <div class="read-more-btn">
                         Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </div>
                 </div>
             </a>
-            <a href="../self-care-ideas-for-bad-mental-health-days.html" class="blog-card-img"
-                style="background-image: url('../../assets/blog_cover_self_care_1772534542941.webp');">
+<a href="/blog/self-care-ideas-for-bad-mental-health-days.html" class="blog-card-img">
+                <img src="/assets/blog_cover_self_care_1772534542941.webp" alt="Self-Care Ideas for Bad Mental Health Days" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1199,16 +1198,15 @@
                         invest in tomorrow."</p>
                     <div class="read-more-btn">
                         Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </div>
                 </div>
             </a>
-            <a href="../mindfulness-exercises-for-beginners.html" class="blog-card-img"
-                style="background-image: url('../../assets/blog_cover_quiet_1772534313015.webp');">
+<a href="/blog/mindfulness-exercises-for-beginners.html" class="blog-card-img">
+                <img src="/assets/blog_cover_quiet_1772534313015.webp" alt="Mindfulness Exercises for Beginners" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1221,16 +1219,15 @@
                         mind.</p>
                     <div class="read-more-btn">
                         Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </div>
                 </div>
             </a>
-            <a href="../positive-things-to-say-to-yourself-every-morning.html" class="blog-card-img"
-                style="background-image: url('../../assets/blog_cover_morning_1772534601600.webp');">
+<a href="/blog/positive-things-to-say-to-yourself-every-morning.html" class="blog-card-img">
+                <img src="/assets/blog_cover_morning_1772534601600.webp" alt="Positive Things to Say to Yourself Every Morning" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1243,16 +1240,15 @@
                         hope.</p>
                     <div class="read-more-btn">
                         Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </div>
                 </div>
             </a>
-            <a href="../how-to-check-on-a-friend-who-went-quiet.html" class="blog-card-img"
-                style="background-image: url('../../assets/blog_cover_quiet_1772534313015.webp');">
+<a href="/blog/how-to-check-on-a-friend-who-went-quiet.html" class="blog-card-img">
+                <img src="/assets/blog_cover_quiet_1772534313015.webp" alt="How to Check On That Friend Who Suddenly Went Quiet" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1265,16 +1261,15 @@
                         them feel guilty.</p>
                     <div class="read-more-btn">
                         Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </div>
                 </div>
             </a>
-            <a href="../the-people-who-seem-fine-need-you-most.html" class="blog-card-img"
-                style="background-image: url('../../assets/blog_cover_friendship_1772534526563.webp');">
+<a href="/blog/the-people-who-seem-fine-need-you-most.html" class="blog-card-img">
+                <img src="/assets/blog_cover_friendship_1772534526563.webp" alt="The People Who Seem Fine Are Often the Ones Struggling Most" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1287,16 +1282,15 @@
                         never ask for help.</p>
                     <div class="read-more-btn">
                         Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </div>
                 </div>
             </a>
-            <a href="../how-to-be-a-better-friend.html" class="blog-card-img"
-                style="background-image: url('../../assets/blog_cover_friendship_1772534526563.webp');">
+<a href="/blog/how-to-be-a-better-friend.html" class="blog-card-img">
+                <img src="/assets/blog_cover_friendship_1772534526563.webp" alt="How to Be a Better Friend" class="card-cover" loading="lazy">
                 <div class="color-overlay"></div>
                 <div class="gradient-overlay"></div>
                 <div class="title-content">
@@ -1309,8 +1303,7 @@
                         overlook.</p>
                     <div class="read-more-btn">
                         Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
@@ -1319,30 +1312,69 @@
             </a>
         </div>
     </div>
+    
 
+    <!-- Browse by Topic Hubs -->
+    <div class="topic-hubs-container">
+        <h2 class="section-title-small">Browse by Topic</h2>
+        <div class="topic-hubs-grid">
+            <a href="/blog/mental-health/index.html" class="topic-hub-card">
+                <div class="topic-hub-icon">🧠</div>
+                <span>Mental Health</span>
+                <div class="cat-btn">Browse Guides →</div>
+            </a>
+            <a href="/blog/grief-support/index.html" class="topic-hub-card">
+                <div class="topic-hub-icon">🕊️</div>
+                <span>Grief &amp; Loss</span>
+                <div class="cat-btn">Browse Guides →</div>
+            </a>
+            <a href="/blog/serious-illness/index.html" class="topic-hub-card">
+                <div class="topic-hub-icon">🩹</div>
+                <span>Serious Illness</span>
+                <div class="cat-btn">Browse Guides →</div>
+            </a>
+            <a href="/blog/encouragement/index.html" class="topic-hub-card">
+                <div class="topic-hub-icon">✨</div>
+                <span>Encouragement</span>
+                <div class="cat-btn">Browse Guides →</div>
+            </a>
+        </div>
+    </div>
 
     <!-- ═══════════════════════════════════════ -->
     <!-- ── Category Slider ─────────────────── -->
     <!-- ═══════════════════════════════════════ -->
-
+    
 
     <!-- ═══════════════════════════════════════ -->
     <!-- ── Category Blog Grids ─────────────── -->
     <!-- ═══════════════════════════════════════ -->
 
     <!-- Grid 0: Crisis Support (Emergency Resource Portal) -->
+    
 
 
-    <!-- Grid 1: Mental Health Support -->
+    <!-- Grid: mental-health -->
+    
 
 
-    <!-- Grid 2: Checking In & Showing Up -->
 
 
-    <!-- Grid 3: Encouragement & Motivation -->
+    <!-- Grid: grief-support -->
+    
 
 
-    <!-- Grid 4: Self-Care & Daily Habits -->
+
+
+    <!-- Grid: encouragement -->
+    
+
+
+
+
+    <!-- Grid: serious-illness -->
+    
+
 
 
     <section class="blog-cta">
@@ -1386,7 +1418,8 @@
                 <div class="footer-section">
                     <h4>Connect</h4>
                     <ul class="footer-links">
-                        <li><a href="https://x.com/thevibecheckpro" target="_blank" rel="noopener">X (Twitter)</a></li>
+                        <li><a href="https://x.com/thevibecheckpro" target="_blank" rel="noopener">X (Twitter)</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -1500,7 +1533,7 @@
         // ── Rotating Word Animation for Blog Header ──
         (function () {
             const words = ["Blog's", "Guide's", "Advice"];
-            const fonts = ["'Pacifico', cursive", "'Caveat', cursive", "'Permanent Marker', cursive"];
+            const fonts = ["'Fredoka', sans-serif", "'Caveat', cursive", "'Playfair Display', serif"];
             const colors = ["#FEC84A", "#67E8F9", "#FF6B9D"];
             const shadows = [
                 "0 0 10px rgba(254,200,74,0.7), 0 0 30px rgba(254,200,74,0.4), 0 4px 15px rgba(0,0,0,0.5)",
@@ -1589,6 +1622,6 @@
             }, { passive: true });
         })();
     </script>
-</body>
 
-</html>
+
+</body></html>

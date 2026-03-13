@@ -74,7 +74,9 @@ listicles.forEach(list => {
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                     Copy Text
                 </button>
-                <a href="../send-card.html" class="btn btn-secondary" style="border: 1px solid rgba(255,255,255,0.2);">Send as Card ✨</a>
+                <a href="/send-card.html" 
+                   onclick="var msg = this.closest('.copyable-message-actions').previousElementSibling.innerText.trim(); window.location.href = '/send-card.html?message=' + encodeURIComponent(msg); return false;"
+                   class="btn btn-secondary" style="border: 1px solid rgba(255,255,255,0.2);">Send as Card ✨</a>
             </div>
         </div>
         `;
@@ -88,9 +90,7 @@ listicles.forEach(list => {
         .replace(/var\(--dynamic-color\)/g, list.color_theme)
         .replace(/{{messages_html}}/g, messagesHtml);
 
-    // Fix relative paths because the template was designed for /blog/slug/index.html (2 levels deep)
-    // Now we are at /blog/filename.html (1 level deep)
-    outputHtml = outputHtml.replace(/\.\.\/\.\.\//g, '../');
+
 
     const outputPath = path.join(BLOG_DIR, list.filename);
     fs.writeFileSync(outputPath, outputHtml, 'utf-8');

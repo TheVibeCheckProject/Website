@@ -56,7 +56,7 @@ for (const file of files) {
                 </div>
                 
                 <div class="card-info">
-                    <p style="font-size: 0.85rem; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">${data.excerpt}</p>
+                    <p style="font-size: 0.85rem; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">${data.excerpt}</p>
                     <div class="read-more-btn" style="padding: 6px 14px; font-size: 0.8rem;">
                         Read 
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

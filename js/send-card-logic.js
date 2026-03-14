@@ -53,11 +53,14 @@ function handleExternalMessage() {
         const decodedMsg = decodeURIComponent(messageParam);
         window._externalMessage = decodedMsg;
         
-        // Populate the personal message textarea if it exists
+        // User requested NOT to populate the personal message note anymore
+        // We only change the affirmation text now.
+        /* 
         const textarea = document.getElementById('personalMessage');
         if (textarea) {
             textarea.value = decodedMsg;
         }
+        */
 
         // Force selectedAffirmation to be our external message
         selectedAffirmation = decodedMsg;
@@ -68,6 +71,9 @@ function handleExternalMessage() {
         
         // Also update the preview note
         updatePreview();
+        console.log("✨ External message applied to affirmation preview:", decodedMsg);
+    } else {
+        console.log("ℹ️ No external message found in URL.");
     }
 }
 
@@ -627,22 +633,9 @@ function goToStep(step) {
 
 // Main Initialization
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Initial UI setup
     renderCategoryTabs();
     renderAffirmationGrid(categoryDefs[0], false, true);
-
-    // Final check for external message to ensure UI sync
-    handleExternalMessage();
-
-    // If we have an external message, handle premium state/visuals
-    if (window._externalMessage) {
-        if (isPremium) {
-            openWriteOwn();
-            const ta = document.getElementById('writeOwnText');
-            if (ta) ta.value = window._externalMessage;
-        }
-        // Force preview sync one last time
-        updatePreview();
-    }
 
     const bgPickerEl = document.getElementById('bgPicker');
     if (bgPickerEl) {
@@ -680,7 +673,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initialize preview
+    // Initialize preview background
     selectedBackground = backgroundDefs[0].image;
     const preview = document.getElementById('cardPreview');
     if (preview) {
@@ -690,6 +683,20 @@ document.addEventListener('DOMContentLoaded', () => {
         preview.style.borderColor = 'transparent';
     }
 
+    // 2. Handle External Messages (CRITICAL: Runs after grid matches are built)
+    handleExternalMessage();
+
+    // 3. Handle premium state for custom affirmations
+    if (window._externalMessage) {
+        if (isPremium) {
+            openWriteOwn();
+            const ta = document.getElementById('writeOwnText');
+            if (ta) ta.value = window._externalMessage;
+        }
+        updatePreview();
+    }
+
+    // 4. Default selection (Only if NO external message)
     const firstCard = pickerEl ? pickerEl.querySelector('.aff-card') : null;
     if (firstCard && !window._externalMessage) {
         firstCard.click();

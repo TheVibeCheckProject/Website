@@ -17,8 +17,16 @@ function showToast(message, icon) {
     toastTimer = setTimeout(() => toast.classList.remove('visible'), 3200);
 }
 
-// Check for Stripe Premium Unlock
+// --- Global State ---
 const urlParams = new URLSearchParams(window.location.search);
+const isPremium = localStorage.getItem('premium_unlocked') === '1';
+
+let selectedAffirmation = '';
+let selectedSound = 'chime';
+let selectedThemeGroup = 'default';
+let selectedBackground = '';
+
+// Check for Stripe Premium Unlock
 if (urlParams.get('premium') === '1') {
     localStorage.setItem('premium_unlocked', '1');
     window.history.replaceState({}, document.title, window.location.pathname);
@@ -66,8 +74,6 @@ function handleExternalMessage() {
 // Initial run (in case DOM elements aren't ready, we'll run again in DOMContentLoaded)
 handleExternalMessage();
 
-const isPremium = localStorage.getItem('premium_unlocked') === '1';
-
 const freeAffirmations = [
     "You're trying, and that's what counts.",
     "Your feelings are valid, and you deserve to be heard.",
@@ -81,10 +87,7 @@ const freeAffirmations = [
     "You deserve the kindness you give to others."
 ];
 
-let selectedAffirmation = '';
-let selectedSound = 'chime';
-let selectedThemeGroup = 'default';
-let selectedBackground = '';
+// Placeholder for category logic
 
 // Sound engine — Web Audio API synthesized sounds
 const soundEngine = {

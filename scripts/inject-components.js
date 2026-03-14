@@ -57,7 +57,7 @@ for (const file of files) {
                 <p>Send an anonymous, beautifully designed digital affirmation card straight to their phone.</p>
             </div>
             <div class="inline-cta-btn">
-                <a href="/send-card.html" class="btn btn-primary">Send a Free Card ✨</a>
+                <a href="../send-card.html" class="btn btn-primary">Send a Free Card ✨</a>
             </div>
         </div>
         `;
@@ -85,8 +85,8 @@ for (const file of files) {
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                         Copy Text
                     </button>
-                    <a href="/send-card.html" 
-                       onclick="var msg = this.closest('.copyable-message-actions').previousElementSibling.innerText.trim(); window.location.href = '/send-card.html?message=' + encodeURIComponent(msg); return false;"
+                    <a href="../send-card.html" 
+                       onclick="var msg = this.closest('.copyable-message-actions').previousElementSibling.innerText.trim(); window.location.href = '../send-card.html?message=' + encodeURIComponent(msg); return false;"
                        class="btn btn-secondary" style="border: 1px solid rgba(255,255,255,0.2);">Send as Card ✨</a>
                 </div>
             </div>

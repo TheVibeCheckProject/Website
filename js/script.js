@@ -148,7 +148,7 @@ async function handleEmailSignup(e) {
 const demoVibes = {
     encouragement: {
         quote: '"You\'re doing better than you think you are."',
-        bg: 'url("/assets/backgrounds/bg_prem_emerald_1772750461402.webp") center/cover',
+        bg: 'url("assets/backgrounds/bg_prem_emerald_1772750461402.webp") center/cover',
         isVideo: false,
         glow: 'linear-gradient(135deg, #052e16 0%, #166534 100%)',
         wash: 'rgba(22, 101, 52, 0.12)',
@@ -156,7 +156,7 @@ const demoVibes = {
     },
     calm: {
         quote: '"Breathe. You are safe right now."',
-        videoSrc: '/assets/backgrounds/animated_ethereal.mp4',
+        videoSrc: 'assets/backgrounds/animated_ethereal.mp4',
         isVideo: true,
         glow: 'linear-gradient(135deg, #2e1065 0%, #6d28d9 100%)',
         wash: 'rgba(109, 40, 217, 0.1)',
@@ -164,7 +164,7 @@ const demoVibes = {
     },
     celebrate: {
         quote: '"All your hard work is paying off!"',
-        videoSrc: '/assets/backgrounds/animated_vibrant.mp4',
+        videoSrc: 'assets/backgrounds/animated_vibrant.mp4',
         isVideo: true,
         glow: 'linear-gradient(135deg, #451a03 0%, #b45309 100%)',
         wash: 'rgba(180, 83, 9, 0.1)',
@@ -172,7 +172,7 @@ const demoVibes = {
     },
     love: {
         quote: '"You are deeply, profoundly loved."',
-        bg: 'url("/assets/backgrounds/bg_prem_cherry_1772750510659.webp") center/cover',
+        bg: 'url("assets/backgrounds/bg_prem_cherry_1772750510659.webp") center/cover',
         isVideo: false,
         glow: 'linear-gradient(135deg, #4c0519 0%, #9f1239 100%)',
         wash: 'rgba(159, 18, 57, 0.11)',
@@ -180,7 +180,7 @@ const demoVibes = {
     },
     healing: {
         quote: '"There is no timeline for healing."',
-        bg: 'url("/assets/backgrounds/bg_prem_nebula_1772750433414.webp") center/cover',
+        bg: 'url("assets/backgrounds/bg_prem_nebula_1772750433414.webp") center/cover',
         isVideo: false,
         glow: 'linear-gradient(135deg, #09090b 0%, #3b0764 100%)',
         wash: 'rgba(88, 28, 135, 0.12)',
@@ -188,7 +188,7 @@ const demoVibes = {
     },
     selflove: {
         quote: '"You are entirely enough as you are."',
-        videoSrc: '/assets/backgrounds/animated_modern.mp4',
+        videoSrc: 'assets/backgrounds/animated_modern.mp4',
         isVideo: true,
         glow: 'linear-gradient(135deg, #0c1445 0%, #1e3a8a 100%)',
         wash: 'rgba(30, 58, 138, 0.1)',

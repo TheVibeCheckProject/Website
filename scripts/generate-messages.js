@@ -30,7 +30,7 @@ for (const cat of data.categories) {
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                     Copy Text
                 </button>
-                <a href="/send-card.html" 
+                <a href="../send-card.html" 
                    onclick="var msg = this.closest('.copyable-message-actions').previousElementSibling.innerText.trim(); window.location.href = '/send-card.html?message=' + encodeURIComponent(msg); return false;"
                    class="btn btn-secondary" style="border: 1px solid rgba(255,255,255,0.2);">Send as Card ✨</a>
             </div>
@@ -38,13 +38,26 @@ for (const cat of data.categories) {
         `;
     });
 
-    let outputHtml = template
+    // Helper to fix relative URLs for deeper directory (blog/category/index.html is 2 levels deep)
+    function fixUrls(html) {
+        let fixed = html;
+        // Fix asset/CSS/JS references - since these pages are in blog/category/ (2 levels deep),
+        // they need ../../ to reach the root assets.
+        fixed = fixed.replace(/(href|src)="(\.\.\/)+([^"]+)"/g, '$1="../../$3"');
+        fixed = fixed.replace(/url\(\'(\.\.\/)+/g, "url('../../");
+        
+        // Ensure scripts and links that were already ../../ aren't double-processed (the regex above handles ../ correctly)
+        
+        return fixed;
+    }
+
+    let outputHtml = fixUrls(template
         .replace(/{{title}}/g, cat.title)
         .replace(/{{header_title}}/g, cat.header_title)
         .replace(/{{description}}/g, cat.description)
         .replace(/{{slug}}/g, cat.slug)
         .replace(/var\(--dynamic-color\)/g, cat.color_theme)
-        .replace(/{{messages_html}}/g, messagesHtml);
+        .replace(/{{messages_html}}/g, messagesHtml));
 
     const outputPath = path.join(slugDir, 'index.html');
     fs.writeFileSync(outputPath, outputHtml, 'utf-8');

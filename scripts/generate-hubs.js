@@ -88,24 +88,24 @@ const categories = [
     }
 ];
 
-// Helper to fix relative URLs for deeper directory
+// Helper to fix relative URLs for deeper directory (blog/category/index.html is 2 levels deep)
 function fixUrls(html) {
     let fixed = html;
 
-    // If the path is relative (doesn't start with / or http), adjust it.
-    // However, since we are moving to absolute paths, we should ideally just
-    // convert everything to absolute.
+    // Fix asset/CSS/JS references - since these pages are in blog/category/ (2 levels deep),
+    // they need ../../ to reach the root assets.
+    fixed = fixed.replace(/(href|src)="(\.\.\/)+([^"]+)"/g, '$1="../../$3"');
+    fixed = fixed.replace(/url\(\'\.\.\//g, "url('../../");
 
-    // Fix asset/CSS/JS references - if they are relative, make them absolute
-    fixed = fixed.replace(/(href|src)="(\.\.\/)+([^"]+)"/g, '$1="/$3"');
-    fixed = fixed.replace(/url\(\'\.\.\//g, "url('/");
+    // Fix links to sibling HTML files in the blog/ folder - they are 1 level up from blog/category/
+    fixed = fixed.replace(/(href)="([a-zA-Z0-9-]+\.html)(#[^"]*)?"/g, '$1="../$2$3"');
+    fixed = fixed.replace(/(href)="(\.\/)?([a-zA-Z0-9-]+\.html)(#[^"]*)?"/g, '$1="../$3$4"');
 
-    // Fix links to sibling HTML files in the blog/ folder - make them absolute
-    fixed = fixed.replace(/(href)="([a-zA-Z0-9-]+\.html)(#[^"]*)?"/g, '$1="/blog/$2$3"');
-    fixed = fixed.replace(/(href)="(\.\/)?([a-zA-Z0-9-]+\.html)(#[^"]*)?"/g, '$1="/blog/$3$4"');
+    // Specifically fix the blog index link (which is in the parent blog/ folder)
+    fixed = fixed.replace(/href="\.\.\/index\.html"/g, 'href="../index.html"');
 
-    // Specifically fix the blog index link
-    fixed = fixed.replace(/href="\.\.\/index\.html"/g, 'href="/blog/index.html"');
+    // Fix root-relative links if any were missed
+    fixed = fixed.replace(/(href|src)="\/([^"]+)"/g, '$1="../../$2"');
 
     return fixed;
 }

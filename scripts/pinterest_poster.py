@@ -826,23 +826,50 @@ def create_pin(driver, image_path, title, description, link, board_url, cat_id=N
             WebDriverWait(driver, 8).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id^="board-row-"]'))
             )
-            time.sleep(0.3)  # small settle pause
+            time.sleep(0.5)  # small settle pause
+            
             options = driver.find_elements(By.CSS_SELECTOR, '[data-test-id^="board-row-"]')
             clicked = False
             for opt in options:
                 test_id = (opt.get_attribute("data-test-id") or "").lower()
-                if board_name.lower() in test_id or board_name.lower() in opt.text.lower():
+                text_content = (opt.text or "").lower()
+                
+                if board_name.lower() in test_id or board_name.lower() in text_content:
+                    print(f"      🎯 Found board row: '{board_name}'")
                     driver.execute_script("arguments[0].scrollIntoView({block:'center'});", opt)
-                    time.sleep(0.2)
-                    # Use JS click to bypass any overlay/interactability issues
-                    driver.execute_script("arguments[0].click();", opt)
-                    clicked = True
-                    break
+                    time.sleep(0.3)
+                    
+                    # Try 1: Standard Selenium Click
+                    try:
+                        opt.click()
+                        clicked = True
+                    except:
+                        # Try 2: JS Click (bypass overlays)
+                        try:
+                            driver.execute_script("arguments[0].click();", opt)
+                            clicked = True
+                        except:
+                            pass
+                    
+                    if clicked:
+                        break
+            
             if not clicked and options:
+                print("      ⚠️  Exact board match not clicked, trying first available row...")
                 driver.execute_script("arguments[0].click();", options[0])
                 clicked = True
+            
             if clicked:
-                print(f"   📌 Board: {board_name}")
+                time.sleep(1)
+                # Verify selection by checking the selector button text
+                try:
+                    current_board = board_selector.text.strip()
+                    if board_name.lower() in current_board.lower():
+                        print(f"   ✅ Board confirmed: {current_board}")
+                    else:
+                        print(f"   ⚠️  Board mismatch? Selector shows: '{current_board}' (Expected: '{board_name}')")
+                except:
+                    print(f"   📌 Board selection finished: {board_name}")
             else:
                 print(f"   ⚠️  No board rows found for '{board_name}'")
         except Exception as e:

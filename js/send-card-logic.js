@@ -50,7 +50,20 @@ function handleExternalMessage() {
     const messageParam = urlParams.get('message');
     
     if (messageParam) {
-        const decodedMsg = decodeURIComponent(messageParam);
+        // NOTE: urlParams.get() already decodes the value once.
+        // We only decode if we detect it's still double-encoded (unlikely with URLSearchParams but safer)
+        // or just use it as is if it looks correct.
+        let decodedMsg = messageParam;
+        
+        try {
+            // Only try to decode if it looks like it's still URL encoded (contains %)
+            if (decodedMsg.includes('%')) {
+                decodedMsg = decodeURIComponent(messageParam);
+            }
+        } catch (e) {
+            console.warn("⚠️ Failed to decode message param, using raw:", e);
+        }
+
         window._externalMessage = decodedMsg;
         
         // User requested NOT to populate the personal message note anymore
@@ -77,8 +90,8 @@ function handleExternalMessage() {
     }
 }
 
-// Initial run (in case DOM elements aren't ready, we'll run again in DOMContentLoaded)
-handleExternalMessage();
+// Initial run moved to DOMContentLoaded
+// handleExternalMessage();
 
 const freeAffirmations = [
     "You're trying, and that's what counts.",

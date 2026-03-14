@@ -680,22 +680,31 @@ def create_pin(driver, image_path, title, description, link, board_url, cat_id=N
 
     # Wait for title field to be fully interactive after image processing
     # Pinterest can take 30-60s to process the image before the form is usable
+    # We wrap this in a retry loop to handle StaleElementReferenceException if the page refreshes
     print("   ⏳ Waiting for form to become ready...")
-    try:
-        title_field = WebDriverWait(driver, 90).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR,
-                '[data-test-id="pin-draft-title"] textarea, '
-                '[data-test-id="pin-draft-title"] input, '
-                'textarea[placeholder*="title"], input[placeholder*="title"]'
-            ))
-        )
-    except Exception as e:
-        print(f"   ❌ Form never became ready: {e}")
-        return False
+    title_field = None
+    for attempt in range(3):
+        try:
+            title_field = WebDriverWait(driver, 60).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR,
+                    '[data-test-id="pin-draft-title"] textarea, '
+                    '[data-test-id="pin-draft-title"] input, '
+                    'textarea[placeholder*="title"], input[placeholder*="title"]'
+                ))
+            )
+            # Re-verify the element is still attached to the DOM by doing a basic action
+            title_field.click()
+            break
+        except Exception as e:
+            if attempt < 2:
+                print(f"      (Form refreshed, retrying... {attempt + 1})")
+                time.sleep(2)
+            else:
+                print(f"   ❌ Form never became ready: {e}")
+                return False
 
     # Fill in title
     try:
-        title_field.click()
         time.sleep(0.3)
         title_field.send_keys(Keys.CONTROL + "a")
         title_field.send_keys(Keys.DELETE)
@@ -892,16 +901,56 @@ def create_pin(driver, image_path, title, description, link, board_url, cat_id=N
                 EC.element_to_be_clickable((By.CSS_SELECTOR, stage_1_selector))
             )
         else:
-            publish_btn = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-test-id="board-dropdown-save-button"], button[data-test-id="create-pin-save-button"], [data-test-id="pin-draft-publish"]'))
-            )
+            print("   🔍 Searching for 'Publish' button...")
+            # Expanded list for the Publish (Save) button
+            publish_btn = None
+            selectors = [
+                 # User-provided specific structure
+                 '//button[descendant::div[text()="Publish"]]',
+                 '//button[.//div[contains(text(), "Publish")]]',
+                 # Standard test IDs
+                 '[data-test-id="board-dropdown-save-button"]',
+                 'button[data-test-id="create-pin-save-button"]',
+                 '[data-test-id="pin-draft-publish"] button',
+                 '[data-test-id="pin-draft-publish"]',
+                 # CSS class based (from user screenshot/HTML)
+                 'button.GaMK1V.PRly_u',
+            ]
+            
+            for selector in selectors:
+                try:
+                    if selector.startswith('//'):
+                        publish_btn = WebDriverWait(driver, 2).until(
+                            EC.element_to_be_clickable((By.XPATH, selector))
+                        )
+                    else:
+                        publish_btn = WebDriverWait(driver, 2).until(
+                            EC.element_to_be_clickable((By.CSS_SELECTOR, selector))
+                        )
+                    if publish_btn: break
+                except: continue
+
+            # Final text-based fallback search across the whole page
+            if not publish_btn:
+                print("      ⚠️  Direct selectors failed, searching button text...")
+                try:
+                    all_buttons = driver.find_elements(By.TAG_NAME, "button")
+                    for btn in all_buttons:
+                        btn_text = driver.execute_script("return arguments[0].innerText || arguments[0].textContent || '';", btn).strip().lower()
+                        if (btn_text == "publish" or btn_text == "save") and btn.is_displayed():
+                            publish_btn = btn
+                            break
+                except: pass
+
+            if not publish_btn:
+                raise Exception("Could not find Publish/Save button using any known selector or text search.")
         
         # Hardened Interaction for Stage 1
         driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", publish_btn)
         time.sleep(1)
         driver.execute_script("arguments[0].click();", publish_btn)
         print("   ✅ Stage 1 button clicked")
-        time.sleep(3)
+        time.sleep(5) # Allow transition
         
         # Handle the confirmation popup (Stage 2)
         if schedule_time:

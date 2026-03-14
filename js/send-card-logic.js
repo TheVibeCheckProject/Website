@@ -36,20 +36,35 @@ if (urlParams.get('premium') === '1') {
 }
 
 // --- NEW: Read message from URL and pre-fill ---
-// We do this OUTSIDE the premium check so it works for blog redirects
-const messageParam = urlParams.get('message');
-if (messageParam) {
-    const decodedMsg = decodeURIComponent(messageParam);
-    // 1. Populate the personal message textarea (optional, but good for backward compat)
-    const textarea = document.getElementById('personalMessage');
-    if (textarea) {
-        textarea.value = decodedMsg;
-    }
+// Define a robust way to handle the external message
+function handleExternalMessage() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const messageParam = urlParams.get('message');
     
-    // 2. Set as the primary selected affirmation
-    // We'll also update the UI in DOMContentLoaded to ensure elements exist
-    window._externalMessage = decodedMsg;
+    if (messageParam) {
+        const decodedMsg = decodeURIComponent(messageParam);
+        window._externalMessage = decodedMsg;
+        
+        // Populate the personal message textarea if it exists
+        const textarea = document.getElementById('personalMessage');
+        if (textarea) {
+            textarea.value = decodedMsg;
+        }
+
+        // Force selectedAffirmation to be our external message
+        selectedAffirmation = decodedMsg;
+        
+        // Update the preview immediately if possible
+        const previewAff = document.getElementById('previewAffirmation');
+        if (previewAff) previewAff.textContent = `"${decodedMsg}"`;
+        
+        // Also update the preview note
+        updatePreview();
+    }
 }
+
+// Initial run (in case DOM elements aren't ready, we'll run again in DOMContentLoaded)
+handleExternalMessage();
 
 const isPremium = localStorage.getItem('premium_unlocked') === '1';
 
@@ -612,24 +627,18 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCategoryTabs();
     renderAffirmationGrid(categoryDefs[0], false, true);
 
-    // If we have an external message from URL, set it and update preview
+    // Final check for external message to ensure UI sync
+    handleExternalMessage();
+
+    // If we have an external message, handle premium state/visuals
     if (window._externalMessage) {
-        selectedAffirmation = window._externalMessage;
-        
-        // Update preview
-        const previewAff = document.getElementById('previewAffirmation');
-        if (previewAff) previewAff.textContent = `"${selectedAffirmation}"`;
-        
-        // Show "Write Own" state since it's a custom affirmation
         if (isPremium) {
             openWriteOwn();
             const ta = document.getElementById('writeOwnText');
-            if (ta) ta.value = selectedAffirmation;
-        } else {
-            // For non-premium users, we still let them see it in the preview 
-            // even if they can't "edit" it via the custom box
-            updatePreview();
+            if (ta) ta.value = window._externalMessage;
         }
+        // Force preview sync one last time
+        updatePreview();
     }
 
     const bgPickerEl = document.getElementById('bgPicker');

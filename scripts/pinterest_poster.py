@@ -14,7 +14,7 @@ Usage:
     python scripts/pinterest_poster.py --schedule --start-time "2026-03-12 09:00"  # Start at specific time
 
 Requirements:
-    pip install selenium webdriver-manager
+    pip install selenium webdriver-manager groq
 """
 
 import json
@@ -25,6 +25,12 @@ import argparse
 from datetime import datetime, timedelta
 import random
 from pathlib import Path
+
+try:
+    from groq import Groq as GroqClient
+    GROQ_AVAILABLE = True
+except ImportError:
+    GROQ_AVAILABLE = False
 
 try:
     from selenium import webdriver
@@ -80,7 +86,153 @@ DEFAULT_BOARD_URL = "https://www.pinterest.com/thevibecheckproject/encouraging-w
 WEBSITE_BASE = "https://www.thevibecheckproject.com/blog/"
 HASHTAGS = "#affirmations #mentalhealth #support #selfcare #positivity"
 
+# Verified blog slugs — source of truth so links never use a typo from the data file
+VERIFIED_SLUGS = {
+    "encouragement": "encouraging-messages-for-cards",
+    "grief":         "sympathy-card-messages",
+    "anxiety":       "texts-for-anxiety",
+    "just-because":  "just-because-messages",
+    "breakup":       "breakup-support-messages",
+}
+
 PIN_DELAY = 8  # seconds between pins (to avoid rate limits)
+
+# Cache file so AI descriptions are only generated once per pin
+DESCRIPTIONS_CACHE_FILE = DATA_DIR / "generated_descriptions.json"
+
+# ==========================================
+# AI DESCRIPTION GENERATOR
+# ==========================================
+
+# Rotated angle list — each pin gets a different title style instruction
+TITLE_ANGLES = [
+    "a relatable question (e.g. 'Feeling overwhelmed? Read this.')",
+    "a 'what to text when...' phrase",
+    "a 'how to support a friend who...' phrase",
+    "an emotional hook statement (lead with the feeling)",
+    "a 'send this to someone who...' suggestion",
+    "a gentle reminder framed as advice",
+    "a 'you don't have to say the perfect thing' angle",
+    "a practical tip framed as a title",
+    "a 'when words fail...' angle",
+    "a 'the text that changed everything' style hook",
+]
+
+CATEGORY_CONTEXT = {
+    "encouragement": "encouraging someone to keep going, celebrate their effort, or believe in themselves",
+    "grief":         "offering compassionate support to someone who is grieving or experiencing loss",
+    "anxiety":       "helping someone feel grounded and safe during anxiety or a panic attack",
+    "just-because":  "a random, heartfelt check-in to remind someone they are loved and thought of",
+    "breakup":       "supporting a heartbroken friend through a painful breakup or relationship ending",
+}
+
+def load_description_cache():
+    """Load the cached AI-generated descriptions."""
+    if DESCRIPTIONS_CACHE_FILE.exists():
+        with open(DESCRIPTIONS_CACHE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {}
+
+def save_description_cache(cache):
+    """Save the AI-generated descriptions cache."""
+    with open(DESCRIPTIONS_CACHE_FILE, "w", encoding="utf-8") as f:
+        json.dump(cache, f, indent=2)
+
+def load_groq_api_key():
+    """Read GROQ_API_KEY from the Agent .env file or environment."""
+    # Check env first
+    key = os.environ.get("GROQ_API_KEY")
+    if key:
+        return key
+    # Fall back to the Agent's .env file
+    env_path = Path("C:/Users/devin/OneDrive/Desktop/Assistant/.env")
+    if env_path.exists():
+        for line in env_path.read_text(encoding="utf-8").splitlines():
+            if line.startswith("GROQ_API_KEY="):
+                return line.split("=", 1)[1].strip()
+    return None
+
+def generate_pin_content(pin_id, message, cat_id, hashtags, fallback_title, fallback_description, pin_index=0):
+    """
+    Generate both the Pinterest title AND description in one Groq call.
+    Results are cached so each pin is only generated once.
+    Returns (title, description) tuple.
+    Falls back to static templates if Groq is unavailable.
+    """
+    cache = load_description_cache()
+    if pin_id in cache and isinstance(cache[pin_id], dict):
+        cached = cache[pin_id]
+        return cached["title"], cached["description"]
+
+    if not GROQ_AVAILABLE:
+        print("   ⚠️  groq package not installed. Using template content.")
+        print("      Run: pip install groq")
+        return fallback_title, fallback_description
+
+    api_key = load_groq_api_key()
+    if not api_key:
+        print("   ⚠️  GROQ_API_KEY not found. Using template content.")
+        return fallback_title, fallback_description
+
+    context = CATEGORY_CONTEXT.get(cat_id, f"supporting someone emotionally with {cat_id} messages")
+    angle = TITLE_ANGLES[pin_index % len(TITLE_ANGLES)]
+
+    try:
+        client = GroqClient(api_key=api_key)
+        response = client.chat.completions.create(
+            model="meta-llama/llama-4-scout-17b-16e-instruct",
+            max_tokens=300,
+            temperature=1.0,
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "You write Pinterest pin titles and descriptions for The Vibe Check Project, "
+                        "a platform that helps people send the right emotional support messages to friends. "
+                        "Your copy is warm, relatable, and feels like something a real person would share — "
+                        "never corporate, never generic. Always casual and friendly."
+                    )
+                },
+                {
+                    "role": "user",
+                    "content": (
+                        f"Write a Pinterest title and description for a pin about {context}.\n\n"
+                        f"The specific message on the pin is:\n\"{message}\"\n\n"
+                        f"Format your response EXACTLY like this (two lines, nothing else):\n"
+                        f"TITLE: <title here>\n"
+                        f"DESC: <description here>\n\n"
+                        f"Rules for TITLE:\n"
+                        f"- Max 8 words, search-friendly\n"
+                        f"- Use THIS specific angle: {angle}\n"
+                        f"- Base it on the specific emotion or moment in the message above\n"
+                        f"- No quotes, don't copy message text verbatim\n\n"
+                        f"Rules for DESC:\n"
+                        f"- 2 sentences max, under 200 characters\n"
+                        f"- Make it feel personal and shareable, not like ad copy\n"
+                        f"- End with: {hashtags}"
+                    )
+                }
+            ]
+        )
+        raw = response.choices[0].message.content.strip()
+
+        # Parse the two-line response
+        title_out = fallback_title
+        desc_out = fallback_description
+        for line in raw.splitlines():
+            if line.upper().startswith("TITLE:"):
+                title_out = line.split(":", 1)[1].strip()[:100]
+            elif line.upper().startswith("DESC:"):
+                desc_out = line.split(":", 1)[1].strip()[:500]
+
+        cache[pin_id] = {"title": title_out, "description": desc_out}
+        save_description_cache(cache)
+        print(f"   ✨ Groq title + description generated for {pin_id}")
+        return title_out, desc_out
+
+    except Exception as e:
+        print(f"   ⚠️  Groq content failed ({e}). Using template fallback.")
+        return fallback_title, fallback_description
 
 # Optimized Titles and Descriptions for Pinterest Engagement
 CATEGORIAL_TEMPLATES = {
@@ -90,10 +242,19 @@ CATEGORIAL_TEMPLATES = {
             "How to hype your friend up 🚀",
             "Encouraging words for someone taking a big step",
             "Simple ways to be your friend's biggest hype man",
-            "The perfect text to send an ambitious friend"
+            "The perfect text to send an ambitious friend",
+            "When your friend is feeling down, send this."
+        ],
+        "intros": [
+            "A little hit of encouragement for your feed: ",
+            "I just wanted to share this vibe: ",
+            "Send this to someone who needs to hear it today: ",
+            "A reminder that you're doing better than you think: ",
+            "Small words, big impact: ",
+            "This really resonated with me today: "
         ],
         "description": "A simple text can change someone's entire day. These encouraging messages remind them how much they are capable of.",
-        "hashtags": "#encouragement #support #motivation #friendship"
+        "hashtags": "#encouragement #support #motivation #friendship #positivity"
     },
     "grief": {
         "titles": [
@@ -101,10 +262,19 @@ CATEGORIAL_TEMPLATES = {
             "Supportive messages when there are no words",
             "How to be there for a friend who is grieving",
             "The right thing to say to someone who is hurting",
-            "Simple, caring texts for loss and sympathy"
+            "Simple, caring texts for loss and sympathy",
+            "When you don't know what to say to a friend in pain."
+        ],
+        "intros": [
+            "When words fail, simple presence matters: ",
+            "A gentle message to send someone who is hurting: ",
+            "Sometimes the best thing to say is 'I'm here': ",
+            "Holding space for others today: ",
+            "Supportive words for the heavy days: ",
+            "A reminder that it's okay not to be okay: "
         ],
         "description": "Grief is heavy and sometimes there truly are no words. Use these simple, supportive messages to provide comfort without the platitudes.",
-        "hashtags": "#griefsupport #sympathy #bereavement #holdingspace"
+        "hashtags": "#griefsupport #sympathy #bereavement #holdingspace #mentalhealth"
     },
     "anxiety": {
         "titles": [
@@ -112,10 +282,19 @@ CATEGORIAL_TEMPLATES = {
             "How to support an anxious friend right now",
             "Gentle reminders for hard mental health days",
             "Grounding techniques and supportive words",
-            "What to text someone when anxiety feels heavy"
+            "What to text someone when anxiety feels heavy",
+            "A text message to help someone feel safe."
+        ],
+        "intros": [
+            "Grounding words for an anxious heart: ",
+            "A text to send someone who is spiraling: ",
+            "Helping a friend find their breath: ",
+            "You are safe, you are loved: ",
+            "Words for when the world feels too loud: ",
+            "Stay in the present moment with this: "
         ],
         "description": "Anxiety can feel isolating and overwhelming. Use these grounding messages to support someone through high anxiety or a panic attack.",
-        "hashtags": "#anxiety #mentalhealth #panicattack #grounding"
+        "hashtags": "#anxiety #mentalhealth #panicattack #grounding #selfcare"
     },
     "just-because": {
         "titles": [
@@ -123,10 +302,19 @@ CATEGORIAL_TEMPLATES = {
             "Random ways to make someone's day special",
             "Brighten their phone with a simple 'just because' text",
             "How to let a friend know you're thinking of them",
-            "Sweet and simple reminders that they matter"
+            "Sweet and simple reminders that they matter",
+            "A quick text to make your bestie smile."
+        ],
+        "intros": [
+            "Just a random reminder: ",
+            "Sending a virtual hug with this: ",
+            "I saw this and thought of you: ",
+            "Because you don't need a reason to be kind: ",
+            "A little something to brighten your day: ",
+            "Spreading good vibes for no reason at all: "
         ],
         "description": "You don't need a crisis to tell someone they matter. These 'just because' messages are perfect for a random check-in to make your friends smile.",
-        "hashtags": "#thinkingofyou #friendshipgoals #positivity #spreadlove"
+        "hashtags": "#thinkingofyou #friendshipgoals #positivity #spreadlove #goodvibes"
     },
     "breakup": {
         "titles": [
@@ -134,10 +322,19 @@ CATEGORIAL_TEMPLATES = {
             "Grieving a relationship? Read this support guide.",
             "How to be there for a heartbroken friend",
             "Moving on after a breakup: Validating messages",
-            "Supportive texts for when life feels heavy"
+            "Supportive texts for when life feels heavy",
+            "What to say when their heart is broken."
+        ],
+        "intros": [
+            "Validation for a hurting heart: ",
+            "When their world feels like it's crashing: ",
+            "Support for the messy, hard days of healing: ",
+            "Reminder: You are enough, with or without them: ",
+            "Helping a friend through heartbreak: ",
+            "Taking it one hour at a time: "
         ],
         "description": "Breakups are brutal. These validating, supportive messages help you show up for your friend when their world feels like it's crashing.",
-        "hashtags": "#breakupsupport #selflove #heartbreak #healing"
+        "hashtags": "#breakupsupport #selflove #heartbreak #healing #relationshipadvice"
     }
 }
 
@@ -158,21 +355,38 @@ def save_json(filepath, data):
         json.dump(data, f, indent=2)
 
 def try_kill_processes():
-    """Surgically kill only Chrome processes using our project-local profile."""
-    # Normalize path to ensure PowerShell matching works reliably
-    profile_dir = str((SCRIPT_DIR.parent / ".pinterest-profile").resolve())
+    """Surgically kill only Chrome processes using our project-local profile and clean up locks."""
+    profile_dir = SCRIPT_DIR.parent / ".pinterest-profile"
+    profile_path_str = str(profile_dir.resolve())
     print(f"🧹 Polishing session lock (targeting specific automation profile)...")
+    
     try:
         if os.name == 'nt':
-            # Use PowerShell to find only the Chrome processes using our specific data directory
-            # We use -like with *profile_dir* to ensure matching regardless of slash style
-            safe_path = profile_dir.replace("\\", "\\\\")
+            # 1. More aggressive chromedriver killing
+            os.system('taskkill /f /im chromedriver.exe /t >nul 2>&1')
+            
+            # 2. Use PowerShell to find and kill the specific chrome instance
+            safe_path = profile_path_str.replace("\\", "\\\\")
             cmd = f'powershell -Command "Get-CimInstance Win32_Process -Filter \\"Name=\'chrome.exe\'\\" | Where-Object {{$_.CommandLine -like \'*--user-data-dir={safe_path}*\'}} | ForEach-Object {{Stop-Process -Id $_.ProcessId -Force}}"'
             os.system(cmd)
-            os.system('taskkill /f /im chromedriver.exe /t >nul 2>&1')
+            
+            # 3. Manual Lock Cleanup (The most common cause of SessionNotCreatedException)
+            lock_files = ["SingletonLock", "SingletonCookie", "SingletonSocket", "lockfile"]
+            for lock in lock_files:
+                lock_path = profile_dir / lock
+                if lock_path.exists():
+                    try:
+                        lock_path.unlink()
+                        print(f"   🔓 Removed stale lock: {lock}")
+                    except:
+                        pass
         else:
-            os.system(f'pkill -f "{profile_dir}" >/dev/null 2>&1')
+            os.system(f'pkill -f "{profile_path_str}" >/dev/null 2>&1')
             os.system('pkill -f chromedriver >/dev/null 2>&1')
+            # Unix locks are often different but same principle
+            for lock in ["SingletonLock", "SingletonCookie"]:
+                (profile_dir / lock).unlink(missing_ok=True)
+                
         time.sleep(1.5)
     except:
         pass
@@ -183,6 +397,8 @@ def get_driver(headless=False):
     if headless:
         options.add_argument("--headless=new")
     options.add_argument("--window-size=1920,1080")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option("useAutomationExtension", False)
@@ -431,7 +647,13 @@ def schedule_pin(driver, schedule_time):
         print(f"   ⚠️  Scheduling error: {e}")
         return False
 
-def create_pin(driver, image_path, title, description, link, board_url, schedule_time=None):
+def slow_type(element, text, delay=0.02):
+    """Type text character by character so Pinterest's UI can keep up."""
+    for char in text:
+        element.send_keys(char)
+        time.sleep(delay)
+
+def create_pin(driver, image_path, title, description, link, board_url, cat_id=None, schedule_time=None):
     """Create a single pin on Pinterest via the browser UI."""
     
     # Navigate to pin creation
@@ -451,107 +673,182 @@ def create_pin(driver, image_path, title, description, link, board_url, schedule
     try:
         file_input = driver.find_element(By.CSS_SELECTOR, 'input[type="file"]')
         file_input.send_keys(str(image_path))
-        time.sleep(3)
         print(f"   📷 Image uploaded: {image_path.name}")
     except Exception as e:
         print(f"   ❌ Failed to upload image: {e}")
         return False
-    
+
+    # Wait for title field to be fully interactive after image processing
+    # Pinterest can take 30-60s to process the image before the form is usable
+    print("   ⏳ Waiting for form to become ready...")
+    try:
+        title_field = WebDriverWait(driver, 90).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR,
+                '[data-test-id="pin-draft-title"] textarea, '
+                '[data-test-id="pin-draft-title"] input, '
+                'textarea[placeholder*="title"], input[placeholder*="title"]'
+            ))
+        )
+    except Exception as e:
+        print(f"   ❌ Form never became ready: {e}")
+        return False
+
     # Fill in title
     try:
-        title_field = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pin-draft-title"] textarea, [data-test-id="pin-draft-title"] input, #pin-draft-title'))
-        )
-        title_field.clear()
-        title_field.send_keys(title[:100])
-        print(f"   📝 Title: {title[:50]}...")
+        title_field.click()
+        time.sleep(0.3)
+        title_field.send_keys(Keys.CONTROL + "a")
+        title_field.send_keys(Keys.DELETE)
+        time.sleep(0.2)
+        slow_type(title_field, title[:100])
+        print(f"   📝 Title: {title[:60]}")
     except Exception as e:
-        # Try alternative selector
-        try:
-            title_field = driver.find_element(By.CSS_SELECTOR, 'textarea[placeholder*="title"], input[placeholder*="title"]')
-            title_field.clear()
-            title_field.send_keys(title[:100])
-        except:
-            print(f"   ⚠️  Could not find title field: {e}")
-    
-    # Fill in description
+        print(f"   ⚠️  Could not fill title field: {e}")
+
+    # Pause before moving to description
+    time.sleep(0.3)
+
+    # Fill in description — DraftJS contenteditable
+    # Strategy: paste via ClipboardEvent (most reliable for React/DraftJS in modern Chrome)
     try:
         desc_field = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id="pin-draft-description"] [contenteditable], [data-test-id="pin-draft-description"] textarea, #pin-draft-description, [contenteditable="true"], .public-DraftEditor-content'))
+            EC.element_to_be_clickable((By.CSS_SELECTOR,
+                'div.public-DraftEditor-content[contenteditable="true"], '
+                '[aria-label="Add a detailed description"]'
+            ))
         )
-        
-        # Focus and and ensure it's cleared via JS
-        driver.execute_script("""
+        desc_field.click()
+        time.sleep(0.4)
+
+        desc_text = description[:500]
+
+        # Try 1: ClipboardEvent paste (works with React/DraftJS in modern Chrome)
+        pasted = driver.execute_script("""
             var el = arguments[0];
+            var text = arguments[1];
             el.focus();
-            if (el.isContentEditable) el.innerText = arguments[1];
-            else el.value = arguments[1];
-            el.dispatchEvent(new Event('input', { bubbles: true }));
-            el.dispatchEvent(new Event('change', { bubbles: true }));
-        """, desc_field, description[:500])
-        time.sleep(1)
-        
-        # "Wake up" React/Draft.js by sending a physical character if it's contenteditable
-        # This keeps the automation from clashing with the internal state
-        try:
-            desc_field.send_keys(Keys.SPACE)
-            time.sleep(0.5)
-            desc_field.send_keys(Keys.BACKSPACE)
-        except:
-            pass
-            
-        print(f"   📝 Description entered via JS Force ({len(description)} chars)")
+            try {
+                var dt = new DataTransfer();
+                dt.setData('text/plain', text);
+                el.dispatchEvent(new ClipboardEvent('paste', {
+                    bubbles: true,
+                    cancelable: true,
+                    clipboardData: dt
+                }));
+                return 'clipboard';
+            } catch(e) { return 'clipboard_failed:' + e; }
+        """, desc_field, desc_text)
+
+        time.sleep(0.4)
+
+        # Check if anything was typed — if field is still empty, fall back
+        actual = driver.execute_script(
+            "return arguments[0].innerText || arguments[0].textContent || '';",
+            desc_field
+        ).strip()
+
+        if not actual:
+            # Try 2: execCommand insertText (older Chrome / some Pinterest versions)
+            driver.execute_script(
+                "arguments[0].focus();"
+                "document.execCommand('selectAll', false, null);"
+                "document.execCommand('insertText', false, arguments[1]);",
+                desc_field, desc_text
+            )
+            time.sleep(0.4)
+            actual = driver.execute_script(
+                "return arguments[0].innerText || arguments[0].textContent || '';",
+                desc_field
+            ).strip()
+
+        if not actual:
+            # Try 3: ActionChains key-by-key (slow but always works)
+            ActionChains(driver).click(desc_field).perform()
+            time.sleep(0.3)
+            slow_type(desc_field, desc_text, delay=0.03)
+            time.sleep(0.3)
+
+        print(f"   📝 Description: {description[:60]}...")
     except Exception as e:
-        print(f"   ⚠️  Could not find or fill description field: {e}")
-    
+        print(f"   ⚠️  Could not fill description field: {e}")
+
+    time.sleep(0.3)
+
     # Fill in destination link
     try:
-        link_field = driver.find_element(By.CSS_SELECTOR, '[data-test-id="pin-draft-link"] input, #pin-draft-link, input[placeholder*="link"], input[placeholder*="url"], input[placeholder*="URL"]')
+        link_field = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR,
+                '[data-test-id="pin-draft-link"] input, '
+                'input[placeholder*="link"], input[placeholder*="url"], input[placeholder*="URL"]'
+            ))
+        )
         link_field.click()
+        time.sleep(0.3)
         link_field.send_keys(Keys.CONTROL + "a")
-        link_field.send_keys(Keys.BACKSPACE)
-        link_field.send_keys(link)
+        link_field.send_keys(Keys.DELETE)
+        time.sleep(0.2)
+        slow_type(link_field, link)
         print(f"   🔗 Link: {link}")
-    except:
-        print("   ⚠️  Could not find link field")
-    
+    except Exception as e:
+        print(f"   ⚠️  Could not find link field: {e}")
+
+    time.sleep(0.3)
+
     # Select board
+    board_name = BOARD_NAMES.get(cat_id, "Encouraging Words") if cat_id else "Encouraging Words"
     try:
         board_selector = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-test-id="board-dropdown-select-button"], [data-test-id="board-dropdown"]'))
+            EC.element_to_be_clickable((By.CSS_SELECTOR,
+                '[data-test-id="board-dropdown-select-button"], [data-test-id="board-dropdown"]'
+            ))
         )
         board_selector.click()
-        time.sleep(2)
-        
-        # Search for the board name
-        board_name = BOARD_NAMES.get(cat_id, "Encouraging Words")
+        time.sleep(1.5)
+
+        # Type board name into search
         try:
-            search_input = driver.find_element(By.CSS_SELECTOR, 'input[placeholder*="Search"], [data-test-id="board-dropdown-filter"] input')
-            search_input.send_keys(board_name)
-            time.sleep(1.5)
-        except:
-            pass
-        
-        # Click the row
+            search_input = WebDriverWait(driver, 5).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR,
+                    '#pickerSearchField, input[placeholder*="Search"], [data-test-id="board-dropdown-filter"] input'
+                ))
+            )
+            search_input.click()
+            time.sleep(0.2)
+            search_input.clear()
+            slow_type(search_input, board_name)
+            time.sleep(0.8)  # let results populate
+        except Exception as e:
+            print(f"   ⚠️  Board search input not found: {e}")
+
+        # Wait for board rows to actually appear after search
+        # Pinterest renders board rows as data-test-id="board-row-{BoardName}"
         try:
-            # Look for row that contains the name
-            options = driver.find_elements(By.CSS_SELECTOR, '[data-test-id="board-row"]')
+            WebDriverWait(driver, 8).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '[data-test-id^="board-row-"]'))
+            )
+            time.sleep(0.3)  # small settle pause
+            options = driver.find_elements(By.CSS_SELECTOR, '[data-test-id^="board-row-"]')
             clicked = False
             for opt in options:
-                if board_name.lower() in opt.text.lower():
-                    opt.click()
+                test_id = (opt.get_attribute("data-test-id") or "").lower()
+                if board_name.lower() in test_id or board_name.lower() in opt.text.lower():
+                    driver.execute_script("arguments[0].scrollIntoView({block:'center'});", opt)
+                    time.sleep(0.2)
+                    # Use JS click to bypass any overlay/interactability issues
+                    driver.execute_script("arguments[0].click();", opt)
                     clicked = True
                     break
-            
             if not clicked and options:
-                options[0].click()
-            
-            time.sleep(1)
-            print(f"   📌 Board: {board_name}")
-        except:
-            print("   ⚠️  Could not select board option — will use default or error")
-    except:
-        print("   ⚠️  Could not find board selector")
+                driver.execute_script("arguments[0].click();", options[0])
+                clicked = True
+            if clicked:
+                print(f"   📌 Board: {board_name}")
+            else:
+                print(f"   ⚠️  No board rows found for '{board_name}'")
+        except Exception as e:
+            print(f"   ⚠️  Could not click board row: {e}")
+    except Exception as e:
+        print(f"   ⚠️  Could not open board selector: {e}")
     
     # Schedule for later if requested
     if schedule_time:
@@ -730,18 +1027,26 @@ def main():
             base_description = template.get("description", f"Helpful messages and support for {cat_id}.")
             hashtags = template.get("hashtags", "")
             
-            # Catchy Title: random variation or fallback
-            title = random.choice(titles)
+            # Generate title + description together via Groq (cached after first run)
+            fallback_title = random.choice(titles)
+            intro = random.choice(template.get("intros", [""]))
+            fallback_desc = f"{intro} \"{message}\" {base_description} {hashtags}"
+            title, full_description = generate_pin_content(
+                pin_id, message, cat_id, hashtags, fallback_title, fallback_desc,
+                pin_index=index - 1
+            )
             
-            # Professional Description: matches user screenshot (Short Explanation + Hashtags)
-            full_description = f"{base_description} {hashtags}"
+            # Always use the verified slug map — never trust the data file for links
+            slug = VERIFIED_SLUGS.get(cat_id, category['slug'].strip())
+            link = f"{WEBSITE_BASE}{slug}/"
             
             queue.append({
                 "pin_id": pin_id,
+                "cat_id": cat_id,
                 "image_path": image_path,
                 "title": title[:100],
                 "description": full_description[:500],
-                "link": f"{WEBSITE_BASE}{category['slug']}.html",
+                "link": link,
                 "board_url": BOARD_URLS.get(cat_id, DEFAULT_BOARD_URL),
             })
 
@@ -804,6 +1109,7 @@ def main():
             print(f"      Title: {pin['title']}")
             print(f"      Image: {pin['image_path'].name}")
             print(f"      Board: {pin['board_url']}")
+            print(f"      Desc:  {pin['description'][:80]}...")
             print(f"      Link:  {pin['link']}")
             if schedule_times:
                 print(f"      📅 Scheduled: {schedule_times[i-1].strftime('%b %d, %Y at %I:%M %p')}")
@@ -836,6 +1142,7 @@ def main():
                 pin["description"],
                 pin["link"],
                 pin["board_url"],
+                cat_id=pin["cat_id"],
                 schedule_time=sched,
             )
             

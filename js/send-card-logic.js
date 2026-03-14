@@ -23,15 +23,6 @@ if (urlParams.get('premium') === '1') {
     localStorage.setItem('premium_unlocked', '1');
     window.history.replaceState({}, document.title, window.location.pathname);
 
-    // --- NEW: Read message from URL and pre-fill ---
-    const messageParam = urlParams.get('message');
-    if (messageParam) {
-        const textarea = document.getElementById('personalMessage');
-        if (textarea) {
-            textarea.value = decodeURIComponent(messageParam);
-        }
-    }
-
     // Show temporary badge
     const badge = document.createElement('div');
     badge.textContent = '✦ Premium Unlocked';
@@ -42,6 +33,22 @@ if (urlParams.get('premium') === '1') {
         badge.style.opacity = '0';
         setTimeout(() => badge.remove(), 500);
     }, 4000);
+}
+
+// --- NEW: Read message from URL and pre-fill ---
+// We do this OUTSIDE the premium check so it works for blog redirects
+const messageParam = urlParams.get('message');
+if (messageParam) {
+    const decodedMsg = decodeURIComponent(messageParam);
+    // 1. Populate the personal message textarea (optional, but good for backward compat)
+    const textarea = document.getElementById('personalMessage');
+    if (textarea) {
+        textarea.value = decodedMsg;
+    }
+    
+    // 2. Set as the primary selected affirmation
+    // We'll also update the UI in DOMContentLoaded to ensure elements exist
+    window._externalMessage = decodedMsg;
 }
 
 const isPremium = localStorage.getItem('premium_unlocked') === '1';
@@ -605,6 +612,26 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCategoryTabs();
     renderAffirmationGrid(categoryDefs[0], false, true);
 
+    // If we have an external message from URL, set it and update preview
+    if (window._externalMessage) {
+        selectedAffirmation = window._externalMessage;
+        
+        // Update preview
+        const previewAff = document.getElementById('previewAffirmation');
+        if (previewAff) previewAff.textContent = `"${selectedAffirmation}"`;
+        
+        // Show "Write Own" state since it's a custom affirmation
+        if (isPremium) {
+            openWriteOwn();
+            const ta = document.getElementById('writeOwnText');
+            if (ta) ta.value = selectedAffirmation;
+        } else {
+            // For non-premium users, we still let them see it in the preview 
+            // even if they can't "edit" it via the custom box
+            updatePreview();
+        }
+    }
+
     const bgPickerEl = document.getElementById('bgPicker');
     if (bgPickerEl) {
         backgroundDefs.forEach((bg, index) => {
@@ -652,7 +679,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const firstCard = pickerEl ? pickerEl.querySelector('.aff-card') : null;
-    if (firstCard) firstCard.click();
+    if (firstCard && !window._externalMessage) {
+        firstCard.click();
+    }
 
     // Event listeners
     const senderInput = document.getElementById('senderName');

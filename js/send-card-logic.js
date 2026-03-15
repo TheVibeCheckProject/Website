@@ -1,4 +1,4 @@
-// ── Global State ──
+// ── Global State (v12) ──
 const urlParams = new URLSearchParams(window.location.search);
 const isPremium = localStorage.getItem('premium_unlocked') === '1';
 

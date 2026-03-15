@@ -409,7 +409,6 @@ function initDemoParticles() {
     const canvas = document.getElementById('demoCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    const isMobile = window.innerWidth <= 768;
     const COUNT = isMobile ? 18 : 32;
 
     function resize() {

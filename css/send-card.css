@@ -1102,47 +1102,6 @@
 
 .sticky-preview { position: sticky; top: 20px; z-index: 10; margin-bottom: var(--space-xl); }
 
-/* ── Toast Notification ── */
-.vibe-toast {
-    position: fixed;
-    bottom: 32px;
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: rgba(26, 22, 37, 0.96);
-    border: 1.5px solid rgba(255, 107, 157, 0.5);
-    border-radius: 50px;
-    padding: 14px 24px;
-    color: var(--color-text-primary);
-    font-family: var(--font-display);
-    font-size: 14px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 107, 157, 0.1);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 9999;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-    white-space: nowrap;
-}
-
-.vibe-toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
-.vibe-toast .toast-icon { font-size: 18px; flex-shrink: 0; }
-
-@keyframes fieldShake {
-    0%, 100% { transform: translateX(0); }
-    20% { transform: translateX(-8px); }
-    40% { transform: translateX(8px); }
-    60% { transform: translateX(-5px); }
-    80% { transform: translateX(5px); }
-}
-
-.field-shake { animation: fieldShake 0.45s ease; border-color: rgba(255, 107, 157, 0.7) !important; }
-.grid-shake { animation: fieldShake 0.45s ease; }
-
 /* ── Animated Orb Background ─────────────────────────────── */
 .bg-orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.11; pointer-events: none; z-index: 0; }
 .bg-orb-1 { width: 640px; height: 640px; background: radial-gradient(circle, #ff6b9d 0%, transparent 70%); top: -180px; left: -180px; animation: orbDrift1 24s ease-in-out infinite alternate; }

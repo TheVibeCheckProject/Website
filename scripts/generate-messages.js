@@ -31,7 +31,7 @@ for (const cat of data.categories) {
                     Copy Text
                 </button>
                 <a href="../send-card.html" 
-                   onclick="var msg = this.closest('.copyable-message-actions').previousElementSibling.innerText.trim(); window.location.href = '/send-card.html?message=' + encodeURIComponent(msg); return false;"
+                   onclick="var msg = this.closest('.copyable-message-actions').previousElementSibling.innerText.trim(); window.location.href = this.href + '?message=' + encodeURIComponent(msg); return false;"
                    class="btn btn-secondary" style="border: 1px solid rgba(255,255,255,0.2);">Send as Card ✨</a>
             </div>
         </div>

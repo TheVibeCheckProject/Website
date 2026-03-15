@@ -4,8 +4,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    const isMobile = window.innerWidth <= 768;
-
     // ==========================================
     // 1. HERO TITLE — Letters cascade into place (Desktop Only)
     // ==========================================

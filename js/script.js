@@ -144,6 +144,54 @@ async function handleEmailSignup(e) {
     }
 }
 
+// ── INLINE JOIN-SECTION SIGNUP ────────────────────────
+// Same list as the modal, but a visible form for visitors who never open the popup.
+function initJoinForm() {
+    const form = document.getElementById('join-form');
+    if (!form) return;
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const emailInput = document.getElementById('join-email');
+        const submitBtn = document.getElementById('join-submit');
+        const email = (emailInput.value || '').trim();
+        if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+            emailInput.focus();
+            emailInput.style.borderColor = '#ef4444';
+            return;
+        }
+        emailInput.style.borderColor = '';
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Joining...';
+        submitBtn.disabled = true;
+
+        try {
+            const response = await fetch('https://vibe-check-proxy.caseagent72401.workers.dev/', {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email,
+                    fields: { name: 'Friend', signup_source: 'homepage-join-section' },
+                    groups: ['180628908682512348']
+                })
+            });
+
+            if (response.ok) {
+                form.style.display = 'none';
+                document.getElementById('join-success').style.display = 'block';
+            } else {
+                alert('Something went wrong. Please try again!');
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        } catch (err) {
+            alert('Connection error. Please try again!');
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+}
+
 // ── INTERACTIVE CARD DEMO ─────────────────────────────
 const demoVibes = {
     encouragement: {
@@ -606,6 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollProgress();
     initDailyAffirmation();
     initCardDemo();
+    initJoinForm();
 
     // Non-critical features deferred to 3s after load for Lighthouse performance
     setTimeout(() => {
@@ -616,7 +665,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3000);
 
     // CTA Listeners
-    document.querySelectorAll('#hero-cta, #cta-button').forEach(btn => {
+    document.querySelectorAll('#hero-cta').forEach(btn => {
         btn.addEventListener('click', e => {
             e.preventDefault();
             const modal = document.getElementById('email-modal');

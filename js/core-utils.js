@@ -148,3 +148,26 @@ function burstParticles(count) {
         setTimeout(() => { container.innerHTML = ''; }, 12000);
     }
 }
+
+// ── Premium Unlock (Stripe return) ──
+// Runs on every page via core-utils so buyers are unlocked no matter which
+// page Stripe redirects them to after payment (?premium=1).
+(function handlePremiumReturn() {
+    try {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('premium') !== '1') return;
+        localStorage.setItem('premium_unlocked', '1');
+        window.history.replaceState({}, document.title, window.location.pathname);
+        const badge = document.createElement('div');
+        badge.textContent = '✦ Premium Unlocked';
+        badge.style.cssText = 'position:fixed;top:12px;right:12px;background:#6c63ff;color:white;padding:6px 12px;border-radius:20px;font-size:12px;z-index:9999;font-weight:bold;box-shadow:0 4px 12px rgba(108,99,255,0.4);';
+        const show = () => document.body.appendChild(badge);
+        if (document.body) show();
+        else document.addEventListener('DOMContentLoaded', show);
+        setTimeout(() => {
+            badge.style.transition = 'opacity 0.5s';
+            badge.style.opacity = '0';
+            setTimeout(() => badge.remove(), 500);
+        }, 4000);
+    } catch (e) { /* unlock is best-effort */ }
+})();

@@ -265,6 +265,30 @@
                 display: none
             }
         }
+
+        .join-form {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            align-items: stretch;
+            flex-wrap: wrap;
+            max-width: 560px;
+            margin: 0 auto 16px;
+        }
+
+        .join-form .form-input {
+            flex: 1 1 260px;
+            min-width: 0;
+        }
+
+        .join-form .btn {
+            white-space: nowrap;
+        }
+
+        #join-success {
+            max-width: 560px;
+            margin: 0 auto 16px;
+        }
     </style>
     <link rel="stylesheet" href="css/styles.css?v=8" media="print" onload="this.media='all'">
     <noscript>
@@ -817,7 +841,18 @@
                         One email. One affirmation. Every morning.
                     </p>
                 </div>
-                <button class="btn btn-primary btn-large" id="cta-button">Join the Newsletter ✨</button>
+                <form id="join-form" class="join-form" novalidate>
+                    <input type="email" id="join-email" class="form-input" placeholder="your.email@example.com"
+                        aria-label="Email address" required />
+                    <button type="submit" class="btn btn-primary btn-large" id="join-submit">Join the Newsletter
+                        ✨</button>
+                </form>
+                <div id="join-success" class="success-message" style="display: none;">
+                    <div class="success-icon">✨</div>
+                    <h3>You're in!</h3>
+                    <p>Check your email for a confirmation link. Your first daily vibe check arrives tomorrow morning.
+                    </p>
+                </div>
                 <p class="cta-note">Free forever • One email a day • Unsubscribe anytime</p>
             </div>
         </section>
@@ -914,7 +949,7 @@
 
     <!-- Main JavaScript -->
     <script src="js/core-utils.js?v=8" defer></script>
-    <script src="js/script.js?v=9" defer></script>
+    <script src="js/script.js?v=10" defer></script>
     <script src="js/animations.js?v=8" defer></script>
 
 

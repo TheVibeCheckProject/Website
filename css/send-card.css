@@ -1053,16 +1053,19 @@
     width: 100%;
     padding: 0 4px;
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
     transform: translateX(24px);
-    transition: opacity 0.35s ease, transform 0.35s ease;
+    transition: opacity 0.35s ease, transform 0.35s ease, visibility 0s linear 0.35s;
 }
 
 .form-step.active {
     position: relative;
     opacity: 1;
+    visibility: visible;
     pointer-events: all;
     transform: translateX(0);
+    transition: opacity 0.35s ease, transform 0.35s ease, visibility 0s linear 0s;
 }
 
 .step-actions { display: flex; gap: var(--space-md); margin-top: var(--space-xl); }

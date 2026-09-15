@@ -15,11 +15,11 @@ if (!API_KEY || !GROUP_ID) {
   process.exit(1);
 }
 
-// Today in EST (UTC-5 / UTC-4 DST) — matches 9am EST trigger
-function getTodayEST() {
+// Today in America/Chicago — matches the 9:00 AM Central scheduled trigger
+function getTodayCentral() {
   const now = new Date();
-  const est = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
-  return est.toISOString().split('T')[0];
+  const central = new Date(now.toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+  return central.toISOString().split('T')[0];
 }
 
 // Retry wrapper with exponential backoff
@@ -74,7 +74,7 @@ async function alreadySent(today) {
 }
 
 async function main() {
-  const today = process.env.DATE_OVERRIDE || getTodayEST();
+  const today = process.env.DATE_OVERRIDE || getTodayCentral();
   console.log(`📅 Date: ${today}`);
 
   const batchPath = path.join(__dirname, '..', 'newsletter-content', 'batch.json');

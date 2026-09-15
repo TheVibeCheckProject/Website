@@ -447,11 +447,20 @@ async function handleSenderSignup(e) {
         if (response.ok) {
             e.target.innerHTML = '<p style="color:#FF6B9D;font-weight:600;font-size:15px;">✨ You\'re in! Check your inbox to confirm.</p>';
         } else {
+            showSenderSignupError("Hmm, that didn't go through — please try again.");
             btn.textContent = 'Get Daily Vibes'; btn.disabled = false;
         }
     } catch (err) {
+        showSenderSignupError("Couldn't connect — check your connection and try again.");
         btn.textContent = 'Get Daily Vibes'; btn.disabled = false;
     }
+}
+
+function showSenderSignupError(msg) {
+    const err = document.getElementById('senderSignupError');
+    if (!err) return;
+    err.textContent = msg;
+    err.hidden = false;
 }
 
 // Stepper Logic

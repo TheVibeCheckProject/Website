@@ -72,7 +72,7 @@ function createEmailModal() {
                 <button class="modal-close" onclick="closeEmailModal()">&times;</button>
                 <div class="modal-header">
                     <h2>✨ Get Your Daily Vibe Check</h2>
-                    <p>Join thousands receiving daily affirmations. Free, always.</p>
+                    <p>Join our growing community receiving daily affirmations. Free, always.</p>
                 </div>
                 <form id="email-signup-form" class="modal-form">
                     <div class="form-group"><input type="email" id="signup-email" class="form-input" placeholder="your.email@example.com" required /></div>

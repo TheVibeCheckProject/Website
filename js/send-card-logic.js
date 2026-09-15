@@ -611,7 +611,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 createdAt: new Date().toISOString()
             };
 
-            const encoded = btoa(encodeURIComponent(JSON.stringify(cardData)));
+            const encoded = btoa(encodeURIComponent(JSON.stringify(cardData)))
+                .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); // base64url: URL-safe share links
             const base = window.location.href.replace(/send-card\.html.*$/, '');
             const cardUrl = `${base}view-card.html?data=${encoded}`;
 

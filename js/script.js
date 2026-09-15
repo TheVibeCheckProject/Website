@@ -64,6 +64,17 @@ function initDailyAffirmation() {
 }
 
 // ── EMAIL SIGNUP MODAL ───────────────────────────────
+// Shared inline form-error helpers (accessible: role="alert" announces to screen readers)
+function showFormError(id, msg) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = msg;
+    el.hidden = false;
+}
+function clearFormError(id) {
+    const el = document.getElementById(id);
+    if (el) { el.hidden = true; el.textContent = ''; }
+}
 function createEmailModal() {
     if (document.getElementById('email-modal')) return;
     const modalHTML = `
@@ -78,6 +89,7 @@ function createEmailModal() {
                     <div class="form-group"><input type="email" id="signup-email" class="form-input" placeholder="your.email@example.com" required /></div>
                     <div class="form-group"><input type="text" id="signup-name" class="form-input" placeholder="Your first name (optional)" /></div>
                     <button type="submit" class="btn btn-primary btn-large btn-block">Start Getting Good Vibes</button>
+                    <p class="form-error" id="signup-error" role="alert" hidden></p>
                     <p class="form-note">No spam, ever. Unsubscribe anytime.</p>
                 </form>
                 <div id="signup-success" style="display: none;" class="success-message">
@@ -112,6 +124,7 @@ function closeEmailModal() {
 
 async function handleEmailSignup(e) {
     e.preventDefault();
+    clearFormError('signup-error');
     const submitBtn = e.target.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
     submitBtn.textContent = 'Subscribing...';
@@ -133,12 +146,12 @@ async function handleEmailSignup(e) {
             document.getElementById('email-signup-form').style.display = 'none';
             document.getElementById('signup-success').style.display = 'block';
         } else {
-            alert('Something went wrong. Please try again!');
+            showFormError('signup-error', 'Something went wrong. Please try again!');
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
         }
     } catch (e) {
-        alert('Connection error. Please try again!');
+        showFormError('signup-error', 'Connection error. Please check your connection and try again!');
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
     }
@@ -151,12 +164,14 @@ function initJoinForm() {
     if (!form) return;
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        clearFormError('join-error');
         const emailInput = document.getElementById('join-email');
         const submitBtn = document.getElementById('join-submit');
         const email = (emailInput.value || '').trim();
         if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
             emailInput.focus();
             emailInput.style.borderColor = '#ef4444';
+            showFormError('join-error', 'Please enter a valid email address.');
             return;
         }
         emailInput.style.borderColor = '';
@@ -180,12 +195,12 @@ function initJoinForm() {
                 form.style.display = 'none';
                 document.getElementById('join-success').style.display = 'block';
             } else {
-                alert('Something went wrong. Please try again!');
+                showFormError('join-error', 'Something went wrong. Please try again!');
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
             }
         } catch (err) {
-            alert('Connection error. Please try again!');
+            showFormError('join-error', 'Connection error. Please check your connection and try again!');
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
         }

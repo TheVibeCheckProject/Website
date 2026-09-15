@@ -127,7 +127,13 @@
         const p = new URLSearchParams(window.location.search);
         const d = p.get('data');
         if (!d) return;
-        const card = JSON.parse(decodeURIComponent(atob(d)));
+        window.decodeVibeCard = function (data) {
+      // base64url (current share links) with fallback to classic base64 (older links)
+      let s = String(data).replace(/-/g, '+').replace(/_/g, '/');
+      s += '='.repeat((4 - (s.length % 4)) % 4);
+      return JSON.parse(decodeURIComponent(atob(s)));
+    };
+    const card = window.decodeVibeCard(d);
         if (card.background) {
           if (card.background.endsWith('.mp4')) {
             const v = document.createElement('link');
@@ -278,7 +284,7 @@
       }
 
       try {
-        const card = JSON.parse(decodeURIComponent(atob(encoded)));
+        const card = window.decodeVibeCard(encoded);
         const affirmationEl = document.getElementById('cardAffirmation');
         const messageEl = document.getElementById('cardMessage');
         const headerEl = document.getElementById('headerBadge');
@@ -380,7 +386,7 @@
       const encoded = params.get('data');
       if (!encoded) return;
       try {
-        const card = JSON.parse(decodeURIComponent(atob(encoded)));
+        const card = window.decodeVibeCard(encoded);
         if (card.sound) cardSound = card.sound;
       } catch (e) { }
     })();

@@ -189,4 +189,7 @@ function burstParticles(count) {
     document.addEventListener('click', (e) => { if (!nav.contains(e.target)) close(); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
     nav.querySelectorAll('.nav-links a').forEach((a) => a.addEventListener('click', close));
+    // Never restore the page with the menu stuck open (back/forward cache).
+    window.addEventListener('pagehide', close);
+    window.addEventListener('pageshow', close);
 })();

@@ -346,9 +346,10 @@
                         <div class="success-upsell">
                             <p>Want good vibes in your inbox every day? 🌟</p>
                             <form class="inline-email-form" id="senderSignupForm" onsubmit="handleSenderSignup(event)">
-                                <input type="email" placeholder="your@email.com" required>
+                                <input type="email" placeholder="your@email.com" required aria-label="Email address">
                                 <button type="submit">Get Daily Vibes</button>
                             </form>
+                            <p class="form-error" id="senderSignupError" role="alert" hidden></p>
                             <p style="margin-top:16px;">
                                 ✨ <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02"
                                     style="color: var(--color-primary); font-weight:700;">Unlock Premium — $4.99</a>

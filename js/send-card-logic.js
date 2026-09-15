@@ -1,5 +1,4 @@
 // ── Global State (v102) ──
-const urlParams = new URLSearchParams(window.location.search);
 const isPremium = localStorage.getItem('premium_unlocked') === '1';
 
 let selectedAffirmation = '';

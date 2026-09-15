@@ -621,7 +621,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const modal = document.getElementById('email-modal');
             if (modal) showEmailModal();
-            else createEmailModal();
+            else { createEmailModal(); showEmailModal(); }
         });
     });
 });

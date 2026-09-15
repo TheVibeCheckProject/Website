@@ -59,6 +59,20 @@ async function mailerlite(method, endpoint, body) {
   return data;
 }
 
+// Idempotency guard: skip if a campaign for this date was already sent,
+// is sending, or is scheduled. Prevents duplicate emails when a run is
+// retried or manually re-dispatched for the same date.
+async function alreadySent(today) {
+  const data = await mailerlite('GET', '/campaigns?limit=25');
+  const items = (data && data.data) || [];
+  const prefix = `Daily Vibe ${today}`;
+  return items.some(c => {
+    const name = c.name || '';
+    const status = String(c.status || '').toLowerCase();
+    return name.startsWith(prefix) && ['sent', 'sending', 'scheduled'].includes(status);
+  });
+}
+
 async function main() {
   const today = process.env.DATE_OVERRIDE || getTodayEST();
   console.log(`📅 Date: ${today}`);
@@ -78,6 +92,13 @@ async function main() {
   }
 
   console.log(`📧 Subject: "${email.subject}" (${email.type})`);
+
+  // Idempotency check before creating anything
+  console.log('Checking for an existing send for this date...');
+  if (await withRetry(() => alreadySent(today))) {
+    console.log(`⏭️ A campaign for ${today} was already sent — skipping duplicate.`);
+    process.exit(0);
+  }
 
   // Step 1: Create campaign (with retry)
   const requestBody = {

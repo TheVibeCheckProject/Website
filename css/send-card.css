@@ -1043,7 +1043,7 @@
 }
 
 /* Sliding Form Container */
-.form-slider-container { position: relative; width: 100%; }
+.form-slider-container { position: relative; width: 100%; overflow-x: clip; }
 .form-slider-track { position: relative; width: 100%; }
 
 .form-step {

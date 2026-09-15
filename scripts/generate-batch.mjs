@@ -18,7 +18,7 @@ if (!API_KEY) {
 }
 
 const genAI = new GoogleGenerativeAI(API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-3-flash' });
+const model = genAI.getGenerativeModel({ model: 'gemini-3.7-flash' });
 
 function getTargetMonth() {
   const override = process.env.TARGET_MONTH;

@@ -202,6 +202,12 @@
         <a href="index.html" class="btn btn-outline">Get Daily Vibes Free ✨</a>
       </div>
 
+      <!-- Share this card — the viral moment, right after the reveal -->
+      <button class="btn btn-share" id="shareCardBtn" type="button" onclick="shareVibeCard(this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+        Share This Card
+      </button>
+
       <!-- Premium upsell — prominent CTA at the highest-intent moment -->
       <div
         style="margin:24px 0;padding:20px 24px;background:linear-gradient(135deg,rgba(163,230,53,0.08),rgba(168,85,247,0.08));border:1px solid rgba(163,230,53,0.2);border-radius:14px;text-align:center;">
@@ -222,9 +228,10 @@
         <h3>Get vibes like this in your inbox</h3>
         <p class="subtext">A fresh affirmation delivered free every morning. No strings.</p>
         <form class="email-form" id="viewCardSignupForm" onsubmit="handleViewCardSignup(event)">
-          <input type="email" placeholder="your@email.com" required>
+          <input type="email" placeholder="your@email.com" required aria-label="Email address">
           <button type="submit">Join Free</button>
         </form>
+        <p class="form-error" id="viewCardEmailError" role="alert" hidden></p>
       </div>
     </div>
 
@@ -263,12 +270,54 @@
         if (response.ok) {
           e.target.innerHTML = '<p style="color:var(--green);font-size:16px;font-weight:700;">✨ You\'re in! Check your inbox.</p>';
         } else {
+          showViewCardEmailError('Hmm, that didn\'t go through — please try again.');
           btn.textContent = 'Join Free';
           btn.disabled = false;
         }
       } catch (err) {
+        showViewCardEmailError('Couldn\'t connect — check your connection and try again.');
         btn.textContent = 'Join Free';
         btn.disabled = false;
+      }
+    }
+
+    function showViewCardEmailError(msg) {
+      const err = document.getElementById('viewCardEmailError');
+      if (!err) return;
+      err.textContent = msg;
+      err.hidden = false;
+    }
+
+    // Share the revealed card: native share sheet on mobile, clipboard fallback on desktop
+    async function shareVibeCard(btn) {
+      const url = window.location.href;
+      const title = document.title || "You've Got a Vibe Check! ✨";
+      const text = 'Someone sent me this beautiful vibe check card 💚';
+      if (navigator.share) {
+        try { await navigator.share({ title: title, text: text, url: url }); } catch (e) { /* dismissed */ }
+        return;
+      }
+      const original = btn.innerHTML;
+      try {
+        await navigator.clipboard.writeText(url);
+        btn.innerHTML = '✓ Link Copied — Paste It Anywhere';
+        setTimeout(() => { btn.innerHTML = original; }, 2500);
+      } catch (e) {
+        // Last resort: show a selectable field with the link (non-blocking)
+        let field = document.getElementById('shareLinkField');
+        if (!field) {
+          field = document.createElement('input');
+          field.id = 'shareLinkField';
+          field.readOnly = true;
+          field.setAttribute('aria-label', 'Your card link — copy it to share');
+          field.style.cssText = 'width:100%;margin-top:8px;padding:10px 12px;border-radius:10px;border:1px solid rgba(163,230,53,0.35);background:rgba(0,0,0,0.4);color:#fff;font-size:12px;';
+          btn.insertAdjacentElement('afterend', field);
+          field.addEventListener('click', () => { field.select(); });
+        }
+        field.value = url;
+        field.hidden = false;
+        field.select();
+        btn.innerHTML = '↑ Copy the link above';
       }
     }
   </script>

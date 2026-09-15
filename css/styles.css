@@ -1502,6 +1502,22 @@ footer {
     margin-top: var(--space-sm);
 }
 
+.form-error {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffd7d7;
+    background: rgba(127, 29, 29, 0.88);
+    border: 1px solid rgba(248, 113, 113, 0.5);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-top: var(--space-sm);
+}
+
+.form-error[hidden] {
+    display: none;
+}
+
 .success-message {
     text-align: center;
     padding: var(--space-xl);

@@ -171,3 +171,22 @@ function burstParticles(count) {
         }, 4000);
     } catch (e) { /* unlock is best-effort */ }
 })();
+
+// ── Mobile nav toggle ──
+(function initMobileNav() {
+    const btn = document.getElementById('nav-hamburger');
+    const nav = document.getElementById('nav');
+    if (!btn || !nav) return;
+    const close = () => {
+        nav.classList.remove('menu-open');
+        btn.setAttribute('aria-expanded', 'false');
+    };
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = nav.classList.toggle('menu-open');
+        btn.setAttribute('aria-expanded', String(open));
+    });
+    document.addEventListener('click', (e) => { if (!nav.contains(e.target)) close(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    nav.querySelectorAll('.nav-links a').forEach((a) => a.addEventListener('click', close));
+})();

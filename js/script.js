@@ -78,11 +78,11 @@ function clearFormError(id) {
 function createEmailModal() {
     if (document.getElementById('email-modal')) return;
     const modalHTML = `
-        <div id="email-modal" class="modal-overlay" style="display: none;">
+        <div id="email-modal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="email-modal-title">
             <div class="modal-content">
-                <button class="modal-close" onclick="closeEmailModal()">&times;</button>
+                <button class="modal-close" onclick="closeEmailModal()" aria-label="Close signup dialog">&times;</button>
                 <div class="modal-header">
-                    <h2>✨ Get Your Daily Vibe Check</h2>
+                    <h2 id="email-modal-title">✨ Get Your Daily Vibe Check</h2>
                     <p>Join our growing community receiving daily affirmations. Free, always.</p>
                 </div>
                 <form id="email-signup-form" class="modal-form">
@@ -103,11 +103,32 @@ function createEmailModal() {
     `;
     document.body.insertAdjacentHTML('beforeend', modalHTML);
     document.getElementById('email-signup-form').addEventListener('submit', handleEmailSignup);
+
+    // Clicking the overlay (outside the dialog) closes the modal
+    const modalEl = document.getElementById('email-modal');
+    modalEl.addEventListener('click', (e) => { if (e.target === modalEl) closeEmailModal(); });
+
+    // Escape closes; Tab cycles focus within the dialog (focus trap)
+    document.addEventListener('keydown', (e) => {
+        const m = document.getElementById('email-modal');
+        if (!m || m.style.display === 'none') return;
+        if (e.key === 'Escape') { closeEmailModal(); return; }
+        if (e.key === 'Tab') {
+            const focusables = [...m.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')]
+                .filter(el => el.offsetParent !== null);
+            if (!focusables.length) return;
+            const first = focusables[0], last = focusables[focusables.length - 1];
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+    });
 }
 
+let emailModalOpener = null;
 function showEmailModal() {
     const modal = document.getElementById('email-modal');
     if (modal) {
+        emailModalOpener = document.activeElement;
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
         setTimeout(() => document.getElementById('signup-email').focus(), 100);
@@ -119,6 +140,8 @@ function closeEmailModal() {
     if (modal) {
         modal.style.display = 'none';
         document.body.style.overflow = 'auto';
+        if (emailModalOpener && document.contains(emailModalOpener)) emailModalOpener.focus();
+        emailModalOpener = null;
     }
 }
 

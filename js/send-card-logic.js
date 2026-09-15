@@ -7,22 +7,7 @@ let selectedSound = 'chime';
 let selectedThemeGroup = 'default';
 let selectedBackground = '';
 
-// Check for Stripe Premium Unlock
-if (urlParams.get('premium') === '1') {
-    localStorage.setItem('premium_unlocked', '1');
-    window.history.replaceState({}, document.title, window.location.pathname);
-
-    // Show temporary badge
-    const badge = document.createElement('div');
-    badge.textContent = '✦ Premium Unlocked';
-    badge.style.cssText = 'position:fixed;top:12px;right:12px;background:#6c63ff;color:white;padding:6px 12px;border-radius:20px;font-size:12px;z-index:9999;font-weight:bold;box-shadow:0 4px 12px rgba(108,99,255,0.4);';
-    document.body.appendChild(badge);
-    setTimeout(() => {
-        badge.style.transition = 'opacity 0.5s';
-        badge.style.opacity = '0';
-        setTimeout(() => badge.remove(), 500);
-    }, 4000);
-}
+// Stripe premium return is handled centrally in core-utils.js (runs before this script).
 
 // --- NEW: Read message from URL and pre-fill ---
 function handleExternalMessage() {

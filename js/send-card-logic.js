@@ -11,7 +11,7 @@ let selectedBackground = '';
 // --- NEW: Read message from URL and pre-fill ---
 function handleExternalMessage() {
     const urlParams = new URLSearchParams(window.location.search);
-    const messageParam = urlParams.get('message');
+    const messageParam = urlParams.get('message') || urlParams.get('msg');
     
     if (messageParam) {
         let decodedMsg = messageParam;
@@ -573,6 +573,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const firstCard = pickerEl ? pickerEl.querySelector('.aff-card') : null;
     if (firstCard && !window._externalMessage) {
         firstCard.click();
+    } else if (window._externalMessage && pickerEl) {
+        // If external message matches a card in the current category, highlight it
+        const cleanExt = window._externalMessage.replace(/^["']|["']$/g, '').trim();
+        const matchingCard = [...pickerEl.querySelectorAll('.aff-card')].find(card => 
+            card.textContent.replace(/^["']|["']$/g, '').trim() === cleanExt
+        );
+        if (matchingCard) {
+            matchingCard.classList.add('selected');
+        }
     }
 
     // Event listeners

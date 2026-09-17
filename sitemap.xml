@@ -2,8 +2,8 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://thevibecheckproject.com/about</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://thevibecheckproject.com/blog/100-encouraging-messages-for-a-friend</loc>
@@ -193,7 +193,7 @@
   <url>
     <loc>https://thevibecheckproject.com/cookies</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://thevibecheckproject.com/</loc>
@@ -218,7 +218,7 @@
   <url>
     <loc>https://thevibecheckproject.com/terms</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://thevibecheckproject.com/view-card</loc>

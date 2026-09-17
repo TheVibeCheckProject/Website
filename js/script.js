@@ -2,8 +2,7 @@
    THE VIBE CHECK PROJECT — CORE SCRIPT
    ================================================ */
 
-// ── ENVIRONMENT / DEVICE DETECTION ────────────────────
-const isMobile = typeof window !== 'undefined' && (window.isMobile ?? window.matchMedia('(max-width: 768px)').matches);
+// isMobile is declared and exported by core-utils.js (loaded first via window.isMobile)
 
 // ── AFFIRMATIONS DATA ────────────────────────────────
 const affirmations = [

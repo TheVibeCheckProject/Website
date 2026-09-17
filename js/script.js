@@ -36,29 +36,153 @@ const affirmations = [
     "You are worthy of good things happening to you."
 ];
 
-// ── DAILY AFFIRMATION FEATURE ─────────────────────────
+// ── CATEGORIZED AFFIRMATIONS REGISTRY ─────────────────
+const categorizedAffirmations = {
+    all: affirmations,
+    grounding: [
+        "Rest is not weakness. It is essential restoration.",
+        "You don't have to control everything; just breathe through this moment.",
+        "Breathe. You are exactly where you need to be.",
+        "Small steps on solid ground still move you forward.",
+        "Let today be today. You can carry tomorrow when it arrives."
+    ],
+    energy: [
+        "You have survived 100% of your hardest days so far.",
+        "You bring an energy into this world that no one else can replicate.",
+        "Take up space boldly. Your voice carries genuine weight.",
+        "You are capable of navigating hard things with grace.",
+        "The momentum is building, even when you can't see the finish line."
+    ],
+    peace: [
+        "It is okay to put your phone down and let the world wait.",
+        "You are worthy of quiet moments that ask nothing of you.",
+        "Your peace of mind is worth protecting at all costs.",
+        "Not every thought deserves your full energy today.",
+        "Release what you cannot adjust with your own hands."
+    ],
+    love: [
+        "You deserve the exact gentleness and grace you give to others.",
+        "You are enough, exactly in this skin, at this exact moment.",
+        "Someone in your circle is deeply thankful you exist.",
+        "You don't have to earn your place in people's hearts.",
+        "Your worth is not measured by your productivity."
+    ]
+};
+
+// ── DAILY AFFIRMATION FEATURE (INTERACTIVE VIBE DECK) ──
 function initDailyAffirmation() {
     const vibeText = document.getElementById('vibeText');
     const vibeDate = document.getElementById('vibeDate');
     const vibeShareBtn = document.getElementById('vibeShareBtn');
+    const vibeShuffleBtn = document.getElementById('vibeShuffleBtn');
+    const vibeSendAsCardBtn = document.getElementById('vibeSendAsCardBtn');
+    const moodTabs = document.getElementById('vibeMoodTabs');
+
     if (!vibeText) return;
 
+    let currentMood = 'all';
     const now = new Date();
     const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
-    const todayVibe = affirmations[dayOfYear % affirmations.length];
+    const initialList = categorizedAffirmations.all;
+    let currentQuote = initialList[dayOfYear % initialList.length];
 
-    vibeText.textContent = `"${todayVibe}"`;
-    if (vibeDate) vibeDate.textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    function updateQuote(quote) {
+        currentQuote = quote;
+        vibeText.classList.add('swapping');
+        setTimeout(() => {
+            vibeText.textContent = `"${quote}"`;
+            vibeText.classList.remove('swapping');
+            if (vibeSendAsCardBtn) {
+                vibeSendAsCardBtn.href = `send-card.html?msg=${encodeURIComponent(quote)}`;
+            }
+        }, 180);
+    }
 
+    vibeText.textContent = `"${currentQuote}"`;
+    if (vibeDate) {
+        vibeDate.textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+    if (vibeSendAsCardBtn) {
+        vibeSendAsCardBtn.href = `send-card.html?msg=${encodeURIComponent(currentQuote)}`;
+    }
+
+    // Mood Selector Tabs
+    moodTabs?.addEventListener('click', (e) => {
+        const btn = e.target.closest('.vibe-mood-btn');
+        if (!btn) return;
+
+        moodTabs.querySelectorAll('.vibe-mood-btn').forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+
+        currentMood = btn.dataset.mood || 'all';
+        const pool = categorizedAffirmations[currentMood] || categorizedAffirmations.all;
+        const randomItem = pool[Math.floor(Math.random() * pool.length)];
+        updateQuote(randomItem);
+
+        if (window.soundEngine?.sparkle) {
+            window.soundEngine.sparkle();
+        }
+    });
+
+    // Shuffle Button Trigger
+    vibeShuffleBtn?.addEventListener('click', () => {
+        const pool = categorizedAffirmations[currentMood] || categorizedAffirmations.all;
+        let nextQuote = pool[Math.floor(Math.random() * pool.length)];
+        if (pool.length > 1 && nextQuote === currentQuote) {
+            nextQuote = pool[(pool.indexOf(nextQuote) + 1) % pool.length];
+        }
+        updateQuote(nextQuote);
+        if (window.soundEngine?.chime) {
+            window.soundEngine.chime();
+        }
+    });
+
+    // Share / Clipboard Copy Trigger
     vibeShareBtn?.addEventListener('click', async () => {
-        const shareText = `✨ Today's Vibe Check: "${todayVibe}" — thevibecheckproject.com`;
-        if (navigator.share) {
-            try { await navigator.share({ text: shareText }); } catch (e) { }
-        } else {
-            await navigator.clipboard.writeText(shareText);
-            const originalText = vibeShareBtn.textContent;
-            vibeShareBtn.textContent = '✅ Copied!';
-            setTimeout(() => vibeShareBtn.textContent = originalText, 2000);
+        const shareText = `✨ Today's Vibe Check: "${currentQuote}" — https://thevibecheckproject.com/`;
+        if (navigator.clipboard?.writeText) {
+            try {
+                await navigator.clipboard.writeText(shareText);
+                const originalText = vibeShareBtn.textContent;
+                vibeShareBtn.textContent = '✅ Copied!';
+                if (typeof showToast === 'function') {
+                    showToast('Affirmation copied to clipboard!', '✨');
+                }
+                setTimeout(() => { vibeShareBtn.textContent = originalText; }, 2000);
+            } catch (err) {
+                console.warn('Clipboard write failed', err);
+            }
+        }
+    });
+}
+
+// ── FAQ ACCORDION COMPONENT ───────────────────────────
+function initFaqAccordion() {
+    const accordion = document.getElementById('faqAccordion');
+    if (!accordion) return;
+
+    accordion.addEventListener('click', (e) => {
+        const header = e.target.closest('.faq-question');
+        if (!header) return;
+
+        const currentItem = header.closest('.faq-item');
+        if (!currentItem) return;
+        const isActive = currentItem.classList.contains('active');
+
+        // Close other accordion panels
+        accordion.querySelectorAll('.faq-item').forEach(item => {
+            item.classList.remove('active');
+            item.querySelector('.faq-question')?.setAttribute('aria-expanded', 'false');
+        });
+
+        // Toggle current panel
+        if (!isActive) {
+            currentItem.classList.add('active');
+            header.setAttribute('aria-expanded', 'true');
         }
     });
 }
@@ -693,6 +817,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initDailyAffirmation();
     initCardDemo();
     initJoinForm();
+    initFaqAccordion();
 
     // Non-critical features deferred to 3s after load for Lighthouse performance
     setTimeout(() => {

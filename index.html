@@ -364,9 +364,9 @@
             margin: 0 auto 16px;
         }
     </style>
-    <link rel="stylesheet" href="css/styles.css?v=9" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="css/styles.css?v=10" media="print" onload="this.media='all'">
     <noscript>
-        <link rel="stylesheet" href="css/styles.css?v=9">
+        <link rel="stylesheet" href="css/styles.css?v=10">
     </noscript>
 
     <!-- Lucide Icons (Script Removed for Performance, replaced with inline SVGs) -->
@@ -375,15 +375,84 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "The Vibe Check Project",
-      "url": "https://thevibecheckproject.com",
-      "description": "Send free anonymous affirmation cards, get daily uplifts in your inbox, and share good vibes with everyone who needs it.",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://thevibecheckproject.com/blog/?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://thevibecheckproject.com/#website",
+          "url": "https://thevibecheckproject.com/",
+          "name": "The Vibe Check Project",
+          "description": "Send free personalized affirmation cards, receive daily morning encouragement, and spread positivity with zero account required.",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://thevibecheckproject.com/blog/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://thevibecheckproject.com/#app",
+          "name": "The Vibe Check Card Sender",
+          "url": "https://thevibecheckproject.com/send-card.html",
+          "applicationCategory": "LifestyleApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://thevibecheckproject.com/#organization",
+          "name": "The Vibe Check Project",
+          "url": "https://thevibecheckproject.com/",
+          "logo": "https://thevibecheckproject.com/assets/og-image.png",
+          "sameAs": [
+            "https://x.com/thevibecheckpro",
+            "https://www.tiktok.com/@thevibecheckproject",
+            "https://ko-fi.com/thevibecheckproject"
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://thevibecheckproject.com/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is sending a vibe check really free?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, 100% free forever. Anyone can pick a theme, write a personal message, and generate a shareable card link without paying a dime or entering a credit card."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do I or the recipient need an account?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Never. There is no login, no sign-up wall, and nothing to download. You simply craft your card, copy the private link or email it, and the recipient opens it instantly in their browser."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I remain anonymous when sending a card?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Absolutely. You can sign your card with your real name, a nickname, or leave it signed as 'A friend', 'Someone who cares', or completely blank."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the Premium Unlock?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The optional $4.99 one-time unlock provides lifetime access to our library of 10+ premium animated card themes and audio soundscapes. It also helps cover our server costs to keep the platform free for everyone else."
+              }
+            }
+          ]
+        }
+      ]
     }
     </script>
 </head>
@@ -433,20 +502,44 @@
         <section class="hero">
             <div class="hero-bg" id="hero-bg"></div>
             <div class="hero-content">
-                <h1 class="hero-title">Small Words. Big Impact.</h1>
+                <h1 class="hero-title">Small Words. Giant Waves.</h1>
                 <p class="hero-subtitle">
-                    The world can be tough. But a simple message at the right moment can help someone move mountains.
-                    Get your daily dose of positivity and be part of something good.
+                    The world can be noisy and overwhelming. A heartfelt message at the right moment can shift someone's entire trajectory.
+                    Send a free, gorgeous encouragement card in 30 seconds, or grab your daily morning spark.
                 </p>
                 <div class="hero-cta">
                     <button class="btn btn-primary" id="hero-cta">Get Your Daily Vibe Check ✨</button>
-                    <a href="send-card.html" class="btn btn-secondary">💌 Send a Card</a>
+                    <a href="send-card.html" class="btn btn-secondary">💌 Send a Card Now</a>
                 </div>
-                <div class="hero-affirmation" id="vibeOfDay">
-                    <p class="affirmation-text" id="vibeText">"You're trying, and that's what counts."</p>
-                    <p class="affirmation-label">🌅 Today's Vibe — <span id="vibeDate"></span></p>
-                    <button class="vibe-share-btn" id="vibeShareBtn" title="Share today's vibe">📋 Share This
-                        Vibe</button>
+
+                <div class="trust-badges-bar">
+                    <span class="trust-badge-pill"><span class="trust-icon">⚡</span> 30-Second Delivery</span>
+                    <span class="trust-badge-pill"><span class="trust-icon">🔒</span> No Account Required</span>
+                    <span class="trust-badge-pill"><span class="trust-icon">💫</span> 100% Free Forever</span>
+                </div>
+
+                <!-- Interactive Vibe Deck -->
+                <div class="hero-affirmation-dock" id="vibeOfDay" role="region" aria-label="Daily Affirmation Generator">
+                    <div class="vibe-mood-tabs" id="vibeMoodTabs" role="tablist" aria-label="Affirmation categories">
+                        <button class="vibe-mood-btn active" data-mood="all" role="tab" aria-selected="true">✨ Daily Mix</button>
+                        <button class="vibe-mood-btn" data-mood="grounding" role="tab" aria-selected="false">🌱 Grounding</button>
+                        <button class="vibe-mood-btn" data-mood="energy" role="tab" aria-selected="false">⚡ Hype Up</button>
+                        <button class="vibe-mood-btn" data-mood="peace" role="tab" aria-selected="false">🕊️ Calm</button>
+                        <button class="vibe-mood-btn" data-mood="love" role="tab" aria-selected="false">💖 Self-Love</button>
+                    </div>
+                    
+                    <div class="vibe-quote-display">
+                        <p class="vibe-quote-text" id="vibeText">"You're trying, and that's what counts."</p>
+                    </div>
+
+                    <div class="vibe-dock-meta">
+                        <span class="affirmation-label">🌅 Today's Spark — <span id="vibeDate"></span></span>
+                        <div class="vibe-dock-actions">
+                            <button class="vibe-action-pill" id="vibeShuffleBtn" title="Shuffle another affirmation">🎲 Shuffle</button>
+                            <button class="vibe-action-pill" id="vibeShareBtn" title="Copy affirmation text">📋 Copy</button>
+                            <a href="send-card.html" class="vibe-action-pill primary" id="vibeSendAsCardBtn" title="Send this quote in a card">💌 Send as Card</a>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -875,12 +968,13 @@
 
                 <div class="testimonials">
                     <div class="testimonial reveal" style="text-align:center; grid-column: 1 / -1; padding: 2.5rem;">
-                        <p class="testimonial-quote" style="font-size:18px; font-style:normal; margin-bottom: 1rem;">
-                            We just launched. Be one of the first to send a vibe check — and let us know how it went.
+                        <p class="testimonial-quote" style="font-size:19px; font-style:normal; margin-bottom: 0.75rem; line-height: 1.6;">
+                            "I sent an anonymous encouragement card to my sister during finals week when she was drowning in burnout. She called me crying happy tears ten minutes later. It took 30 seconds, cost nothing, and completely changed her week."
                         </p>
+                        <p class="testimonial-author" style="font-size: 14px; color: var(--color-primary); margin-bottom: 1.25rem; font-weight: 600;">— Maya R., Community Sender</p>
                         <a href="send-card.html"
-                            style="display:inline-block; margin-top:0.5rem; padding: 12px 28px; background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); color: white; font-weight: 600; border-radius: 10px; text-decoration: none; font-family: var(--font-display);">
-                            Send Your First Card ✨
+                            style="display:inline-block; padding: 14px 32px; background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); color: white; font-weight: 700; border-radius: 12px; text-decoration: none; font-family: var(--font-display); box-shadow: 0 8px 24px rgba(255, 107, 157, 0.3); transition: transform 0.2s ease;">
+                            Send a Vibe Check Now ✨
                         </a>
                     </div>
                 </div>
@@ -966,6 +1060,58 @@
             </div>
         </section>
 
+        <!-- Interactive FAQ Section -->
+        <section id="faq" class="faq-section">
+            <div class="section-container faq-container">
+                <div class="section-header">
+                    <h2 class="section-title">Frequently Asked Questions</h2>
+                    <p class="section-subtitle">Everything you need to know about sending good vibes into the world.</p>
+                </div>
+
+                <div class="faq-accordion" id="faqAccordion">
+                    <div class="faq-item active">
+                        <button class="faq-question" aria-expanded="true">
+                            <span>Is sending a vibe check really free?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes, 100% free forever. Anyone can pick a theme, write a personal message, and generate a shareable card link without paying a dime or entering a credit card.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>Does the recipient need to sign up or download an app?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Never. The recipient simply clicks your link and their personalized 3D card opens immediately in their mobile or desktop browser, accompanied by ambient soundscapes and animations.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>Can I remain anonymous when sending a card?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Absolutely. You can sign your card with your real name, a nickname, or leave it signed as 'A friend', 'Someone who cares', or completely blank.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>What is the Premium Unlock?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>The optional $4.99 one-time unlock provides lifetime access to our library of 10+ premium animated card themes and audio soundscapes. It also helps cover our server costs to keep the platform free for everyone else.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Footer -->
         <footer>
             <div class="footer-container">
@@ -986,6 +1132,7 @@
                             <li><a href="situations.html">Browse by Situation</a></li>
                             <li><a href="about.html">About Us</a></li>
                             <li><a href="contact.html">Contact</a></li>
+                            <li><a href="#faq">FAQ</a></li>
                             <li><a href="#support">Support Us</a></li>
                         </ul>
                     </div>
@@ -1024,7 +1171,7 @@
 
     <!-- Main JavaScript -->
     <script src="js/core-utils.js?v=104" defer></script>
-    <script src="js/script.js?v=13" defer></script>
+    <script src="js/script.js?v=14" defer></script>
     <script src="js/animations.js?v=8" defer></script>
 
 

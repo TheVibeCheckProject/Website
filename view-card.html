@@ -132,18 +132,20 @@
   <!-- Instant Preloader (Runs before DOM is fully parsed) -->
   <script>
     (function () {
+      // base64url (current share links) with fallback to classic base64 (older links)
+      window.decodeVibeCard = function (data) {
+        if (!data) return null;
+        let s = String(data).replace(/-/g, '+').replace(/_/g, '/');
+        s += '='.repeat((4 - (s.length % 4)) % 4);
+        return JSON.parse(decodeURIComponent(atob(s)));
+      };
+
       try {
         const p = new URLSearchParams(window.location.search);
         const d = p.get('data');
         if (!d) return;
-        window.decodeVibeCard = function (data) {
-      // base64url (current share links) with fallback to classic base64 (older links)
-      let s = String(data).replace(/-/g, '+').replace(/_/g, '/');
-      s += '='.repeat((4 - (s.length % 4)) % 4);
-      return JSON.parse(decodeURIComponent(atob(s)));
-    };
-    const card = window.decodeVibeCard(d);
-        if (card.background) {
+        const card = window.decodeVibeCard(d);
+        if (card && card.background) {
           if (card.background.endsWith('.mp4')) {
             const v = document.createElement('link');
             v.rel = 'preload'; v.as = 'video'; v.href = card.background;

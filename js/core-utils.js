@@ -30,6 +30,9 @@ const soundEngine = {
         if (!this.context) {
             this.context = new (window.AudioContext || window.webkitAudioContext)();
         }
+        if (this.context && this.context.state === 'suspended') {
+            this.context.resume().catch(() => {});
+        }
         return this.context;
     },
     _tone(ctx, freq, start, dur, vol = 0.08, type = 'sine') {
@@ -178,12 +181,13 @@ function burstParticles(count) {
     const nav = document.getElementById('nav');
     if (!btn || !nav) return;
     const close = () => {
-        nav.classList.remove('menu-open');
+        nav.classList.remove('menu-open', 'nav-open');
         btn.setAttribute('aria-expanded', 'false');
     };
     btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const open = nav.classList.toggle('menu-open');
+        const open = nav.classList.toggle('nav-open');
+        nav.classList.toggle('menu-open', open);
         btn.setAttribute('aria-expanded', String(open));
     });
     document.addEventListener('click', (e) => { if (!nav.contains(e.target)) close(); });
@@ -193,3 +197,11 @@ function burstParticles(count) {
     window.addEventListener('pagehide', close);
     window.addEventListener('pageshow', close);
 })();
+
+// ── Global Window Exports ──
+window.soundEngine = soundEngine;
+window.showToast = showToast;
+window.launchConfetti = launchConfetti;
+window.burstParticles = burstParticles;
+window.isMobile = isMobile;
+

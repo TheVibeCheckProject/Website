@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const BASE_URL = 'https://www.thevibecheckproject.com';
+const BASE_URL = 'https://thevibecheckproject.com';
 const WEBSITE_DIR = path.join(__dirname, '..');
 const SITEMAP_PATH = path.join(WEBSITE_DIR, 'sitemap.xml');
 
@@ -77,6 +77,12 @@ function generateSitemap() {
 
         if (relativePath === '') {
             priority = '1.0';
+            freq = 'daily';
+        } else if (relativePath === 'send-card') {
+            priority = '0.9';
+            freq = 'daily';
+        } else if (relativePath === 'situations' || relativePath === 'about') {
+            priority = '0.8';
             freq = 'weekly';
         } else if (relativePath.startsWith('blog/')) {
             if (relativePath === 'blog/') {
@@ -86,12 +92,9 @@ function generateSitemap() {
                 priority = '0.7';
                 freq = 'monthly';
             }
-        } else if (['about.html', 'situations.html', 'send-card.html'].includes(relativePath)) {
-            priority = '0.8';
+        } else if (['privacy', 'terms', 'cookies'].includes(relativePath)) {
+            priority = '0.5';
             freq = 'monthly';
-        } else if (['privacy.html', 'terms.html', 'cookies.html'].includes(relativePath)) {
-            priority = '0.3';
-            freq = 'yearly';
         }
 
         xml += '  <url>\n';

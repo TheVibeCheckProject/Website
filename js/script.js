@@ -2,6 +2,9 @@
    THE VIBE CHECK PROJECT — CORE SCRIPT
    ================================================ */
 
+// ── ENVIRONMENT / DEVICE DETECTION ────────────────────
+const isMobile = typeof window !== 'undefined' && (window.isMobile ?? window.matchMedia('(max-width: 768px)').matches);
+
 // ── AFFIRMATIONS DATA ────────────────────────────────
 const affirmations = [
     "You're trying, and that's what counts.",
@@ -93,7 +96,7 @@ function initDailyAffirmation() {
             vibeText.textContent = `"${quote}"`;
             vibeText.classList.remove('swapping');
             if (vibeSendAsCardBtn) {
-                vibeSendAsCardBtn.href = `send-card.html?msg=${encodeURIComponent(quote)}`;
+                vibeSendAsCardBtn.href = `send-card.html?message=${encodeURIComponent(quote)}`;
             }
         }, 180);
     }
@@ -103,7 +106,7 @@ function initDailyAffirmation() {
         vibeDate.textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     }
     if (vibeSendAsCardBtn) {
-        vibeSendAsCardBtn.href = `send-card.html?msg=${encodeURIComponent(currentQuote)}`;
+        vibeSendAsCardBtn.href = `send-card.html?message=${encodeURIComponent(currentQuote)}`;
     }
 
     // Mood Selector Tabs
@@ -768,19 +771,12 @@ function initScrollProgress() {
 
 // ── INITIALIZATION ───────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-    // Core Navigation
+    // Core Navigation (scroll tracking; mobile toggle managed centrally by core-utils.js)
     const nav = document.getElementById('nav');
-    const hamburger = document.getElementById('nav-hamburger');
     if (nav) {
         window.addEventListener('scroll', () => {
             nav.classList.toggle('scrolled', window.pageYOffset > 50);
         }, { passive: true });
-    }
-    if (hamburger && nav) {
-        hamburger.addEventListener('click', () => {
-            const isOpen = nav.classList.toggle('nav-open');
-            hamburger.setAttribute('aria-expanded', isOpen);
-        });
     }
 
     // Scroll reveal for .reveal / .reveal-left / .reveal-right elements
@@ -839,4 +835,3 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 window.closeEmailModal = closeEmailModal;
-window.updateStaticPreview = function () { };

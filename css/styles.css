@@ -3118,16 +3118,19 @@ footer {
 }
 
 /* Animate to X when open */
-nav.nav-open .nav-hamburger span:nth-child(1) {
+nav.nav-open .nav-hamburger span:nth-child(1),
+nav.menu-open .nav-hamburger span:nth-child(1) {
     transform: translateY(7px) rotate(45deg);
 }
 
-nav.nav-open .nav-hamburger span:nth-child(2) {
+nav.nav-open .nav-hamburger span:nth-child(2),
+nav.menu-open .nav-hamburger span:nth-child(2) {
     opacity: 0;
     transform: scaleX(0);
 }
 
-nav.nav-open .nav-hamburger span:nth-child(3) {
+nav.nav-open .nav-hamburger span:nth-child(3),
+nav.menu-open .nav-hamburger span:nth-child(3) {
     transform: translateY(-7px) rotate(-45deg);
 }
 
@@ -3136,7 +3139,8 @@ nav.nav-open .nav-hamburger span:nth-child(3) {
         display: flex;
     }
 
-    nav.nav-open .nav-links {
+    nav.nav-open .nav-links,
+    nav.menu-open .nav-links {
         display: flex !important;
         flex-direction: column;
         position: absolute;
@@ -3153,22 +3157,26 @@ nav.nav-open .nav-hamburger span:nth-child(3) {
         align-items: flex-start !important;
     }
 
-    nav.nav-open .nav-links li {
+    nav.nav-open .nav-links li,
+    nav.menu-open .nav-links li {
         width: 100%;
     }
 
-    nav.nav-open .nav-links a {
+    nav.nav-open .nav-links a,
+    nav.menu-open .nav-links a {
         display: block;
         padding: 14px 0;
         font-size: 17px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    nav.nav-open .nav-links li:last-child a {
+    nav.nav-open .nav-links li:last-child a,
+    nav.menu-open .nav-links li:last-child a {
         border-bottom: none;
     }
 
-    nav.nav-open .nav-crisis-badge {
+    nav.nav-open .nav-crisis-badge,
+    nav.menu-open .nav-crisis-badge {
         justify-content: flex-start;
         margin-right: 0;
         margin: 6px 0;
@@ -3176,9 +3184,32 @@ nav.nav-open .nav-hamburger span:nth-child(3) {
         padding: 10px 16px;
     }
 
-    nav.nav-open .nav-crisis-text {
+    nav.nav-open .nav-crisis-text,
+    nav.menu-open .nav-crisis-text {
         display: inline-block;
         font-size: 14px;
+    }
+}
+
+/* ── Central Confetti Animation (Shared Utility) ── */
+.confetti-piece {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    z-index: 9999;
+    border-radius: 2px;
+    animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(0) rotate(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg) scale(0.3);
+        opacity: 0;
     }
 }
 

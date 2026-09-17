@@ -174,6 +174,11 @@ function renderAffirmationGrid(category, locked, skipAnimation) {
         card.textContent = `"${aff}"`;
         if (!locked) {
             card.onclick = () => selectAffirmation(aff, card, category.themeGroup);
+            card.tabIndex = 0;
+            card.setAttribute('role', 'button');
+            card.onkeydown = (ev) => {
+                if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); selectAffirmation(aff, card, category.themeGroup); }
+            };
         }
         pickerEl.appendChild(card);
     });
@@ -185,6 +190,11 @@ function renderAffirmationGrid(category, locked, skipAnimation) {
     if (skipAnimation) { writeCard.style.animation = 'none'; }
     writeCard.innerHTML = `<span>✍️</span><span>Write my own...</span>${isPremium ? '' : '<span class="write-own-badge">Premium</span>'}`;
     writeCard.onclick = () => isPremium ? openWriteOwn() : showPremModal();
+    writeCard.tabIndex = 0;
+    writeCard.setAttribute('role', 'button');
+    writeCard.onkeydown = (ev) => {
+        if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); writeCard.click(); }
+    };
     pickerEl.appendChild(writeCard);
 
     // Textarea (hidden until writeCard clicked, for premium users)
@@ -365,9 +375,24 @@ function updatePreview() {
     const previewMsg = document.getElementById('previewMessage');
     if (previewMsg) {
         if (personalMessage) {
-            previewMsg.innerHTML = `<strong>${senderName}</strong> says:<br><br>${personalMessage}`;
+            previewMsg.textContent = '';
+            {
+                const strong = document.createElement('strong');
+                strong.textContent = senderName;
+                previewMsg.appendChild(strong);
+                previewMsg.append(' says:');
+                previewMsg.appendChild(document.createElement('br'));
+                previewMsg.appendChild(document.createElement('br'));
+                previewMsg.append(personalMessage);
+            }
         } else {
-            previewMsg.innerHTML = `<strong>${senderName}</strong> wanted to send you some good vibes ✨`;
+            previewMsg.textContent = '';
+            {
+                const strong = document.createElement('strong');
+                strong.textContent = senderName;
+                previewMsg.appendChild(strong);
+                previewMsg.append(' wanted to send you some good vibes ✨');
+            }
         }
     }
 }
@@ -562,7 +587,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    setInterval(updatePreview, 500);
+    const previewTimer = setInterval(updatePreview, 500);
+    window._previewTimer = previewTimer;
 
     const cardForm = document.getElementById('cardForm');
     if (cardForm) {
@@ -611,6 +637,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             fetch('https://api.counterapi.dev/v1/thevibecheckproject/cards-sent/up').catch(() => { });
 
+            let emailSentOK = false;
             if (recipientEmail && typeof emailjs !== 'undefined') {
                 try {
                     await emailjs.send('service_cn9gjbv', 'template_bpj8rue', {
@@ -620,6 +647,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         message: 'Someone sent you a Vibe Check from The Vibe Check Project! Open the card to reveal your message. ✨',
                         card_link: cardUrl,
                     });
+                    emailSentOK = true;
                 } catch (err) { console.error('EmailJS error:', err); }
             }
 
@@ -632,7 +660,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (cardLinkInput) cardLinkInput.value = cardUrl;
             launchConfetti();
 
-            if (recipientEmail) {
+            if (window._previewTimer) clearInterval(window._previewTimer);
+            if (emailSentOK) {
                 const sTitle = document.getElementById('successTitle');
                 if (sTitle) sTitle.textContent = 'Card Sent! 💚';
                 const sSub = document.getElementById('successSubtext');
@@ -641,6 +670,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (eBadge) eBadge.style.display = 'inline-flex';
                 const eTo = document.getElementById('emailSentTo');
                 if (eTo) eTo.textContent = recipientName || recipientEmail;
+            } else if (recipientEmail) {
+                const sSub = document.getElementById('successSubtext');
+                if (sSub) sSub.textContent = `Hmm — the email didn't go through, but your card is ready below. Copy the link to send it instead.`;
             }
 
             const shareText = encodeURIComponent('I sent you a Vibe Check! ✨ Open your card here:');

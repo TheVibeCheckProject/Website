@@ -60,11 +60,11 @@
     <div class="bg-orb bg-orb-3" aria-hidden="true"></div>
 
     <!-- Premium Unlock Modal (CRO & Psychology Optimized) -->
-    <div class="prem-overlay" id="premOverlay" onclick="hidePremModal(event)">
-        <div class="prem-modal" role="dialog" aria-modal="true">
+    <div class="prem-overlay" id="premOverlay">
+        <div class="prem-modal" role="dialog" aria-modal="true" aria-labelledby="premModalTitle">
             <span class="prem-modal-icon">✨</span>
             <div class="prem-context-badge" id="premContextBadge" style="display:none;"></div>
-            <h2 class="prem-modal-title">Unlock Premium Forever</h2>
+            <h2 class="prem-modal-title" id="premModalTitle">Unlock Premium Forever</h2>
             <div class="prem-anchor-badge">
                 <span class="prem-anchor-compare">Store paper card: $6.99</span>
                 <span class="prem-anchor-pill">Digital Lifetime: $4.99</span>
@@ -76,7 +76,7 @@
                 <li><span class="fi">🎵</span><span><strong>All 8 Soundscapes:</strong> Music Box, Ocean, Harp &amp; Piano</span></li>
                 <li><span class="fi">💙</span><span><strong>Vault Access:</strong> Anxiety, Healing &amp; Celebration vibes</span></li>
             </ul>
-            <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" class="prem-cta" id="premCtaBtn" target="_blank" rel="noopener">Unlock Everything Forever — $4.99</a>
+            <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" class="prem-cta" id="premCtaBtn" target="_blank" rel="noopener noreferrer">Unlock Everything Forever — $4.99</a>
             <div class="prem-social-proof">⚡ 1,200+ cards sent this month • 100% one-time, zero recurring fees</div>
             <p class="prem-ethical-note">🌱 100% of proceeds fund our free crisis helpline directory and keep sending free for everyone.</p>
             <button class="prem-dismiss" onclick="hidePremModal()">Maybe later</button>
@@ -87,6 +87,12 @@
     <nav id="nav">
         <div class="nav-container">
             <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
+            <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu"
+                aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <ul class="nav-links" style="align-items: center;">
                 <li>
                     <a href="blog/index.html#crisis" class="nav-crisis-badge">
@@ -94,8 +100,10 @@
                         <span class="nav-crisis-text">Emergency Support</span>
                     </a>
                 </li>
-                <li><a href="index.html#why">Mission</a></li>
+                <li><a href="situations.html">Situations</a></li>
+                <li><a href="faq.html">FAQ</a></li>
                 <li><a href="blog/index.html">Guides</a></li>
+                <li><a href="about.html">About</a></li>
             </ul>
         </div>
     </nav>
@@ -171,7 +179,7 @@
                                         <div class="bg-picker" id="bgPicker"></div>
                                         <small id="premiumBgHint"
                                             style="color: var(--color-text-muted); font-size: 11px; margin-top: 8px; display: block;">
-                                            🔓 <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02"
+                                            🔓 <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener noreferrer"
                                                 style="color: var(--color-primary); text-decoration: none;">Unlock
                                                 Premium — $4.99</a> for animated &amp; premium backgrounds
                                         </small>
@@ -184,7 +192,7 @@
                                             Plays when they open the card
                                         </small>
                                         <div class="sound-picker" id="soundPicker">
-                                            <div class="sound-option selected" data-sound="chime"
+                                            <div class="sound-option selected" data-sound="chime" role="button" tabindex="0"
                                                 onclick="selectSound('chime', this)">
                                                 <span class="sound-icon">🔔</span>
                                                 <span class="sound-name">Chime</span>
@@ -192,7 +200,7 @@
                                                     onclick="event.stopPropagation(); previewSound('chime')"
                                                     title="Preview">▶</button>
                                             </div>
-                                            <div class="sound-option" data-sound="bell"
+                                            <div class="sound-option" data-sound="bell" role="button" tabindex="0"
                                                 onclick="selectSound('bell', this)">
                                                 <span class="sound-icon">🛎️</span>
                                                 <span class="sound-name">Soft Bell</span>
@@ -200,7 +208,7 @@
                                                     onclick="event.stopPropagation(); previewSound('bell')"
                                                     title="Preview">▶</button>
                                             </div>
-                                            <div class="sound-option" data-sound="sparkle"
+                                            <div class="sound-option" data-sound="sparkle" role="button" tabindex="0"
                                                 onclick="selectSound('sparkle', this)">
                                                 <span class="sound-icon">✨</span>
                                                 <span class="sound-name">Sparkle</span>
@@ -208,7 +216,7 @@
                                                     onclick="event.stopPropagation(); previewSound('sparkle')"
                                                     title="Preview">▶</button>
                                             </div>
-                                            <div class="sound-option premium-sound" data-sound="musicbox"
+                                            <div class="sound-option premium-sound" data-sound="musicbox" role="button" tabindex="0"
                                                 onclick="selectPremiumSound('musicbox', this)">
                                                 <span class="sound-icon">🎵</span>
                                                 <span class="sound-name">Music Box</span>
@@ -217,7 +225,7 @@
                                                     onclick="event.stopPropagation(); previewSound('musicbox')"
                                                     title="Preview">▶</button>
                                             </div>
-                                            <div class="sound-option premium-sound" data-sound="harp"
+                                            <div class="sound-option premium-sound" data-sound="harp" role="button" tabindex="0"
                                                 onclick="selectPremiumSound('harp', this)">
                                                 <span class="sound-icon">🎶</span>
                                                 <span class="sound-name">Harp</span>
@@ -226,7 +234,7 @@
                                                     onclick="event.stopPropagation(); previewSound('harp')"
                                                     title="Preview">▶</button>
                                             </div>
-                                            <div class="sound-option premium-sound" data-sound="piano"
+                                            <div class="sound-option premium-sound" data-sound="piano" role="button" tabindex="0"
                                                 onclick="selectPremiumSound('piano', this)">
                                                 <span class="sound-icon">🎹</span>
                                                 <span class="sound-name">Warm Piano</span>
@@ -235,7 +243,7 @@
                                                     onclick="event.stopPropagation(); previewSound('piano')"
                                                     title="Preview">▶</button>
                                             </div>
-                                            <div class="sound-option premium-sound" data-sound="celebration"
+                                            <div class="sound-option premium-sound" data-sound="celebration" role="button" tabindex="0"
                                                 onclick="selectPremiumSound('celebration', this)">
                                                 <span class="sound-icon">🎉</span>
                                                 <span class="sound-name">Celebration</span>
@@ -244,7 +252,7 @@
                                                     onclick="event.stopPropagation(); previewSound('celebration')"
                                                     title="Preview">▶</button>
                                             </div>
-                                            <div class="sound-option premium-sound" data-sound="ocean"
+                                            <div class="sound-option premium-sound" data-sound="ocean" role="button" tabindex="0"
                                                 onclick="selectPremiumSound('ocean', this)">
                                                 <span class="sound-icon">🌊</span>
                                                 <span class="sound-name">Ocean</span>
@@ -256,7 +264,7 @@
                                         </div>
                                         <small id="premiumSoundHint"
                                             style="color: var(--color-text-muted); font-size: 11px; margin-top: 8px; display: block;">
-                                            🔓 <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02"
+                                            🔓 <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener noreferrer"
                                                 style="color: var(--color-primary); text-decoration: none;">Unlock
                                                 Premium — $4.99</a> to use all sounds
                                         </small>
@@ -362,9 +370,9 @@
                                     style="background: rgba(163, 230, 53, 0.15); border-color: rgba(163, 230, 53, 0.4); color: #a3e635; font-weight: 700;">
                                     💬 Text a Friend
                                 </button>
-                                <a class="quick-share-btn" id="whatsappShare" href="#" target="_blank"
-                                    rel="noopener">WhatsApp</a>
-                                <a class="quick-share-btn" id="twitterShare" href="#" target="_blank" rel="noopener">𝕏
+                                <a class="quick-share-btn" id="whatsappShare" href="https://api.whatsapp.com/send?text=I%20sent%20you%20a%20Vibe%20Check!%20%E2%9C%A8" target="_blank"
+                                    rel="noopener noreferrer">WhatsApp</a>
+                                <a class="quick-share-btn" id="twitterShare" href="https://twitter.com/intent/tweet?text=I%20sent%20you%20a%20Vibe%20Check!%20%E2%9C%A8" target="_blank" rel="noopener noreferrer">𝕏
                                     Twitter</a>
                                 <button class="quick-share-btn" onclick="copyLink(event)">📋 Copy</button>
                             </div>
@@ -384,11 +392,11 @@
                             </form>
                             <p class="form-error" id="senderSignupError" role="alert" hidden></p>
                             <p style="margin-top:16px;">
-                                ✨ <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02"
+                                ✨ <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener noreferrer"
                                     style="color: var(--color-primary); font-weight:700;">Unlock Premium — $4.99</a>
                                 &nbsp;·&nbsp;
                                 ☕ <a href="https://ko-fi.com/thevibecheckproject?utm_source=website&utm_campaign=tip-jar"
-                                    target="_blank">Buy me a coffee</a>
+                                    target="_blank" rel="noopener noreferrer">Buy me a coffee</a>
                             </p>
                         </div>
                     </div>

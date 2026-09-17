@@ -215,14 +215,14 @@
         <div class="form-group">
             <label>Color Theme</label>
             <div class="color-btns">
-                <div class="color-btn active" style="background: linear-gradient(135deg, #FF6B9D, #67E8F9)"
-                    onclick="setColors('#FF6B9D', '#67E8F9', this)"></div>
-                <div class="color-btn" style="background: linear-gradient(135deg, #CDFF60, #A78BFA)"
-                    onclick="setColors('#CDFF60', '#A78BFA', this)"></div>
-                <div class="color-btn" style="background: linear-gradient(135deg, #FEC84A, #FF6B9D)"
-                    onclick="setColors('#FEC84A', '#FF6B9D', this)"></div>
-                <div class="color-btn" style="background: linear-gradient(135deg, #A78BFA, #67E8F9)"
-                    onclick="setColors('#A78BFA', '#67E8F9', this)"></div>
+                <div class="color-btn active" style="background: linear-gradient(135deg, #FF6B9D, #67E8F9)" role="button" tabindex="0"
+                    onclick="setColors('#FF6B9D', '#67E8F9', this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}"></div>
+                <div class="color-btn" style="background: linear-gradient(135deg, #CDFF60, #A78BFA)" role="button" tabindex="0"
+                    onclick="setColors('#CDFF60', '#A78BFA', this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}"></div>
+                <div class="color-btn" style="background: linear-gradient(135deg, #FEC84A, #FF6B9D)" role="button" tabindex="0"
+                    onclick="setColors('#FEC84A', '#FF6B9D', this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}"></div>
+                <div class="color-btn" style="background: linear-gradient(135deg, #A78BFA, #67E8F9)" role="button" tabindex="0"
+                    onclick="setColors('#A78BFA', '#67E8F9', this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}"></div>
             </div>
         </div>
 

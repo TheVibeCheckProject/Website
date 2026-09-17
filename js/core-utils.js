@@ -175,23 +175,74 @@ function burstParticles(count) {
     } catch (e) { /* unlock is best-effort */ }
 })();
 
-// ── Mobile nav toggle ──
+// ── Mobile nav toggle with accessible focus trap ──
 (function initMobileNav() {
     const btn = document.getElementById('nav-hamburger');
     const nav = document.getElementById('nav');
     if (!btn || !nav) return;
+
+    let previouslyFocused = null;
+
+    const getFocusable = () => {
+        return Array.from(nav.querySelectorAll('a[href], button:not([disabled]), [tabindex="0"]'))
+            .filter(el => el.offsetWidth > 0 || el.offsetHeight > 0 || el === btn);
+    };
+
+    const handleNavKeydown = (e) => {
+        if (e.key === 'Escape') {
+            close();
+            return;
+        }
+        if (e.key === 'Tab') {
+            const focusables = getFocusable();
+            if (!focusables.length) return;
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+
+            if (e.shiftKey) {
+                if (document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                }
+            } else {
+                if (document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        }
+    };
+
     const close = () => {
         nav.classList.remove('menu-open', 'nav-open');
         btn.setAttribute('aria-expanded', 'false');
+        document.removeEventListener('keydown', handleNavKeydown);
+        if (previouslyFocused && typeof previouslyFocused.focus === 'function') {
+            previouslyFocused.focus();
+            previouslyFocused = null;
+        }
     };
+
+    const openMenu = () => {
+        previouslyFocused = document.activeElement;
+        nav.classList.add('menu-open', 'nav-open');
+        btn.setAttribute('aria-expanded', 'true');
+        document.addEventListener('keydown', handleNavKeydown);
+        const firstLink = nav.querySelector('.nav-links a');
+        if (firstLink) firstLink.focus();
+    };
+
     btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const open = nav.classList.toggle('nav-open');
-        nav.classList.toggle('menu-open', open);
-        btn.setAttribute('aria-expanded', String(open));
+        const isOpen = nav.classList.contains('nav-open') || nav.classList.contains('menu-open');
+        if (isOpen) {
+            close();
+        } else {
+            openMenu();
+        }
     });
+
     document.addEventListener('click', (e) => { if (!nav.contains(e.target)) close(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
     nav.querySelectorAll('.nav-links a').forEach((a) => a.addEventListener('click', close));
     // Never restore the page with the menu stuck open (back/forward cache).
     window.addEventListener('pagehide', close);

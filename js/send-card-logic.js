@@ -283,10 +283,42 @@ function closeWriteOwn() {
     }
 }
 
+let _prevFocusedBeforePrem = null;
+
+function handlePremModalKeydown(e) {
+    if (e.key === 'Escape') {
+        hidePremModal();
+        return;
+    }
+    if (e.key === 'Tab') {
+        const overlay = document.getElementById('premOverlay');
+        if (!overlay) return;
+        const focusables = Array.from(overlay.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), [tabindex="0"]'))
+            .filter(el => el.offsetWidth > 0 || el.offsetHeight > 0);
+        if (!focusables.length) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey) {
+            if (document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            }
+        } else {
+            if (document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        }
+    }
+}
+
 function showPremModal(context = 'general', badgeText = '') {
     const overlay = document.getElementById('premOverlay');
     if (overlay) overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
+
+    _prevFocusedBeforePrem = document.activeElement;
+    document.addEventListener('keydown', handlePremModalKeydown);
 
     const badge = document.getElementById('premContextBadge');
     if (badge) {
@@ -298,6 +330,9 @@ function showPremModal(context = 'general', badgeText = '') {
         }
     }
 
+    const cta = document.getElementById('premCtaBtn') || (overlay && overlay.querySelector('.prem-modal a, .prem-modal button'));
+    if (cta) setTimeout(() => cta.focus(), 50);
+
     if (window.VibeTelemetry) {
         window.VibeTelemetry.track('premium_modal_opened', { trigger: context });
         window.VibeTelemetry.setTag('last_premium_trigger', context);
@@ -306,9 +341,16 @@ function showPremModal(context = 'general', badgeText = '') {
 
 function hidePremModal(e) {
     const overlay = document.getElementById('premOverlay');
-    if (e && e.target !== overlay) return;
+    if (e && e.target && e.target !== overlay && !e.target.closest('.prem-dismiss')) return;
     if (overlay) overlay.classList.remove('open');
     document.body.style.overflow = '';
+    document.removeEventListener('keydown', handlePremModalKeydown);
+
+    if (_prevFocusedBeforePrem && typeof _prevFocusedBeforePrem.focus === 'function') {
+        _prevFocusedBeforePrem.focus();
+        _prevFocusedBeforePrem = null;
+    }
+
     if (window.VibeTelemetry) {
         window.VibeTelemetry.track('premium_modal_dismissed');
     }
@@ -757,6 +799,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const wantsReminder = document.getElementById('senderReminderToggle')?.checked;
             const senderReminderEmail = document.getElementById('senderReminderEmail')?.value?.trim();
 
+            if (wantsReminder && (!senderReminderEmail || !senderReminderEmail.includes('@'))) {
+                showToast("Please enter your email for the 30-day reminder 📬", '✉️');
+                const remEmail = document.getElementById('senderReminderEmail');
+                if (remEmail) {
+                    remEmail.classList.add('field-shake');
+                    setTimeout(() => remEmail.classList.remove('field-shake'), 500);
+                    remEmail.focus();
+                }
+                return;
+            }
+
             if (sendBtn) {
                 sendBtn.textContent = recipientEmail ? 'Sending... ✨' : 'Creating... ✨';
                 sendBtn.disabled = true;
@@ -876,6 +929,26 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const tShare = document.getElementById('textShare');
             if (tShare) tShare.dataset.url = cardUrl;
+        });
+    }
+
+    // Keyboard accessibility for sound options
+    document.querySelectorAll('.sound-option').forEach(opt => {
+        if (!opt.hasAttribute('tabindex')) opt.setAttribute('tabindex', '0');
+        if (!opt.hasAttribute('role')) opt.setAttribute('role', 'button');
+        opt.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                opt.click();
+            }
+        });
+    });
+
+    // Premium modal backdrop listener (accessible delegation)
+    const premOverlay = document.getElementById('premOverlay');
+    if (premOverlay) {
+        premOverlay.addEventListener('click', (e) => {
+            if (e.target === premOverlay) hidePremModal();
         });
     }
 });

@@ -966,3 +966,5 @@ if (document.readyState === 'loading') {
 }
 
 window.closeEmailModal = closeEmailModal;
+window.switchDemoVibe = switchDemoVibe;
+window.initCardDemo = initCardDemo;

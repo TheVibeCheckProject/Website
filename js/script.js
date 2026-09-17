@@ -400,6 +400,7 @@ const demoVibes = {
         quote: '"Breathe. You are safe right now."',
         videoSrc: 'assets/backgrounds/animated_ethereal.mp4',
         isVideo: true,
+        bg: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%)',
         glow: 'linear-gradient(135deg, #2e1065 0%, #6d28d9 100%)',
         wash: 'rgba(109, 40, 217, 0.1)',
         sender: 'Someone who cares'
@@ -408,6 +409,7 @@ const demoVibes = {
         quote: '"All your hard work is paying off!"',
         videoSrc: 'assets/backgrounds/animated_vibrant.mp4',
         isVideo: true,
+        bg: 'linear-gradient(135deg, #78350f 0%, #d97706 50%, #b45309 100%)',
         glow: 'linear-gradient(135deg, #451a03 0%, #b45309 100%)',
         wash: 'rgba(180, 83, 9, 0.1)',
         sender: 'Your biggest cheerleader'
@@ -432,6 +434,7 @@ const demoVibes = {
         quote: '"You are entirely enough as you are."',
         videoSrc: 'assets/backgrounds/animated_modern.mp4',
         isVideo: true,
+        bg: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%)',
         glow: 'linear-gradient(135deg, #0c1445 0%, #1e3a8a 100%)',
         wash: 'rgba(30, 58, 138, 0.1)',
         sender: 'Someone who sees you'
@@ -439,6 +442,9 @@ const demoVibes = {
 };
 
 let demoRotationTimer = null;
+let demoResumeTimer = null;
+let demoFlipTimeout = null;
+let demoSafetyTimeout = null;
 let demoIsHovered = false;
 let demoIsFlipping = false;
 let currentVibe = 'encouragement';
@@ -452,17 +458,46 @@ const demoParticleColors = {
     selflove: ['rgba(147,197,253,ALPHA)', 'rgba(224,242,254,ALPHA)'],
 };
 
-function switchDemoVibe(vibe, skipRotationReset) {
-    if (demoIsFlipping) return;
+function applyCardMedia(data) {
+    const bg = document.getElementById('demoBg');
+    const video = document.getElementById('demoBgVideo');
+
+    if (data.isVideo && video) {
+        if (bg) bg.style.background = data.bg || '#111827';
+        video.style.display = 'block';
+        video.muted = true;
+        video.defaultMuted = true;
+        video.playsInline = true;
+        video.setAttribute('playsinline', '');
+        video.setAttribute('muted', '');
+        if (video.getAttribute('data-src') !== data.videoSrc) {
+            video.setAttribute('data-src', data.videoSrc);
+            video.src = data.videoSrc;
+        }
+        try {
+            const p = video.play();
+            if (p !== undefined) {
+                p.catch(() => { /* Autoplay prevented by browser policy; fallback bg is visible */ });
+            }
+        } catch (e) { }
+    } else {
+        if (video) {
+            video.style.display = 'none';
+            try { video.pause(); } catch (e) { }
+        }
+        if (bg) bg.style.background = data.bg;
+    }
+}
+
+function switchDemoVibe(vibe, options = {}) {
+    const isUserClick = typeof options === 'boolean' ? options : !!options.isUserClick;
+    const skipRotationReset = typeof options === 'boolean' ? options : !!options.skipRotationReset;
+
     const data = demoVibes[vibe];
     if (!data) return;
 
-    if (window.VibeTelemetry && !skipRotationReset) {
-        window.VibeTelemetry.track('demo_vibe_switched', { vibe: vibe });
-    }
-
-    currentVibe = vibe;
-    document.querySelectorAll('.demo-pill').forEach(p => p.classList.toggle('active', p.dataset.vibe === vibe));
+    // If auto-rotating and currently flipping, ignore auto tick
+    if (!isUserClick && demoIsFlipping) return;
 
     const card = document.getElementById('demoCard');
     const bg = document.getElementById('demoBg');
@@ -471,67 +506,109 @@ function switchDemoVibe(vibe, skipRotationReset) {
     const shimmer = document.getElementById('demoShimmer');
     const glow = document.getElementById('demoGlow');
     const section = document.querySelector('.send-card-section');
+    const ctaBtn = document.querySelector('.demo-cta-btn');
 
     if (!card || !bg || !quote) return;
+
+    // If user clicked the already active vibe, trigger playful feedback without a disruptive flip
+    if (currentVibe === vibe) {
+        if (isUserClick) {
+            card.classList.remove('pulse-accent');
+            void card.offsetWidth;
+            card.classList.add('pulse-accent');
+            setTimeout(() => card.classList.remove('pulse-accent'), 400);
+        }
+        return;
+    }
+
+    // If user clicked a different vibe, interrupt any ongoing animation/timer immediately
+    if (isUserClick) {
+        clearTimeout(demoFlipTimeout);
+        clearTimeout(demoSafetyTimeout);
+        demoIsFlipping = false;
+    }
+
+    currentVibe = vibe;
+
+    // Update pill highlight immediately
+    document.querySelectorAll('.demo-pill').forEach(p => {
+        const isActive = p.dataset.vibe === vibe;
+        p.classList.toggle('active', isActive);
+        p.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+
+    // Update CTA button link to prefill chosen affirmation
+    if (ctaBtn) {
+        const cleanMsg = data.quote.replace(/^"|"$/g, '');
+        ctaBtn.href = `send-card.html?message=${encodeURIComponent(cleanMsg)}`;
+    }
+
+    if (window.VibeTelemetry && isUserClick) {
+        window.VibeTelemetry.track('demo_vibe_switched', { vibe: vibe, source: 'user_click' });
+    }
+
+    if (isUserClick && window.soundEngine?.sparkle) {
+        window.soundEngine.sparkle();
+    }
+
+    // Update ambient glow & section wash
     if (glow) glow.style.background = data.glow;
     if (section) section.style.setProperty('--vibe-wash', data.wash);
     if (window._demoUpdateParticles) window._demoUpdateParticles(vibe);
 
-    // ── 3D card flip ─────────────────────────────────────────
+    // ── 3D Card Transition ──
     demoIsFlipping = true;
-
-    // Phase 1: flip to edge (Zero-Reflow pattern)
     card.classList.remove('flip-in');
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            card.classList.add('flip-out');
-        });
-    });
+    card.classList.add('flip-out');
 
-    setTimeout(() => {
-        // At edge — swap background invisibly
-        const video = document.getElementById('demoBgVideo');
-        if (data.isVideo && video) {
-            bg.style.background = '#000';
-            video.style.display = 'block';
-            if (video.getAttribute('data-src') !== data.videoSrc) {
-                video.setAttribute('data-src', data.videoSrc);
-                video.src = data.videoSrc;
-                video.play().catch(() => { });
+    demoFlipTimeout = setTimeout(() => {
+        try {
+            applyCardMedia(data);
+            quote.textContent = data.quote;
+            if (sender) sender.textContent = data.sender;
+
+            card.classList.remove('flip-out');
+            card.classList.add('flip-in');
+
+            // Shimmer sweep on landing
+            if (shimmer) {
+                shimmer.classList.remove('sweep');
+                void shimmer.offsetWidth;
+                shimmer.classList.add('sweep');
+                setTimeout(() => shimmer.classList.remove('sweep'), 700);
             }
-        } else {
-            if (video) { video.style.display = 'none'; video.pause(); }
-            bg.style.background = data.bg;
+        } catch (err) {
+            console.warn('Card demo transition notice:', err);
+        } finally {
+            setTimeout(() => {
+                card.classList.remove('flip-in');
+                demoIsFlipping = false;
+            }, 190);
         }
-        quote.textContent = data.quote;
-        if (sender) sender.textContent = data.sender;
+    }, 150);
 
-        // Phase 2: flip back in (Zero-Reflow pattern)
-        card.classList.remove('flip-out');
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                card.classList.add('flip-in');
-            });
-        });
+    // Safety fallback: ensure lock never sticks under any circumstances
+    clearTimeout(demoSafetyTimeout);
+    demoSafetyTimeout = setTimeout(() => {
+        demoIsFlipping = false;
+        card.classList.remove('flip-out', 'flip-in');
+    }, 450);
 
-        // Shimmer sweep on landing
-        if (shimmer) {
-            shimmer.classList.remove('sweep');
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    shimmer.classList.add('sweep');
-                });
-            });
-            setTimeout(() => shimmer.classList.remove('sweep'), 700);
-        }
+    if (!skipRotationReset) {
+        startDemoRotation();
+    }
+}
 
-        setTimeout(() => {
-            card.classList.remove('flip-in');
-            demoIsFlipping = false;
-        }, 210);
-    }, 205);
+function pauseDemoRotation() {
+    clearInterval(demoRotationTimer);
+    clearTimeout(demoResumeTimer);
+}
 
-    if (!skipRotationReset) startDemoRotation();
+function scheduleDemoResume(delay = 10000) {
+    pauseDemoRotation();
+    demoResumeTimer = setTimeout(() => {
+        if (!demoIsHovered) startDemoRotation();
+    }, delay);
 }
 
 function startDemoRotation() {
@@ -539,10 +616,10 @@ function startDemoRotation() {
     if (demoIsHovered) return;
     const vibeKeys = Object.keys(demoVibes);
     demoRotationTimer = setInterval(() => {
-        if (demoIsHovered) return;
+        if (demoIsHovered || demoIsFlipping) return;
         const next = vibeKeys[(vibeKeys.indexOf(currentVibe) + 1) % vibeKeys.length];
-        switchDemoVibe(next, true);
-    }, 3800);
+        switchDemoVibe(next, { isUserClick: false, skipRotationReset: true });
+    }, 4200);
 }
 
 function initCardDemo() {
@@ -553,32 +630,44 @@ function initCardDemo() {
 
     // Initial state
     const initData = demoVibes[currentVibe];
-    const initBg = document.getElementById('demoBg');
-    const initVideo = document.getElementById('demoBgVideo');
     const initGlow = document.getElementById('demoGlow');
     const initSection = document.querySelector('.send-card-section');
+    const ctaBtn = document.querySelector('.demo-cta-btn');
 
-    if (initData.isVideo && initVideo) {
-        if (initBg) initBg.style.background = '#000';
-        initVideo.style.display = 'block';
-        initVideo.src = initData.videoSrc;
-        initVideo.setAttribute('data-src', initData.videoSrc);
-        initVideo.play().catch(() => { });
-    } else if (initBg) {
-        initBg.style.background = initData.bg;
-    }
+    applyCardMedia(initData);
     if (initGlow) initGlow.style.background = initData.glow;
     if (initSection) initSection.style.setProperty('--vibe-wash', initData.wash);
+    if (ctaBtn) {
+        const cleanMsg = initData.quote.replace(/^"|"$/g, '');
+        ctaBtn.href = `send-card.html?message=${encodeURIComponent(cleanMsg)}`;
+    }
 
+    function selectPillVibe(pill) {
+        if (!pill) return;
+        const vibe = pill.dataset.vibe;
+        if (!vibe || !demoVibes[vibe]) return;
+        pauseDemoRotation();
+        switchDemoVibe(vibe, { isUserClick: true, skipRotationReset: true });
+        scheduleDemoResume(12000);
+    }
+
+    // Pill Interaction (both direct element listener and delegated capture)
     if (pills) {
         pills.querySelectorAll('.demo-pill').forEach(pill => {
-            pill.addEventListener('click', () => {
-                clearInterval(demoRotationTimer);
-                switchDemoVibe(pill.dataset.vibe, true);
-                clearTimeout(pill._resumeTimer);
-                pill._resumeTimer = setTimeout(startDemoRotation, 8000);
+            pill.addEventListener('click', (e) => {
+                if (e && e.stopPropagation) e.stopPropagation();
+                selectPillVibe(pill);
             });
         });
+
+        pills.addEventListener('click', (e) => {
+            const pill = e.target?.closest ? e.target.closest('.demo-pill') : null;
+            if (pill) selectPillVibe(pill);
+        });
+
+        // Hovering pills pauses auto-rotation so visitor can select without cards shifting
+        pills.addEventListener('mouseenter', () => pauseDemoRotation());
+        pills.addEventListener('mouseleave', () => scheduleDemoResume(6000));
     }
 
     // 3D Tilt Logic
@@ -604,7 +693,7 @@ function initCardDemo() {
         stage.addEventListener('mouseenter', () => {
             demoIsHovered = true;
             card.classList.add('is-tilting');
-            clearInterval(demoRotationTimer);
+            pauseDemoRotation();
         });
 
         stage.addEventListener('mousemove', (e) => {
@@ -632,8 +721,8 @@ function initCardDemo() {
             if (holo) { holo.style.background = ''; holo.style.animation = ''; }
             setTimeout(() => {
                 card.classList.remove('is-tilting');
-                startDemoRotation();
-            }, 500);
+            }, 300);
+            scheduleDemoResume(8000);
         });
     }
 
@@ -641,11 +730,14 @@ function initCardDemo() {
     const wrapper = document.querySelector('.card-demo-wrapper');
     if (wrapper && 'IntersectionObserver' in window) {
         new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) startDemoRotation();
-            else clearInterval(demoRotationTimer);
+            if (entries[0].isIntersecting) {
+                scheduleDemoResume(1500);
+            } else {
+                pauseDemoRotation();
+            }
         }, { threshold: 0.2 }).observe(wrapper);
     } else {
-        startDemoRotation();
+        scheduleDemoResume(2500);
     }
 
     initDemoParticles();
@@ -803,7 +895,7 @@ function initScrollProgress() {
 }
 
 // ── INITIALIZATION ───────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+function initApp() {
     // Core Navigation (scroll tracking; mobile toggle managed centrally by core-utils.js)
     const nav = document.getElementById('nav');
     if (nav) {
@@ -865,6 +957,12 @@ document.addEventListener('DOMContentLoaded', () => {
             else { createEmailModal(); showEmailModal(); }
         });
     });
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}
 
 window.closeEmailModal = closeEmailModal;

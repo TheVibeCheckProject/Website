@@ -59,20 +59,26 @@
     <div class="bg-orb bg-orb-2" aria-hidden="true"></div>
     <div class="bg-orb bg-orb-3" aria-hidden="true"></div>
 
-    <!-- Premium Unlock Modal -->
+    <!-- Premium Unlock Modal (CRO & Psychology Optimized) -->
     <div class="prem-overlay" id="premOverlay" onclick="hidePremModal(event)">
         <div class="prem-modal" role="dialog" aria-modal="true">
             <span class="prem-modal-icon">✨</span>
-            <h2 class="prem-modal-title">Unlock Premium</h2>
-            <p class="prem-modal-desc">Write your own words — plus unlock every background, sound, and affirmation
-                category.</p>
+            <div class="prem-context-badge" id="premContextBadge" style="display:none;"></div>
+            <h2 class="prem-modal-title">Unlock Premium Forever</h2>
+            <div class="prem-anchor-badge">
+                <span class="prem-anchor-compare">Store paper card: $6.99</span>
+                <span class="prem-anchor-pill">Digital Lifetime: $4.99</span>
+            </div>
+            <p class="prem-modal-desc">One tiny purchase. Lifetime access. Send unlimited custom vibe cards forever on this device.</p>
             <ul class="prem-modal-features">
-                <li><span class="fi">✍️</span><span>Write your own custom affirmation</span></li>
-                <li><span class="fi">🌌</span><span>8 premium backgrounds + 6 animated</span></li>
-                <li><span class="fi">🎵</span><span>5 premium card sounds</span></li>
-                <li><span class="fi">💙</span><span>5 premium affirmation categories</span></li>
+                <li><span class="fi">✍️</span><span><strong>Write Your Own Words:</strong> Custom authentic messages</span></li>
+                <li><span class="fi">🌌</span><span><strong>14+ Themes:</strong> Includes all Live Animated Canvases</span></li>
+                <li><span class="fi">🎵</span><span><strong>All 8 Soundscapes:</strong> Music Box, Ocean, Harp &amp; Piano</span></li>
+                <li><span class="fi">💙</span><span><strong>Vault Access:</strong> Anxiety, Healing &amp; Celebration vibes</span></li>
             </ul>
-            <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" class="prem-cta">Unlock for $4.99 — One Time</a>
+            <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" class="prem-cta" id="premCtaBtn" target="_blank" rel="noopener">Unlock Everything Forever — $4.99</a>
+            <div class="prem-social-proof">⚡ 1,200+ cards sent this month • 100% one-time, zero recurring fees</div>
+            <p class="prem-ethical-note">🌱 100% of proceeds fund our free crisis helpline directory and keep sending free for everyone.</p>
             <button class="prem-dismiss" onclick="hidePremModal()">Maybe later</button>
         </div>
     </div>
@@ -96,6 +102,14 @@
 
     <div class="send-card-page">
         <div class="send-card-container">
+            <!-- Viral Reply Bridge Banner (Appears when arriving from view-card.html) -->
+            <div class="viral-reply-banner" id="viralReplyBanner" style="display: none;">
+                <span class="viral-reply-icon">💚</span>
+                <div class="viral-reply-text">
+                    <strong>Replying with love:</strong> You're sending a vibe check back to <span id="viralReplyName">a friend</span>!
+                </div>
+            </div>
+
             <div class="send-card-header">
                 <h1 class="send-card-title">✨ Send a Vibe Check</h1>
                 <p class="send-card-subtitle">Send someone you care about a personalized affirmation card</p>
@@ -290,6 +304,23 @@
                                         </small>
                                     </div>
 
+                                    <!-- Behavioral Retention: 30-Day Check-in Reminder -->
+                                    <div class="form-section reminder-optin-section">
+                                        <label class="reminder-checkbox-label" for="senderReminderToggle">
+                                            <input type="checkbox" id="senderReminderToggle" class="reminder-checkbox">
+                                            <span class="reminder-custom-check" aria-hidden="true"></span>
+                                            <span class="reminder-text-wrap">
+                                                <strong class="reminder-title">Remind me to check back in on <span id="reminderRecipientName">them</span> in 30 days 💌</strong>
+                                                <span class="reminder-desc">Life moves fast. We'll send you a gentle reminder so you don't lose touch, plus a private copy of this card.</span>
+                                            </span>
+                                        </label>
+                                        <div class="reminder-email-slide" id="reminderEmailSlide" style="display: none;">
+                                            <label class="form-label" for="senderReminderEmail" style="font-size: 12px; margin-bottom: 4px;">Your Email Address</label>
+                                            <input type="email" class="form-input" id="senderReminderEmail" placeholder="your.email@example.com" autocomplete="email">
+                                            <small class="reminder-privacy-hint">🔒 We respect your inbox. 1-click unsubscribe anytime.</small>
+                                        </div>
+                                    </div>
+
                                     <div class="step-actions">
                                         <button type="button" class="btn-prev" onclick="goToStep(2)">← Back</button>
                                         <button type="submit" class="send-button" id="sendButton">
@@ -344,9 +375,11 @@
                         </button>
 
                         <div class="success-upsell">
-                            <p>Want good vibes in your inbox every day? 🌟</p>
+                            <div class="upsell-badge">✨ Daily Morning Spark</div>
+                            <h3 class="upsell-heading">Start your mornings with a moment of peace</h3>
+                            <p class="upsell-sub">Join thousands receiving one gentle affirmation every morning + get 3 free mobile wallpapers right now.</p>
                             <form class="inline-email-form" id="senderSignupForm" onsubmit="handleSenderSignup(event)">
-                                <input type="email" placeholder="your@email.com" required aria-label="Email address">
+                                <input type="email" id="postSendEmail" placeholder="your.email@example.com" required aria-label="Email address">
                                 <button type="submit">Get Daily Vibes</button>
                             </form>
                             <p class="form-error" id="senderSignupError" role="alert" hidden></p>

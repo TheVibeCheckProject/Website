@@ -207,29 +207,48 @@
 
     <!-- Post-card content (hidden until flip) -->
     <div id="postCardContent">
+      <!-- Reciprocal Viral Bridge: Converts Recipient to Sender -->
+      <div class="viral-bridge" id="viralBridge">
+        <div class="viral-bridge-card">
+          <div class="viral-bridge-badge">💌 Reciprocal Vibe Check</div>
+          <h3 class="viral-bridge-title" id="viralBridgeTitle">Make their day right back! 💚</h3>
+          <p class="viral-bridge-subtitle" id="viralBridgeSubtitle">
+            Someone took a moment out of their day to send you good vibes. Send an instant reply card in 10 seconds:
+          </p>
+          <div class="viral-bridge-actions">
+            <a href="send-card.html" class="viral-reply-btn viral-reply-primary" id="btnReplyThankYou">
+              <span>💌</span> <span>Send a "Thank You" Vibe</span>
+            </a>
+            <a href="send-card.html" class="viral-reply-btn viral-reply-secondary" id="btnReplyEnergy">
+              <span>🫂</span> <span>Send Warm Energy Back</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
       <!-- Action buttons -->
       <div class="card-ctas">
-        <a href="send-card.html" class="btn btn-primary">Send One Back 💌</a>
-        <a href="index.html" class="btn btn-outline">Get Daily Vibes Free ✨</a>
+        <a href="send-card.html" class="btn btn-primary" id="sendBackBtn">Send a New Card 💌</a>
+        <a href="index.html" class="btn btn-outline">Explore Daily Vibes ✨</a>
       </div>
 
       <!-- Share this card — the viral moment, right after the reveal -->
       <button class="btn btn-share" id="shareCardBtn" type="button" onclick="shareVibeCard(this)">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-        Share This Card
+        Share This Card With a Friend ✨
       </button>
 
-      <!-- Premium upsell — prominent CTA at the highest-intent moment -->
+      <!-- Premium upsell — prominent CTA with price anchoring -->
       <div
-        style="margin:24px 0;padding:20px 24px;background:linear-gradient(135deg,rgba(163,230,53,0.08),rgba(168,85,247,0.08));border:1px solid rgba(163,230,53,0.2);border-radius:14px;text-align:center;">
-        <p style="color:var(--text-primary);font-size:16px;font-weight:600;margin-bottom:6px;">Love this? Go Premium ✨
+        style="margin:24px 0;padding:22px 24px;background:linear-gradient(135deg,rgba(163,230,53,0.08),rgba(168,85,247,0.08));border:1px solid rgba(163,230,53,0.25);border-radius:16px;text-align:center;">
+        <div style="font-size:11.5px;text-transform:uppercase;letter-spacing:1px;font-weight:700;color:var(--green);margin-bottom:6px;">Lifetime Access • No Subscriptions</div>
+        <p style="color:var(--text-primary);font-size:17px;font-weight:700;margin-bottom:6px;">Create Your Own Stunning Cards ✨</p>
+        <p style="color:var(--text-secondary);font-size:13px;margin-bottom:14px;line-height:1.5;">
+          Unlock 14+ themes, live animated canvases, and 8 relaxing audio soundscapes for less than the price of a single paper store card ($6.99).
         </p>
-        <p style="color:var(--text-secondary);font-size:13px;margin-bottom:14px;">Unlock 10+ premium card themes (with
-          more added constantly) and all
-          relaxing sounds — yours forever in your browser.</p>
-        <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener"
+        <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener" id="viewCardPremBtn"
           style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#a3e635,#84cc16);color:#0a0a0a;font-weight:700;border-radius:10px;text-decoration:none;font-family:var(--font-display);font-size:14px;transition:transform 0.2s,box-shadow 0.2s;">
-          Unlock Premium — $4.99
+          Unlock Premium — $4.99 One-Time
         </a>
       </div>
 
@@ -261,13 +280,16 @@
       btn.textContent = 'Joining...';
       btn.disabled = true;
 
+      if (window.VibeTelemetry) {
+        window.VibeTelemetry.track('recipient_email_signup_started');
+      }
+
       try {
-        // Subscribe via secure Cloudflare Worker proxy (prevents API key exposure)
         const PROXY_URL = 'https://vibe-check-proxy.caseagent72401.workers.dev/';
 
         const response = await fetch(PROXY_URL, {
           method: 'POST',
-          mode: 'cors', // Explicitly set CORS mode
+          mode: 'cors',
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -280,6 +302,10 @@
         });
         if (response.ok) {
           e.target.innerHTML = '<p style="color:var(--green);font-size:16px;font-weight:700;">✨ You\'re in! Check your inbox.</p>';
+          if (window.VibeTelemetry) {
+            window.VibeTelemetry.track('recipient_email_signup_success');
+            window.VibeTelemetry.setTag('newsletter_subscriber', 'true');
+          }
         } else {
           showViewCardEmailError('Hmm, that didn\'t go through — please try again.');
           btn.textContent = 'Join Free';
@@ -304,6 +330,14 @@
       const url = window.location.href;
       const title = document.title || "You've Got a Vibe Check! ✨";
       const text = 'Someone sent me this beautiful vibe check card 💚';
+
+      if (window.VibeTelemetry) {
+        window.VibeTelemetry.track('card_share_initiated', { method: navigator.share ? 'native' : 'clipboard' });
+        window.VibeTelemetry.setTag('recipient_shared', 'true');
+      }
+
+      if (typeof launchConfetti === 'function') launchConfetti();
+
       if (navigator.share) {
         try { await navigator.share({ title: title, text: text, url: url }); } catch (e) { /* dismissed */ }
         return;
@@ -311,10 +345,9 @@
       const original = btn.innerHTML;
       try {
         await navigator.clipboard.writeText(url);
-        btn.innerHTML = '✓ Link Copied — Paste It Anywhere';
+        btn.innerHTML = '✓ Link Copied — Share the Love!';
         setTimeout(() => { btn.innerHTML = original; }, 2500);
       } catch (e) {
-        // Last resort: show a selectable field with the link (non-blocking)
         let field = document.getElementById('shareLinkField');
         if (!field) {
           field = document.createElement('input');
@@ -369,6 +402,43 @@
             : '✨ Someone anonymously sent you a vibe';
         }
         if (card.recipientName) document.title = `${card.recipientName}, You've Got a Vibe Check! ✨`;
+
+        // Setup Reciprocal Viral Bridge
+        const sender = (card.senderName || '').trim();
+        const bridgeTitle = document.getElementById('viralBridgeTitle');
+        const bridgeSubtitle = document.getElementById('viralBridgeSubtitle');
+        const btnReply1 = document.getElementById('btnReplyThankYou');
+        const btnReply2 = document.getElementById('btnReplyEnergy');
+
+        if (sender) {
+          if (bridgeTitle) bridgeTitle.textContent = `Make ${sender}'s day right back! 💚`;
+          if (bridgeSubtitle) bridgeSubtitle.textContent = `${sender} took a moment out of their day to send you good vibes. Send an instant reply card in 10 seconds:`;
+          if (btnReply1) {
+            const msg1 = encodeURIComponent(`Thank you so much for the vibe check, ${sender}! Your message meant the world to me ✨`);
+            btnReply1.href = `send-card.html?recipient=${encodeURIComponent(sender)}&message=${msg1}&viralReply=1`;
+            btnReply1.innerHTML = `<span>💌</span> <span>Send a "Thank You" Vibe to ${sender}</span>`;
+            btnReply1.onclick = () => { if (window.VibeTelemetry) window.VibeTelemetry.track('reciprocal_reply_clicked', { type: 'thank_you' }); };
+          }
+          if (btnReply2) {
+            const msg2 = encodeURIComponent(`Sending you the biggest hug and warmest energy right back! You are amazing 🌟`);
+            btnReply2.href = `send-card.html?recipient=${encodeURIComponent(sender)}&message=${msg2}&viralReply=1`;
+            btnReply2.innerHTML = `<span>🫂</span> <span>Send Warm Energy Back</span>`;
+            btnReply2.onclick = () => { if (window.VibeTelemetry) window.VibeTelemetry.track('reciprocal_reply_clicked', { type: 'warm_energy' }); };
+          }
+        } else {
+          if (bridgeTitle) bridgeTitle.textContent = `Pay this feeling forward 💚`;
+          if (bridgeSubtitle) bridgeSubtitle.textContent = `Someone anonymously sent you love today. Pass the kindness along to a friend in your life:`;
+          if (btnReply1) {
+            btnReply1.href = `send-card.html?viralReply=1`;
+            btnReply1.innerHTML = `<span>✨</span> <span>Send a Vibe Check to a Friend</span>`;
+            btnReply1.onclick = () => { if (window.VibeTelemetry) window.VibeTelemetry.track('reciprocal_reply_clicked', { type: 'pay_forward' }); };
+          }
+          if (btnReply2) {
+            btnReply2.href = `send-card.html?viralReply=1`;
+            btnReply2.innerHTML = `<span>💌</span> <span>Send an Anonymous Card</span>`;
+            btnReply2.onclick = () => { if (window.VibeTelemetry) window.VibeTelemetry.track('reciprocal_reply_clicked', { type: 'anonymous' }); };
+          }
+        }
 
         // Apply Themes
         if (card.themeGroup && card.themeGroup !== 'default') {
@@ -505,10 +575,18 @@
         launchConfetti();
         playCardSound();
 
+        if (window.VibeTelemetry) {
+          window.VibeTelemetry.track('card_flipped', { sound: cardSound });
+          window.VibeTelemetry.setTag('card_revealed', 'true');
+        }
+
         // Cinematic Reveal Sequence
         if (!document.body.classList.contains('is-revealed')) {
           setTimeout(() => {
             document.body.classList.add('is-revealed');
+            if (window.VibeTelemetry) {
+              window.VibeTelemetry.track('post_card_revealed');
+            }
           }, 1200); // 1.2s pause to read before the world moves
         }
       }

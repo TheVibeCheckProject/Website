@@ -448,12 +448,107 @@ video.card-bg-video {
 }
 
 
+/* ── Reciprocal Viral Bridge ── */
+.viral-bridge {
+    margin-top: 24px;
+    margin-bottom: 24px;
+    width: 100%;
+}
+
+.viral-bridge-card {
+    background: linear-gradient(135deg, rgba(20, 20, 25, 0.95), rgba(30, 25, 40, 0.95));
+    border: 1px solid rgba(163, 230, 53, 0.35);
+    border-radius: 20px;
+    padding: 24px 20px;
+    text-align: center;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(163, 230, 53, 0.08);
+}
+
+.viral-bridge-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 14px;
+    background: rgba(163, 230, 53, 0.15);
+    border: 1px solid rgba(163, 230, 53, 0.3);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 12px;
+}
+
+.viral-bridge-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 6px;
+}
+
+.viral-bridge-subtitle {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 18px;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.viral-bridge-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.viral-reply-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 13px 20px;
+    border-radius: 12px;
+    font-family: var(--font-display);
+    font-size: 14.5px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.viral-reply-primary {
+    background: linear-gradient(135deg, var(--green), #a3e635);
+    color: #0a0a0a;
+    box-shadow: 0 4px 16px rgba(163, 230, 53, 0.25);
+}
+
+.viral-reply-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(163, 230, 53, 0.4);
+}
+
+.viral-reply-secondary {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #f0f0f0;
+}
+
+.viral-reply-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
 @media (max-width: 600px) {
     .card-ctas {
         grid-template-columns: 1fr;
         gap: 12px;
     }
 }
+
 
 .btn {
     display: inline-flex;

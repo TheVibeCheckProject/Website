@@ -198,10 +198,183 @@ function burstParticles(count) {
     window.addEventListener('pageshow', close);
 })();
 
+// ========================================================
+// ── APEX TELEMETRY & EXPERIMENTATION ENGINE (VibeTelemetry) ──
+// ========================================================
+const VibeTelemetry = (function () {
+    const _eventQueue = [];
+    let _clarityReady = typeof window.clarity === 'function';
+
+    function _flushQueue() {
+        if (typeof window.clarity !== 'function') return;
+        _clarityReady = true;
+        while (_eventQueue.length > 0) {
+            const item = _eventQueue.shift();
+            try {
+                if (item.type === 'event') {
+                    window.clarity('event', item.name);
+                } else if (item.type === 'tag') {
+                    window.clarity('set', item.key, String(item.val));
+                }
+            } catch (err) {
+                // Fail silently to never affect UX
+            }
+        }
+    }
+
+    // Monitor for clarity initialization
+    if (!_clarityReady) {
+        const clarityCheckTimer = setInterval(() => {
+            if (typeof window.clarity === 'function') {
+                clearInterval(clarityCheckTimer);
+                _flushQueue();
+            }
+        }, 200);
+        setTimeout(() => clearInterval(clarityCheckTimer), 10000); // 10s safety max
+    }
+
+    return {
+        track(eventName, meta = {}) {
+            try {
+                if (typeof window.clarity === 'function') {
+                    window.clarity('event', eventName);
+                    // Also attach key event metadata as tags when relevant
+                    if (meta && typeof meta === 'object') {
+                        Object.keys(meta).forEach(k => {
+                            if (meta[k] !== undefined && meta[k] !== null) {
+                                window.clarity('set', `${eventName}_${k}`, String(meta[k]));
+                            }
+                        });
+                    }
+                } else {
+                    _eventQueue.push({ type: 'event', name: eventName });
+                    if (meta && typeof meta === 'object') {
+                        Object.keys(meta).forEach(k => {
+                            if (meta[k] !== undefined && meta[k] !== null) {
+                                _eventQueue.push({ type: 'tag', key: `${eventName}_${k}`, val: String(meta[k]) });
+                            }
+                        });
+                    }
+                }
+            } catch (e) { }
+        },
+
+        setTag(key, value) {
+            try {
+                if (typeof window.clarity === 'function') {
+                    window.clarity('set', key, String(value));
+                } else {
+                    _eventQueue.push({ type: 'tag', key: key, val: String(value) });
+                }
+            } catch (e) { }
+        },
+
+        getQueueSize() {
+            return _eventQueue.length;
+        }
+    };
+})();
+
+// ── PERSISTENT A/B TESTING ENGINE (VibeAB) ──
+const VibeAB = (function () {
+    return {
+        getVariant(testName, variants, defaultVariant = null) {
+            if (!Array.isArray(variants) || variants.length === 0) {
+                return defaultVariant;
+            }
+            const storageKey = `vibe_ab_${testName}`;
+            let assigned = null;
+            try {
+                assigned = localStorage.getItem(storageKey);
+            } catch (e) { }
+
+            if (!assigned || !variants.includes(assigned)) {
+                const randomIndex = Math.floor(Math.random() * variants.length);
+                assigned = variants[randomIndex];
+                try {
+                    localStorage.setItem(storageKey, assigned);
+                } catch (e) { }
+            }
+
+            // Sync with Clarity tag
+            VibeTelemetry.setTag(`ab_${testName}`, assigned);
+            return assigned;
+        }
+    };
+})();
+
+// ── PASSIVE SCROLL-DEPTH & OUTBOUND TELEMETRY ──
+(function initGlobalPassiveTelemetry() {
+    if (typeof window === 'undefined') return;
+
+    // Track initial page context
+    const path = window.location.pathname.split('/').pop() || 'index.html';
+    VibeTelemetry.setTag('page_view', path);
+    VibeTelemetry.track('page_loaded', { path: path });
+
+    // Passive Scroll Depth Telemetry (25%, 50%, 75%, 90%)
+    const thresholds = [25, 50, 75, 90];
+    const reachedThresholds = new Set();
+
+    let scrollScheduled = false;
+    function checkScrollDepth() {
+        scrollScheduled = false;
+        const h = document.documentElement;
+        const b = document.body;
+        const scrollTop = h.scrollTop || b.scrollTop;
+        const scrollHeight = (h.scrollHeight || b.scrollHeight) - h.clientHeight;
+        if (scrollHeight <= 0) return;
+
+        const percent = Math.round((scrollTop / scrollHeight) * 100);
+        thresholds.forEach(t => {
+            if (percent >= t && !reachedThresholds.has(t)) {
+                reachedThresholds.add(t);
+                VibeTelemetry.track('scroll_depth', { depth: `${t}%`, path: path });
+                VibeTelemetry.setTag(`scroll_${t}`, 'true');
+            }
+        });
+    }
+
+    window.addEventListener('scroll', () => {
+        if (!scrollScheduled) {
+            scrollScheduled = true;
+            window.requestAnimationFrame(checkScrollDepth);
+        }
+    }, { passive: true });
+
+    // Delegated Outbound Click Telemetry (Stripe, Ko-fi, External Links)
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (!link || !link.href) return;
+
+        const href = link.href;
+        if (href.includes('buy.stripe.com')) {
+            VibeTelemetry.track('stripe_checkout_click', {
+                source_page: path,
+                url: href
+            });
+            VibeTelemetry.setTag('monetization_intent', 'stripe_click');
+        } else if (href.includes('ko-fi.com')) {
+            VibeTelemetry.track('kofi_tip_click', {
+                source_page: path,
+                url: href
+            });
+            VibeTelemetry.setTag('monetization_intent', 'kofi_click');
+        } else if (link.getAttribute('href') === 'send-card.html' || href.includes('send-card.html')) {
+            VibeTelemetry.track('send_card_intent', {
+                source_page: path,
+                button_text: (link.textContent || '').trim().substring(0, 30)
+            });
+        }
+    }, { passive: true });
+})();
+
 // ── Global Window Exports ──
 window.soundEngine = soundEngine;
 window.showToast = showToast;
 window.launchConfetti = launchConfetti;
 window.burstParticles = burstParticles;
 window.isMobile = isMobile;
+window.VibeTelemetry = VibeTelemetry;
+window.VibeAB = VibeAB;
 

@@ -8,11 +8,39 @@ let selectedBackground = '';
 
 // Stripe premium return is handled centrally in core-utils.js (runs before this script).
 
-// --- NEW: Read message from URL and pre-fill ---
+// --- NEW: Read message and recipient from URL and pre-fill ---
 function handleExternalMessage() {
     const urlParams = new URLSearchParams(window.location.search);
     const messageParam = urlParams.get('message') || urlParams.get('msg');
+    const recipientParam = urlParams.get('recipient') || urlParams.get('to');
+    const isViralReply = urlParams.get('viralReply') === '1';
     
+    if (recipientParam) {
+        let cleanRec = recipientParam;
+        try { cleanRec = decodeURIComponent(recipientParam); } catch (e) { }
+        const recInput = document.getElementById('recipientName');
+        if (recInput) recInput.value = cleanRec;
+
+        const chip = document.getElementById('previewRecipientChip');
+        const chipName = document.getElementById('previewRecipientName');
+        if (chip && chipName) {
+            chipName.textContent = cleanRec;
+            chip.classList.remove('hidden');
+        }
+
+        const banner = document.getElementById('viralReplyBanner');
+        const bannerName = document.getElementById('viralReplyName');
+        if (banner && bannerName) {
+            bannerName.textContent = cleanRec;
+            banner.style.display = 'flex';
+        }
+
+        if (window.VibeTelemetry) {
+            window.VibeTelemetry.setTag('is_viral_reply', 'true');
+            window.VibeTelemetry.track('viral_reply_flow_initiated', { recipient: cleanRec });
+        }
+    }
+
     if (messageParam) {
         let decodedMsg = messageParam;
         try {
@@ -30,7 +58,9 @@ function handleExternalMessage() {
         if (previewAff) previewAff.textContent = `"${decodedMsg}"`;
         
         if (typeof updatePreview === 'function') updatePreview();
-        console.log("✨ External message applied to affirmation preview:", decodedMsg);
+        if (window.VibeTelemetry) {
+            window.VibeTelemetry.track('external_message_applied', { message_length: decodedMsg.length });
+        }
     }
 }
 
@@ -51,6 +81,9 @@ function selectSound(soundId, element) {
     selectedSound = soundId;
     document.querySelectorAll('.sound-option').forEach(el => el.classList.remove('selected'));
     element.classList.add('selected');
+    if (window.VibeTelemetry) {
+        window.VibeTelemetry.track('sound_selected', { sound: soundId });
+    }
 }
 
 if (isPremium) {
@@ -65,12 +98,18 @@ function selectPremiumSound(soundId, element) {
     if (isPremium) {
         selectSound(soundId, element);
     } else {
-        showPremModal();
+        if (window.VibeTelemetry) {
+            window.VibeTelemetry.track('premium_sound_attempt', { sound: soundId });
+        }
+        showPremModal('sound_' + soundId, 'Premium Soundscape: ' + soundId);
     }
 }
 
 function previewSound(soundId) {
     soundEngine.play(soundId);
+    if (window.VibeTelemetry) {
+        window.VibeTelemetry.track('sound_previewed', { sound: soundId });
+    }
 }
 
 // ── Affirmation Category Picker ──────────────────────────
@@ -244,10 +283,25 @@ function closeWriteOwn() {
     }
 }
 
-function showPremModal() {
+function showPremModal(context = 'general', badgeText = '') {
     const overlay = document.getElementById('premOverlay');
     if (overlay) overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
+
+    const badge = document.getElementById('premContextBadge');
+    if (badge) {
+        if (badgeText) {
+            badge.textContent = badgeText;
+            badge.style.display = 'inline-block';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+
+    if (window.VibeTelemetry) {
+        window.VibeTelemetry.track('premium_modal_opened', { trigger: context });
+        window.VibeTelemetry.setTag('last_premium_trigger', context);
+    }
 }
 
 function hidePremModal(e) {
@@ -255,12 +309,25 @@ function hidePremModal(e) {
     if (e && e.target !== overlay) return;
     if (overlay) overlay.classList.remove('open');
     document.body.style.overflow = '';
+    if (window.VibeTelemetry) {
+        window.VibeTelemetry.track('premium_modal_dismissed');
+    }
 }
 
 function selectCategory(cat) {
     activeCategory = cat;
     const locked = cat.premium && !isPremium;
-    if (locked) { selectedAffirmation = ''; }
+    if (locked) {
+        selectedAffirmation = '';
+        if (window.VibeTelemetry) {
+            window.VibeTelemetry.track('premium_category_attempt', { category: cat.id });
+        }
+        showPremModal('category_' + cat.id, `${cat.emoji} ${cat.label} Vault`);
+    } else {
+        if (window.VibeTelemetry) {
+            window.VibeTelemetry.track('category_selected', { category: cat.id });
+        }
+    }
     renderCategoryTabs();
     if (pickerEl) {
         pickerEl.style.opacity = '0';
@@ -312,6 +379,10 @@ function selectBackground(imagePath, element, isVideo = false) {
     document.querySelectorAll('.bg-option').forEach(el => el.classList.remove('selected'));
     if (element) element.classList.add('selected');
 
+    if (window.VibeTelemetry) {
+        window.VibeTelemetry.track('background_selected', { isVideo: isVideo, path: imagePath.split('/').pop() });
+    }
+
     const preview = document.getElementById('cardPreview');
     const videoEl = document.getElementById('previewVideo');
 
@@ -339,6 +410,10 @@ function selectAffirmation(affirmation, element, themeGroup = 'default') {
 
     document.querySelectorAll('.aff-card').forEach(el => el.classList.remove('selected'));
     if (element) element.classList.add('selected');
+
+    if (window.VibeTelemetry) {
+        window.VibeTelemetry.track('affirmation_selected', { themeGroup: themeGroup, length: affirmation.length });
+    }
 
     const previewAff = document.getElementById('previewAffirmation');
     if (previewAff) previewAff.textContent = `"${affirmation}"`;
@@ -414,13 +489,21 @@ function copyLink(e) {
         document.execCommand('copy');
         if (button) { button.textContent = 'Copied! ✓'; setTimeout(() => { button.textContent = originalText; }, 2000); }
     }
+    if (window.VibeTelemetry) {
+        window.VibeTelemetry.track('card_link_copied');
+        window.VibeTelemetry.setTag('share_action', 'copy_link');
+    }
 }
-
 
 async function textFriend(e) {
     const btn = e.currentTarget;
     const url = btn.dataset.url;
     const text = 'I sent you a Vibe Check! ✨ Open your card here:';
+
+    if (window.VibeTelemetry) {
+        window.VibeTelemetry.track('card_text_friend_clicked');
+        window.VibeTelemetry.setTag('share_action', 'text_friend');
+    }
 
     if (navigator.share) {
         try {
@@ -445,6 +528,10 @@ async function handleSenderSignup(e) {
     btn.textContent = 'Joining...';
     btn.disabled = true;
 
+    if (window.VibeTelemetry) {
+        window.VibeTelemetry.track('sender_newsletter_signup_started');
+    }
+
     try {
         const PROXY_URL = 'https://vibe-check-proxy.caseagent72401.workers.dev/';
         const response = await fetch(PROXY_URL, {
@@ -455,9 +542,16 @@ async function handleSenderSignup(e) {
         });
         if (response.ok) {
             e.target.innerHTML = '<p style="color:#FF6B9D;font-weight:600;font-size:15px;">✨ You\'re in! Check your inbox to confirm.</p>';
+            if (window.VibeTelemetry) {
+                window.VibeTelemetry.track('sender_newsletter_signup_success');
+                window.VibeTelemetry.setTag('newsletter_subscriber', 'true');
+            }
         } else {
             showSenderSignupError("Hmm, that didn't go through — please try again.");
             btn.textContent = 'Get Daily Vibes'; btn.disabled = false;
+            if (window.VibeTelemetry) {
+                window.VibeTelemetry.track('sender_newsletter_signup_error');
+            }
         }
     } catch (err) {
         showSenderSignupError("Couldn't connect — check your connection and try again.");
@@ -486,7 +580,14 @@ function goToStep(step) {
         }
     }
 
+    const prevStep = currentStep;
     currentStep = step;
+
+    if (window.VibeTelemetry) {
+        window.VibeTelemetry.track('step_progressed', { from: prevStep, to: step });
+        window.VibeTelemetry.setTag('send_flow_step', `step_${step}`);
+    }
+
     document.querySelectorAll('.form-step').forEach((el, index) => {
         el.classList.toggle('active', index + 1 === currentStep);
     });
@@ -538,7 +639,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (isLocked) {
-                el.onclick = () => showPremModal();
+                el.onclick = () => {
+                    if (window.VibeTelemetry) {
+                        window.VibeTelemetry.track('premium_bg_attempt', { bg: bg.id, isVideo: bg.isVideo });
+                    }
+                    showPremModal('bg_' + bg.id, bg.isVideo ? '🎥 Live Animated Canvas' : `🎨 ${bg.label} Canvas`);
+                };
             } else {
                 el.onclick = () => selectBackground(bg.image, el, bg.isVideo);
             }
@@ -574,7 +680,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (firstCard && !window._externalMessage) {
         firstCard.click();
     } else if (window._externalMessage && pickerEl) {
-        // If external message matches a card in the current category, highlight it
         const cleanExt = window._externalMessage.replace(/^["']|["']$/g, '').trim();
         const matchingCard = [...pickerEl.querySelectorAll('.aff-card')].find(card => 
             card.textContent.replace(/^["']|["']$/g, '').trim() === cleanExt
@@ -584,11 +689,39 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // A/B Test for Send Button CTA
+    const sendBtn = document.getElementById('sendButton');
+    if (sendBtn && window.VibeAB) {
+        const ctaVariant = window.VibeAB.getVariant('send_btn_cta', ['Create Card ✨', 'Generate Free Vibe Check 💌']);
+        sendBtn.textContent = ctaVariant;
+    }
+
     // Event listeners
     const senderInput = document.getElementById('senderName');
     const messageInput = document.getElementById('personalMessage');
     const recipientInput = document.getElementById('recipientName');
     
+    // Mirror recipient name to check-in reminder label
+    if (recipientInput) {
+        recipientInput.addEventListener('input', (e) => {
+            const label = document.getElementById('reminderRecipientName');
+            if (label) label.textContent = e.target.value.trim() || 'them';
+        });
+    }
+
+    // Toggle reminder email input drawer
+    const reminderToggle = document.getElementById('senderReminderToggle');
+    const reminderDrawer = document.getElementById('reminderEmailSlide');
+    if (reminderToggle && reminderDrawer) {
+        reminderToggle.addEventListener('change', () => {
+            reminderDrawer.style.display = reminderToggle.checked ? 'block' : 'none';
+            if (reminderToggle.checked) {
+                const emailInput = document.getElementById('senderReminderEmail');
+                if (emailInput) emailInput.focus();
+            }
+        });
+    }
+
     const updateEvents = ['input', 'keyup', 'change', 'blur', 'compositionend'];
     [senderInput, messageInput, recipientInput].forEach(input => {
         if (input) {
@@ -621,8 +754,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const senderName = document.getElementById('senderName').value;
             const personalMessage = document.getElementById('personalMessage').value;
             const recipientEmail = document.getElementById('recipientEmail').value;
+            const wantsReminder = document.getElementById('senderReminderToggle')?.checked;
+            const senderReminderEmail = document.getElementById('senderReminderEmail')?.value?.trim();
 
-            const sendBtn = document.getElementById('sendButton');
             if (sendBtn) {
                 sendBtn.textContent = recipientEmail ? 'Sending... ✨' : 'Creating... ✨';
                 sendBtn.disabled = true;
@@ -646,6 +780,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
             fetch('https://api.counterapi.dev/v1/thevibecheckproject/cards-sent/up').catch(() => { });
 
+            // Telemetry: Card Created Milestone
+            if (window.VibeTelemetry) {
+                window.VibeTelemetry.track('card_created', {
+                    hasPersonalMessage: !!personalMessage,
+                    hasRecipientEmail: !!recipientEmail,
+                    hasCheckinReminder: !!(wantsReminder && senderReminderEmail),
+                    themeGroup: selectedThemeGroup,
+                    sound: selectedSound,
+                    isPremium: isPremium
+                });
+                window.VibeTelemetry.setTag('cards_created', '1+');
+            }
+
+            // Lead Capture Dispatch: If user checked 30-Day Check-in Reminder
+            if (wantsReminder && senderReminderEmail) {
+                fetch('https://vibe-check-proxy.caseagent72401.workers.dev/', {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({
+                        email: senderReminderEmail,
+                        groups: ['180628908682512348'],
+                        fields: {
+                            name: senderName || 'Thoughtful Friend',
+                            signup_source: 'send-card-checkin-30d',
+                            recipient_checked: recipientName || 'Friend'
+                        }
+                    })
+                }).then(() => {
+                    if (window.VibeTelemetry) {
+                        window.VibeTelemetry.track('checkin_reminder_registered', { recipient: recipientName });
+                        window.VibeTelemetry.setTag('reminder_subscriber', 'true');
+                    }
+                    const postSendForm = document.getElementById('senderSignupForm');
+                    if (postSendForm) {
+                        postSendForm.innerHTML = `<p style="color:#a3e635;font-weight:600;font-size:14px;padding:8px 0;">✓ 30-Day Reminder set for ${recipientName || 'your friend'}! Check your inbox for confirmation & free wallpapers.</p>`;
+                    }
+                }).catch(err => console.error('Reminder registration error:', err));
+            }
+
             let emailSentOK = false;
             if (recipientEmail && typeof emailjs !== 'undefined') {
                 try {
@@ -657,7 +831,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         card_link: cardUrl,
                     });
                     emailSentOK = true;
-                } catch (err) { console.error('EmailJS error:', err); }
+                    if (window.VibeTelemetry) window.VibeTelemetry.track('card_email_sent_success');
+                } catch (err) {
+                    console.error('EmailJS error:', err);
+                    if (window.VibeTelemetry) window.VibeTelemetry.track('card_email_sent_failed');
+                }
             }
 
             if (cardForm) cardForm.style.display = 'none';
@@ -687,11 +865,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const shareText = encodeURIComponent('I sent you a Vibe Check! ✨ Open your card here:');
             const shareUrl = encodeURIComponent(cardUrl);
             const waShare = document.getElementById('whatsappShare');
-            if (waShare) waShare.href = `https://wa.me/?text=${shareText}%20${shareUrl}`;
+            if (waShare) {
+                waShare.href = `https://wa.me/?text=${shareText}%20${shareUrl}`;
+                waShare.onclick = () => { if (window.VibeTelemetry) window.VibeTelemetry.track('card_shared_whatsapp'); };
+            }
             const twShare = document.getElementById('twitterShare');
-            if (twShare) twShare.href = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
+            if (twShare) {
+                twShare.href = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
+                twShare.onclick = () => { if (window.VibeTelemetry) window.VibeTelemetry.track('card_shared_twitter'); };
+            }
             const tShare = document.getElementById('textShare');
             if (tShare) tShare.dataset.url = cardUrl;
         });
     }
 });
+

@@ -1254,21 +1254,62 @@
 }
 
 .prem-overlay.open .prem-modal { transform: scale(1) translateY(0); }
-.prem-modal-icon { font-size: 44px; display: block; margin-bottom: 14px; }
-.prem-modal-title { font-family: var(--font-display); font-size: 22px; color: white; margin-bottom: 8px; }
-.prem-modal-desc { color: rgba(255, 255, 255, 0.45); font-size: 14px; line-height: 1.6; margin-bottom: 22px; }
+.prem-modal-icon { font-size: 40px; display: block; margin-bottom: 8px; }
+
+.prem-context-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: rgba(168, 85, 247, 0.2);
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    color: #d8b4fe;
+    margin-bottom: 10px;
+}
+
+.prem-modal-title { font-family: var(--font-display); font-size: 22px; color: white; margin-bottom: 6px; }
+
+/* CRO Price Anchoring & Psychological Triggers */
+.prem-anchor-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 13px;
+}
+
+.prem-anchor-compare {
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: line-through;
+}
+
+.prem-anchor-pill {
+    background: rgba(163, 230, 53, 0.15);
+    border: 1px solid rgba(163, 230, 53, 0.4);
+    color: #a3e635;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+}
+
+.prem-modal-desc { color: rgba(255, 255, 255, 0.6); font-size: 13.5px; line-height: 1.5; margin-bottom: 18px; }
 
 .prem-modal-features {
     list-style: none;
     padding: 0;
-    margin: 0 0 26px;
+    margin: 0 0 20px;
     text-align: left;
     display: flex;
     flex-direction: column;
-    gap: 9px;
+    gap: 8px;
 }
 
-.prem-modal-features li { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: rgba(255, 255, 255, 0.65); }
+.prem-modal-features li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: rgba(255, 255, 255, 0.8); }
+.prem-modal-features li strong { color: #ffffff; }
 .prem-modal-features li .fi { font-size: 15px; flex-shrink: 0; }
 
 .prem-cta {
@@ -1285,13 +1326,61 @@
     font-family: var(--font-display);
     text-decoration: none;
     transition: transform 0.2s, box-shadow 0.2s;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     box-shadow: 0 8px 28px rgba(168, 85, 247, 0.35);
 }
 
 .prem-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(168, 85, 247, 0.45); }
-.prem-dismiss { font-size: 13px; color: rgba(255, 255, 255, 0.28); background: none; border: none; cursor: pointer; font-family: var(--font-body); transition: color 0.2s; }
-.prem-dismiss:hover { color: rgba(255, 255, 255, 0.55); }
+
+.prem-social-proof {
+    font-size: 11.5px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 8px;
+}
+
+.prem-ethical-note {
+    font-size: 11px;
+    color: rgba(163, 230, 53, 0.7);
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.prem-dismiss { font-size: 13px; color: rgba(255, 255, 255, 0.35); background: none; border: none; cursor: pointer; font-family: var(--font-body); transition: color 0.2s; }
+.prem-dismiss:hover { color: rgba(255, 255, 255, 0.7); }
+
+/* ── Viral Reply Bridge Banner ── */
+.viral-reply-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, rgba(163, 230, 53, 0.12), rgba(168, 85, 247, 0.12));
+    border: 1px solid rgba(163, 230, 53, 0.35);
+    border-radius: 14px;
+    padding: 12px 18px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    animation: replyPulse 3s ease-in-out infinite alternate;
+}
+
+.viral-reply-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.viral-reply-text {
+    font-size: 14px;
+    color: #f0f0f0;
+    line-height: 1.4;
+}
+
+.viral-reply-text strong {
+    color: #a3e635;
+}
+
+@keyframes replyPulse {
+    0% { border-color: rgba(163, 230, 53, 0.3); box-shadow: 0 4px 16px rgba(163, 230, 53, 0.1); }
+    100% { border-color: rgba(168, 85, 247, 0.5); box-shadow: 0 6px 24px rgba(168, 85, 247, 0.2); }
+}
 
 /* ── Preview Enhancements ─────────────────────────────────── */
 @keyframes previewFloat {
@@ -1343,3 +1432,105 @@
     font-weight: 600;
     text-align: center;
 }
+
+/* ── Retention Engine & Check-in Reminder UI ──────────────── */
+.reminder-optin-section {
+    background: rgba(255, 107, 157, 0.05);
+    border: 1.5px dashed rgba(255, 107, 157, 0.35);
+    border-radius: 14px;
+    padding: 16px;
+    transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+.reminder-optin-section:hover {
+    background: rgba(255, 107, 157, 0.08);
+    border-color: var(--color-primary);
+}
+.reminder-checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+}
+.reminder-checkbox {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.reminder-custom-check {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border: 2px solid rgba(255, 107, 157, 0.5);
+    border-radius: 6px;
+    background: var(--color-bg-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    transition: all 0.2s ease;
+}
+.reminder-checkbox:checked + .reminder-custom-check {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+}
+.reminder-checkbox:checked + .reminder-custom-check::after {
+    content: '✓';
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+}
+.reminder-text-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.reminder-title {
+    font-size: 14px;
+    color: var(--color-text-primary);
+    line-height: 1.4;
+}
+.reminder-desc {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+}
+.reminder-email-slide {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    animation: fadeIn 0.25s ease-out;
+}
+.reminder-privacy-hint {
+    display: block;
+    font-size: 11px;
+    color: var(--color-text-muted);
+    margin-top: 6px;
+}
+.upsell-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: rgba(255, 107, 157, 0.15);
+    border: 1px solid rgba(255, 107, 157, 0.3);
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.upsell-heading {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 6px;
+}
+.upsell-sub {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+

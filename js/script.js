@@ -126,6 +126,10 @@ function initDailyAffirmation() {
         const randomItem = pool[Math.floor(Math.random() * pool.length)];
         updateQuote(randomItem);
 
+        if (window.VibeTelemetry) {
+            window.VibeTelemetry.track('mood_tab_selected', { mood: currentMood });
+        }
+
         if (window.soundEngine?.sparkle) {
             window.soundEngine.sparkle();
         }
@@ -139,14 +143,31 @@ function initDailyAffirmation() {
             nextQuote = pool[(pool.indexOf(nextQuote) + 1) % pool.length];
         }
         updateQuote(nextQuote);
+
+        if (window.VibeTelemetry) {
+            window.VibeTelemetry.track('daily_vibe_shuffled', { mood: currentMood });
+        }
+
         if (window.soundEngine?.chime) {
             window.soundEngine.chime();
+        }
+    });
+
+    // Send As Card Trigger Telemetry
+    vibeSendAsCardBtn?.addEventListener('click', () => {
+        if (window.VibeTelemetry) {
+            window.VibeTelemetry.track('send_card_intent', { source: 'daily_vibe_deck', mood: currentMood });
         }
     });
 
     // Share / Clipboard Copy Trigger
     vibeShareBtn?.addEventListener('click', async () => {
         const shareText = `✨ Today's Vibe Check: "${currentQuote}" — https://thevibecheckproject.com/`;
+
+        if (window.VibeTelemetry) {
+            window.VibeTelemetry.track('daily_vibe_shared');
+        }
+
         if (navigator.clipboard?.writeText) {
             try {
                 await navigator.clipboard.writeText(shareText);
@@ -209,20 +230,20 @@ function createEmailModal() {
             <div class="modal-content">
                 <button class="modal-close" onclick="closeEmailModal()" aria-label="Close signup dialog">&times;</button>
                 <div class="modal-header">
-                    <h2 id="email-modal-title">✨ Get Your Daily Vibe Check</h2>
-                    <p>Join our growing community receiving daily affirmations. Free, always.</p>
+                    <h2 id="email-modal-title">✨ The Sunday Vibe & Daily Spark</h2>
+                    <p>One gentle affirmation every morning + 3 free high-res phone wallpapers delivered immediately.</p>
                 </div>
                 <form id="email-signup-form" class="modal-form">
                     <div class="form-group"><input type="email" id="signup-email" class="form-input" placeholder="your.email@example.com" required /></div>
                     <div class="form-group"><input type="text" id="signup-name" class="form-input" placeholder="Your first name (optional)" /></div>
-                    <button type="submit" class="btn btn-primary btn-large btn-block">Start Getting Good Vibes</button>
+                    <button type="submit" class="btn btn-primary btn-large btn-block">Get Wallpapers & Good Vibes ✨</button>
                     <p class="form-error" id="signup-error" role="alert" hidden></p>
-                    <p class="form-note">No spam, ever. Unsubscribe anytime.</p>
+                    <p class="form-note">100% Free forever. No spam, ever. Unsubscribe anytime.</p>
                 </form>
                 <div id="signup-success" style="display: none;" class="success-message">
                     <div class="success-icon">✨</div>
                     <h3>Welcome to the community!</h3>
-                    <p>Check your email for a confirmation link. Your first daily vibe check arrives tomorrow morning.</p>
+                    <p>Check your email for your wallpaper downloads & welcome note. Your first daily spark arrives tomorrow morning.</p>
                     <button class="btn btn-secondary" onclick="closeEmailModal()">Close</button>
                 </div>
             </div>
@@ -329,6 +350,10 @@ function initJoinForm() {
         submitBtn.textContent = 'Joining...';
         submitBtn.disabled = true;
 
+        if (window.VibeTelemetry) {
+            window.VibeTelemetry.track('newsletter_signup_started', { source: 'homepage_join' });
+        }
+
         try {
             const response = await fetch('https://vibe-check-proxy.caseagent72401.workers.dev/', {
                 method: 'POST',
@@ -344,6 +369,10 @@ function initJoinForm() {
             if (response.ok) {
                 form.style.display = 'none';
                 document.getElementById('join-success').style.display = 'block';
+                if (window.VibeTelemetry) {
+                    window.VibeTelemetry.track('newsletter_signup_success', { source: 'homepage_join' });
+                    window.VibeTelemetry.setTag('newsletter_subscriber', 'true');
+                }
             } else {
                 showFormError('join-error', 'Something went wrong. Please try again!');
                 submitBtn.textContent = originalText;
@@ -427,6 +456,10 @@ function switchDemoVibe(vibe, skipRotationReset) {
     if (demoIsFlipping) return;
     const data = demoVibes[vibe];
     if (!data) return;
+
+    if (window.VibeTelemetry && !skipRotationReset) {
+        window.VibeTelemetry.track('demo_vibe_switched', { vibe: vibe });
+    }
 
     currentVibe = vibe;
     document.querySelectorAll('.demo-pill').forEach(p => p.classList.toggle('active', p.dataset.vibe === vibe));

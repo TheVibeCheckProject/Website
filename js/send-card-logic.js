@@ -341,7 +341,12 @@ function showPremModal(context = 'general', badgeText = '') {
 
 function hidePremModal(e) {
     const overlay = document.getElementById('premOverlay');
-    if (e && e.target && e.target !== overlay && !e.target.closest('.prem-dismiss')) return;
+    if (e && e.target) {
+        const modal = overlay && overlay.querySelector('.prem-modal');
+        const isDismissBtn = e.target.closest('.prem-dismiss');
+        // Allow closing from: overlay backdrop click, dismiss button, or direct call
+        if (modal && modal.contains(e.target) && !isDismissBtn) return;
+    }
     if (overlay) overlay.classList.remove('open');
     document.body.style.overflow = '';
     document.removeEventListener('keydown', handlePremModalKeydown);

@@ -152,9 +152,21 @@
 
                                 <!-- Step 1: Your Vibe -->
                                 <div class="form-step active" id="step1">
+                                    <!-- Occasion Presets / Quick Picks -->
+                                    <div class="form-section occasion-presets-section">
+                                        <div class="occasion-header">
+                                            <label class="form-label" style="margin-bottom: 0;">⚡ Quick Presets / Occasions</label>
+                                            <span class="occasion-hint">1-click vibe, look &amp; sound</span>
+                                        </div>
+                                        <div class="occasion-chips-wrap" id="occasionChips" role="group" aria-label="Occasion Presets"></div>
+                                    </div>
+
                                     <div class="form-section">
-                                        <label class="form-label">Choose an Affirmation <span
-                                                style="color:#ff6b6b">*</span></label>
+                                        <div class="affirmation-section-header" style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom: 6px;">
+                                            <label class="form-label" style="margin-bottom: 0;">Choose an Affirmation <span
+                                                    style="color:#ff6b6b">*</span></label>
+                                            <span class="occasion-hint">or pick by mood</span>
+                                        </div>
                                         <div class="vibe-category-tabs" id="categoryTabs"></div>
                                         <div class="category-lock-banner" id="categoryLockBanner" style="display:none">
                                             🔒 <strong>Premium vibes</strong> — <button onclick="showPremModal()"
@@ -411,7 +423,13 @@
                 <!-- Right Column: Live Preview -->
                 <div class="send-card-preview-col">
                     <div class="sticky-preview">
-                        <div class="preview-label" style="text-align: center; margin-bottom: 12px; color: var(--color-text-muted);">Card Preview</div>
+                        <div class="preview-header-row">
+                            <div class="preview-label">Card Preview</div>
+                            <button type="button" class="motion-toggle-btn" id="motionToggleBtn" aria-label="Toggle motion effects" title="Toggle reduced motion">
+                                <span id="motionToggleIcon" aria-hidden="true">✨</span>
+                                <span id="motionToggleText">Motion On</span>
+                            </button>
+                        </div>
                         <div class="card-preview" id="cardPreview">
                             <!-- Animated Background Layer -->
                             <video id="previewVideo" autoplay loop muted playsinline

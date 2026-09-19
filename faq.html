@@ -40,7 +40,7 @@
         rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="css/styles.css?v=11">
+    <link rel="stylesheet" href="css/styles.css?v=106">
 
     <!-- Structured Data (FAQ Schema) -->
     <script type="application/ld+json">
@@ -150,7 +150,7 @@
             <div class="section-container faq-container">
                 <div class="faq-accordion" id="faqAccordion">
                     <div class="faq-item active">
-                        <button class="faq-question" aria-expanded="true">
+                        <button class="faq-question" type="button" aria-expanded="true" onclick="toggleFaq(this)">
                             <span>Is sending a vibe check really free?</span>
                             <span class="faq-icon">+</span>
                         </button>
@@ -160,7 +160,7 @@
                     </div>
 
                     <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">
+                        <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
                             <span>Does the recipient need to sign up or download an app?</span>
                             <span class="faq-icon">+</span>
                         </button>
@@ -170,7 +170,7 @@
                     </div>
 
                     <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">
+                        <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
                             <span>Can I remain anonymous when sending a card?</span>
                             <span class="faq-icon">+</span>
                         </button>
@@ -180,7 +180,7 @@
                     </div>
 
                     <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">
+                        <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
                             <span>What is the Premium Unlock?</span>
                             <span class="faq-icon">+</span>
                         </button>
@@ -190,7 +190,7 @@
                     </div>
 
                     <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">
+                        <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
                             <span>How does the daily affirmation newsletter work?</span>
                             <span class="faq-icon">+</span>
                         </button>
@@ -200,7 +200,7 @@
                     </div>
 
                     <div class="faq-item">
-                        <button class="faq-question" aria-expanded="false">
+                        <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
                             <span>Do you provide counseling or medical advice?</span>
                             <span class="faq-icon">+</span>
                         </button>
@@ -268,9 +268,45 @@
         </footer>
     </div>
 
+    <!-- FAQ Interaction Controller -->
+    <script>
+        function toggleFaq(header) {
+            if (!header) return;
+            var accordion = document.getElementById('faqAccordion') || header.closest('.faq-accordion');
+            var currentItem = header.closest('.faq-item');
+            if (!currentItem) return;
+
+            var isActive = currentItem.classList.contains('active');
+
+            if (accordion) {
+                var items = accordion.querySelectorAll('.faq-item');
+                for (var i = 0; i < items.length; i++) {
+                    items[i].classList.remove('active');
+                    var btn = items[i].querySelector('.faq-question');
+                    if (btn) btn.setAttribute('aria-expanded', 'false');
+                }
+            }
+
+            if (!isActive) {
+                currentItem.classList.add('active');
+                header.setAttribute('aria-expanded', 'true');
+            } else {
+                currentItem.classList.remove('active');
+                header.setAttribute('aria-expanded', 'false');
+            }
+
+            if (window.Telemetry && !isActive) {
+                var qSpan = header.querySelector('span');
+                var qText = qSpan ? qSpan.textContent.trim() : 'faq';
+                window.Telemetry.track('faq_expanded', { question: qText });
+            }
+        }
+        window.toggleFaq = toggleFaq;
+    </script>
+
     <!-- Main JavaScript -->
-    <script src="js/core-utils.js?v=104" defer></script>
-    <script src="js/script.js?v=14" defer></script>
+    <script src="js/core-utils.js?v=106" defer></script>
+    <script src="js/script.js?v=106" defer></script>
 </body>
 
 </html>

@@ -4179,6 +4179,8 @@ nav.menu-open .nav-hamburger span:nth-child(3) {
     text-align: left;
     cursor: pointer;
     outline: none;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .faq-question:focus-visible {
@@ -4205,7 +4207,7 @@ nav.menu-open .nav-hamburger span:nth-child(3) {
 }
 
 .faq-item.active .faq-answer {
-    max-height: 300px;
+    max-height: 500px;
     padding-bottom: 22px;
 }
 
@@ -4294,4 +4296,102 @@ nav.menu-open .nav-hamburger span:nth-child(3) {
     color: var(--color-primary);
     text-transform: uppercase;
     letter-spacing: 1px;
-}
+}
+
+/* ── Global Accessibility: Reduced Motion Overrides ─────────── */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .reveal,
+    .reveal-left,
+    .reveal-right,
+    .reveal-directional,
+    .title-animate {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .floating-particles,
+    .splash-particles,
+    .bg-orb {
+        display: none !important;
+    }
+
+    .card-emoji,
+    .use-case-icon,
+    .card-envelope-icon,
+    .nav-crisis-heart {
+        animation: none !important;
+    }
+
+    .why-card,
+    .step,
+    .affirmation-card,
+    .feature-card,
+    .blog-showcase-card {
+        transform: none !important;
+    }
+
+    .why-card:hover,
+    .step:hover,
+    .affirmation-card:hover,
+    .feature-card:hover,
+    .blog-showcase-card:hover {
+        animation: none !important;
+        transform: none !important;
+    }
+}
+
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+}
+
+html.reduce-motion .reveal,
+html.reduce-motion .reveal-left,
+html.reduce-motion .reveal-right,
+html.reduce-motion .reveal-directional,
+html.reduce-motion .title-animate {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+html.reduce-motion .floating-particles,
+html.reduce-motion .splash-particles,
+html.reduce-motion .bg-orb {
+    display: none !important;
+}
+
+html.reduce-motion .card-emoji,
+html.reduce-motion .use-case-icon,
+html.reduce-motion .card-envelope-icon,
+html.reduce-motion .nav-crisis-heart {
+    animation: none !important;
+}
+
+html.reduce-motion .why-card,
+html.reduce-motion .step,
+html.reduce-motion .affirmation-card,
+html.reduce-motion .feature-card,
+html.reduce-motion .blog-showcase-card {
+    transform: none !important;
+}
+
+html.reduce-motion .why-card:hover,
+html.reduce-motion .step:hover,
+html.reduce-motion .affirmation-card:hover,
+html.reduce-motion .feature-card:hover,
+html.reduce-motion .blog-showcase-card:hover {
+    animation: none !important;
+    transform: none !important;
+}
+

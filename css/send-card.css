@@ -140,6 +140,120 @@
     }
 }
 
+/* ── Occasion Presets / Quick Picks ──────────────────────── */
+.occasion-presets-section {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 107, 157, 0.15);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.occasion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.occasion-hint {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-primary-light, #ffb5d1);
+    letter-spacing: 0.2px;
+}
+
+.occasion-chips-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.occasion-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 13px;
+    border-radius: 50px;
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--color-text-secondary);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-display);
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    white-space: nowrap;
+}
+
+.occasion-chip:hover {
+    border-color: rgba(255, 107, 157, 0.5);
+    color: #ffffff;
+    background: rgba(255, 107, 157, 0.12);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 157, 0.2);
+}
+
+.occasion-chip.active {
+    border-color: #ff6b9d;
+    color: #ffffff;
+    background: linear-gradient(135deg, rgba(255, 107, 157, 0.35), rgba(192, 132, 252, 0.35));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.35);
+}
+
+.occasion-chip-emoji {
+    font-size: 14px;
+}
+
+.occasion-chip-title {
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Preview Header & Motion Toggle Button ──────────────── */
+.preview-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 0 4px;
+}
+
+.preview-header-row .preview-label {
+    margin-bottom: 0 !important;
+    text-align: left !important;
+}
+
+.motion-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: var(--font-display);
+    color: var(--color-text-muted);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.motion-toggle-btn:hover {
+    color: var(--color-text-primary);
+    border-color: rgba(255, 107, 157, 0.4);
+    background: rgba(255, 107, 157, 0.1);
+}
+
+.motion-toggle-btn.motion-reduced {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.35);
+    color: #fca5a5;
+}
+
 /* ── Vibe Category Tabs ─────────────────────────────────── */
 .vibe-category-tabs {
     display: flex;
@@ -1532,5 +1646,55 @@
     color: var(--color-text-secondary);
     margin-bottom: 16px;
     line-height: 1.5;
+}
+
+/* ── Reduced Motion Accessibility Overrides ──────────────── */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .bg-orb {
+        display: none !important;
+    }
+
+    .card-preview.play-foil::after {
+        display: none !important;
+    }
+
+    .vibe-tab, .aff-card, .occasion-chip, .btn-next, .btn-prev, .send-button {
+        transform: none !important;
+        transition: none !important;
+    }
+}
+
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+}
+
+html.reduce-motion .bg-orb {
+    display: none !important;
+}
+
+html.reduce-motion .card-preview.play-foil::after {
+    display: none !important;
+}
+
+html.reduce-motion .vibe-tab,
+html.reduce-motion .aff-card,
+html.reduce-motion .occasion-chip,
+html.reduce-motion .btn-next,
+html.reduce-motion .btn-prev,
+html.reduce-motion .send-button {
+    transform: none !important;
+    transition: none !important;
 }
 

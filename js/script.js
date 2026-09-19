@@ -184,30 +184,54 @@ function initDailyAffirmation() {
 }
 
 // ── FAQ ACCORDION COMPONENT ───────────────────────────
-function initFaqAccordion() {
-    const accordion = document.getElementById('faqAccordion');
-    if (!accordion) return;
+function toggleFaq(header) {
+    if (!header) return;
+    const accordion = document.getElementById('faqAccordion') || header.closest('.faq-accordion');
+    const currentItem = header.closest('.faq-item');
+    if (!currentItem) return;
 
-    accordion.addEventListener('click', (e) => {
-        const header = e.target.closest('.faq-question');
-        if (!header) return;
+    const isActive = currentItem.classList.contains('active');
 
-        const currentItem = header.closest('.faq-item');
-        if (!currentItem) return;
-        const isActive = currentItem.classList.contains('active');
-
-        // Close other accordion panels
+    // Close other accordion panels
+    if (accordion) {
         accordion.querySelectorAll('.faq-item').forEach(item => {
             item.classList.remove('active');
             item.querySelector('.faq-question')?.setAttribute('aria-expanded', 'false');
         });
+    }
 
-        // Toggle current panel
-        if (!isActive) {
-            currentItem.classList.add('active');
-            header.setAttribute('aria-expanded', 'true');
-        }
-    });
+    // Toggle current panel
+    if (!isActive) {
+        currentItem.classList.add('active');
+        header.setAttribute('aria-expanded', 'true');
+    } else {
+        currentItem.classList.remove('active');
+        header.setAttribute('aria-expanded', 'false');
+    }
+
+    // Optional telemetry hook
+    if (window.Telemetry && !isActive) {
+        const qTitle = header.querySelector('span')?.textContent?.trim() || 'faq';
+        window.Telemetry.track('faq_expanded', { question: qTitle });
+    }
+}
+window.toggleFaq = toggleFaq;
+
+function initFaqAccordion() {
+    const accordion = document.getElementById('faqAccordion');
+    if (!accordion) return;
+
+    // Attach click listener only if buttons don't have inline onclick
+    const buttons = accordion.querySelectorAll('.faq-question');
+    const hasInlineOnClick = Array.from(buttons).some(b => b.hasAttribute('onclick'));
+    if (!hasInlineOnClick) {
+        accordion.addEventListener('click', (e) => {
+            const header = e.target.closest('.faq-question');
+            if (header) {
+                toggleFaq(header);
+            }
+        });
+    }
 }
 
 // ── EMAIL SIGNUP MODAL ───────────────────────────────

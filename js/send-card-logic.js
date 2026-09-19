@@ -6,13 +6,219 @@ let selectedSound = 'chime';
 let selectedThemeGroup = 'default';
 let selectedBackground = '';
 
+// ── Motion Accessibility State (Reduced Motion) ──
+let isReducedMotion = (function () {
+    const stored = localStorage.getItem('vibe_reduced_motion');
+    if (stored !== null) return stored === '1';
+    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+})();
+
+function applyMotionPreference(reduced, persist = true) {
+    isReducedMotion = reduced;
+    if (persist) {
+        localStorage.setItem('vibe_reduced_motion', reduced ? '1' : '0');
+    }
+    document.documentElement.classList.toggle('reduce-motion', reduced);
+
+    const icon = document.getElementById('motionToggleIcon');
+    const text = document.getElementById('motionToggleText');
+    const btn = document.getElementById('motionToggleBtn');
+
+    if (icon) icon.textContent = reduced ? '🛑' : '✨';
+    if (text) text.textContent = reduced ? 'Motion Off' : 'Motion On';
+    if (btn) {
+        btn.classList.toggle('motion-reduced', reduced);
+        btn.setAttribute('aria-pressed', reduced ? 'true' : 'false');
+        btn.title = reduced ? 'Reduced motion enabled (click for full animations)' : 'Full motion enabled (click to reduce motion)';
+    }
+
+    const videoEl = document.getElementById('previewVideo');
+    if (videoEl) {
+        if (reduced) videoEl.pause();
+        else if (videoEl.style.display !== 'none') videoEl.play().catch(() => { });
+    }
+
+    if (window.VibeTelemetry && persist) {
+        window.VibeTelemetry.track('motion_preference_toggled', { reduced_motion: reduced });
+    }
+}
+
+function initMotionControl() {
+    const btn = document.getElementById('motionToggleBtn');
+    if (btn) {
+        btn.addEventListener('click', () => {
+            applyMotionPreference(!isReducedMotion, true);
+        });
+    }
+
+    try {
+        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        mediaQuery.addEventListener('change', (e) => {
+            if (localStorage.getItem('vibe_reduced_motion') === null) {
+                applyMotionPreference(e.matches, false);
+            }
+        });
+    } catch (e) { }
+
+    applyMotionPreference(isReducedMotion, false);
+}
+
+// ── Occasion Templates / Presets (1-Click Vibe, Look & Sound) ──
+const occasionTemplates = [
+    {
+        id: 'birthday',
+        emoji: '🎂',
+        title: 'Birthday',
+        affirmation: "Another year of you making the world brighter ✨",
+        bgId: 'sunset',
+        premBgId: 'gold',
+        sound: 'sparkle',
+        premSound: 'piano',
+        themeGroup: 'birthday',
+        notePlaceholder: "Wishing you the happiest birthday and the most incredible year ahead! 🥳"
+    },
+    {
+        id: 'tough_day',
+        emoji: '🩹',
+        title: 'Tough Day',
+        affirmation: "Take a breath. You don't have to carry it all today.",
+        bgId: 'dawn',
+        premBgId: 'velvet',
+        sound: 'bell',
+        premSound: 'musicbox',
+        themeGroup: 'anxiety',
+        notePlaceholder: "Thinking of you today. No need to reply, just sending lots of love. 💙"
+    },
+    {
+        id: 'proud',
+        emoji: '🌟',
+        title: 'Proud of You',
+        affirmation: "Look how far you've come. I'm so proud of you!",
+        bgId: 'aurora',
+        premBgId: 'emerald',
+        sound: 'sparkle',
+        premSound: 'celebration',
+        themeGroup: 'celebrate',
+        notePlaceholder: "You put in the work and crushed it! Celebrating you big time today 🎉"
+    },
+    {
+        id: 'gratitude',
+        emoji: '💌',
+        title: 'Gratitude',
+        affirmation: "Just wanted to remind you how much you mean to me.",
+        bgId: 'rose',
+        premBgId: 'cherry',
+        sound: 'chime',
+        premSound: 'harp',
+        themeGroup: 'love',
+        notePlaceholder: "So grateful to have you in my life. Thank you for always being you! ✨"
+    },
+    {
+        id: 'calm',
+        emoji: '🌿',
+        title: 'Calm & Safe',
+        affirmation: "Breathe in calm, exhale worry. You are safe right now.",
+        bgId: 'dawn',
+        premBgId: 'ocean',
+        sound: 'bell',
+        premSound: 'ocean',
+        themeGroup: 'anxiety',
+        notePlaceholder: "Taking a gentle pause with you today. One moment at a time. 🕊️"
+    },
+    {
+        id: 'healing',
+        emoji: '🕊️',
+        title: 'Gentle Healing',
+        affirmation: "Sending you gentle love and holding space for you today.",
+        bgId: 'rose',
+        premBgId: 'crystal',
+        sound: 'chime',
+        premSound: 'harp',
+        themeGroup: 'healing',
+        notePlaceholder: "Holding space for you today. Take all the time and gentleness you need."
+    }
+];
+
+let activeOccasionTemplate = null;
+
+function renderOccasionChips() {
+    const wrap = document.getElementById('occasionChips');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+
+    occasionTemplates.forEach(t => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'occasion-chip' + (activeOccasionTemplate === t.id ? ' active' : '');
+        chip.setAttribute('aria-pressed', activeOccasionTemplate === t.id ? 'true' : 'false');
+        chip.dataset.occasionId = t.id;
+        chip.innerHTML = `<span class="occasion-chip-emoji">${t.emoji}</span> <span class="occasion-chip-title">${t.title}</span>`;
+        chip.onclick = () => applyOccasionTemplate(t.id);
+        wrap.appendChild(chip);
+    });
+}
+
+function applyOccasionTemplate(templateId, isAutoFromUrl = false) {
+    const template = occasionTemplates.find(t => t.id === templateId);
+    if (!template) return;
+
+    activeOccasionTemplate = templateId;
+    renderOccasionChips();
+
+    // 1. Set Affirmation
+    selectedAffirmation = template.affirmation;
+    selectedThemeGroup = template.themeGroup || 'default';
+    const previewAff = document.getElementById('previewAffirmation');
+    if (previewAff) previewAff.textContent = `"${template.affirmation}"`;
+
+    closeWriteOwn();
+
+    if (pickerEl) {
+        pickerEl.querySelectorAll('.aff-card').forEach(c => {
+            const clean = c.textContent.replace(/^"|"$/g, '').trim();
+            c.classList.toggle('selected', clean === template.affirmation);
+        });
+    }
+
+    // 2. Set Background
+    const targetBgId = (isPremium && template.premBgId) ? template.premBgId : template.bgId;
+    const matchedBgDef = backgroundDefs.find(b => b.id === targetBgId) || backgroundDefs.find(b => b.id === template.bgId);
+    if (matchedBgDef) {
+        const bgOptionEl = document.querySelector(`.bg-option[data-bg-id="${matchedBgDef.id}"]`);
+        selectBackground(matchedBgDef.image, bgOptionEl, !!matchedBgDef.isVideo);
+    }
+
+    // 3. Set Sound
+    const targetSound = (isPremium && template.premSound) ? template.premSound : template.sound;
+    const soundOptionEl = document.querySelector(`.sound-option[data-sound="${targetSound}"]`);
+    if (soundOptionEl) {
+        selectSound(targetSound, soundOptionEl);
+    }
+
+    // 4. Set suggested note placeholder if empty
+    const personalMsg = document.getElementById('personalMessage');
+    if (personalMsg && !personalMsg.value.trim() && template.notePlaceholder) {
+        personalMsg.placeholder = template.notePlaceholder;
+    }
+
+    triggerFoilSweep();
+
+    if (window.VibeTelemetry) {
+        window.VibeTelemetry.track('occasion_template_applied', { 
+            template: templateId, 
+            isAutoFromUrl: isAutoFromUrl 
+        });
+    }
+}
+
 // Stripe premium return is handled centrally in core-utils.js (runs before this script).
 
-// --- NEW: Read message and recipient from URL and pre-fill ---
+// --- NEW: Read message, recipient, and occasion from URL and pre-fill ---
 function handleExternalMessage() {
     const urlParams = new URLSearchParams(window.location.search);
     const messageParam = urlParams.get('message') || urlParams.get('msg');
     const recipientParam = urlParams.get('recipient') || urlParams.get('to');
+    const occasionParam = urlParams.get('occasion') || urlParams.get('template') || urlParams.get('preset');
     const isViralReply = urlParams.get('viralReply') === '1';
     
     if (recipientParam) {
@@ -61,6 +267,8 @@ function handleExternalMessage() {
         if (window.VibeTelemetry) {
             window.VibeTelemetry.track('external_message_applied', { message_length: decodedMsg.length });
         }
+    } else if (occasionParam) {
+        window._appliedOccasion = occasionParam.toLowerCase();
     }
 }
 
@@ -413,6 +621,7 @@ const backgroundDefs = [
 ];
 
 function triggerFoilSweep() {
+    if (isReducedMotion) return;
     const preview = document.querySelector('.card-preview');
     if (preview) {
         preview.classList.remove('play-foil');
@@ -438,7 +647,9 @@ function selectBackground(imagePath, element, isVideo = false) {
             preview.style.backgroundImage = 'none';
             videoEl.src = imagePath;
             videoEl.style.display = 'block';
-            videoEl.play().catch(e => console.log("Video play blocked:", e));
+            if (!isReducedMotion) {
+                videoEl.play().catch(e => console.log("Video play blocked:", e));
+            }
         } else {
             videoEl.style.display = 'none';
             videoEl.pause();
@@ -454,6 +665,14 @@ function selectBackground(imagePath, element, isVideo = false) {
 function selectAffirmation(affirmation, element, themeGroup = 'default') {
     selectedAffirmation = affirmation;
     selectedThemeGroup = themeGroup;
+
+    if (activeOccasionTemplate) {
+        const matched = occasionTemplates.find(t => t.id === activeOccasionTemplate);
+        if (!matched || matched.affirmation !== affirmation) {
+            activeOccasionTemplate = null;
+            renderOccasionChips();
+        }
+    }
 
     document.querySelectorAll('.aff-card').forEach(el => el.classList.remove('selected'));
     if (element) element.classList.add('selected');
@@ -699,6 +918,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Initialize Occasion Presets & Motion Accessibility
+    renderOccasionChips();
+    initMotionControl();
+
     // Initialize preview background
     selectedBackground = backgroundDefs[0].image;
     const preview = document.getElementById('cardPreview');
@@ -712,7 +935,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Handle External Messages (CRITICAL: Runs after grid matches are built)
     handleExternalMessage();
 
-    // 3. Handle premium state for custom affirmations
+    // 3. Handle premium state for custom affirmations or applied occasion preset
     if (window._externalMessage) {
         if (isPremium) {
             openWriteOwn();
@@ -720,11 +943,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (ta) ta.value = window._externalMessage;
         }
         updatePreview();
+    } else if (window._appliedOccasion) {
+        applyOccasionTemplate(window._appliedOccasion, true);
     }
 
-    // 4. Default selection (Only if NO external message)
+    // 4. Default selection (Only if NO external message and NO occasion preset)
     const firstCard = pickerEl ? pickerEl.querySelector('.aff-card') : null;
-    if (firstCard && !window._externalMessage) {
+    if (firstCard && !window._externalMessage && !window._appliedOccasion) {
         firstCard.click();
     } else if (window._externalMessage && pickerEl) {
         const cleanExt = window._externalMessage.replace(/^["']|["']$/g, '').trim();

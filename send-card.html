@@ -47,8 +47,8 @@
     </noscript>
 
 
-    <link rel="stylesheet" href="css/styles.css?v=107">
-    <link rel="stylesheet" href="css/send-card.css?v=107">
+    <link rel="stylesheet" href="css/styles.css?v=108">
+    <link rel="stylesheet" href="css/send-card.css?v=108">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2492108586092522"
         crossorigin="anonymous"></script>
 </head>
@@ -59,14 +59,13 @@
     <div class="bg-orb bg-orb-2" aria-hidden="true"></div>
     <div class="bg-orb bg-orb-3" aria-hidden="true"></div>
 
-    <!-- Premium Unlock Modal (CRO & Psychology Optimized) -->
-    <div class="prem-overlay" id="premOverlay">
-        <div class="prem-modal" role="dialog" aria-modal="true" aria-labelledby="premModalTitle">
-            <span class="prem-modal-icon">✨</span>
-            <div class="prem-context-badge" id="premContextBadge" style="display:none;"></div>
-            <h2 class="prem-modal-title" id="premModalTitle">Unlock Premium Forever</h2>
-            <div class="prem-anchor-badge">
-                <span class="prem-anchor-compare">Store paper card: $6.99</span>
+    <!-- Premium Modal (Glassmorphism Bottom-Sheet / Centered Dialog) -->
+    <div class="prem-overlay" id="premOverlay" role="dialog" aria-modal="true" aria-labelledby="premModalTitle" aria-hidden="true">
+        <div class="prem-modal" id="premModal">
+            <button class="prem-close" onclick="hidePremModal(event)" aria-label="Close premium modal">✕</button>
+            <div class="prem-badge">✨ Lifetime Supporter</div>
+            <h2 class="prem-modal-title" id="premModalTitle">Unlock the Full Vibe Experience</h2>
+            <div class="prem-pricing-hero">
                 <span class="prem-anchor-pill">Digital Lifetime: $4.99</span>
             </div>
             <p class="prem-modal-desc">One tiny purchase. Lifetime access. Send unlimited custom vibe cards forever on this device.</p>
@@ -102,6 +101,7 @@
                         <span class="nav-crisis-text">Emergency Support</span>
                     </a>
                 </li>
+                <li><a href="my-cards.html">My Vibes</a></li>
                 <li><a href="situations.html">Situations</a></li>
                 <li><a href="faq.html">FAQ</a></li>
                 <li><a href="blog/index.html">Guides</a></li>
@@ -372,6 +372,17 @@
                             ✅ Email sent to <span id="emailSentTo">them</span>
                         </div>
 
+                        <!-- Saved to History Notice -->
+                        <div class="success-history-notice" id="historySavedNotice" style="display:none;">
+                            <span class="history-notice-icon">💾</span>
+                            <div class="history-notice-text">
+                                <strong>Saved to My Vibes:</strong> Track and re-share this card anytime.
+                            </div>
+                            <a href="my-cards.html" class="history-notice-btn">
+                                My Sent Cards (<span id="historyCountBadge">1</span>) →
+                            </a>
+                        </div>
+
                         <!-- Share link -->
                         <div class="success-share-box">
                             <label>Share Link</label>
@@ -453,8 +464,9 @@
         </div> <!-- End send-card-container -->
     </div> <!-- End send-card-page -->
 
-    <script src="js/core-utils.js?v=107"></script>
-    <script src="js/send-card-logic.js?v=107"></script>
+    <script src="js/core-utils.js?v=108"></script>
+    <script src="js/vibe-history.js?v=108"></script>
+    <script src="js/send-card-logic.js?v=108"></script>
 
     <!-- EmailJS SDK — loaded at end of body so it never blocks rendering -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>

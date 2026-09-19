@@ -122,11 +122,11 @@
 
 
   <!-- Async CSS to prevent blocking splash screen -->
-  <link rel="stylesheet" href="css/styles.css?v=6" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="css/view-card.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="css/styles.css?v=108" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="css/view-card.css?v=108" media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="css/styles.css?v=6">
-    <link rel="stylesheet" href="css/view-card.css">
+    <link rel="stylesheet" href="css/styles.css?v=108">
+    <link rel="stylesheet" href="css/view-card.css?v=108">
   </noscript>
 
   <!-- Instant Preloader (Runs before DOM is fully parsed) -->
@@ -501,7 +501,8 @@
     })();
   </script>
 
-  <script src="js/core-utils.js?v=104"></script>
+  <script src="js/core-utils.js?v=108"></script>
+  <script src="js/vibe-history.js?v=108"></script>
 
   <!-- Flip card + particles + share logic -->
   <script>
@@ -574,6 +575,25 @@
         burstParticles(30);
         launchConfetti();
         playCardSound();
+
+        // Read-receipt beaconing & local history status
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const encoded = params.get('data');
+          if (encoded && window.decodeVibeCard) {
+            const cardObj = window.decodeVibeCard(encoded);
+            if (cardObj && cardObj.id) {
+              if (window.VibeHistory) {
+                if (typeof window.VibeHistory.beaconOpen === 'function') {
+                  window.VibeHistory.beaconOpen(cardObj.id);
+                }
+                if (typeof window.VibeHistory.markOpened === 'function') {
+                  window.VibeHistory.markOpened(cardObj.id);
+                }
+              }
+            }
+          }
+        } catch (e) { }
 
         if (window.VibeTelemetry) {
           window.VibeTelemetry.track('card_flipped', { sound: cardSound });

@@ -1045,7 +1045,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 sendBtn.disabled = true;
             }
 
+            const cardId = (window.VibeHistory && typeof window.VibeHistory.generateId === 'function')
+                ? window.VibeHistory.generateId()
+                : ('vibe_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 8));
+
             const cardData = {
+                id: cardId,
                 affirmation: selectedAffirmation,
                 recipientName: recipientName,
                 senderName: senderName,
@@ -1060,6 +1065,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); // base64url: URL-safe share links
             const base = window.location.href.replace(/send-card\.html.*$/, '');
             const cardUrl = `${base}view-card.html?data=${encoded}`;
+
+            // Persist to Client-Side Sender History ("My Vibes")
+            if (window.VibeHistory && typeof window.VibeHistory.save === 'function') {
+                try {
+                    window.VibeHistory.save({
+                        id: cardId,
+                        recipient: recipientName,
+                        sender: senderName,
+                        affirmation: selectedAffirmation,
+                        theme: selectedThemeGroup,
+                        sound: selectedSound,
+                        message: personalMessage,
+                        shareUrl: cardUrl,
+                        createdAt: cardData.createdAt,
+                        opened: false
+                    });
+                } catch (e) {
+                    console.warn('VibeHistory save failed:', e);
+                }
+            }
 
             fetch('https://api.counterapi.dev/v1/thevibecheckproject/cards-sent/up').catch(() => { });
 
@@ -1126,6 +1151,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (stepInd) stepInd.style.display = 'none';
             const successMsg = document.getElementById('successMessage');
             if (successMsg) successMsg.classList.add('show');
+            const historyNotice = document.getElementById('historySavedNotice');
+            if (historyNotice) {
+                historyNotice.style.display = 'flex';
+                const countBadge = document.getElementById('historyCountBadge');
+                if (countBadge && window.VibeHistory) {
+                    const total = window.VibeHistory.getAll().length;
+                    countBadge.textContent = total > 1 ? `${total} vibes saved` : '1 vibe saved';
+                }
+            }
             const cardLinkInput = document.getElementById('cardLink');
             if (cardLinkInput) cardLinkInput.value = cardUrl;
             launchConfetti();

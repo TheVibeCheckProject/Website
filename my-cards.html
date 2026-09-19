@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="View, track, and re-share your sent affirmation cards. Private to your device with zero account required.">
+    <title>My Sent Cards (My Vibes) ✨ - The Vibe Check Project</title>
+
+    <!-- Open Graph / Meta -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="My Sent Cards — The Vibe Check Project">
+    <meta property="og:description"
+        content="Revisit, track, and re-share the personalized affirmation cards you've sent.">
+    <meta property="og:url" content="https://thevibecheckproject.com/my-cards.html">
+    <meta property="og:image" content="https://thevibecheckproject.com/assets/og-vibe-card.jpg">
+
+    <!-- Analytics (Microsoft Clarity) -->
+    <script>
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "vohl4gduni");
+    </script>
+
+    <!-- Fonts Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Core Stylesheets -->
+    <link rel="stylesheet" href="css/styles.css?v=108">
+    <link rel="stylesheet" href="css/my-cards.css?v=108">
+</head>
+
+<body>
+    <!-- Ambient Background Elements -->
+    <div class="bg-orb bg-orb-1" aria-hidden="true"></div>
+    <div class="bg-orb bg-orb-2" aria-hidden="true"></div>
+
+    <!-- Main Site Navigation -->
+    <nav id="nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
+            </div>
+            <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu"
+                aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" style="align-items: center;">
+                <li>
+                    <a href="blog/index.html#crisis" class="nav-crisis-badge">
+                        <span class="nav-crisis-heart">❤️</span>
+                        <span class="nav-crisis-text">Emergency Support</span>
+                    </a>
+                </li>
+                <li><a href="send-card.html" style="color: var(--color-primary); font-weight: 700;">💌 Send A Card</a></li>
+                <li><a href="my-cards.html" class="active" style="color: #fff; font-weight: 700;">My Vibes</a></li>
+                <li><a href="situations.html">Situations</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content Page -->
+    <main class="my-cards-page">
+        <div class="my-cards-container">
+            
+            <!-- Header Section -->
+            <header class="my-cards-header">
+                <div class="my-cards-badge">✨ Sender Dashboard</div>
+                <h1 class="my-cards-title">My Sent Vibes</h1>
+                <p class="my-cards-subtitle">
+                    Revisit, track, and re-share the personalized affirmations you've sent into the world.
+                </p>
+            </header>
+
+            <!-- Metrics / Stats Strip -->
+            <section class="dashboard-metrics-row" aria-label="History metrics">
+                <div class="metric-card">
+                    <div class="metric-icon">💌</div>
+                    <div class="metric-data">
+                        <span class="metric-val" id="metricTotalSent">0</span>
+                        <span class="metric-label">Vibes Crafted</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">✨</div>
+                    <div class="metric-data">
+                        <span class="metric-val" id="metricTotalOpened">0</span>
+                        <span class="metric-label">Opened By Friends</span>
+                    </div>
+                </div>
+                <div class="metric-card privacy-pill">
+                    <div class="metric-icon">🔒</div>
+                    <div class="metric-data">
+                        <span class="metric-val">Private to Device</span>
+                        <span class="metric-label">Zero Login • Stored Locally</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive Toolbar: Search & Filters -->
+            <section class="dashboard-toolbar" id="dashboardToolbar" style="display: none;">
+                <div class="toolbar-search-row">
+                    <div class="search-input-wrap">
+                        <span class="search-icon" aria-hidden="true">🔍</span>
+                        <input type="text" id="searchInput" class="search-input"
+                            placeholder="Search by recipient name, note, or affirmation..."
+                            aria-label="Search sent cards">
+                    </div>
+                    <div class="toolbar-actions">
+                        <a href="send-card.html" class="btn-send-new">✨ Send New Card</a>
+                        <button type="button" class="btn-clear-history" id="btnClearHistory">Clear All</button>
+                    </div>
+                </div>
+
+                <!-- Theme / Category Filters -->
+                <div class="toolbar-filter-row" role="tablist" aria-label="Filter cards by theme">
+                    <button type="button" class="filter-chip active" data-filter="all">All Vibes</button>
+                    <button type="button" class="filter-chip" data-filter="opened">Opened ✨</button>
+                    <button type="button" class="filter-chip" data-filter="birthday">🎂 Birthday</button>
+                    <button type="button" class="filter-chip" data-filter="anxiety">🩹 Calm</button>
+                    <button type="button" class="filter-chip" data-filter="celebrate">🌟 Proud</button>
+                    <button type="button" class="filter-chip" data-filter="love">💌 Gratitude</button>
+                    <button type="button" class="filter-chip" data-filter="uplift">✨ Just Because</button>
+                    <button type="button" class="filter-chip" data-filter="healing">🌿 Healing</button>
+                </div>
+            </section>
+
+            <!-- Cards Grid -->
+            <section class="cards-grid" id="cardsGrid" aria-label="Sent cards list"></section>
+
+            <!-- Empty State Display -->
+            <section class="my-cards-empty" id="emptyState" style="display: none;">
+                <div class="empty-icon-wrap">💌</div>
+                <h2 class="empty-title">No Vibes Sent Yet</h2>
+                <p class="empty-desc">
+                    Whenever you create and share an affirmation card from this browser, it will be safely kept here so you can revisit, track, and re-share it anytime.
+                </p>
+                <a href="send-card.html" class="empty-cta">
+                    <span>✨ Send Your First Vibe Card</span>
+                </a>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Delete Single Card Confirmation Dialog -->
+    <div class="confirm-modal-overlay" id="deleteModalOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="confirm-dialog">
+            <h3 id="deleteModalTitle">Remove Card from History?</h3>
+            <p id="deleteModalDesc">This will remove the card record from your device. The recipient's link will still work.</p>
+            <div class="confirm-actions">
+                <button type="button" class="btn-confirm-cancel" id="btnCancelDelete">Cancel</button>
+                <button type="button" class="btn-confirm-danger" id="btnConfirmDelete">Delete Card</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Scripts -->
+    <script src="js/core-utils.js?v=108"></script>
+    <script src="js/vibe-history.js?v=108"></script>
+
+    <!-- Dashboard Controller Script -->
+    <script>
+        (function () {
+            'use strict';
+
+            let allCards = [];
+            let activeFilter = 'all';
+            let searchQuery = '';
+            let pendingDeleteId = null;
+
+            const cardsGrid = document.getElementById('cardsGrid');
+            const emptyState = document.getElementById('emptyState');
+            const dashboardToolbar = document.getElementById('dashboardToolbar');
+            const metricTotalSent = document.getElementById('metricTotalSent');
+            const metricTotalOpened = document.getElementById('metricTotalOpened');
+            const searchInput = document.getElementById('searchInput');
+            const filterChips = document.querySelectorAll('.filter-chip');
+            const deleteModalOverlay = document.getElementById('deleteModalOverlay');
+            const btnCancelDelete = document.getElementById('btnCancelDelete');
+            const btnConfirmDelete = document.getElementById('btnConfirmDelete');
+            const btnClearHistory = document.getElementById('btnClearHistory');
+
+            // ── Load & Render Data ──
+            function loadData() {
+                if (!window.VibeHistory) return;
+                allCards = window.VibeHistory.getAll();
+                updateMetrics();
+                renderCards();
+            }
+
+            function updateMetrics() {
+                const total = allCards.length;
+                const opened = allCards.filter(c => c.opened).length;
+                if (metricTotalSent) metricTotalSent.textContent = total;
+                if (metricTotalOpened) metricTotalOpened.textContent = opened;
+            }
+
+            function getFilteredCards() {
+                return allCards.filter(card => {
+                    // Match theme or open status filter
+                    if (activeFilter === 'opened' && !card.opened) return false;
+                    if (activeFilter !== 'all' && activeFilter !== 'opened') {
+                        const cardTheme = (card.theme || 'default').toLowerCase();
+                        if (cardTheme !== activeFilter) return false;
+                    }
+
+                    // Match text search query
+                    if (searchQuery) {
+                        const q = searchQuery.toLowerCase();
+                        const rec = (card.recipient || '').toLowerCase();
+                        const aff = (card.affirmation || '').toLowerCase();
+                        const msg = (card.message || '').toLowerCase();
+                        if (!rec.includes(q) && !aff.includes(q) && !msg.includes(q)) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                });
+            }
+
+            function renderCards() {
+                const filtered = getFilteredCards();
+
+                if (allCards.length === 0) {
+                    cardsGrid.style.display = 'none';
+                    dashboardToolbar.style.display = 'none';
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                cardsGrid.style.display = 'grid';
+                dashboardToolbar.style.display = 'flex';
+                emptyState.style.display = 'none';
+                cardsGrid.innerHTML = '';
+
+                if (filtered.length === 0) {
+                    cardsGrid.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 48px 24px; color: var(--color-text-muted);">
+                            <p style="font-size: 16px; margin-bottom: 8px;">No vibes match your search or filter.</p>
+                            <button type="button" class="btn-card-action btn-card-view" style="margin: 0 auto; display: inline-flex;" onclick="window.clearFilters()">
+                                Reset Filters
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const frag = document.createDocumentFragment();
+
+                filtered.forEach(card => {
+                    const themeMeta = window.VibeHistory.getThemeMeta(card.theme);
+                    const soundIcon = window.VibeHistory.getSoundIcon(card.sound);
+                    const relTime = window.VibeHistory.formatRelativeTime(card.createdAt);
+
+                    const cardEl = document.createElement('article');
+                    cardEl.className = 'history-card';
+                    cardEl.id = `card_${card.id}`;
+                    cardEl.style.setProperty('--card-theme-gradient', themeMeta.gradient);
+
+                    const isOpened = Boolean(card.opened);
+
+                    cardEl.innerHTML = `
+                        <div>
+                            <div class="history-card-top">
+                                <span class="theme-badge" style="background: ${themeMeta.gradient};">
+                                    <span>${themeMeta.emoji}</span>
+                                    <span>${themeMeta.label}</span>
+                                </span>
+                                <span class="status-badge ${isOpened ? 'opened' : 'sent'}" id="status_${card.id}">
+                                    ${isOpened ? '<span>✨</span> Opened' : '<span>💌</span> Sent'}
+                                </span>
+                            </div>
+
+                            <div class="card-recipient-row">
+                                <span class="recipient-avatar" aria-hidden="true">👤</span>
+                                <span class="recipient-label">To:</span>
+                                <span class="recipient-name">${escapeHtml(card.recipient || 'Someone special')}</span>
+                            </div>
+
+                            <div class="card-affirmation-quote">
+                                "${escapeHtml(card.affirmation || 'Good vibes your way')}"
+                            </div>
+
+                            ${card.message ? `
+                                <div class="card-message-excerpt">
+                                    <strong>Note:</strong> "${escapeHtml(card.message)}"
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <div>
+                            <div class="card-meta-row">
+                                <span class="meta-sound">
+                                    <span aria-hidden="true">${soundIcon}</span>
+                                    <span>${escapeHtml(card.sound || 'Chime')}</span>
+                                </span>
+                                <span class="meta-time">
+                                    <span aria-hidden="true">⏱️</span>
+                                    <span>${relTime}</span>
+                                </span>
+                            </div>
+
+                            <div class="card-actions-row">
+                                <button type="button" class="btn-card-action btn-card-copy" data-action="copy" data-id="${card.id}" data-url="${escapeHtml(card.shareUrl)}">
+                                    <span>📋</span> Copy Link
+                                </button>
+                                <a href="${escapeHtml(card.shareUrl)}" target="_blank" rel="noopener noreferrer" class="btn-card-action btn-card-view" data-action="view" data-id="${card.id}">
+                                    <span>↗️</span> View
+                                </a>
+                                <button type="button" class="btn-card-action btn-card-delete" data-action="delete" data-id="${card.id}" aria-label="Delete card from history" title="Delete card">
+                                    🗑️
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                    frag.appendChild(cardEl);
+                });
+
+                cardsGrid.appendChild(frag);
+            }
+
+            function escapeHtml(str) {
+                if (!str) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+
+            window.clearFilters = function () {
+                activeFilter = 'all';
+                searchQuery = '';
+                if (searchInput) searchInput.value = '';
+                filterChips.forEach(chip => {
+                    chip.classList.toggle('active', chip.dataset.filter === 'all');
+                });
+                renderCards();
+            };
+
+            // ── Event Delegation for Actions ──
+            cardsGrid.addEventListener('click', async (e) => {
+                const btn = e.target.closest('button, a');
+                if (!btn) return;
+                const action = btn.dataset.action;
+                const cardId = btn.dataset.id;
+
+                if (action === 'copy') {
+                    e.preventDefault();
+                    const url = btn.dataset.url;
+                    if (url) {
+                        try {
+                            await navigator.clipboard.writeText(url);
+                            const origHtml = btn.innerHTML;
+                            btn.innerHTML = '<span>✓</span> Copied!';
+                            if (window.showToast) window.showToast('Card link copied to clipboard!', '📋');
+                            setTimeout(() => { btn.innerHTML = origHtml; }, 2000);
+                            if (window.VibeTelemetry) {
+                                window.VibeTelemetry.track('history_card_copied', { cardId: cardId });
+                            }
+                        } catch (err) {
+                            prompt('Copy your card link:', url);
+                        }
+                    }
+                } else if (action === 'delete') {
+                    e.preventDefault();
+                    pendingDeleteId = cardId;
+                    if (deleteModalOverlay) {
+                        deleteModalOverlay.classList.add('active');
+                        deleteModalOverlay.setAttribute('aria-hidden', 'false');
+                    }
+                } else if (action === 'view') {
+                    if (window.VibeTelemetry) {
+                        window.VibeTelemetry.track('history_card_reopened_by_sender', { cardId: cardId });
+                    }
+                }
+            });
+
+            // ── Filter Chips Interaction ──
+            filterChips.forEach(chip => {
+                chip.addEventListener('click', () => {
+                    filterChips.forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    activeFilter = chip.dataset.filter;
+                    renderCards();
+                    if (window.VibeTelemetry) {
+                        window.VibeTelemetry.track('history_filter_applied', { filter: activeFilter });
+                    }
+                });
+            });
+
+            // ── Search Input ──
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    searchQuery = (e.target.value || '').trim();
+                    renderCards();
+                });
+            }
+
+            // ── Delete Confirmation Dialog ──
+            if (btnCancelDelete) {
+                btnCancelDelete.addEventListener('click', () => {
+                    pendingDeleteId = null;
+                    if (deleteModalOverlay) {
+                        deleteModalOverlay.classList.remove('active');
+                        deleteModalOverlay.setAttribute('aria-hidden', 'true');
+                    }
+                });
+            }
+
+            if (btnConfirmDelete) {
+                btnConfirmDelete.addEventListener('click', () => {
+                    if (pendingDeleteId && window.VibeHistory) {
+                        window.VibeHistory.delete(pendingDeleteId);
+                        if (window.showToast) window.showToast('Card deleted from your history.', '🗑️');
+                        pendingDeleteId = null;
+                        if (deleteModalOverlay) {
+                            deleteModalOverlay.classList.remove('active');
+                            deleteModalOverlay.setAttribute('aria-hidden', 'true');
+                        }
+                        loadData();
+                    }
+                });
+            }
+
+            // ── Clear All History ──
+            if (btnClearHistory) {
+                btnClearHistory.addEventListener('click', () => {
+                    if (confirm('Are you sure you want to clear your entire sent card history from this browser?')) {
+                        if (window.VibeHistory) {
+                            window.VibeHistory.clear();
+                            if (window.showToast) window.showToast('History cleared.', '✨');
+                            loadData();
+                        }
+                    }
+                });
+            }
+
+            // ── Sync Read Receipts in Background ──
+            async function syncReceipts() {
+                if (!window.VibeHistory) return;
+                await window.VibeHistory.syncReadReceipts((card) => {
+                    // Update DOM badge in real-time if visible
+                    const badge = document.getElementById(`status_${card.id}`);
+                    if (badge) {
+                        badge.className = 'status-badge opened';
+                        badge.innerHTML = '<span>✨</span> Opened';
+                    }
+                    updateMetrics();
+                });
+            }
+
+            // Listen for cross-tab updates
+            window.addEventListener('vibe:history-updated', () => {
+                loadData();
+            });
+
+            // Initial load
+            loadData();
+            syncReceipts();
+
+            // Mobile menu toggle hookup
+            const hamburger = document.getElementById('nav-hamburger');
+            const nav = document.getElementById('nav');
+            if (hamburger && nav) {
+                hamburger.addEventListener('click', () => {
+                    const isOpen = nav.classList.toggle('menu-open');
+                    hamburger.setAttribute('aria-expanded', isOpen);
+                });
+            }
+
+        })();
+    </script>
+</body>
+
+</html>

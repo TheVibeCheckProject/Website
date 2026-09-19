@@ -79,14 +79,16 @@
             <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" class="prem-cta" id="premCtaBtn" target="_blank" rel="noopener noreferrer">Unlock Everything Forever — $4.99</a>
             <div class="prem-social-proof">⚡ 1,200+ cards sent this month • 100% one-time, zero recurring fees</div>
             <p class="prem-ethical-note">🌱 100% of proceeds fund our free crisis helpline directory and keep sending free for everyone.</p>
-            <button class="prem-dismiss" onclick="hidePremModal()">Maybe later</button>
+            <button class="prem-dismiss" onclick="hidePremModal(event)">Maybe later</button>
         </div>
     </div>
 
     <!-- Navigation -->
     <nav id="nav">
         <div class="nav-container">
-            <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
+            <div class="nav-logo">
+                <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
+            </div>
             <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu"
                 aria-expanded="false">
                 <span></span>

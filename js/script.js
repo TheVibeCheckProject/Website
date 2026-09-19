@@ -621,6 +621,7 @@ function switchDemoVibe(vibe, options = {}) {
         startDemoRotation();
     }
 }
+window.switchDemoVibe = switchDemoVibe;
 
 function pauseDemoRotation() {
     clearInterval(demoRotationTimer);

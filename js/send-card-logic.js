@@ -744,62 +744,31 @@ function updatePreview() {
 
     const previewMsg = document.getElementById('previewMessage');
     if (previewMsg) {
-        if (personalMessage) {
-            previewMsg.textContent = '';
-            {
-                const strong = document.createElement('strong');
-                strong.textContent = senderName;
-                previewMsg.appendChild(strong);
-                previewMsg.append(' says:');
-                previewMsg.appendChild(document.createElement('br'));
-                previewMsg.appendChild(document.createElement('br'));
-                previewMsg.append(personalMessage);
-            }
-        } else {
-            previewMsg.textContent = '';
-            {
-                const strong = document.createElement('strong');
-                strong.textContent = senderName;
-                previewMsg.appendChild(strong);
-                previewMsg.append(' wanted to send you some good vibes ✨');
-            }
-        }
-    }
+        previewMsg.textContent = '';
+        if (personalMessage && personalMessage.trim()) {
+            const strong = document.createElement('strong');
+            strong.textContent = senderName;
+            previewMsg.appendChild(strong);
+            previewMsg.append(' added a personal note:');
 
-    // Update 3D Flip Back Face Note & Signoff
-    const backNote = document.getElementById('previewBackNote');
-    if (backNote) {
-        backNote.textContent = personalMessage && personalMessage.trim() 
-            ? `"${personalMessage.trim()}"` 
-            : '"I was thinking of you today and wanted to send some good vibes your way..."';
-    }
-    const backSender = document.getElementById('previewBackSender');
-    if (backSender) {
-        backSender.textContent = senderName;
+            const noteDiv = document.createElement('div');
+            noteDiv.className = 'preview-note-quote';
+            noteDiv.textContent = `"${personalMessage.trim()}"`;
+            previewMsg.appendChild(noteDiv);
+        } else {
+            const strong = document.createElement('strong');
+            strong.textContent = senderName;
+            previewMsg.appendChild(strong);
+            previewMsg.append(' wanted to send you some good vibes ✨');
+        }
     }
 }
 
 /**
- * 3D Interactive Card Flip Toggle Controller
+ * Unified Card Preview (3D flip removed in favor of single-face responsive preview)
  */
 function toggleCardPreviewFlip() {
-    const preview = document.getElementById('cardPreview');
-    const flipText = document.getElementById('previewFlipBtnText');
-    if (!preview) return;
-
-    const isFlipped = preview.classList.toggle('flipped');
-    if (flipText) {
-        flipText.textContent = isFlipped ? 'Show Front' : 'Flip Card';
-    }
-
-    // Mobile tactile haptic feedback cue (15ms)
-    if (navigator.vibrate) {
-        try { navigator.vibrate([15]); } catch (e) {}
-    }
-
-    if (window.VibeTelemetry) {
-        window.VibeTelemetry.track('card_preview_flipped', { isFlipped: isFlipped });
-    }
+    // 3D flip removed: personal note renders directly in card preview
 }
 window.toggleCardPreviewFlip = toggleCardPreviewFlip;
 

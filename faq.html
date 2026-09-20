@@ -40,7 +40,7 @@
         rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="css/styles.css?v=107">
+    <link rel="stylesheet" href="css/styles.css?v=108">
 
     <!-- Structured Data (FAQ Schema) -->
     <script type="application/ld+json">
@@ -71,6 +71,14 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Absolutely. You can sign your card with your real name, a nickname, or leave it signed as 'A friend', 'Someone who cares', or completely blank."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I see cards I've sent in the past?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! Visit your My Vibes Dashboard to see past cards created on this device, copy their share links again, check if they've been opened, or delete them. Everything is stored locally in your browser with zero logins required."
           }
         },
         {
@@ -137,7 +145,7 @@
         </nav>
 
         <!-- Page Header -->
-        <section class="hero" style="min-height: 50vh; padding-top: 120px;">
+        <section class="hero faq-hero" style="min-height: auto; padding: clamp(36px, 5vw, 64px) 20px clamp(20px, 3vw, 36px); padding-top: 100px;">
             <div class="hero-content">
                 <h1 class="hero-title" style="font-size: clamp(38px, 6vw, 60px);">Frequently Asked Questions</h1>
                 <p class="hero-subtitle">
@@ -146,77 +154,101 @@
             </div>
         </section>
 
-        <!-- FAQ Section -->
+        <!-- FAQ Section: Canonical 2-Column Desktop Layout -->
         <section class="faq-section" style="border-top: none; padding-top: 0;">
             <div class="section-container faq-container">
-                <div class="faq-accordion" id="faqAccordion">
-                    <div class="faq-item active">
-                        <button class="faq-question" type="button" aria-expanded="true" onclick="toggleFaq(this)">
-                            <span>Is sending a vibe check really free?</span>
-                            <span class="faq-icon">+</span>
-                        </button>
-                        <div class="faq-answer">
-                            <p>Yes, 100% free forever. Anyone can pick a theme, write a personal message, and generate a shareable card link without paying a dime or entering a credit card.</p>
+                <div class="faq-layout">
+                    <!-- Left Rail: Sticky Search & Category Pills -->
+                    <aside class="faq-sidebar">
+                        <div class="faq-search-box">
+                            <label for="faqSearchInput" class="form-label" style="display: block; margin-bottom: 8px; font-size: 13px;">Search Questions</label>
+                            <input type="text" id="faqSearchInput" class="form-input" placeholder="e.g. anonymous, free, history..." autocomplete="off" aria-label="Search frequently asked questions">
                         </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
-                            <span>Does the recipient need to sign up or download an app?</span>
-                            <span class="faq-icon">+</span>
-                        </button>
-                        <div class="faq-answer">
-                            <p>Never. The recipient simply clicks your private link and their personalized 3D card opens immediately in their mobile or desktop browser, accompanied by ambient soundscapes and animations.</p>
+                        <div class="faq-categories" role="tablist" aria-label="FAQ Categories">
+                            <button type="button" class="filter-pill faq-pill active" data-category="all">All Questions</button>
+                            <button type="button" class="filter-pill faq-pill" data-category="cards">Sending Cards</button>
+                            <button type="button" class="filter-pill faq-pill" data-category="privacy">Privacy &amp; Safety</button>
+                            <button type="button" class="filter-pill faq-pill" data-category="support">Support &amp; Community</button>
                         </div>
-                    </div>
+                    </aside>
 
-                    <div class="faq-item">
-                        <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
-                            <span>Can I remain anonymous when sending a card?</span>
-                            <span class="faq-icon">+</span>
-                        </button>
-                        <div class="faq-answer">
-                            <p>Absolutely. You can sign your card with your real name, a nickname, or leave it signed as 'A friend', 'Someone who cares', or completely blank.</p>
+                    <!-- Right Stream: Accordion List -->
+                    <div class="faq-main">
+                        <div class="faq-accordion" id="faqAccordion">
+                            <div class="faq-item active" id="faq-free" data-category="cards" style="scroll-margin-top: 100px;">
+                                <button class="faq-question" type="button" aria-expanded="true" onclick="toggleFaq(this)">
+                                    <span>Is sending a vibe check really free?</span>
+                                    <span class="faq-icon">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Yes, 100% free forever. Anyone can pick a theme, write a personal message, and generate a shareable card link without paying a dime or entering a credit card.</p>
+                                </div>
+                            </div>
+
+                            <div class="faq-item" id="faq-recipient-app" data-category="cards" style="scroll-margin-top: 100px;">
+                                <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
+                                    <span>Does the recipient need to sign up or download an app?</span>
+                                    <span class="faq-icon">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Never. The recipient simply clicks your private link and their personalized 3D card opens immediately in their mobile or desktop browser, accompanied by ambient soundscapes and animations.</p>
+                                </div>
+                            </div>
+
+                            <div class="faq-item" id="faq-anonymous" data-category="privacy" style="scroll-margin-top: 100px;">
+                                <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
+                                    <span>Can I remain anonymous when sending a card?</span>
+                                    <span class="faq-icon">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Absolutely. You can sign your card with your real name, a nickname, or leave it signed as 'A friend', 'Someone who cares', or completely blank.</p>
+                                </div>
+                            </div>
+
+                            <div class="faq-item" id="faq-history" data-category="cards privacy" style="scroll-margin-top: 100px;">
+                                <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
+                                    <span>Can I see cards I've sent in the past?</span>
+                                    <span class="faq-icon">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Yes! Visit your <a href="my-cards.html" style="color: var(--color-primary); font-weight: 600;">My Vibes Dashboard</a> to see past cards created on this device, copy their share links again, check if they've been opened, or delete them. Everything is stored locally in your browser with zero logins required.</p>
+                                </div>
+                            </div>
+
+                            <div class="faq-item" id="faq-premium" data-category="cards" style="scroll-margin-top: 100px;">
+                                <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
+                                    <span>What is the Premium Unlock?</span>
+                                    <span class="faq-icon">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>The optional $4.99 one-time unlock provides lifetime access to our library of 10+ premium animated card themes and audio soundscapes. It also helps cover our server costs to keep the platform free for everyone else.</p>
+                                </div>
+                            </div>
+
+                            <div class="faq-item" id="faq-newsletter" data-category="support" style="scroll-margin-top: 100px;">
+                                <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
+                                    <span>How does the daily affirmation newsletter work?</span>
+                                    <span class="faq-icon">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Every morning, a fresh, thoughtfully crafted affirmation lands in your inbox. No sales pitches, no spam—just a grounding breath to anchor your day. Subscribers also receive 3 free high-resolution affirmation wallpapers upon sign up.</p>
+                                </div>
+                            </div>
+
+                            <div class="faq-item" id="faq-crisis" data-category="support" style="scroll-margin-top: 100px;">
+                                <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
+                                    <span>Do you provide counseling or medical advice?</span>
+                                    <span class="faq-icon">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>No. We do not provide therapy, counseling, or psychiatric advice. Our content is for positive emotional encouragement only. If you or someone you love is experiencing an emotional crisis, please click our <a href="blog/index.html#crisis" style="color: var(--color-primary); font-weight: 600;">Emergency Support</a> link for 24/7 free, confidential hotlines.</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="faq-item">
-                        <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
-                            <span>Can I see cards I've sent in the past?</span>
-                            <span class="faq-icon">+</span>
-                        </button>
-                        <div class="faq-answer">
-                            <p>Yes! Visit your <a href="my-cards.html" style="color: var(--color-primary); font-weight: 600;">My Vibes Dashboard</a> to see past cards created on this device, copy their share links again, check if they've been opened, or delete them. Everything is stored locally in your browser with zero logins required.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
-                            <span>What is the Premium Unlock?</span>
-                            <span class="faq-icon">+</span>
-                        </button>
-                        <div class="faq-answer">
-                            <p>The optional $4.99 one-time unlock provides lifetime access to our library of 10+ premium animated card themes and audio soundscapes. It also helps cover our server costs to keep the platform free for everyone else.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
-                            <span>How does the daily affirmation newsletter work?</span>
-                            <span class="faq-icon">+</span>
-                        </button>
-                        <div class="faq-answer">
-                            <p>Every morning, a fresh, thoughtfully crafted affirmation lands in your inbox. No sales pitches, no spam—just a grounding breath to anchor your day. Subscribers also receive 3 free high-resolution affirmation wallpapers upon sign up.</p>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
-                            <span>Do you provide counseling or medical advice?</span>
-                            <span class="faq-icon">+</span>
-                        </button>
-                        <div class="faq-answer">
-                            <p>No. We do not provide therapy, counseling, or psychiatric advice. Our content is for positive emotional encouragement only. If you or someone you love is experiencing an emotional crisis, please click our <a href="blog/index.html#crisis" style="color: var(--color-primary); font-weight: 600;">Emergency Support</a> link for 24/7 free, confidential hotlines.</p>
+                        <div id="faqEmptyState" class="faq-empty-state" hidden style="text-align:center; padding: 40px 20px; color: var(--color-text-muted);">
+                            <p style="font-size: 1.1rem; margin-bottom: 8px;">No matching questions found.</p>
+                            <small>Try another search keyword or select "All Questions".</small>
                         </div>
                     </div>
                 </div>
@@ -279,40 +311,50 @@
         </footer>
     </div>
 
-    <!-- FAQ Interaction Controller -->
+    <!-- FAQ Initialization & Deep-Linking URL Hash Controller -->
     <script>
-        function toggleFaq(header) {
-            if (!header) return;
-            var accordion = document.getElementById('faqAccordion') || header.closest('.faq-accordion');
-            var currentItem = header.closest('.faq-item');
-            if (!currentItem) return;
+        document.addEventListener('DOMContentLoaded', function () {
+            // 1. Initialize Universal Item Filter
+            if (typeof window.initItemFilter === 'function') {
+                window.initItemFilter({
+                    inputId: 'faqSearchInput',
+                    containerId: 'faqAccordion',
+                    itemSelector: '.faq-item',
+                    textSelector: '.faq-question, .faq-answer',
+                    pillSelector: '.faq-pill',
+                    categoryAttr: 'data-category',
+                    emptyStateId: 'faqEmptyState'
+                });
+            }
 
-            var isActive = currentItem.classList.contains('active');
-
-            if (accordion) {
-                var items = accordion.querySelectorAll('.faq-item');
-                for (var i = 0; i < items.length; i++) {
-                    items[i].classList.remove('active');
-                    var btn = items[i].querySelector('.faq-question');
-                    if (btn) btn.setAttribute('aria-expanded', 'false');
+            // 2. Handle Deep-Linking URL Hashes (#faq-free, #faq-anonymous, etc.)
+            function handleFaqHash() {
+                var hash = window.location.hash;
+                if (!hash || hash.indexOf('#faq-') !== 0) return;
+                var target = document.querySelector(hash);
+                if (target && target.classList.contains('faq-item')) {
+                    // Reset filter pills to 'all' so target is visible
+                    var allPill = document.querySelector('.faq-pill[data-category="all"]');
+                    if (allPill && !allPill.classList.contains('active')) {
+                        allPill.click();
+                    }
+                    if (typeof window.toggleFaq === 'function') {
+                        var btn = target.querySelector('.faq-question');
+                        if (btn && !target.classList.contains('active')) {
+                            window.toggleFaq(btn);
+                        }
+                    } else {
+                        target.classList.add('active');
+                        var qBtn = target.querySelector('.faq-question');
+                        if (qBtn) qBtn.setAttribute('aria-expanded', 'true');
+                    }
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
             }
 
-            if (!isActive) {
-                currentItem.classList.add('active');
-                header.setAttribute('aria-expanded', 'true');
-            } else {
-                currentItem.classList.remove('active');
-                header.setAttribute('aria-expanded', 'false');
-            }
-
-            if (window.Telemetry && !isActive) {
-                var qSpan = header.querySelector('span');
-                var qText = qSpan ? qSpan.textContent.trim() : 'faq';
-                window.Telemetry.track('faq_expanded', { question: qText });
-            }
-        }
-        window.toggleFaq = toggleFaq;
+            handleFaqHash();
+            window.addEventListener('hashchange', handleFaqHash);
+        });
     </script>
 
     <!-- Main JavaScript -->

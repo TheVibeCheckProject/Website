@@ -24,40 +24,69 @@
     };
 
     /**
-     * Safe localStorage wrapper that gracefully tolerates Private Browsing / Quota restrictions.
+     * Safe localStorage wrapper that gracefully tolerates Private Browsing / Quota restrictions
+     * with an in-memory fallback cache.
      */
     const StorageSafe = {
+        _inMemoryCards: null,
         isAvailable() {
             try {
                 const test = '__vibe_test__';
-                localStorage.setItem(test, test);
-                localStorage.removeItem(test);
+                window.localStorage.setItem(test, test);
+                window.localStorage.removeItem(test);
                 return true;
             } catch (e) {
                 return false;
             }
         },
         read() {
-            if (!this.isAvailable()) return [];
+            if (!this.isAvailable()) {
+                return Array.isArray(this._inMemoryCards) ? this._inMemoryCards : [];
+            }
             try {
-                const data = localStorage.getItem(STORAGE_KEY);
-                if (!data) return [];
+                const data = window.localStorage.getItem(STORAGE_KEY);
+                if (!data) return Array.isArray(this._inMemoryCards) ? this._inMemoryCards : [];
                 const parsed = JSON.parse(data);
-                return Array.isArray(parsed) ? parsed : [];
+                const result = Array.isArray(parsed) ? parsed : [];
+                this._inMemoryCards = result;
+                return result;
             } catch (e) {
-                console.warn('VibeHistory: Failed to parse stored cards', e);
-                return [];
+                console.warn('VibeHistory: Failed to parse stored cards, using in-memory cache', e);
+                return Array.isArray(this._inMemoryCards) ? this._inMemoryCards : [];
             }
         },
         write(cards) {
-            if (!this.isAvailable()) return false;
+            const trimmed = Array.isArray(cards) ? cards.slice(0, MAX_CARDS) : [];
+            this._inMemoryCards = trimmed;
+            if (!this.isAvailable()) return true;
             try {
-                // Ensure FIFO cap of MAX_CARDS
-                const trimmed = cards.slice(0, MAX_CARDS);
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmed));
+                window.localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmed));
                 return true;
             } catch (e) {
-                console.warn('VibeHistory: Failed to save cards to storage', e);
+                console.warn('VibeHistory: Failed to save cards to storage (quota exceeded), retained in-memory', e);
+                return true;
+            }
+        },
+        getItem(key) {
+            try {
+                return window.localStorage.getItem(key);
+            } catch (e) {
+                return null;
+            }
+        },
+        setItem(key, val) {
+            try {
+                window.localStorage.setItem(key, val);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        },
+        removeItem(key) {
+            try {
+                window.localStorage.removeItem(key);
+                return true;
+            } catch (e) {
                 return false;
             }
         }
@@ -304,5 +333,6 @@
 
     // Export globally
     window.VibeHistory = VibeHistory;
+    window.StorageSafe = StorageSafe;
 
 })(typeof window !== 'undefined' ? window : this);

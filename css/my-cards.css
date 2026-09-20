@@ -499,10 +499,10 @@
     background: rgba(45, 36, 56, 0.5);
     border: 2px dashed rgba(255, 107, 157, 0.25);
     border-radius: 24px;
-    padding: var(--space-3xl) var(--space-xl);
+    padding: clamp(24px, 4vh, 48px) var(--space-xl);
     backdrop-filter: blur(12px);
     max-width: 680px;
-    margin: var(--space-xl) auto;
+    margin: clamp(16px, 2.5vh, 32px) auto;
 }
 
 .empty-icon-wrap {
@@ -557,6 +557,49 @@
     transform: translateY(-2px);
     box-shadow: 0 12px 32px rgba(255, 107, 157, 0.45);
     color: #000;
+}
+
+/* ── Laptop Screen Height Optimization (768px - 900px) ── */
+@media (max-height: 900px) {
+    .my-cards-header {
+        padding-top: clamp(20px, 3vh, 36px);
+        margin-bottom: clamp(14px, 2vh, 22px);
+    }
+    .my-cards-title {
+        font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+        margin-bottom: 6px;
+    }
+    .my-cards-subtitle {
+        font-size: 0.95rem;
+    }
+    .dashboard-metrics-row {
+        margin-bottom: clamp(14px, 2vh, 22px);
+    }
+    .metric-card {
+        padding: 10px 16px;
+    }
+    .my-cards-empty {
+        padding: clamp(20px, 3vh, 36px) 24px;
+        margin: clamp(12px, 2vh, 20px) auto;
+    }
+    .empty-icon-wrap {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+        margin-bottom: 10px;
+    }
+    .empty-title {
+        font-size: 20px;
+        margin-bottom: 6px;
+    }
+    .empty-desc {
+        font-size: 13.5px;
+        margin-bottom: 16px;
+    }
+    .empty-cta {
+        padding: 12px 28px;
+        font-size: 14.5px;
+    }
 }
 
 /* ── Delete Confirmation Dialog ── */

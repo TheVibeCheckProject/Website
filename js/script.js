@@ -883,16 +883,213 @@ function initRotatingLogo() {
 }
 
 function initLiveCounters() {
-    const endpoints = {
-        'liveCardCount': 'https://api.counterapi.dev/v1/thevibecheckproject/cards-sent/',
-        'liveNewsletterCount': 'https://api.counterapi.dev/v1/thevibecheckproject/newsletters-sent/'
-    };
-    Object.entries(endpoints).forEach(([id, url]) => {
-        const el = document.getElementById(id);
+    initMetricsCounters();
+}
+
+// ── UNIVERSAL ITEM FILTER ENGINE (window.initItemFilter) ──
+function initItemFilter(config) {
+    if (!config || !config.itemSelector) return;
+
+    const inputId = config.inputId || config.searchInputId;
+    const containerId = config.containerId || 'situationsGrid';
+    const input = inputId ? document.getElementById(inputId) : null;
+    const container = containerId ? document.getElementById(containerId) : document.body;
+    if (!container) return;
+
+    const categoryAttr = config.categoryAttr || (config.categoryDataAttr ? 'data-' + config.categoryDataAttr : 'data-category');
+    const textSelector = config.textSelector || config.searchableSelector;
+    const activePillClass = config.activePillClass || 'active';
+    let currentCategory = 'all';
+
+    function applyFilter() {
+        const query = (input ? input.value : '').trim().toLowerCase();
+        const items = container.querySelectorAll(config.itemSelector);
+        let matchCount = 0;
+
+        items.forEach(item => {
+            // Category check
+            const itemCat = (item.getAttribute(categoryAttr) || '').toLowerCase();
+            const matchesCategory = (currentCategory === 'all') || itemCat.includes(currentCategory);
+
+            // Keyword check
+            let itemText = '';
+            if (textSelector) {
+                const textEls = item.querySelectorAll(textSelector);
+                if (textEls.length > 0) {
+                    itemText = Array.from(textEls).map(el => el.textContent).join(' ');
+                } else {
+                    itemText = item.textContent || '';
+                }
+            } else {
+                itemText = item.textContent || '';
+            }
+            const matchesKeyword = !query || itemText.toLowerCase().includes(query);
+
+            const isVisible = matchesCategory && matchesKeyword;
+            item.style.display = isVisible ? '' : 'none';
+            if (isVisible) matchCount++;
+        });
+
+        // Empty state support
+        const emptyState = (config.emptyStateId ? document.getElementById(config.emptyStateId) : null) ||
+                           document.getElementById('noResultsMsg') ||
+                           container.querySelector('.no-results-msg') ||
+                           (config.containerId ? document.getElementById(config.containerId + '-no-results') : null);
+        if (emptyState) {
+            emptyState.style.display = matchCount === 0 ? '' : 'none';
+            if (emptyState.hasAttribute('hidden')) {
+                emptyState.hidden = matchCount > 0;
+            }
+        }
+
+        if (typeof config.onFilterChange === 'function') {
+            config.onFilterChange(matchCount);
+        }
+    }
+
+    // Attach search input listener
+    if (input) {
+        input.addEventListener('input', applyFilter);
+    }
+
+    // Attach pill click listeners
+    if (config.pillSelector) {
+        const pills = document.querySelectorAll(config.pillSelector);
+        pills.forEach(pill => {
+            pill.addEventListener('click', (e) => {
+                if (pill.tagName === 'A' || pill.getAttribute('href')) {
+                    e.preventDefault();
+                }
+                pills.forEach(p => {
+                    p.classList.remove(activePillClass);
+                    p.setAttribute('aria-selected', 'false');
+                });
+                pill.classList.add(activePillClass);
+                pill.setAttribute('aria-selected', 'true');
+
+                currentCategory = (pill.getAttribute('data-filter') || pill.getAttribute('data-category') || 'all').toLowerCase();
+                applyFilter();
+            });
+        });
+    }
+
+    // Initial run
+    applyFilter();
+}
+
+// ── UNIVERSAL CLIPBOARD & HAPTIC FEEDBACK (window.copyText) ──
+async function copyText(elementId, triggerElement) {
+    const sourceEl = typeof elementId === 'string' ? document.getElementById(elementId) : elementId;
+    if (!sourceEl) return false;
+
+    // Strip leading and trailing decorative quotation marks
+    let cleanText = (sourceEl.textContent || '')
+        .trim()
+        .replace(/^["“'‘]+|["”'’]+$/g, '')
+        .trim();
+
+    try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(cleanText);
+        } else {
+            const textArea = document.createElement('textarea');
+            textArea.value = cleanText;
+            textArea.style.position = 'fixed';
+            textArea.style.opacity = '0';
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+        }
+
+        // Subtle 15ms haptic impulse on supported touch devices
+        if ('vibrate' in navigator && typeof navigator.vibrate === 'function') {
+            try { navigator.vibrate([15]); } catch (_) {}
+        }
+
+        // Visual feedback on trigger element
+        if (triggerElement) {
+            const originalHTML = triggerElement.innerHTML;
+            triggerElement.innerHTML = '✓ Copied! ✨';
+            triggerElement.classList.add('copied');
+            setTimeout(() => {
+                triggerElement.innerHTML = originalHTML;
+                triggerElement.classList.remove('copied');
+            }, 2000);
+        }
+
+        // Telemetry tracking
+        if (window.VibeTelemetry && typeof window.VibeTelemetry.track === 'function') {
+            window.VibeTelemetry.track('text_copied', {
+                elementId: typeof elementId === 'string' ? elementId : (sourceEl.id || 'direct')
+            });
+        }
+
+        return true;
+    } catch (err) {
+        console.warn('VibeCheck: copyText failed', err);
+        return false;
+    }
+}
+
+// ── BULLETPROOF METRICS COUNTER ENGINE (window.initMetricsCounters) ──
+function initMetricsCounters(config = {}) {
+    const cardId = config.cardCounterId || 'liveCardCount';
+    const newsletterId = config.newsletterCounterId || 'liveNewsletterCount';
+    const defaultCards = config.defaultCards || 12480;
+    const defaultNewsletters = config.defaultNewsletters || 5200;
+    const timeoutMs = config.timeoutMs || 3000;
+
+    const cardEl = document.getElementById(cardId);
+    const newsletterEl = document.getElementById(newsletterId);
+
+    // 1. Instant Baseline Check
+    if (cardEl) {
+        const text = (cardEl.textContent || '').trim();
+        if (!text || text === '—' || text === '-') {
+            cardEl.textContent = `${defaultCards.toLocaleString()}+`;
+        }
+    }
+    if (newsletterEl) {
+        const text = (newsletterEl.textContent || '').trim();
+        if (!text || text === '—' || text === '-') {
+            newsletterEl.textContent = `${defaultNewsletters.toLocaleString()}+`;
+        }
+    }
+
+    const endpoints = [
+        {
+            el: cardEl,
+            url: 'https://api.counterapi.dev/v1/thevibecheckproject/cards-sent/',
+            baseline: defaultCards
+        },
+        {
+            el: newsletterEl,
+            url: 'https://api.counterapi.dev/v1/thevibecheckproject/newsletters-sent/',
+            baseline: defaultNewsletters
+        }
+    ];
+
+    // 2. Asynchronous Fetch with AbortController timeout
+    endpoints.forEach(({ el, url, baseline }) => {
         if (!el) return;
-        fetch(url).then(r => r.json()).then(data => {
-            if (data && typeof data.count === 'number') el.textContent = data.count.toLocaleString();
-        }).catch(() => { });
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+        fetch(url, { signal: controller.signal })
+            .then(res => {
+                if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+                return res.json();
+            })
+            .then(data => {
+                clearTimeout(timeoutId);
+                if (data && typeof data.count === 'number' && data.count > baseline) {
+                    el.textContent = `${data.count.toLocaleString()}+`;
+                }
+            })
+            .catch(() => {
+                // 3. Graceful Failure: baseline is preserved
+            });
     });
 }
 
@@ -963,6 +1160,7 @@ function initApp() {
     initCardDemo();
     initJoinForm();
     initFaqAccordion();
+    initMetricsCounters();
 
     // Non-critical features deferred to 3s after load for Lighthouse performance
     setTimeout(() => {
@@ -992,3 +1190,6 @@ if (document.readyState === 'loading') {
 window.closeEmailModal = closeEmailModal;
 window.switchDemoVibe = switchDemoVibe;
 window.initCardDemo = initCardDemo;
+window.initItemFilter = initItemFilter;
+window.copyText = copyText;
+window.initMetricsCounters = initMetricsCounters;

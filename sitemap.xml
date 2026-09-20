@@ -6,11 +6,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thevibecheckproject.com/faq</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://thevibecheckproject.com/blog/100-encouraging-messages-for-a-friend</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -201,9 +196,19 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://thevibecheckproject.com/faq</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://thevibecheckproject.com/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://thevibecheckproject.com/my-cards</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://thevibecheckproject.com/privacy</loc>
@@ -217,11 +222,6 @@
   </url>
   <url>
     <loc>https://thevibecheckproject.com/situations</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://thevibecheckproject.com/my-cards</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

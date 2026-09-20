@@ -5,3 +5,4 @@ node_modules/
 *.log
 .agents/
 .pinterest-profile/
+scratch/

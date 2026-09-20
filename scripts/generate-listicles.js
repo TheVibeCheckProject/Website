@@ -66,17 +66,18 @@ listicles.forEach(list => {
         const msg = `${base} ✨ (#${i + 1})`;
         const msgId = `msg-list-${list.slug.substring(0, 6)}-${i}`;
 
+        const midAnchor = (i === Math.floor(list.count / 2)) ? ' id="messages-mid"' : '';
         messagesHtml += `
-        <div class="copyable-message-block">
-            <div class="copyable-message-text" id="${msgId}">${msg}</div>
-            <div class="copyable-message-actions">
-                <button class="btn btn-copy" onclick="copyText('${msgId}', this)">
+        <div class="copyable-message-block sms-message-bubble"${midAnchor}>
+            <div class="copyable-message-text sms-bubble-text" id="${msgId}">${msg}</div>
+            <div class="copyable-message-actions sms-bubble-actions">
+                <button class="btn btn-copy btn-copy-sms" onclick="copyText('${msgId}', this)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                     Copy Text
                 </button>
                 <a href="../send-card.html" 
                    onclick="var msg = this.closest('.copyable-message-actions').previousElementSibling.innerText.trim(); window.location.href = this.href + '?message=' + encodeURIComponent(msg); return false;"
-                   class="btn btn-secondary" style="border: 1px solid rgba(255,255,255,0.2);">Send as Card ✨</a>
+                   class="btn btn-secondary btn-send-as-card" style="border: 1px solid rgba(255,255,255,0.2);">Send as Card ✨</a>
             </div>
         </div>
         `;

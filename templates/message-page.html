@@ -33,54 +33,37 @@
     </script>
 
     <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Fredoka:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Pacifico&family=Permanent+Marker&family=Quicksand:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Fredoka:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@500;600;700&display=swap"
         rel="stylesheet">
 
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="../css/styles.css?v=6">
+    <!-- Core & Dedicated Blog CSS -->
+    <link rel="stylesheet" href="../css/styles.css?v=108">
+    <link rel="stylesheet" href="../css/blog.css?v=108">
 
     <style>
         .page-header {
             text-align: center;
-            padding: 80px 20px 40px;
+            padding: clamp(40px, 6vw, 70px) 20px 30px;
             max-width: 800px;
             margin: 0 auto;
         }
 
         .page-header h1 {
             font-family: 'Fredoka', var(--font-display);
-            font-size: clamp(2.5rem, 6vw, 4rem);
-
+            font-size: clamp(2.4rem, 6vw, 3.8rem);
             color: var(--dynamic-color);
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             line-height: 1.2;
             text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
 
         .page-header p {
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             color: var(--color-text-secondary);
             line-height: 1.6;
-        }
-
-        .messages-container {
-            max-width: 800px;
-            margin: 0 auto 80px;
-            padding: 0 20px;
-        }
-
-        /* Adjust the internal copyable message block slightly for a dedicated page */
-        .copyable-message-block {
-            margin: 40px 0;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-        }
-
-        .copyable-message-text {
-            font-size: 1.8rem;
-            /* larger text for dedicated list */
         }
     </style>
 
@@ -111,38 +94,78 @@
                         <span class="nav-crisis-text">Emergency Support</span>
                     </a>
                 </li>
+                <li><a href="../situations.html">Situations</a></li>
                 <li><a href="../blog/index.html">Advice &amp; Guides</a></li>
                 <li><a href="../send-card.html" class="btn btn-secondary"
-                        style="padding: 6px 16px; border-width: 1px; font-size: 14px;">Send a Card</a></li>
+                        style="padding: 6px 16px; border-width: 1px; font-size: 14px;">💌 Send a Card</a></li>
             </ul>
         </div>
     </nav>
 
     <main>
         <header class="page-header">
-            <h1>{{header_title}}</h1>
+            <h1 style="color: var(--dynamic-color);">{{header_title}}</h1>
             <p>{{description}}</p>
         </header>
 
-        <section class="messages-container">
-            {{messages_html}}
+        <div class="blog-article-wrapper">
+            <!-- Desktop Sticky Table of Contents Rail -->
+            <aside class="article-toc-rail" aria-label="Table of contents">
+                <nav class="toc-nav">
+                    <h4 class="toc-title">Quick Jump</h4>
+                    <ul class="toc-links">
+                        <li><a href="#messages-top">✨ Beginning Messages</a></li>
+                        <li><a href="#messages-mid">💫 Curated Favorites</a></li>
+                        <li><a href="#send-card-cta">💌 Send Digital Card</a></li>
+                        <li><a href="#more-guides">📖 Browse All Guides</a></li>
+                    </ul>
+                </nav>
+            </aside>
 
-            <div class="inline-cta-block" style="margin-top: 60px;">
-                <div class="inline-cta-text">
-                    <strong>Want to send one of these right now?</strong>
-                    <p>Copy your favorite message and paste it into a beautiful, anonymous digital affirmation card.</p>
-                </div>
-                <div class="inline-cta-btn">
-                    <a href="../send-card.html" class="btn btn-primary">Send a Free Card ✨</a>
-                </div>
+            <!-- Main Content Column -->
+            <div class="article-main-content">
+                <section class="messages-container" id="messages-top">
+                    {{messages_html}}
+
+                    <div class="inline-cta-block" id="send-card-cta" style="margin-top: 60px;">
+                        <div class="inline-cta-text">
+                            <strong>Want to send one of these right now?</strong>
+                            <p>Copy your favorite message and paste it into a beautiful, anonymous digital affirmation card.</p>
+                        </div>
+                        <div class="inline-cta-btn">
+                            <a href="../send-card.html" class="btn btn-primary">Send a Free Card ✨</a>
+                        </div>
+                    </div>
+
+                    <div id="more-guides" style="text-align: center; margin-top: 50px;">
+                        <a href="../blog/index.html" class="btn btn-secondary" style="border: 1px solid rgba(255,255,255,0.2);">← Back to All Guides</a>
+                    </div>
+                </section>
             </div>
 
-            <div style="text-align: center; margin-top: 50px;">
-                <a href="../blog/index.html" class="btn btn-secondary" style="border: 1px solid rgba(255,255,255,0.2);">←
-                    Back to All Guides</a>
-            </div>
-        </section>
+            <!-- Desktop Sticky Conversion Rail -->
+            <aside class="article-conversion-rail" aria-label="Card Creator Callout">
+                <div class="conversion-card">
+                    <span class="conv-badge">💌 Free &amp; Anonymous</span>
+                    <h4>Send a Vibe Check</h4>
+                    <p>Turn any of these messages into an interactive 3D digital card with soothing ambient sound.</p>
+                    <a href="../send-card.html" class="btn btn-primary" style="width: 100%; text-align: center;">Craft Free Card ✨</a>
+                </div>
+            </aside>
+        </div>
     </main>
+
+    <!-- Mobile Sticky Reading Dock -->
+    <div class="mobile-reading-dock">
+        <div class="mobile-reading-dock-inner">
+            <button type="button" class="btn btn-secondary" onclick="jumpRandomSpark()">
+                <span>🎲</span> <span>Random Spark</span>
+            </button>
+            <a href="../send-card.html" class="btn btn-primary">
+                <span>💌</span> <span>Create Custom Card</span>
+            </a>
+        </div>
+    </div>
 
     <footer class="footer">
         <div class="footer-container">
@@ -194,10 +217,12 @@
 
     <script>
         function copyText(elementId, btn) {
-            let text = document.getElementById(elementId).innerText;
+            var el = document.getElementById(elementId);
+            if (!el) return;
+            var text = el.innerText;
             text = text.replace(/^["“”]/, '').replace(/["“”]$/, '').trim();
             navigator.clipboard.writeText(text).then(function () {
-                const originalText = btn.innerHTML;
+                var originalText = btn.innerHTML;
                 btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!';
                 btn.classList.add('copied');
                 setTimeout(function () {
@@ -205,6 +230,21 @@
                     btn.classList.remove('copied');
                 }, 2000);
             });
+        }
+
+        function jumpRandomSpark() {
+            var cards = document.querySelectorAll('.copyable-message-block, .sms-message-bubble');
+            if (!cards || !cards.length) return;
+            var randomIndex = Math.floor(Math.random() * cards.length);
+            var target = cards[randomIndex];
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            target.style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease';
+            target.style.borderColor = 'var(--color-primary, #FF6B9D)';
+            target.style.boxShadow = '0 0 25px rgba(255, 107, 157, 0.5)';
+            setTimeout(function () {
+                target.style.borderColor = '';
+                target.style.boxShadow = '';
+            }, 2000);
         }
     </script>
 </body>

@@ -29,41 +29,6 @@
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
-
-    <style>
-        .legal-content {
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.7;
-        }
-
-        .legal-content h3 {
-            color: var(--color-primary);
-            margin-top: var(--space-xl);
-            margin-bottom: var(--space-md);
-        }
-
-        .legal-content h4 {
-            color: var(--color-text-primary);
-            margin-top: var(--space-lg);
-            margin-bottom: var(--space-sm);
-        }
-
-        .legal-content p {
-            margin-bottom: var(--space-md);
-            color: var(--color-text-secondary);
-        }
-
-        .legal-content ul {
-            margin-left: var(--space-lg);
-            margin-bottom: var(--space-md);
-        }
-
-        .legal-content li {
-            margin-bottom: var(--space-xs);
-            color: var(--color-text-secondary);
-        }
-    </style>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2492108586092522"
         crossorigin="anonymous"></script>
 </head>
@@ -99,14 +64,14 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero" style="min-height: 50vh;">
+    <section class="hero" style="min-height: 45vh;">
         <div class="hero-bg"
-            style="background-image: url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1920&q=80');">
+            style="background-image: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1920&q=80');">
         </div>
         <div class="hero-content">
             <h1 style="margin-bottom: var(--space-md);">Privacy Policy</h1>
             <p class="hero-subtitle">
-                Your privacy is important to us. Learn how we collect, use, and protect your personal information.
+                Transparency by Design • Stateless Sharing, Telemetry, and Your Global Privacy Rights
             </p>
         </div>
     </section>
@@ -115,187 +80,194 @@
     <section class="why-section">
         <div class="section-container">
             <div class="legal-content">
-                <p><strong>Last Updated:</strong> February 2026</p>
+                <div class="legal-meta-bar">
+                    <div class="legal-meta-item">📅 <strong>Effective Date:</strong> September 20, 2026</div>
+                    <div class="legal-meta-item">🛡️ <strong>Standards:</strong> GDPR (EU/UK), CCPA/CPRA (CA), COPPA, CalOPPA</div>
+                    <div class="legal-meta-item">📬 <strong>Privacy Contact:</strong> <a href="mailto:WeCare@TheVibeCheckProject.com">WeCare@TheVibeCheckProject.com</a></div>
+                </div>
 
-                <h3>1. Introduction</h3>
+                <h3>1. Introduction & Operational Philosophy</h3>
                 <p>
-                    The Vibe Check Project ("we," "our," or "us") is committed to protecting your privacy. This
-                    Privacy
-                    Policy explains how we collect, use, disclose, and safeguard your information when you visit
-                    thevibecheckproject.com and use our card-sending service.
+                    <strong>The Vibe Check Project</strong> ("we," "us," or "our"), founded and maintained by <strong>Devin Griffin</strong>, operates <code>thevibecheckproject.com</code> (the "Platform"). We believe privacy is an intrinsic human right, especially when seeking emotional support and positive encouragement.
+                </p>
+                <p>
+                    Our core technical architecture is engineered around <strong>client-side statelessness</strong>. We do not require user account registration, password creation, or cloud profiles to create or receive affirmation cards. This Privacy Policy details the exact types of data we collect, why we collect it, how it is processed by vetted third-party vendors, and your rights under global privacy laws.
                 </p>
 
-                <h3>2. Information We Collect</h3>
+                <h3>2. Technical Architecture: How Your Cards Work</h3>
+                <div class="legal-callout">
+                    <h4>🔒 ZERO SERVER STORAGE FOR CARD MESSAGES</h4>
+                    <p>
+                        Unlike traditional social media or messaging platforms, <strong>we do not store your personalized card messages, sender names, or recipient names on any central server or database</strong>.
+                    </p>
+                    <p style="margin-bottom: 0;">
+                        When you compose a card, the text is compressed and encoded entirely within your browser into a <strong>Base64URL query string</strong> (e.g., <code>view-card.html?data=...</code>). When your recipient opens the link, their web browser decodes the data locally on their screen. The message exists solely in the URL link you share and in your device's local memory.
+                    </p>
+                </div>
 
-                <h4>Information You Provide</h4>
-                <p>We collect information you voluntarily submit:</p>
-                <ul>
-                    <li><strong>Email address</strong> — if you sign up for our free email list or Ko-fi membership</li>
-                    <li><strong>Card message content</strong> — the text you write when sending a card (stored
-                        temporarily to generate the card link)</li>
-                    <li><strong>Messages you send us</strong> — if you email us directly</li>
-                </ul>
-                <p>
-                    <strong>Note:</strong> No account creation is required to send or receive a card. You do not need
-                    to provide any personal information to use the core free service.
-                </p>
+                <h3>3. Information We Collect & How We Collect It</h3>
 
-                <h4>Usage Information</h4>
-                <p>We collect anonymous usage data through Microsoft Clarity:</p>
+                <h4>A. Information You Voluntarily Provide</h4>
                 <ul>
-                    <li>Pages visited and time spent on our site</li>
-                    <li>Referring website or link</li>
-                    <li>General country-level location (not precise)</li>
-                    <li>Device type and browser (no fingerprinting)</li>
-                </ul>
-                <p>
-                    We use <strong>Microsoft Clarity</strong>, a privacy-focused analytics tool that provides heatmaps
-                    and session insights. It does not collect personal data or share information with advertising
-                    networks.
-                </p>
-
-                <h3>3. How We Use Your Information</h3>
-                <p>We use your information to:</p>
-                <ul>
-                    <li>Deliver your card to the recipient via a shareable link</li>
-                    <li>Send you the email content you subscribed to (daily affirmations, project updates)</li>
-                    <li>Respond to your questions and support requests</li>
-                    <li>Understand which parts of the site are most useful so we can improve them</li>
+                    <li><strong>Email Subscriptions (Daily Spark Newsletter):</strong> If you choose to subscribe to our free daily affirmation list, we collect your email address. Processing is handled via <strong>MailerLite</strong>. You may unsubscribe with a single click at any time.</li>
+                    <li><strong>Direct Inquiries:</strong> If you contact us via email at <code>WeCare@TheVibeCheckProject.com</code> or through our contact form, we collect your name, email address, and correspondence text solely to answer your inquiry.</li>
                 </ul>
 
-                <h3>4. Third-Party Services We Use</h3>
-                <p>We use the following third-party services to operate The Vibe Check Project:</p>
-                <ul>
-                    <li><strong>MailerLite</strong> — email list management and automated welcome sequences. When you
-                        sign up for our email list, your email address is stored with MailerLite. <a
-                            href="https://www.mailerlite.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer"
-                            style="color: var(--color-primary);">MailerLite Privacy Policy</a></li>
-                    <li><strong>Ko-fi</strong> — optional tip payments. Ko-fi processes one-time tips. <a
-                            href="https://ko-fi.com/privacy" target="_blank" rel="noopener noreferrer"
-                            style="color: var(--color-primary);">Ko-fi Privacy Policy</a></li>
-                    <li><strong>Stripe</strong> — one-time Premium Unlock payments ($4.99). Stripe processes payments
-                        securely. <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer"
-                            style="color: var(--color-primary);">Stripe Privacy Policy</a></li>
-                    <li><strong>Microsoft Clarity</strong> — heatmaps and session analytics. Clarity does not use
-                        cookies for analytics. <a href="https://privacy.microsoft.com/privacystatement" target="_blank"
-                            rel="noopener noreferrer" style="color: var(--color-primary);">Microsoft Privacy Statement</a></li>
-                    <li><strong>Google AdSense</strong> — We use Google AdSense to display advertisements on our site.
-                        Google uses cookies to serve ads based on your prior visits to our website or other websites.
-                        Google's use of advertising cookies enables it and its partners to serve ads to you based on
-                        your visit to our sites and/or other sites on the Internet. <a
-                            href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer"
-                            style="color: var(--color-primary);">How Google Uses Information from Sites</a></li>
-                    <li><strong>Google Fonts</strong> — font delivery. Google may log requests for font files.</li>
-                </ul>
-
-                <h3>5. AdSense and Personalized Advertising</h3>
+                <h4>B. Information Stored Locally on Your Device (Client Storage)</h4>
                 <p>
-                    Because we use Google AdSense to monetize the site:
+                    The Platform uses standard browser <code>localStorage</code> to store preferences locally on your physical device. This data never leaves your browser:
                 </p>
                 <ul>
-                    <li>Third party vendors, including Google, use cookies to serve ads based on a user's prior visits
-                        to your website or other websites.</li>
-                    <li>Google's use of advertising cookies enables it and its partners to serve ads to your users based
-                        on their visit to your sites and/or other sites on the Internet.</li>
-                    <li>You may opt out of personalized advertising by visiting <a href="https://myadcenter.google.com/"
-                            target="_blank" rel="noopener noreferrer" style="color: var(--color-primary);">Ads Settings</a>.
-                        (Alternatively, you can opt out of a third-party vendor's use of cookies for personalized
-                        advertising by visiting <a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer"
-                            style="color: var(--color-primary);">www.aboutads.info</a>.)</li>
+                    <li><code>vibe_saved_cards</code>: Stores a local history of cards you have created so you can view them on the "My Vibes" page;</li>
+                    <li><code>vibe_theme_concept</code>: Remembers your UI design preferences (Editorial vs. Playful Kinetic);</li>
+                    <li><code>vibe_premium_unlocked</code>: Stores local verification of your one-time Stripe Premium Unlock.</li>
                 </ul>
-
-                <h3>6. Information Sharing</h3>
-                <p>We do not sell, trade, or rent your personal information to third parties. We share your
-                    information only as described above (with the service providers we use to operate the site) or
-                    if required to comply with legal obligations.</p>
-
-                <h3>6. Data Security</h3>
                 <p>
-                    We take reasonable steps to protect your information. Card message content is stored only as long
-                    as needed to serve the card link. We do not store payment information — all payments are handled
-                    directly by Ko-fi or Stripe.
+                    You can inspect, export, or wipe this data at any time through your browser developer tools or settings.
                 </p>
 
-                <h3>7. Your Rights</h3>
-                <p>You have the right to:</p>
-                <ul>
-                    <li>Unsubscribe from our email list at any time (unsubscribe link in every email)</li>
-                    <li>Request deletion of your email address from our MailerLite list</li>
-                    <li>Request a copy of any personal data we hold about you</li>
-                    <li>Contact Ko-fi or Stripe directly to manage your payment and account data</li>
-                </ul>
-
-                <h3>8. Cookies and Tracking</h3>
+                <h4>C. Automated Telemetry & Analytics (Microsoft Clarity)</h4>
                 <p>
-                    We use Microsoft Clarity for analytics, which does not set advertising cookies or track you across
-                    sites.
-                    Google Fonts may set cookies for font delivery. See our <a href="cookies.html"
-                        style="color: var(--color-primary);">Cookie Policy</a> for full details.
-                </p>
-
-                <h3>9. Children's Privacy</h3>
-
-                <h4>Age Requirements</h4>
-                <p>
-                    The Vibe Check Project is not directed to children under 13 years of age. If you are under
-                    13,
-                    please do not use this service or provide any personal information, including your email address.
-                </p>
-
-                <h4>COPPA Compliance</h4>
-                <p>
-                    We comply with the Children's Online Privacy Protection Act (COPPA). We do not knowingly
-                    collect, solicit, or maintain personal information from anyone under 13 without verifiable
-                    parental consent. If we learn that we have collected personal information from a child under 13,
-                    we will delete that information from our systems and from our email provider (MailerLite)
-                    as quickly as possible.
-                </p>
-
-                <h4>For Parents and Guardians</h4>
-                <p>
-                    If you believe your child under 13 has provided personal information to us — for example,
-                    by signing up for our email list — please contact us immediately at
-                    <a href="mailto:WeCare@TheVibeCheckProject.com"
-                        style="color: var(--color-primary);">WeCare@TheVibeCheckProject.com</a>.
-                    Upon receiving your request, we will:
+                    To understand how visitors navigate the Platform and identify broken UI elements, we utilize <strong>Microsoft Clarity</strong>. Clarity captures behavioral metrics, heatmaps, and session replay.
                 </p>
                 <ul>
-                    <li>Verify your identity as the parent or guardian</li>
-                    <li>Promptly delete the child's information from our systems and from MailerLite</li>
-                    <li>Confirm deletion to you by return email</li>
+                    <li>Clarity logs browser type, operating system, approximate geographic region (country/state level), time on page, and scroll depth.</li>
+                    <li>Clarity operates with automated <strong>keystroke masking</strong>, ensuring any text typed into input forms is obscured and never recorded.</li>
+                    <li>For details, review the <a href="https://privacy.microsoft.com/privacystatement" target="_blank" rel="noopener noreferrer">Microsoft Privacy Statement</a>.</li>
                 </ul>
 
-                <h4>Users Between 13 and 17</h4>
+                <h4>D. Monetization, Display Ads & Third-Party Cookies (Google AdSense)</h4>
+                <div class="legal-callout warning">
+                    <h4>📢 THIRD-PARTY DISPLAY ADVERTISING</h4>
+                    <p>
+                        We use <strong>Google AdSense</strong> (Publisher ID: <code>ca-pub-2492108586092522</code>) to display web advertisements to help fund free hosting and card delivery.
+                    </p>
+                    <p style="margin-bottom: 0;">
+                        Google and its advertising partners use cookies and web beacons to serve ads based on your prior visits to our Platform and other websites across the Internet. Google's use of advertising cookies enables it and its partners to serve personalized advertisements to you based on your browsing habits.
+                    </p>
+                </div>
                 <p>
-                    Users aged 13–17 may use the free card-sending service. However, making purchases through
-                    Ko-fi or Stripe requires a valid payment method, which minors should only use with
-                    parental permission and supervision, in accordance with those platforms' own terms of service.
-                    Parents or guardians may review Ko-fi's and Stripe's privacy policies linked in Section 4 above.
+                    <strong>Managing Personalized Advertising:</strong>
+                </p>
+                <ul>
+                    <li>You can opt out of personalized Google advertising at any time by visiting <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer">Google My Ad Center</a>.</li>
+                    <li>You can opt out of third-party behavioral advertising cookies across participating ad networks via the <a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer">Digital Advertising Alliance (DAA)</a> or the <a href="https://www.youronlinechoices.com/" target="_blank" rel="noopener noreferrer">European Interactive Digital Advertising Alliance (EDAA)</a>.</li>
+                    <li>For full details on Google's practices, see <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">How Google uses information from sites that use our services</a>.</li>
+                </ul>
+
+                <h4>E. Commercial Payment Processing (Stripe & Ko-fi)</h4>
+                <p>
+                    When purchasing the $4.99 Premium Unlock or offering a tip:
+                </p>
+                <ul>
+                    <li><strong>Stripe, Inc.:</strong> Processes credit and debit card transactions for Premium Unlocks. Payment credential entry occurs inside encrypted Stripe elements. We never see, process, or store raw credit card numbers or CVV codes. See <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer">Stripe Privacy Policy</a>.</li>
+                    <li><strong>Ko-fi:</strong> Processes voluntary tips and donations. See <a href="https://ko-fi.com/privacy" target="_blank" rel="noopener noreferrer">Ko-fi Privacy Policy</a>.</li>
+                </ul>
+
+                <h4>F. Affiliate Links (Amazon Associates)</h4>
+                <p>
+                    Our blog features reading recommendations with Amazon affiliate links. If you click on an outbound Amazon link, Amazon places a tracking cookie on your device to attribute any qualifying purchases per the Amazon Associates Operating Agreement.
                 </p>
 
-                <h4>European Users Under 16 (GDPR Article 8)</h4>
+                <h3>4. Legal Bases for Processing (GDPR Article 6)</h3>
                 <p>
-                    For users located in the European Union, the minimum age for digital consent is 16 (or a lower
-                    age established by your EU member state, but no less than 13). If you are under 16 and located
-                    in the EU, you should obtain consent from a parent or guardian before signing up for our email
-                    list or making any purchase through this site.
+                    For visitors residing in the European Economic Area (EEA) or United Kingdom, our processing of personal data is justified under the following legal bases:
+                </p>
+                <div class="legal-table-wrapper">
+                    <table class="legal-table">
+                        <thead>
+                            <tr>
+                                <th>Data Category</th>
+                                <th>Primary Purpose</th>
+                                <th>GDPR Legal Basis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Email Address</strong></td>
+                                <td>Sending Daily Spark affirmations</td>
+                                <td><strong>Consent (Art. 6(1)(a))</strong> — freely given and revocable at any time.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Telemetry / Clarity</strong></td>
+                                <td>Website stability, UX optimization</td>
+                                <td><strong>Legitimate Interests (Art. 6(1)(f))</strong> — ensuring platform security and performance.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>AdSense Cookies</strong></td>
+                                <td>Display advertising & monetization</td>
+                                <td><strong>Consent (Art. 6(1)(a))</strong> / Legitimate Interests as configured per region.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Stripe Purchases</strong></td>
+                                <td>Delivering digital premium feature license</td>
+                                <td><strong>Performance of Contract (Art. 6(1)(b))</strong>.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>5. European & UK Resident Rights (GDPR)</h3>
+                <p>
+                    If you reside in the EEA or UK, you possess comprehensive statutory rights regarding your personal data:
+                </p>
+                <ul>
+                    <li><strong>Right to Access (Art. 15):</strong> Request confirmation and copies of personal data we hold about you.</li>
+                    <li><strong>Right to Rectification (Art. 16):</strong> Request correction of inaccurate or incomplete information.</li>
+                    <li><strong>Right to Erasure ("Right to be Forgotten", Art. 17):</strong> Request deletion of your email address from our systems and MailerLite.</li>
+                    <li><strong>Right to Restriction (Art. 18):</strong> Request restriction of processing under certain circumstances.</li>
+                    <li><strong>Right to Data Portability (Art. 20):</strong> Receive your personal data in a structured, machine-readable format.</li>
+                    <li><strong>Right to Object (Art. 21):</strong> Object to processing based on legitimate interests or direct marketing.</li>
+                </ul>
+                <p>
+                    To exercise any of these rights, email <code>WeCare@TheVibeCheckProject.com</code> with the subject line <em>"GDPR Data Request"</em>. We respond within thirty (30) days without charge.
                 </p>
 
-                <h3>10. Changes to This Policy</h3>
+                <h3>6. California Resident Privacy Rights (CCPA / CPRA)</h3>
                 <p>
-                    We may update this Privacy Policy from time to time. Changes will be reflected by updating the
-                    "Last Updated" date at the top of this page.
+                    Under the <strong>California Consumer Privacy Act</strong>, as amended by the <strong>California Privacy Rights Act (CPRA)</strong>, California residents are entitled to specific disclosures:
+                </p>
+                <ul>
+                    <li><strong>Categories of Personal Information Collected:</strong> Identifiers (email address, IP address) and Internet/network activity data (via Clarity and AdSense cookies).</li>
+                    <li><strong>Business Purpose for Collection:</strong> Operating the Platform, delivering email affirmations, and serving display ads.</li>
+                    <li><strong>Notice of "Sale" or "Sharing":</strong> We do not sell your personal information for monetary payment. However, our use of Google AdSense may be classified as "sharing" or "targeted advertising" under California law.</li>
+                    <li><strong>Right to Opt-Out:</strong> You may opt out of cross-context behavioral advertising through Google Ad Settings or the DAA opt-out tools linked in Section 3(D).</li>
+                    <li><strong>Right to Non-Discrimination:</strong> We will never deny services, charge different prices, or provide a lower quality of experience because you exercised your CCPA rights.</li>
+                </ul>
+
+                <h3>7. Children's Online Privacy (COPPA Compliance)</h3>
+                <p>
+                    The Platform is strictly directed toward users aged <strong>13 and older</strong> (or <strong>16 and older</strong> in the EEA/UK). We do not knowingly solicit, collect, or maintain personal information from children under 13.
+                </p>
+                <p>
+                    If a parent or guardian discovers that their child under 13 has submitted their email address to our newsletter, please contact us immediately at <code>WeCare@TheVibeCheckProject.com</code>. We will verify your identity and immediately purge the minor's email from all mailing databases and records.
                 </p>
 
-                <h3>11. Contact Us</h3>
+                <h3>8. Data Retention, Security & International Transfers</h3>
                 <p>
-                    If you have any questions about this Privacy Policy, please contact us at:
+                    We retain personal information only for as long as necessary to fulfill the purposes outlined in this policy:
+                </p>
+                <ul>
+                    <li><strong>Email Addresses:</strong> Retained until you click "unsubscribe" or request manual deletion, after which your address is permanently purged.</li>
+                    <li><strong>Card Messages:</strong> Retained zero days on our servers. Messages exist ephemerally in URL parameters and on your local device.</li>
+                    <li><strong>Security:</strong> All traffic to and from the Platform is encrypted using modern Transport Layer Security (TLS 1.3 / HTTPS).</li>
+                    <li><strong>International Data Transfers:</strong> If you access the Platform from outside the United States, your information is processed in the United States and subject to United States jurisdiction. Third-party vendors comply with Standard Contractual Clauses (SCCs) where required.</li>
+                </ul>
+
+                <h3>9. Amendments to this Privacy Policy</h3>
+                <p>
+                    We reserve the right to revise this Privacy Policy periodically to reflect technological, legal, or operational updates. All revisions will be posted with an updated "Effective Date." Continued use of the Platform following notification constitutes acknowledgment of the revised policy.
+                </p>
+
+                <h3>10. Data Protection Contact</h3>
+                <p>
+                    For inquiries, data access requests, or privacy concerns:
                 </p>
                 <p>
-                    <strong>Email:</strong> <a href="mailto:WeCare@TheVibeCheckProject.com"
-                        style="color: var(--color-primary);">WeCare@TheVibeCheckProject.com</a><br>
-                    <strong>Website:</strong> <a href="contact.html" style="color: var(--color-primary);">Contact
-                        Page</a>
+                    <strong>The Vibe Check Project</strong><br>
+                    Attn: Devin Griffin, Founder &amp; Maintainer<br>
+                    Email: <a href="mailto:WeCare@TheVibeCheckProject.com">WeCare@TheVibeCheckProject.com</a><br>
+                    Website: <a href="contact.html">Contact Portal</a>
                 </p>
             </div>
         </div>
@@ -349,10 +321,8 @@
             </div>
 
             <div class="footer-bottom">
-                <p style="font-size: 0.8rem; color: #a0a0a0; margin-bottom: 10px;">Disclaimer: We do not provide
-                    therapy, counseling, or medical advice. Our content is for positive emotional support and
-                    inspiration only.</p>
-                <p>✨ Made with love by The Vibe Check Project • Spreading good since 2025</p>
+                <p style="font-size: 0.82rem; color: var(--color-text-muted); margin-bottom: 10px; line-height: 1.6;"><strong>Disclaimer:</strong> The Vibe Check Project provides peer emotional inspiration and positive support, not clinical therapy, psychotherapy, or medical care. If you or someone you know is in crisis, please call or text <strong>988</strong> (USA/Canada) or text <strong>HOME</strong> to <strong>741741</strong>.</p>
+                <p>✨ The Vibe Check Project • Founded by Devin Griffin • Spreading good since 2025</p>
             </div>
         </div>
     </footer>

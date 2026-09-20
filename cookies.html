@@ -39,40 +39,6 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
 
-    <style>
-        .legal-content {
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.7;
-        }
-
-        .legal-content h3 {
-            color: var(--color-primary);
-            margin-top: var(--space-xl);
-            margin-bottom: var(--space-md);
-        }
-
-        .legal-content h4 {
-            color: var(--color-text-primary);
-            margin-top: var(--space-lg);
-            margin-bottom: var(--space-sm);
-        }
-
-        .legal-content p {
-            margin-bottom: var(--space-md);
-            color: var(--color-text-secondary);
-        }
-
-        .legal-content ul {
-            margin-left: var(--space-lg);
-            margin-bottom: var(--space-md);
-        }
-
-        .legal-content li {
-            margin-bottom: var(--space-xs);
-            color: var(--color-text-secondary);
-        }
-    </style>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2492108586092522"
         crossorigin="anonymous"></script>
 </head>
@@ -108,14 +74,14 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero" style="min-height: 50vh;">
+    <section class="hero" style="min-height: 45vh;">
         <div class="hero-bg"
             style="background-image: url('https://images.unsplash.com/photo-1553484771-371a605b060b?w=1920&q=80');">
         </div>
         <div class="hero-content">
-            <h1 style="margin-bottom: var(--space-md);">Cookie Policy</h1>
+            <h1 style="margin-bottom: var(--space-md);">Cookie &amp; Tracking Policy</h1>
             <p class="hero-subtitle">
-                Learn about how we use cookies and tracking technologies to improve your experience.
+                Clear Disclosures • Categorized Cookies, LocalStorage, and Universal Opt-Outs
             </p>
         </div>
     </section>
@@ -124,85 +90,129 @@
     <section class="why-section">
         <div class="section-container">
             <div class="legal-content">
-                <p><strong>Last Updated:</strong> February 2025</p>
+                <div class="legal-meta-bar">
+                    <div class="legal-meta-item">📅 <strong>Effective Date:</strong> September 20, 2026</div>
+                    <div class="legal-meta-item">🍪 <strong>Compliance:</strong> ePrivacy Directive (EU), GDPR, CCPA/CPRA</div>
+                    <div class="legal-meta-item">📬 <strong>Contact:</strong> <a href="mailto:WeCare@TheVibeCheckProject.com">WeCare@TheVibeCheckProject.com</a></div>
+                </div>
 
-                <h3>1. What Are Cookies?</h3>
+                <h3>1. What Are Cookies &amp; Web Technologies?</h3>
                 <p>
-                    Cookies are small text files placed on your device when you visit a website. Some cookies are
-                    set by the site itself; others are set by third-party services the site uses.
-                </p>
-
-                <h3>2. Our Approach: Minimal Tracking</h3>
-                <p>
-                    The Vibe Check Project is designed to work with minimal cookies. We do not use advertising
-                    cookies, behavioral tracking cookies, or any cross-site tracking technology.
+                    A cookie is a small text file stored on your computer or mobile device when you visit a website. In addition to HTTP cookies, modern web applications utilize client-side <strong>Web Storage (<code>localStorage</code>)</strong>, web beacons, and pixels to deliver interactive functionality, evaluate performance, and serve display advertisements.
                 </p>
                 <p>
-                    We use <strong>Microsoft Clarity</strong> for website analytics. Clarity provides heatmaps
-                    and session recordings without advertising cookies or cross-site tracking.
-                    It does not set persistent advertising cookies on your device.
+                    This policy provides an honest, transparent breakdown of every category of cookie and local storage technology deployed on <strong>The Vibe Check Project</strong> (<code>thevibecheckproject.com</code>).
                 </p>
 
-                <h3>3. Cookies That May Be Set</h3>
+                <h3>2. Master Inventory of Technologies Used</h3>
+                <div class="legal-table-wrapper">
+                    <table class="legal-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Name / Provider</th>
+                                <th>Lifespan</th>
+                                <th>Purpose &amp; Data Exchanged</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Essential / Functional</strong></td>
+                                <td><code>vibe_saved_cards</code><br><em>(localStorage)</em></td>
+                                <td>Persistent (Client)</td>
+                                <td>Stores your card creation history locally so you can revisit cards in the "My Vibes" dashboard. Zero server transmission.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Essential / Functional</strong></td>
+                                <td><code>vibe_theme_concept</code><br><em>(localStorage)</em></td>
+                                <td>Persistent (Client)</td>
+                                <td>Remembers your visual theme choice (Editorial vs. Playful Kinetic) between page reloads.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Essential / Functional</strong></td>
+                                <td><code>vibe_premium_unlocked</code><br><em>(localStorage)</em></td>
+                                <td>Persistent (Client)</td>
+                                <td>Caches local verification of your Stripe $4.99 one-time Premium Unlock to keep premium card themes and sounds accessible.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Analytics &amp; Performance</strong></td>
+                                <td><code>_clck</code>, <code>_clsk</code>, <code>CLID</code><br><em>Microsoft Clarity</em></td>
+                                <td>1 year / Session</td>
+                                <td>Captures aggregated heatmaps, scroll depth, and interaction telemetry to fix broken elements. Form inputs are masked.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Advertising &amp; Marketing</strong></td>
+                                <td><code>__gads</code>, <code>__gpi</code>, <code>IDE</code><br><em>Google AdSense (ca-pub-2492108586092522)</em></td>
+                                <td>13 months</td>
+                                <td>Serves personalized or contextual display advertisements, measures ad impressions, and prevents excessive ad repetition.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Affiliate Attribution</strong></td>
+                                <td><em>Amazon Associates (Outbound Click)</em></td>
+                                <td>24 hours</td>
+                                <td>Placed on Amazon.com if you click an external book recommendation link, attributing qualifying referral commissions.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email Communications</strong></td>
+                                <td><em>MailerLite (Subscribers Only)</em></td>
+                                <td>Session / 30 days</td>
+                                <td>Tracking pixels inside Daily Spark emails to record open rates and ensure automated welcome sequences deliver reliably.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-                <h4>Google Fonts</h4>
+                <h3>3. Third-Party Advertising Disclosures (Google AdSense)</h3>
+                <div class="legal-callout warning">
+                    <h4>📢 GOOGLE ADSENSE &amp; PERSONALIZED ADVERTISING</h4>
+                    <p>
+                        The Vibe Check Project uses <strong>Google AdSense</strong> to display advertisements that support our free emotional wellness resources.
+                    </p>
+                    <p style="margin-bottom: 0;">
+                        Third-party vendors, including Google, use cookies to serve ads based on your prior visits to this website or other sites on the Internet. Google's use of advertising cookies enables it and its partners to serve ads based on your visit to our platform and/or other websites across the web.
+                    </p>
+                </div>
                 <p>
-                    We load fonts from Google Fonts. Google may log the font request (your IP address and the font
-                    requested) as part of normal web server logging. This is a one-time request per page load and
-                    does not track your behavior across sites.
+                    You have absolute control over personalized advertising. You may disable ad personalization or opt out of third-party cookie tracking through the following tools:
                 </p>
-
-                <h4>MailerLite (Email Subscribers Only)</h4>
-                <p>
-                    If you click a link in one of our emails, MailerLite may set a cookie to track whether you
-                    opened or clicked an email. This only applies if you are subscribed to our email list. You can
-                    unsubscribe at any time using the link in any email.
-                </p>
-
-                <h4>Ko-fi & Stripe (Paying Members Only)</h4>
-                <p>
-                    If you visit Ko-fi or use Stripe to complete a purchase, those platforms set their own cookies
-                    on their domains. We have no control over these cookies. See their respective privacy policies
-                    for details.
-                </p>
-
-                <h4>localStorage (Not Cookies)</h4>
-                <p>
-                    We use browser <code>localStorage</code> (not cookies) to remember small pieces of
-                    information on your device, such as whether you've dismissed a banner. This data never
-                    leaves your browser and is not shared with anyone.
-                </p>
-
-                <h3>4. What We Don't Use</h3>
                 <ul>
-                    <li>Google Analytics — we use Microsoft Clarity instead</li>
-                    <li>Facebook Pixel or any Meta tracking</li>
-                    <li>Advertising or retargeting cookies</li>
-                    <li>Login session cookies (no accounts on this site)</li>
+                    <li><strong>Google Ads Settings:</strong> Opt out of personalized Google ads directly via <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer">Google My Ad Center</a>.</li>
+                    <li><strong>Digital Advertising Alliance (USA):</strong> Opt out of participating ad networks at <a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer">AboutAds.info Consumer Choice Page</a>.</li>
+                    <li><strong>Network Advertising Initiative:</strong> Universal opt-out at <a href="https://optout.networkadvertising.org/" target="_blank" rel="noopener noreferrer">NAI Consumer Opt-Out</a>.</li>
+                    <li><strong>European Interactive Digital Advertising Alliance (EU/EEA):</strong> Exercise choice at <a href="https://www.youronlinechoices.com/" target="_blank" rel="noopener noreferrer">Your Online Choices</a>.</li>
                 </ul>
 
-                <h3>5. Managing Cookies</h3>
+                <h3>4. Client Storage (localStorage) vs. Traditional Cookies</h3>
                 <p>
-                    You can view and delete cookies at any time through your browser settings. Since we use
-                    Microsoft Clarity (no advertising cookies), blocking cookies will not affect your experience on our
-                    site.
+                    We prioritize browser <code>localStorage</code> over server-side session cookies. Local storage data resides entirely on your device and is not automatically transmitted with every network request to our servers.
+                </p>
+                <p>
+                    You may view or clear your local storage at any time:
+                </p>
+                <ul>
+                    <li><strong>In Chrome/Edge:</strong> Press <code>F12</code> &rarr; Navigate to <em>Application</em> &rarr; <em>Local Storage</em> &rarr; Click <em>Clear All</em>.</li>
+                    <li><strong>In Safari:</strong> Preferences &rarr; Privacy &rarr; Manage Website Data &rarr; Remove.</li>
+                    <li><strong>In Firefox:</strong> Preferences &rarr; Privacy &amp; Security &rarr; Cookies and Site Data &rarr; Clear Data.</li>
+                </ul>
+
+                <h3>5. Browser-Level Cookie Management</h3>
+                <p>
+                    Most web browsers allow you to manage or block cookies through their global settings. Note that disabling cookies will not impair the core free card-sending features, but it may prevent display ads from functioning properly or require you to re-verify your Stripe Premium purchase if local storage is cleared.
                 </p>
 
-                <h3>6. Updates to This Policy</h3>
+                <h3>6. Policy Modifications</h3>
                 <p>
-                    We may update this Cookie Policy when our practices change. Updates will be reflected by the
-                    "Last Updated" date at the top of this page.
+                    We may revise this Cookie Policy as new features or ad networks are integrated. Updates take effect immediately upon posting with an updated "Effective Date."
                 </p>
 
-                <h3>7. Contact Us</h3>
+                <h3>7. Inquiries</h3>
                 <p>
-                    If you have questions about our use of cookies, please contact us:
+                    For questions regarding our use of cookies or telemetry:
                 </p>
                 <p>
-                    <strong>Email:</strong> <a href="mailto:WeCare@TheVibeCheckProject.com"
-                        style="color: var(--color-primary);">WeCare@TheVibeCheckProject.com</a><br>
-                    <strong>Website:</strong> <a href="contact.html" style="color: var(--color-primary);">Contact
-                        Page</a>
+                    <strong>The Vibe Check Project</strong><br>
+                    Email: <a href="mailto:WeCare@TheVibeCheckProject.com">WeCare@TheVibeCheckProject.com</a><br>
+                    Website: <a href="contact.html">Contact Form</a>
                 </p>
             </div>
         </div>
@@ -256,10 +266,8 @@
             </div>
 
             <div class="footer-bottom">
-                <p style="font-size: 0.8rem; color: #a0a0a0; margin-bottom: 10px;">Disclaimer: We do not provide
-                    therapy, counseling, or medical advice. Our content is for positive emotional support and
-                    inspiration only.</p>
-                <p>✨ Made with love by The Vibe Check Project • Spreading good since 2025</p>
+                <p style="font-size: 0.82rem; color: var(--color-text-muted); margin-bottom: 10px; line-height: 1.6;"><strong>Disclaimer:</strong> The Vibe Check Project provides peer emotional inspiration and positive support, not clinical therapy, psychotherapy, or medical care. If you or someone you know is in crisis, please call or text <strong>988</strong> (USA/Canada) or text <strong>HOME</strong> to <strong>741741</strong>.</p>
+                <p>✨ The Vibe Check Project • Founded by Devin Griffin • Spreading good since 2025</p>
             </div>
         </div>
     </footer>

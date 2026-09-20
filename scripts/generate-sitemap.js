@@ -5,14 +5,16 @@ const BASE_URL = 'https://thevibecheckproject.com';
 const WEBSITE_DIR = path.join(__dirname, '..');
 const SITEMAP_PATH = path.join(WEBSITE_DIR, 'sitemap.xml');
 
-// Pages to exclude from sitemap
+// Pages to exclude from sitemap (e.g. non-content files and noindexed pages)
 const EXCLUDE_FILES = [
     'sitemap.xml',
     'robots.txt',
     'package.json',
     'package-lock.json',
     'readme.md',
-    'CNAME'
+    'CNAME',
+    'view-card.html',
+    'my-cards.html'
 ];
 
 const EXCLUDE_DIRS = [

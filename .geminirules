@@ -1,0 +1,28 @@
+# The Vibe Check Project — SEO & Architecture Rules (.geminirules)
+
+## 1. Domain & Canonical Standard
+- Canonical Domain: `https://thevibecheckproject.com` (strictly bare domain without `www.`).
+- Every public page MUST contain a self-referencing absolute `<link rel="canonical" href="https://thevibecheckproject.com/[path]">`.
+- `my-cards.html` must always have `<meta name="robots" content="noindex, nofollow">`.
+- `view-card.html` must always have `<meta name="robots" content="noindex, follow">`.
+- Neither `my-cards.html` nor `view-card.html` may appear in `sitemap.xml`.
+
+## 2. On-Page Metadata Constraints
+- Title Tag: 50–60 characters, formatted strictly as:
+  `Primary Focus Keyword - Context | The Vibe Check Project`
+- Meta Description: 140–155 characters, click-optimized and descriptive.
+- Headings: Exactly one `<h1>` per page, sequential heading order (`h1` -> `h2` -> `h3`).
+- Social Cards: Full Open Graph (`og:type`, `og:url`, `og:title`, `og:description`, `og:image`, `og:image:width="1200"`, `og:image:height="630"`) and Twitter Card (`twitter:card="summary_large_image"`, `twitter:title`, `twitter:description`, `twitter:image`).
+
+## 3. Structured Data (JSON-LD)
+- `index.html`: WebSite schema (with SearchAction) + Organization schema.
+- `faq.html`: FAQPage schema strictly synchronized with all 7 accordion items.
+- `situations.html`: CollectionPage schema with ItemList containing the 12 situations.
+- `blog/*.html` & `templates/message-page.html`: Article / BlogPosting schema + BreadcrumbList schema.
+- Category Hubs (`blog/[category]/index.html`): CollectionPage + BreadcrumbList schema.
+
+## 4. Codebase Invariants
+- Zero Runtime Dependencies: Native HTML5, Native CSS, Native JavaScript. No npm packages or external frameworks in client code.
+- Cheerio Scraper Lock: In `blog/index.html`, never rename or delete `a.blog-card-img`, `.pre-text`, `.drop-v`, `.rest-text`, `.sub-desc`, `.slider-wrapper`, or `.category-grid`.
+- Template Token Lock: In `templates/message-page.html`, preserve `{{title}}`, `{{header_title}}`, `{{description}}`, `{{slug}}`, `{{messages_html}}`, and `var(--dynamic-color)`.
+- Browser Testing: Never disrupt or kill Google Chrome. Browser automation must strictly target Microsoft Edge (`channel: 'msedge'`).

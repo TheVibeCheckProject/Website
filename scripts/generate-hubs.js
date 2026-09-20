@@ -36,7 +36,7 @@ const categories = [
     {
         id: 'mental-health',
         title: 'Mental Health Support',
-        desc: 'Words to help them through the hard days. Support for anxiety, depression, and general mental wellness.',
+        desc: 'Find supportive words, text ideas, and guidance for anxiety, depression, and mental wellness. Practical, grounding peer support for friends in need.',
         files: [
             'what-to-text-someone-having-a-panic-attack.html',
             'what-to-say-when-someone-is-depressed.html',
@@ -53,7 +53,7 @@ const categories = [
     {
         id: 'grief-support',
         title: 'Grief & Loss Support',
-        desc: 'When someone you care about is grieving, the wrong words can make it worse. Here are the words that actually help.',
+        desc: 'Find thoughtful words, sympathy texts, and caring advice when someone you love is grieving. Genuine comfort, kindness, and support that truly helps.',
         files: [
             'how-to-comfort-someone-who-lost-a-loved-one.html',
             'how-to-support-a-friend-going-through-a-breakup.html',
@@ -63,7 +63,7 @@ const categories = [
     {
         id: 'serious-illness',
         title: 'Serious Illness Support',
-        desc: 'What to say, what to do, and what to avoid when someone you love gets a scary diagnosis.',
+        desc: 'Learn what to say, what to do, and what to avoid when someone you love receives a serious illness diagnosis or spends extended time in the hospital.',
         files: [
             'how-to-support-a-friend-with-cancer.html',
             'what-to-write-in-a-get-well-soon-card.html',
@@ -73,7 +73,7 @@ const categories = [
     {
         id: 'encouragement',
         title: 'Encouragement & Motivation',
-        desc: 'Hype texts and grounding wisdom for big days, nervous moments, and everyday support.',
+        desc: 'Discover uplifting text messages and grounding affirmations for big days, nervous moments, new jobs, exams, and everyday friend encouragement.',
         files: [
             'words-of-encouragement-for-someone-taking-a-big-risk.html',
             'affirmations-to-send-someone-starting-a-new-job.html',
@@ -114,11 +114,18 @@ function fixUrls(html) {
 categories.forEach(cat => {
     const $hub = cheerio.load(sourceHtml);
 
-    // Update title and meta
-    $hub('title').text(`The Vibe Check Blog - ${cat.title}`);
+    const canonicalUrl = `https://thevibecheckproject.com/blog/${cat.id}/`;
+    const pageTitle = `${cat.title} - Guides | The Vibe Check Project`;
+
+    // Update title, meta, canonical, and social tags
+    $hub('title').text(pageTitle);
     $hub('meta[name="description"]').attr('content', cat.desc);
-    $hub('meta[property="og:title"]').attr('content', cat.title);
+    $hub('link[rel="canonical"]').attr('href', canonicalUrl);
+    $hub('meta[property="og:url"]').attr('content', canonicalUrl);
+    $hub('meta[property="og:title"]').attr('content', pageTitle);
     $hub('meta[property="og:description"]').attr('content', cat.desc);
+    $hub('meta[name="twitter:title"]').attr('content', pageTitle);
+    $hub('meta[name="twitter:description"]').attr('content', cat.desc);
 
     // Update Header Text to the category title
     $hub('.pre-text').text('');
@@ -148,10 +155,53 @@ categories.forEach(cat => {
     // Insert new grid right after the .sub-desc paragraph
     $hub('.sub-desc').after(gridHtml);
 
+    // Inject structured data for CollectionPage and BreadcrumbList
+    const hubSchema = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "CollectionPage",
+                "@id": `${canonicalUrl}#collection`,
+                "url": canonicalUrl,
+                "name": `${cat.title} Guides`,
+                "description": cat.desc,
+                "publisher": {
+                    "@type": "Organization",
+                    "name": "The Vibe Check Project",
+                    "url": "https://thevibecheckproject.com/"
+                }
+            },
+            {
+                "@type": "BreadcrumbList",
+                "@id": `${canonicalUrl}#breadcrumb`,
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://thevibecheckproject.com/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Blog",
+                        "item": "https://thevibecheckproject.com/blog/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": cat.title,
+                        "item": canonicalUrl
+                    }
+                ]
+            }
+        ]
+    };
+    $hub('script[type="application/ld+json"]').remove();
+    $hub('head').append(`\n    <script type="application/ld+json">\n    ${JSON.stringify(hubSchema, null, 2)}\n    </script>\n`);
+
     // Fix URLs in the generated HTML
     let finalHtml = fixUrls($hub.html());
-
-
 
     // Create directory
     const catDir = path.join(BLOG_DIR, cat.id);

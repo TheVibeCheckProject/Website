@@ -4,31 +4,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{title}} | The Vibe Check</title>
+    <title>{{title}} | The Vibe Check Project</title>
 
     <meta name="description" content="{{description}}">
     <meta name="keywords" content="affirmations, text messages, what to say, what to text, card messages, {{slug}}">
 
     <!-- Open Graph / Twitter Card -->
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://www.thevibecheckproject.com/blog/{{slug}}/">
-    <meta property="og:title" content="{{title}}">
+    <meta property="og:url" content="https://thevibecheckproject.com/blog/{{slug}}">
+    <link rel="canonical" href="https://thevibecheckproject.com/blog/{{slug}}">
+    <meta property="og:title" content="{{title}} | The Vibe Check Project">
     <meta property="og:description" content="{{description}}">
-    <meta property="og:image" content="https://www.thevibecheckproject.com/assets/og-image.png">
-    <link rel="canonical" href="https://www.thevibecheckproject.com/blog/{{slug}}/">
+    <meta property="og:image" content="https://thevibecheckproject.com/assets/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="The Vibe Check Project">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{title}} | The Vibe Check Project">
+    <meta name="twitter:description" content="{{description}}">
+    <meta name="twitter:image" content="https://thevibecheckproject.com/assets/og-image.png">
+
+    <!-- Structured Data (Article & BreadcrumbList) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "{{title}}",
-      "description": "{{description}}",
-      "url": "https://www.thevibecheckproject.com/blog/{{slug}}/",
-      "publisher": {
-        "@type": "Organization",
-        "name": "The Vibe Check Project",
-        "url": "https://www.thevibecheckproject.com"
-      },
-      "image": "https://www.thevibecheckproject.com/assets/og-image.png"
+      "@graph": [
+        {
+          "@type": "Article",
+          "@id": "https://thevibecheckproject.com/blog/{{slug}}#article",
+          "headline": "{{title}}",
+          "description": "{{description}}",
+          "url": "https://thevibecheckproject.com/blog/{{slug}}",
+          "mainEntityOfPage": "https://thevibecheckproject.com/blog/{{slug}}",
+          "publisher": {
+            "@type": "Organization",
+            "name": "The Vibe Check Project",
+            "url": "https://thevibecheckproject.com/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://thevibecheckproject.com/assets/og-image.png"
+            }
+          },
+          "image": "https://thevibecheckproject.com/assets/og-image.png",
+          "author": {
+            "@type": "Organization",
+            "name": "The Vibe Check Project"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://thevibecheckproject.com/blog/{{slug}}#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://thevibecheckproject.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Blog",
+              "item": "https://thevibecheckproject.com/blog/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "{{header_title}}",
+              "item": "https://thevibecheckproject.com/blog/{{slug}}"
+            }
+          ]
+        }
+      ]
     }
     </script>
 

@@ -9,10 +9,10 @@ const template = fs.readFileSync(TEMPLATE_FILE, 'utf-8');
 const listicles = [
     {
         filename: '100-encouraging-messages-for-a-friend.html',
-        title: '100 Encouraging Messages to Send a Friend',
+        title: '100 Encouraging Messages - Friends',
         header_title: '100 Encouraging Messages',
         slug: '100-encouraging-messages-for-a-friend',
-        description: 'The ultimate list of 100 uplifting, encouraging messages to hype up your best friend, coworker, or partner when they need it most.',
+        description: 'Explore 100 uplifting, encouraging messages to hype up your best friend, coworker, or partner. Copy your favorite text or send an anonymous digital card.',
         color_theme: '#CDFF60',
         count: 100,
         base_messages: [
@@ -25,10 +25,10 @@ const listicles = [
     },
     {
         filename: '50-texts-to-send-someone-having-a-hard-day.html',
-        title: '50 Texts to Send Someone Having a Hard Day',
+        title: '50 Texts for a Hard Day - Support',
         header_title: 'Texts for a Hard Day',
         slug: '50-texts-to-send-someone-having-a-hard-day',
-        description: 'Exactly what to say through text when someone you care about is having a terrible, no good, very bad day.',
+        description: 'Discover 50 comforting texts to send someone having a hard day. Thoughtful, empathetic words to let them know they are loved, seen, and not alone today.',
         color_theme: '#FF6B9D',
         count: 50,
         base_messages: [
@@ -41,10 +41,10 @@ const listicles = [
     },
     {
         filename: '75-thinking-of-you-messages.html',
-        title: '75 Thinking of You Messages to Make Them Smile',
+        title: '75 Thinking of You Messages - Smile',
         header_title: 'Thinking of You Messages',
         slug: '75-thinking-of-you-messages',
-        description: '75 short, sweet text messages and card quotes to send someone just because you thought of them today.',
+        description: 'Browse 75 short, sweet thinking of you messages to make someone smile. Copy any thoughtful text or turn it into an interactive 3D card in seconds.',
         color_theme: '#67E8F9',
         count: 75,
         base_messages: [

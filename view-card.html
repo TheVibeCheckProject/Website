@@ -135,7 +135,9 @@
       // base64url (current share links) with fallback to classic base64 (older links)
       window.decodeVibeCard = function (data) {
         if (!data) return null;
-        let s = String(data).replace(/-/g, '+').replace(/_/g, '/');
+        let sanitized = String(data).trim().replace(/[^A-Za-z0-9\-_]/g, '');
+        if (!sanitized) return null;
+        let s = sanitized.replace(/-/g, '+').replace(/_/g, '/');
         s += '='.repeat((4 - (s.length % 4)) % 4);
         return JSON.parse(decodeURIComponent(atob(s)));
       };
@@ -167,6 +169,11 @@
 </head>
 
 <body>
+  <!-- Upper Right Sound / Volume Mute Toggle -->
+  <button class="sound-toggle-btn" id="soundToggleBtn" type="button" aria-label="Mute or unmute sound effects" title="Toggle Sound">
+    <span id="soundToggleIcon" aria-hidden="true">🔊</span>
+  </button>
+
   <!-- Cinematic Splash Screen -->
   <div id="vibe-loader">
     <div class="loader-orb"></div>
@@ -370,11 +377,12 @@
   <script>
     (async function () {
       const params = new URLSearchParams(window.location.search);
-      const encoded = params.get('data');
-      if (!encoded) {
+      const rawData = params.get('data');
+      if (!rawData) {
         document.getElementById('vibe-loader').classList.add('hidden');
         return;
       }
+      const encoded = rawData.trim().replace(/[^A-Za-z0-9\-_]/g, '');
 
       try {
         const card = window.decodeVibeCard(encoded);
@@ -414,14 +422,14 @@
           if (bridgeTitle) bridgeTitle.textContent = `Make ${sender}'s day right back! 💚`;
           if (bridgeSubtitle) bridgeSubtitle.textContent = `${sender} took a moment out of their day to send you good vibes. Send an instant reply card in 10 seconds:`;
           if (btnReply1) {
-            const msg1 = encodeURIComponent(`Thank you so much for the vibe check, ${sender}! Your message meant the world to me ✨`);
-            btnReply1.href = `send-card.html?recipient=${encodeURIComponent(sender)}&message=${msg1}&viralReply=1`;
+            const note1 = encodeURIComponent(`Thank you so much for the vibe check, ${sender}! Your message meant the world to me ✨`);
+            btnReply1.href = `send-card.html?recipient=${encodeURIComponent(sender)}&preset=gratitude&note=${note1}&viralReply=1`;
             btnReply1.innerHTML = `<span>💌</span> <span>Send a "Thank You" Vibe to ${sender}</span>`;
             btnReply1.onclick = () => { if (window.VibeTelemetry) window.VibeTelemetry.track('reciprocal_reply_clicked', { type: 'thank_you' }); };
           }
           if (btnReply2) {
-            const msg2 = encodeURIComponent(`Sending you the biggest hug and warmest energy right back! You are amazing 🌟`);
-            btnReply2.href = `send-card.html?recipient=${encodeURIComponent(sender)}&message=${msg2}&viralReply=1`;
+            const note2 = encodeURIComponent(`Sending you the biggest hug and warmest energy right back! You are amazing 🌟`);
+            btnReply2.href = `send-card.html?recipient=${encodeURIComponent(sender)}&preset=healing&note=${note2}&viralReply=1`;
             btnReply2.innerHTML = `<span>🫂</span> <span>Send Warm Energy Back</span>`;
             btnReply2.onclick = () => { if (window.VibeTelemetry) window.VibeTelemetry.track('reciprocal_reply_clicked', { type: 'warm_energy' }); };
           }
@@ -429,14 +437,26 @@
           if (bridgeTitle) bridgeTitle.textContent = `Pay this feeling forward 💚`;
           if (bridgeSubtitle) bridgeSubtitle.textContent = `Someone anonymously sent you love today. Pass the kindness along to a friend in your life:`;
           if (btnReply1) {
-            btnReply1.href = `send-card.html?viralReply=1`;
+            btnReply1.href = `send-card.html?preset=gratitude&viralReply=1`;
             btnReply1.innerHTML = `<span>✨</span> <span>Send a Vibe Check to a Friend</span>`;
             btnReply1.onclick = () => { if (window.VibeTelemetry) window.VibeTelemetry.track('reciprocal_reply_clicked', { type: 'pay_forward' }); };
           }
           if (btnReply2) {
-            btnReply2.href = `send-card.html?viralReply=1`;
+            btnReply2.href = `send-card.html?preset=healing&viralReply=1`;
             btnReply2.innerHTML = `<span>💌</span> <span>Send an Anonymous Card</span>`;
             btnReply2.onclick = () => { if (window.VibeTelemetry) window.VibeTelemetry.track('reciprocal_reply_clicked', { type: 'anonymous' }); };
+          }
+        }
+
+        // Dynamic Reciprocal CTA for Primary Action Button
+        const sendBackBtn = document.getElementById('sendBackBtn');
+        if (sendBackBtn) {
+          if (sender) {
+            sendBackBtn.textContent = `Reply to ${sender} 💌`;
+            sendBackBtn.href = `send-card.html?recipient=${encodeURIComponent(sender)}&preset=gratitude&viralReply=1`;
+          } else {
+            sendBackBtn.textContent = 'Send a Card to Someone ✨';
+            sendBackBtn.href = 'send-card.html?preset=gratitude&viralReply=1';
           }
         }
 
@@ -514,16 +534,52 @@
     // Read sound from card data
     (function () {
       const params = new URLSearchParams(window.location.search);
-      const encoded = params.get('data');
-      if (!encoded) return;
+      const rawData = params.get('data');
+      if (!rawData) return;
+      const encoded = rawData.trim().replace(/[^A-Za-z0-9\-_]/g, '');
       try {
         const card = window.decodeVibeCard(encoded);
         if (card.sound) cardSound = card.sound;
       } catch (e) { }
     })();
 
+    // Sound Mute Controller
+    let isSoundMuted = false;
+    try {
+      isSoundMuted = localStorage.getItem('vibe_sound_muted') === 'true';
+    } catch (e) {}
+
+    const soundToggleBtn = document.getElementById('soundToggleBtn');
+    const soundToggleIcon = document.getElementById('soundToggleIcon');
+
+    function updateSoundToggleUI() {
+      if (soundToggleIcon) soundToggleIcon.textContent = isSoundMuted ? '🔇' : '🔊';
+      if (soundToggleBtn) {
+        soundToggleBtn.setAttribute('aria-label', isSoundMuted ? 'Unmute sound effects' : 'Mute sound effects');
+        soundToggleBtn.classList.toggle('is-muted', isSoundMuted);
+      }
+    }
+    updateSoundToggleUI();
+
+    if (soundToggleBtn) {
+      soundToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        isSoundMuted = !isSoundMuted;
+        try {
+          localStorage.setItem('vibe_sound_muted', String(isSoundMuted));
+        } catch (err) {}
+        updateSoundToggleUI();
+        if (window.soundEngine && typeof window.soundEngine.setMuted === 'function') {
+          window.soundEngine.setMuted(isSoundMuted);
+        }
+      });
+    }
+
     function playCardSound() {
-      soundEngine.play(cardSound);
+      if (isSoundMuted) return;
+      if (window.soundEngine && typeof soundEngine.play === 'function') {
+        soundEngine.play(cardSound);
+      }
     }
 
     // ── Desktop 3D Tilt ──

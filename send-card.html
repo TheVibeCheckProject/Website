@@ -125,18 +125,18 @@
                 <p class="send-card-subtitle">Send someone you care about a personalized affirmation card</p>
             </div>
 
-            <div class="step-indicator" id="stepIndicator">
-                <div class="step-num-wrap sn-active" id="sn1">
+            <div class="step-indicator" id="stepIndicator" role="navigation" aria-label="Creation Steps">
+                <div class="step-num-wrap sn-active" id="sn1" role="button" tabindex="0" onclick="goToStep(1)" onkeydown="if(event.key==='Enter'||event.key===' ')goToStep(1)" style="cursor: pointer;" aria-label="Step 1: Your Vibe">
                     <div class="step-num">1</div>
                     <span class="step-num-label">Your Vibe</span>
                 </div>
                 <div class="step-connector" id="sc1"></div>
-                <div class="step-num-wrap" id="sn2">
+                <div class="step-num-wrap" id="sn2" role="button" tabindex="0" onclick="goToStep(2)" onkeydown="if(event.key==='Enter'||event.key===' ')goToStep(2)" style="cursor: pointer;" aria-label="Step 2: The Look">
                     <div class="step-num">2</div>
                     <span class="step-num-label">The Look</span>
                 </div>
                 <div class="step-connector" id="sc2"></div>
-                <div class="step-num-wrap" id="sn3">
+                <div class="step-num-wrap" id="sn3" role="button" tabindex="0" onclick="goToStep(3)" onkeydown="if(event.key==='Enter'||event.key===' ')goToStep(3)" style="cursor: pointer;" aria-label="Step 3: Send It">
                     <div class="step-num">3</div>
                     <span class="step-num-label">Send It</span>
                 </div>
@@ -436,27 +436,58 @@
                     <div class="sticky-preview">
                         <div class="preview-header-row">
                             <div class="preview-label">Card Preview</div>
-                            <button type="button" class="motion-toggle-btn" id="motionToggleBtn" aria-label="Toggle motion effects" title="Toggle reduced motion">
-                                <span id="motionToggleIcon" aria-hidden="true">✨</span>
-                                <span id="motionToggleText">Motion On</span>
-                            </button>
-                        </div>
-                        <div class="card-preview" id="cardPreview">
-                            <!-- Animated Background Layer -->
-                            <video id="previewVideo" autoplay loop muted playsinline
-                                style="display: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;"></video>
-
-                            <div class="preview-content-wrapper">
-                                <div class="preview-recipient-chip hidden" id="previewRecipientChip">
-                                    <span>💌</span>
-                                    <span id="previewRecipientName">Sarah</span>
-                                </div>
-                                <div class="preview-affirmation" id="previewAffirmation">"Your affirmation will appear
-                                    here"</div>
-                                <div class="preview-message" id="previewMessage"><strong>Someone special</strong> wanted
-                                    to send you some good vibes ✨</div>
+                            <div class="preview-controls-row">
+                                <button type="button" class="preview-flip-btn" id="previewFlipBtn" onclick="toggleCardPreviewFlip()" title="Flip card to preview personal note">
+                                    <span class="flip-icon" aria-hidden="true">🔄</span>
+                                    <span id="previewFlipBtnText">Flip Card</span>
+                                </button>
+                                <button type="button" class="motion-toggle-btn" id="motionToggleBtn" aria-label="Toggle motion effects" title="Toggle reduced motion">
+                                    <span id="motionToggleIcon" aria-hidden="true">✨</span>
+                                    <span id="motionToggleText">Motion On</span>
+                                </button>
                             </div>
-                            <span id="previewSender" style="display: none;">Someone special</span>
+                        </div>
+                        <div class="card-preview" id="cardPreview" role="region" aria-label="Interactive 3D Card Preview">
+                            <div class="card-preview-inner" id="cardPreviewInner">
+                                <!-- Front Face: Affirmation, Background, Floating Particles -->
+                                <div class="card-preview-face card-preview-front" id="cardPreviewFront">
+                                    <!-- Animated Background Layer -->
+                                    <video id="previewVideo" autoplay loop muted playsinline
+                                        style="display: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;"></video>
+
+                                    <div class="preview-content-wrapper">
+                                        <div class="preview-recipient-chip hidden" id="previewRecipientChip">
+                                            <span>💌</span>
+                                            <span id="previewRecipientName">Sarah</span>
+                                        </div>
+                                        <div class="preview-affirmation" id="previewAffirmation">"Your affirmation will appear here"</div>
+                                        <div class="preview-message" id="previewMessage"><strong>Someone special</strong> wanted to send you some good vibes ✨</div>
+                                    </div>
+                                    <span id="previewSender" style="display: none;">Someone special</span>
+                                    <button type="button" class="card-flip-tap-hint" onclick="toggleCardPreviewFlip()" title="Flip to note">
+                                        <span>🔄 Flip to Note</span>
+                                    </button>
+                                </div>
+
+                                <!-- Back Face: Personal Note & Signoff -->
+                                <div class="card-preview-face card-preview-back" id="cardPreviewBack">
+                                    <div class="back-note-container">
+                                        <div class="back-note-header">
+                                            <span class="back-note-stamp">💌 PERSONAL NOTE</span>
+                                        </div>
+                                        <div class="back-note-body">
+                                            <p class="back-note-text" id="previewBackNote">"I was thinking of you today and wanted to send some good vibes your way..."</p>
+                                        </div>
+                                        <div class="back-note-footer">
+                                            <span class="back-note-from-label">From:</span>
+                                            <strong class="back-note-sender" id="previewBackSender">Someone special</strong>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="card-flip-tap-hint" onclick="toggleCardPreviewFlip()" title="Flip back to front">
+                                        <span>🔄 Flip to Front</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -466,7 +497,7 @@
 
     <script src="js/core-utils.js?v=108"></script>
     <script src="js/vibe-history.js?v=108"></script>
-    <script src="js/send-card-logic.js?v=108"></script>
+    <script src="js/send-card-logic.js?v=110"></script>
 
     <!-- EmailJS SDK — loaded at end of body so it never blocks rendering -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>

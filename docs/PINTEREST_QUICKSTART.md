@@ -35,7 +35,7 @@ For each of the 50 images in `assets/pinterest-pins/`:
 Pinterest loves consistency. You don't need to post all 50 at once!
 *   **Frequency:** Post 2-3 pins a day.
 *   **Batching:** You can "Schedule" pins on Pinterest so you can set up a whole week's worth of posts in 15 minutes on a Sunday.
-*   **Tracking:** Use the [pin-tracker.md](file:///c:/Users/devin/OneDrive/Desktop/thevibecheck-website/Website/docs/pin-tracker.md) to check off which ones you've already used so you don't repeat them!
+*   **Tracking:** Use the [pin-tracker.md](pin-tracker.md) to check off which ones you've already used so you don't repeat them!
 
 ---
 

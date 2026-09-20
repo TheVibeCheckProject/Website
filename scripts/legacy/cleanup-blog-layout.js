@@ -1,8 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
-
-const blogDir = 'c:/Users/devin/OneDrive/Desktop/thevibecheck-website/Website/blog';
+const blogDir = path.join(__dirname, '../../blog');
 
 // Regex to find the redundant <div class="inline-related-reading"> block
 // This includes the possible variations in spacing and content

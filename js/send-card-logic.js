@@ -159,10 +159,15 @@ function renderOccasionChips() {
 }
 
 function applyOccasionTemplate(templateId, isAutoFromUrl = false) {
-    const template = occasionTemplates.find(t => t.id === templateId);
+    let resolvedId = (templateId || '').toLowerCase();
+    if (resolvedId === 'grief' || resolvedId === 'loss' || resolvedId === 'sympathy') resolvedId = 'healing';
+    if (resolvedId === 'panic' || resolvedId === 'anxiety') resolvedId = 'calm';
+    if (resolvedId === 'breakup' || resolvedId === 'hard_day') resolvedId = 'tough_day';
+
+    const template = occasionTemplates.find(t => t.id === resolvedId);
     if (!template) return;
 
-    activeOccasionTemplate = templateId;
+    activeOccasionTemplate = resolvedId;
     renderOccasionChips();
 
     // 1. Set Affirmation
@@ -171,7 +176,10 @@ function applyOccasionTemplate(templateId, isAutoFromUrl = false) {
     const previewAff = document.getElementById('previewAffirmation');
     if (previewAff) previewAff.textContent = `"${template.affirmation}"`;
 
-    closeWriteOwn();
+    const writeCard = document.getElementById('writeOwnCard');
+    const writeExpanded = document.getElementById('writeOwnExpanded');
+    if (writeCard) writeCard.style.display = '';
+    if (writeExpanded) writeExpanded.classList.remove('visible');
 
     if (pickerEl) {
         pickerEl.querySelectorAll('.aff-card').forEach(c => {
@@ -217,9 +225,10 @@ function applyOccasionTemplate(templateId, isAutoFromUrl = false) {
 function handleExternalMessage() {
     const urlParams = new URLSearchParams(window.location.search);
     const messageParam = urlParams.get('message') || urlParams.get('msg');
+    const noteParam = urlParams.get('note') || urlParams.get('personal_note');
     const recipientParam = urlParams.get('recipient') || urlParams.get('to');
     const occasionParam = urlParams.get('occasion') || urlParams.get('template') || urlParams.get('preset');
-    const isViralReply = urlParams.get('viralReply') === '1';
+    const isViralReply = urlParams.get('viralReply') === '1' || urlParams.get('reply') === '1';
     
     if (recipientParam) {
         let cleanRec = recipientParam;
@@ -247,7 +256,25 @@ function handleExternalMessage() {
         }
     }
 
-    if (messageParam) {
+    // Handle Personal Note pre-fill (from viral reply or explicit note parameter)
+    const personalNoteText = noteParam || (isViralReply ? messageParam : null);
+    if (personalNoteText) {
+        let cleanNote = personalNoteText;
+        try {
+            if (cleanNote.includes('%')) cleanNote = decodeURIComponent(personalNoteText);
+        } catch (e) { }
+        const pInput = document.getElementById('personalMessage');
+        if (pInput) {
+            pInput.value = cleanNote;
+        }
+        const backNote = document.getElementById('previewBackNote');
+        if (backNote) {
+            backNote.textContent = `"${cleanNote.trim()}"`;
+        }
+    }
+
+    // Handle Affirmation pre-fill (from blog posts or external message links)
+    if (messageParam && !isViralReply) {
         let decodedMsg = messageParam;
         try {
             if (decodedMsg.includes('%')) {
@@ -259,10 +286,8 @@ function handleExternalMessage() {
 
         window._externalMessage = decodedMsg;
         selectedAffirmation = decodedMsg;
-        
         const previewAff = document.getElementById('previewAffirmation');
         if (previewAff) previewAff.textContent = `"${decodedMsg}"`;
-        
         if (typeof updatePreview === 'function') updatePreview();
         if (window.VibeTelemetry) {
             window.VibeTelemetry.track('external_message_applied', { message_length: decodedMsg.length });
@@ -468,6 +493,10 @@ function renderAffirmationGrid(category, locked, skipAnimation) {
 }
 
 function openWriteOwn() {
+    if (!isPremium) {
+        showPremModal('write_own', 'Custom Affirmation Composer');
+        return;
+    }
     const card = document.getElementById('writeOwnCard');
     const expanded = document.getElementById('writeOwnExpanded');
     if (card) card.style.display = 'none';
@@ -736,7 +765,43 @@ function updatePreview() {
             }
         }
     }
+
+    // Update 3D Flip Back Face Note & Signoff
+    const backNote = document.getElementById('previewBackNote');
+    if (backNote) {
+        backNote.textContent = personalMessage && personalMessage.trim() 
+            ? `"${personalMessage.trim()}"` 
+            : '"I was thinking of you today and wanted to send some good vibes your way..."';
+    }
+    const backSender = document.getElementById('previewBackSender');
+    if (backSender) {
+        backSender.textContent = senderName;
+    }
 }
+
+/**
+ * 3D Interactive Card Flip Toggle Controller
+ */
+function toggleCardPreviewFlip() {
+    const preview = document.getElementById('cardPreview');
+    const flipText = document.getElementById('previewFlipBtnText');
+    if (!preview) return;
+
+    const isFlipped = preview.classList.toggle('flipped');
+    if (flipText) {
+        flipText.textContent = isFlipped ? 'Show Front' : 'Flip Card';
+    }
+
+    // Mobile tactile haptic feedback cue (15ms)
+    if (navigator.vibrate) {
+        try { navigator.vibrate([15]); } catch (e) {}
+    }
+
+    if (window.VibeTelemetry) {
+        window.VibeTelemetry.track('card_preview_flipped', { isFlipped: isFlipped });
+    }
+}
+window.toggleCardPreviewFlip = toggleCardPreviewFlip;
 
 function copyLink(e) {
     const input = document.getElementById('cardLink');
@@ -935,16 +1000,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Handle External Messages (CRITICAL: Runs after grid matches are built)
     handleExternalMessage();
 
-    // 3. Handle premium state for custom affirmations or applied occasion preset
-    if (window._externalMessage) {
+    // 3. Handle applied occasion preset or premium custom affirmations
+    if (window._appliedOccasion) {
+        applyOccasionTemplate(window._appliedOccasion, true);
+    } else if (window._externalMessage) {
         if (isPremium) {
             openWriteOwn();
             const ta = document.getElementById('writeOwnText');
             if (ta) ta.value = window._externalMessage;
         }
         updatePreview();
-    } else if (window._appliedOccasion) {
-        applyOccasionTemplate(window._appliedOccasion, true);
     }
 
     // 4. Default selection (Only if NO external message and NO occasion preset)
@@ -1015,6 +1080,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // Anti-bypass paywall verification: If affirmation is not in curated catalog, enforce premium
+            if (!isPremium) {
+                const cleanAff = (selectedAffirmation || '').replace(/^["']|["']$/g, '').trim();
+                const allCurated = [
+                    ...freeAffirmations,
+                    ...categoryDefs.flatMap(c => c.affirmations || []),
+                    ...occasionTemplates.map(t => t.affirmation)
+                ].map(a => a.replace(/^["']|["']$/g, '').trim());
+
+                if (!allCurated.includes(cleanAff)) {
+                    showToast('Writing your own custom affirmation is a Premium feature ✨', '🔒');
+                    showPremModal('write_own', 'Custom Affirmation Composer');
+                    const sendBtn = document.getElementById('sendButton');
+                    if (sendBtn) {
+                        sendBtn.disabled = false;
+                        sendBtn.textContent = 'Create Card ✨';
+                    }
+                    goToStep(1);
+                    return;
+                }
+            }
+
             const recipientName = document.getElementById('recipientName').value;
             if (!recipientName.trim()) {
                 showToast("Add their name so they know it's for them 💖", '👤');
@@ -1063,8 +1150,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const encoded = btoa(encodeURIComponent(JSON.stringify(cardData)))
                 .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); // base64url: URL-safe share links
-            const base = window.location.href.replace(/send-card\.html.*$/, '');
-            const cardUrl = `${base}view-card.html?data=${encoded}`;
+            
+            // Canonical share URL: External recipients (Email, SMS, WhatsApp) must ALWAYS receive the live public HTTPS URL
+            const publicCardUrl = `https://thevibecheckproject.com/view-card.html?data=${encoded}`;
+            const cardUrl = publicCardUrl;
 
             // Persist to Client-Side Sender History ("My Vibes")
             if (window.VibeHistory && typeof window.VibeHistory.save === 'function') {
@@ -1131,12 +1220,31 @@ document.addEventListener('DOMContentLoaded', () => {
             let emailSentOK = false;
             if (recipientEmail && typeof emailjs !== 'undefined') {
                 try {
+                    // Personal note rendered inside the email template's quote block
+                    const noteForEmail = (personalMessage && personalMessage.trim())
+                        ? personalMessage.trim()
+                        : (selectedAffirmation || 'Wanted to send some good vibes your way today ✨');
+
                     await emailjs.send('service_cn9gjbv', 'template_bpj8rue', {
                         to_email: recipientEmail,
                         to_name: recipientName || 'Friend',
-                        from_name: 'Someone',
-                        message: 'Someone sent you a Vibe Check from The Vibe Check Project! Open the card to reveal your message. ✨',
+                        from_name: senderName || 'Someone special',
+                        sender_name: senderName || 'Someone special',
+                        message: noteForEmail,
+                        personal_message: noteForEmail,
+                        affirmation: selectedAffirmation || '',
                         card_link: cardUrl,
+                        card_url: cardUrl,
+                        cardUrl: cardUrl,
+                        cardLink: cardUrl,
+                        link: cardUrl,
+                        url: cardUrl,
+                        action_url: cardUrl,
+                        view_card_url: cardUrl,
+                        card_link_url: cardUrl,
+                        card: cardUrl,
+                        card_data: encoded,
+                        href: cardUrl
                     });
                     emailSentOK = true;
                     if (window.VibeTelemetry) window.VibeTelemetry.track('card_email_sent_success');

@@ -29,152 +29,7 @@
     </noscript>
 
     <!-- Main CSS -->
-    <link rel="stylesheet" href="css/styles.css?v=6">
-
-    <style>
-        .situations-header {
-            text-align: center;
-            padding: 100px 20px 40px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .situations-header h1 {
-            font-family: 'Fredoka', var(--font-display);
-            font-size: clamp(3rem, 7vw, 4.5rem);
-            color: #fff;
-            margin-bottom: 20px;
-            text-shadow: 0 0 20px rgba(167, 139, 250, 0.4);
-            background: linear-gradient(135deg, #FF6B9D 0%, #FEC84A 50%, #67E8F9 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .situations-header p {
-            font-size: 1.25rem;
-            color: var(--color-text-secondary);
-            line-height: 1.6;
-        }
-
-        .category-group {
-            max-width: 1000px;
-            margin: 0 auto 80px;
-            padding: 0 20px;
-        }
-
-        .category-group h2 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 2rem;
-            color: var(--color-text-primary);
-            margin-bottom: 30px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .situations-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 24px;
-        }
-
-        .situation-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 30px;
-            text-decoration: none;
-            color: var(--color-text-primary);
-            transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-
-        .situation-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.1), transparent 60%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .situation-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .situation-card:hover::before {
-            opacity: 1;
-        }
-
-        .situation-icon {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.05);
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .situation-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-
-        .situation-card p {
-            color: var(--color-text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            flex-grow: 1;
-        }
-
-        .situation-link-text {
-            color: var(--color-secondary);
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .situation-card:hover .situation-link-text {
-            color: #d9f99d;
-        }
-
-        .premium-bg-1 {
-            background: linear-gradient(135deg, rgba(167, 139, 250, 0.05), rgba(167, 139, 250, 0.01));
-        }
-
-        .premium-bg-2 {
-            background: linear-gradient(135deg, rgba(255, 107, 157, 0.05), rgba(255, 107, 157, 0.01));
-        }
-
-        .premium-bg-3 {
-            background: linear-gradient(135deg, rgba(103, 232, 249, 0.05), rgba(103, 232, 249, 0.01));
-        }
-
-        .premium-bg-4 {
-            background: linear-gradient(135deg, rgba(254, 200, 74, 0.05), rgba(254, 200, 74, 0.01));
-        }
-    </style>
+    <link rel="stylesheet" href="css/styles.css?v=108">
 
     <!-- Analytics -->
     <script>
@@ -217,113 +72,171 @@
         </div>
     </nav>
 
-    <main>
+    <main class="situations-section">
         <header class="situations-header">
             <h1>What's the Situation?</h1>
             <p>Find the exact words for when your mind goes completely blank. Browse our directory of guides, templates,
                 and copyable text messages below.</p>
         </header>
 
-        <!-- Category: Grief & Hardship -->
-        <section class="category-group">
-            <h2>🕊️ Grief & Hardship</h2>
-            <div class="situations-grid">
-                <a href="blog/grief-support/index.html" class="situation-card premium-bg-1">
-                    <div class="situation-icon">🌧️</div>
-                    <h3>Grief Support Guide</h3>
-                    <p>Comprehensive guides on what to say when someone loses a loved one, and how to actually help.</p>
-                    <span class="situation-link-text">Read Guide →</span>
-                </a>
-                <a href="blog/sympathy-card-messages/index.html" class="situation-card premium-bg-1">
-                    <div class="situation-icon">📝</div>
-                    <h3>Sympathy Card Messages</h3>
-                    <p>10+ copyable messages to write in a sympathy card when there are simply no words.</p>
-                    <span class="situation-link-text">Get Messages →</span>
-                </a>
-                <a href="blog/serious-illness/index.html" class="situation-card premium-bg-1">
-                    <div class="situation-icon">🏥</div>
-                    <h3>Serious Illness & Hospital</h3>
-                    <p>How to support a friend diagnosed with a severe illness without treating them differently.</p>
-                    <span class="situation-link-text">Read Guide →</span>
-                </a>
-            </div>
-        </section>
+        <div class="situations-layout">
+            <!-- Sticky Left Category Navigation & Search -->
+            <aside class="situations-sidebar">
+                <div class="situations-search-box">
+                    <label for="situationsSearchInput" class="form-label" style="display: block; margin-bottom: 8px; font-size: 13px;">Search Situations</label>
+                    <input type="text" id="situationsSearchInput" class="form-input" placeholder="e.g. grief, panic, breakup..." autocomplete="off" aria-label="Search situations and advice">
+                </div>
+                <div class="situations-categories" role="tablist" aria-label="Situation Categories">
+                    <button type="button" class="filter-pill situation-pill active" data-category="all">All Situations</button>
+                    <button type="button" class="filter-pill situation-pill" data-category="grief">🕊️ Grief &amp; Hardship</button>
+                    <button type="button" class="filter-pill situation-pill" data-category="mental-health">🧠 Mental Health</button>
+                    <button type="button" class="filter-pill situation-pill" data-category="relationships">💔 Relationships</button>
+                    <button type="button" class="filter-pill situation-pill" data-category="encouragement">✨ Encouragement</button>
+                </div>
+            </aside>
 
-        <!-- Category: Mental Health & Burnout -->
-        <section class="category-group">
-            <h2>🧠 Mental Health & Burnout</h2>
-            <div class="situations-grid">
-                <a href="blog/mental-health/index.html" class="situation-card premium-bg-2">
-                    <div class="situation-icon">🫂</div>
-                    <h3>Mental Health Hub</h3>
-                    <p>General advice on navigating depression, burnout, and being the "strong friend" who is tired.</p>
-                    <span class="situation-link-text">Explore Topics →</span>
-                </a>
-                <a href="blog/texts-for-anxiety/index.html" class="situation-card premium-bg-2">
-                    <div class="situation-icon">🌊</div>
-                    <h3>Anxiety & Panic Attack Texts</h3>
-                    <p>Grounding texts you can send someone right now who is spiraling or having a panic attack.</p>
-                    <span class="situation-link-text">Copy Texts →</span>
-                </a>
-                <a href="blog/what-to-say-to-someone-who-feels-like-giving-up.html" class="situation-card premium-bg-2">
-                    <div class="situation-icon">❤️</div>
-                    <h3>When They Want to Give Up</h3>
-                    <p>What to say when someone tells you they want to give up, and every word matters.</p>
-                    <span class="situation-link-text">Read Guide →</span>
-                </a>
-            </div>
-        </section>
+            <!-- 4-Column Responsive Grid -->
+            <div class="situations-main">
+                <div class="situations-grid" id="situationsGrid">
+                    <!-- Card 1 -->
+                    <div class="situation-card premium-bg-1" data-category="grief">
+                        <div class="situation-icon">🌧️</div>
+                        <h3>Grief Support Guide</h3>
+                        <p>Comprehensive guides on what to say when someone loses a loved one, and how to actually help.</p>
+                        <div class="situation-card-actions">
+                            <a href="blog/grief-support/index.html" class="btn btn-outline">📖 Read Guide</a>
+                            <a href="send-card.html?preset=grief&source=situations_grief" class="btn btn-primary btn-send-preset">💌 Send Card ✨</a>
+                        </div>
+                    </div>
 
-        <!-- Category: Relationships -->
-        <section class="category-group">
-            <h2>💔 Relationships & Heartbreak</h2>
-            <div class="situations-grid">
-                <a href="blog/breakup-support-messages/index.html" class="situation-card premium-bg-3">
-                    <div class="situation-icon">🍦</div>
-                    <h3>Breakup Support Texts</h3>
-                    <p>Messages to send a friend who is devastated over a breakup. No platitudes, just real support.</p>
-                    <span class="situation-link-text">Copy Texts →</span>
-                </a>
-                <a href="blog/how-to-support-a-friend-going-through-a-breakup.html" class="situation-card premium-bg-3">
-                    <div class="situation-icon">🏠</div>
-                    <h3>The Post-Breakup Playbook</h3>
-                    <p>A full guide on how to support your friend through a messy, emotionally exhausting breakup.</p>
-                    <span class="situation-link-text">Read Guide →</span>
-                </a>
-                <a href="blog/how-to-check-on-a-friend-who-went-quiet.html" class="situation-card premium-bg-3">
-                    <div class="situation-icon">🧭</div>
-                    <h3>When They Go Quiet</h3>
-                    <p>How to check on a friend who dropped off the radar without making them feel guilty.</p>
-                    <span class="situation-link-text">Read Guide →</span>
-                </a>
-            </div>
-        </section>
+                    <!-- Card 2 -->
+                    <div class="situation-card premium-bg-1" data-category="grief">
+                        <div class="situation-icon">📝</div>
+                        <h3>Sympathy Card Messages</h3>
+                        <p>10+ copyable messages to write in a sympathy card when there are simply no words.</p>
+                        <div class="situation-card-actions">
+                            <a href="blog/sympathy-card-messages/index.html" class="btn btn-outline">📖 Read Guide</a>
+                            <a href="send-card.html?preset=healing&source=situations_sympathy" class="btn btn-primary btn-send-preset">💌 Send Card ✨</a>
+                        </div>
+                    </div>
 
-        <!-- Category: Everyday Encouragement -->
-        <section class="category-group">
-            <h2>✨ Everyday Encouragement</h2>
-            <div class="situations-grid">
-                <a href="blog/encouragement/index.html" class="situation-card premium-bg-4">
-                    <div class="situation-icon">🚀</div>
-                    <h3>Motivation & Hype Hub</h3>
-                    <p>Guides on celebrating success, hyping up friends, and providing motivation.</p>
-                    <span class="situation-link-text">Explore Topics →</span>
-                </a>
-                <a href="blog/encouraging-messages-for-cards/index.html" class="situation-card premium-bg-4">
-                    <div class="situation-icon">🏆</div>
-                    <h3>Hype Texts & Card Messages</h3>
-                    <p>Short, powerful copyable texts to encourage someone taking a big step or needing a hype man.</p>
-                    <span class="situation-link-text">Get Messages →</span>
-                </a>
-                <a href="blog/just-because-messages/index.html" class="situation-card premium-bg-4">
-                    <div class="situation-icon">🌻</div>
-                    <h3>"Just Because" Texts</h3>
-                    <p>You don't need a crisis. Texts to make someone's day completely out of nowhere.</p>
-                    <span class="situation-link-text">Copy Texts →</span>
-                </a>
-            </div>
-        </section>
+                    <!-- Card 3 -->
+                    <div class="situation-card premium-bg-1" data-category="grief">
+                        <div class="situation-icon">🏥</div>
+                        <h3>Serious Illness &amp; Hospital</h3>
+                        <p>How to support a friend diagnosed with a severe illness without treating them differently.</p>
+                        <div class="situation-card-actions">
+                            <a href="blog/serious-illness/index.html" class="btn btn-outline">📖 Read Guide</a>
+                            <a href="send-card.html?preset=healing&source=situations_illness" class="btn btn-primary btn-send-preset">💌 Send Card ✨</a>
+                        </div>
+                    </div>
 
+                    <!-- Card 4 -->
+                    <div class="situation-card premium-bg-2" data-category="mental-health">
+                        <div class="situation-icon">🫂</div>
+                        <h3>Mental Health Hub</h3>
+                        <p>General advice on navigating depression, burnout, and being the "strong friend" who is tired.</p>
+                        <div class="situation-card-actions">
+                            <a href="blog/mental-health/index.html" class="btn btn-outline">📖 Read Guide</a>
+                            <a href="send-card.html?preset=calm&source=situations_mental_health" class="btn btn-primary btn-send-preset">💌 Send Card ✨</a>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="situation-card premium-bg-2" data-category="mental-health">
+                        <div class="situation-icon">🌊</div>
+                        <h3>Anxiety &amp; Panic Attack Texts</h3>
+                        <p>Grounding texts you can send someone right now who is spiraling or having a panic attack.</p>
+                        <div class="situation-card-actions">
+                            <a href="blog/texts-for-anxiety/index.html" class="btn btn-outline">📖 Read Guide</a>
+                            <a href="send-card.html?preset=calm&source=situations_anxiety" class="btn btn-primary btn-send-preset">💌 Send Card ✨</a>
+                        </div>
+                    </div>
+
+                    <!-- Card 6 -->
+                    <div class="situation-card premium-bg-2" data-category="mental-health">
+                        <div class="situation-icon">❤️</div>
+                        <h3>When They Want to Give Up</h3>
+                        <p>What to say when someone tells you they want to give up, and every word matters.</p>
+                        <div class="situation-card-actions">
+                            <a href="blog/what-to-say-to-someone-who-feels-like-giving-up.html" class="btn btn-outline">📖 Read Guide</a>
+                            <a href="send-card.html?preset=tough_day&source=situations_give_up" class="btn btn-primary btn-send-preset">💌 Send Card ✨</a>
+                        </div>
+                    </div>
+
+                    <!-- Card 7 -->
+                    <div class="situation-card premium-bg-3" data-category="relationships">
+                        <div class="situation-icon">🍦</div>
+                        <h3>Breakup Support Texts</h3>
+                        <p>Messages to send a friend who is devastated over a breakup. No platitudes, just real support.</p>
+                        <div class="situation-card-actions">
+                            <a href="blog/breakup-support-messages/index.html" class="btn btn-outline">📖 Read Guide</a>
+                            <a href="send-card.html?preset=tough_day&source=situations_breakup" class="btn btn-primary btn-send-preset">💌 Send Card ✨</a>
+                        </div>
+                    </div>
+
+                    <!-- Card 8 -->
+                    <div class="situation-card premium-bg-3" data-category="relationships">
+                        <div class="situation-icon">🏠</div>
+                        <h3>The Post-Breakup Playbook</h3>
+                        <p>A full guide on how to support your friend through a messy, emotionally exhausting breakup.</p>
+                        <div class="situation-card-actions">
+                            <a href="blog/how-to-support-a-friend-going-through-a-breakup.html" class="btn btn-outline">📖 Read Guide</a>
+                            <a href="send-card.html?preset=tough_day&source=situations_breakup_guide" class="btn btn-primary btn-send-preset">💌 Send Card ✨</a>
+                        </div>
+                    </div>
+
+                    <!-- Card 9 -->
+                    <div class="situation-card premium-bg-3" data-category="relationships">
+                        <div class="situation-icon">🧭</div>
+                        <h3>When They Go Quiet</h3>
+                        <p>How to check on a friend who dropped off the radar without making them feel guilty.</p>
+                        <div class="situation-card-actions">
+                            <a href="blog/how-to-check-on-a-friend-who-went-quiet.html" class="btn btn-outline">📖 Read Guide</a>
+                            <a href="send-card.html?preset=gratitude&source=situations_quiet" class="btn btn-primary btn-send-preset">💌 Send Card ✨</a>
+                        </div>
+                    </div>
+
+                    <!-- Card 10 -->
+                    <div class="situation-card premium-bg-4" data-category="encouragement">
+                        <div class="situation-icon">🚀</div>
+                        <h3>Motivation &amp; Hype Hub</h3>
+                        <p>Guides on celebrating success, hyping up friends, and providing motivation.</p>
+                        <div class="situation-card-actions">
+                            <a href="blog/encouragement/index.html" class="btn btn-outline">📖 Read Guide</a>
+                            <a href="send-card.html?preset=proud&source=situations_hype" class="btn btn-primary btn-send-preset">💌 Send Card ✨</a>
+                        </div>
+                    </div>
+
+                    <!-- Card 11 -->
+                    <div class="situation-card premium-bg-4" data-category="encouragement">
+                        <div class="situation-icon">🏆</div>
+                        <h3>Hype Texts &amp; Card Messages</h3>
+                        <p>Short, powerful copyable texts to encourage someone taking a big step or needing a hype man.</p>
+                        <div class="situation-card-actions">
+                            <a href="blog/encouraging-messages-for-cards/index.html" class="btn btn-outline">📖 Read Guide</a>
+                            <a href="send-card.html?preset=proud&source=situations_encourage" class="btn btn-primary btn-send-preset">💌 Send Card ✨</a>
+                        </div>
+                    </div>
+
+                    <!-- Card 12 -->
+                    <div class="situation-card premium-bg-4" data-category="encouragement">
+                        <div class="situation-icon">🌻</div>
+                        <h3>"Just Because" Texts</h3>
+                        <p>You don't need a crisis. Texts to make someone's day completely out of nowhere.</p>
+                        <div class="situation-card-actions">
+                            <a href="blog/just-because-messages/index.html" class="btn btn-outline">📖 Read Guide</a>
+                            <a href="send-card.html?preset=gratitude&source=situations_just_because" class="btn btn-primary btn-send-preset">💌 Send Card ✨</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="situationsEmptyState" hidden style="text-align:center; padding: 40px 20px; color: var(--color-text-muted);">
+                    <p style="font-size: 1.1rem; margin-bottom: 8px;">No matching situations found.</p>
+                    <small>Try another keyword or select "All Situations".</small>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer class="footer">
@@ -378,6 +291,20 @@
     <!-- Scripts -->
     <script src="js/core-utils.js?v=108" defer></script>
     <script src="js/script.js?v=108" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof window.initItemFilter === 'function') {
+                window.initItemFilter({
+                    searchInputId: 'situationsSearchInput',
+                    pillSelector: '.situation-pill',
+                    itemSelector: '.situation-card',
+                    categoryDataAttr: 'category',
+                    searchableSelector: 'h3, p',
+                    emptyStateId: 'situationsEmptyState'
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

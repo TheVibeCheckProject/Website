@@ -97,28 +97,36 @@
             <div class="nav-logo">
                 <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
             </div>
-            <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu"
-                aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-links" style="align-items: center;">
-                <li>
-                    <a href="blog/index.html#crisis" class="nav-crisis-badge">
-                        <span class="nav-crisis-heart">❤️</span>
-                        <span class="nav-crisis-text">Emergency Support</span>
-                    </a>
-                </li>
-                <li><a href="send-card.html" style="color: var(--color-primary); font-weight: 700;">💌 Send A Card</a></li>
-                <li><a href="situations.html">Situations</a></li>
-                <li><a href="index.html#vibeOfDay">Daily Spark</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="faq.html">FAQ</a></li>
-                <li><a href="blog/index.html">Blog</a></li>
-            </ul>
-        </div>
-    </nav>
+                <ul class="nav-links" style="align-items: center;">
+                    <li>
+                        <a href="blog/index.html#crisis" class="nav-crisis-badge">
+                            <span class="nav-crisis-heart">❤️</span>
+                            <span class="nav-crisis-text">Emergency Support</span>
+                        </a>
+                    </li>
+                    <li><a href="send-card.html" style="color: var(--color-primary); font-weight: 700;">💌 Send A Card</a></li>
+                    <li><a href="situations.html">Situations</a></li>
+                    <li><a href="index.html#vibeOfDay">Daily Spark</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="blog/index.html">Blog</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <div class="nav-theme-switcher" id="navThemeSwitcher" role="region" aria-label="Theme Switcher">
+                        <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Switch Design Theme (Warm Editorial / Playful Kinetic)" title="Switch Concept Theme">
+                            <span class="theme-segment active" id="btnThemeEditorial" data-theme="editorial">🌸 <span class="theme-label">Warm</span></span>
+                            <span class="theme-segment" id="btnThemeKinetic" data-theme="kinetic">⚡ <span class="theme-label">Kinetic</span></span>
+                        </button>
+                    </div>
+                    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu"
+                        aria-expanded="false">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
 
     <!-- Hero Section -->
     <section class="hero" style="min-height: 45vh;">
@@ -197,19 +205,22 @@
                 <div class="legal-callout warning">
                     <h4>📢 THIRD-PARTY DISPLAY ADVERTISING</h4>
                     <p>
-                        We use <strong>Google AdSense</strong> (Publisher ID: <code>ca-pub-2492108586092522</code>) to display web advertisements to help fund free hosting and card delivery.
+                        We use <strong>Google AdSense</strong> (Publisher ID: <code>pub-2492108586092522</code>) to display web advertisements on eligible content pages (such as advice guides, situation directories, and message collections) to help fund free hosting and card delivery.
+                    </p>
+                    <p>
+                        <strong>Ad-Free Safe Zones:</strong> In keeping with our wellness mission, ads are strictly prohibited from personal card unboxing screens (<code>view-card.html</code>), the card creation canvas (<code>send-card.html</code>), private card history (<code>my-cards.html</code>), and emergency crisis support sections (<code>#crisis</code>).
                     </p>
                     <p style="margin-bottom: 0;">
-                        Google and its advertising partners use cookies and web beacons to serve ads based on your prior visits to our Platform and other websites across the Internet. Google's use of advertising cookies enables it and its partners to serve personalized advertisements to you based on your browsing habits.
+                        Google and third-party advertising vendors use cookies (including the DoubleClick cookie) and web beacons to serve interest-based advertisements based on your prior visits to our Platform and other websites across the Internet. Google's use of advertising cookies enables it and its partners to serve ads based on your visits to this site and other sites on the Internet.
                     </p>
                 </div>
                 <p>
-                    <strong>Managing Personalized Advertising:</strong>
+                    <strong>Managing Personalized & Interest-Based Advertising:</strong>
                 </p>
                 <ul>
-                    <li>You can opt out of personalized Google advertising at any time by visiting <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer">Google My Ad Center</a>.</li>
-                    <li>You can opt out of third-party behavioral advertising cookies across participating ad networks via the <a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer">Digital Advertising Alliance (DAA)</a> or the <a href="https://www.youronlinechoices.com/" target="_blank" rel="noopener noreferrer">European Interactive Digital Advertising Alliance (EDAA)</a>.</li>
-                    <li>For full details on Google's practices, see <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">How Google uses information from sites that use our services</a>.</li>
+                    <li>You can opt out of personalized Google advertising and manage ad preferences at any time by visiting <a href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer">Google Ad Settings</a> and <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer">Google My Ad Center</a>.</li>
+                    <li>You can opt out of third-party vendor use of cookies for interest-based advertising via the <a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer">Digital Advertising Alliance (DAA / AboutAds.info)</a> or the <a href="https://www.youronlinechoices.com/" target="_blank" rel="noopener noreferrer">European Interactive Digital Advertising Alliance (EDAA)</a>.</li>
+                    <li>For full details on Google's advertising practices and data privacy policies, visit <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">How Google uses information from sites or apps that use our services</a>.</li>
                 </ul>
 
                 <h4>E. Commercial Payment Processing (Stripe & Ko-fi)</h4>

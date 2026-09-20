@@ -86,63 +86,6 @@
     pointer-events: none;
 }
 
-/* 5. Design Variation Switcher Floating Dock */
-.theme-switcher-dock {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border-radius: 999px;
-    background: rgba(18, 14, 28, 0.88);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 107, 157, 0.2);
-    font-family: var(--font-body);
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.theme-switcher-dock:hover {
-    transform: translateY(-2px);
-}
-
-.switcher-label {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--color-text-muted);
-    padding-left: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.switcher-btn {
-    padding: 6px 14px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 600;
-    border: 1px solid transparent;
-    cursor: pointer;
-    background: transparent;
-    color: var(--color-text-secondary);
-    transition: all 0.2s ease;
-    white-space: nowrap;
-}
-
-.switcher-btn:hover {
-    color: #FFFFFF;
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.switcher-btn.active {
-    background: linear-gradient(135deg, #FF6B9D, #FEC84A);
-    color: #0F0C1B;
-    font-weight: 700;
-    box-shadow: 0 4px 14px rgba(255, 107, 157, 0.35);
-}
 
 /* ==========================================================================
    CONCEPT 1: WARM MODERN EDITORIAL & GLASSMORPHISM (Default)

@@ -1115,6 +1115,129 @@ function initScrollProgress() {
     }, { passive: true });
 }
 
+// ── DUAL CONCEPT THEME SYSTEM (WARM EDITORIAL vs PLAYFUL KINETIC) ──
+const THEME_CONCEPTS = {
+    editorial: {
+        titleMain: "Words that lift.",
+        titleGradient: "Moments that matter.",
+        tagBadge: "✨ Anonymous Affirmations & Vibe Checks"
+    },
+    kinetic: {
+        titleMain: "Drop Good Vibes.",
+        titleGradient: "Zero Awkwardness.",
+        tagBadge: "⚡ 100% Free · Anonymous · No Sign-Up"
+    }
+};
+
+function initThemeConcept() {
+    let savedTheme = 'editorial';
+    try {
+        savedTheme = localStorage.getItem('vibe_theme_concept') || localStorage.getItem('vibe_design_concept') || 'editorial';
+    } catch (e) { }
+
+    applyThemeConcept(savedTheme, false);
+
+    const toggleBtn = document.getElementById('themeToggleBtn');
+    const btnEditorial = document.getElementById('btnThemeEditorial');
+    const btnKinetic = document.getElementById('btnThemeKinetic');
+
+    if (toggleBtn) {
+        if (toggleBtn._themeWired) return;
+        toggleBtn._themeWired = true;
+        toggleBtn.addEventListener('click', (e) => {
+            const specificSegment = e.target.closest('[data-theme]');
+            const currentTheme = document.documentElement.getAttribute('data-design-concept') || 'editorial';
+            let nextTheme;
+            if (specificSegment) {
+                const clickedTheme = specificSegment.getAttribute('data-theme');
+                if (clickedTheme === currentTheme) {
+                    nextTheme = currentTheme === 'editorial' ? 'kinetic' : 'editorial';
+                } else {
+                    nextTheme = clickedTheme;
+                }
+            } else {
+                nextTheme = currentTheme === 'editorial' ? 'kinetic' : 'editorial';
+            }
+            applyThemeConcept(nextTheme, true);
+        });
+    } else {
+        if (btnEditorial && !btnEditorial._themeWired) {
+            btnEditorial._themeWired = true;
+            btnEditorial.addEventListener('click', () => applyThemeConcept('editorial', true));
+        }
+        if (btnKinetic && !btnKinetic._themeWired) {
+            btnKinetic._themeWired = true;
+            btnKinetic.addEventListener('click', () => applyThemeConcept('kinetic', true));
+        }
+    }
+}
+
+function applyThemeConcept(themeName, trackEvent = false) {
+    const theme = (themeName === 'kinetic') ? 'kinetic' : 'editorial';
+
+    // Apply data-design-concept to document.documentElement and body
+    document.documentElement.setAttribute('data-design-concept', theme);
+    if (document.body) {
+        document.body.setAttribute('data-design-concept', theme);
+    }
+
+    try {
+        localStorage.setItem('vibe_theme_concept', theme);
+        localStorage.setItem('vibe_design_concept', theme);
+    } catch (e) { }
+
+    // Update switcher state in navigation
+    const btnEditorial = document.getElementById('btnThemeEditorial');
+    const btnKinetic = document.getElementById('btnThemeKinetic');
+
+    if (btnEditorial && btnKinetic) {
+        if (theme === 'editorial') {
+            btnEditorial.classList.add('active');
+            btnEditorial.setAttribute('aria-pressed', 'true');
+            btnKinetic.classList.remove('active');
+            btnKinetic.setAttribute('aria-pressed', 'false');
+        } else {
+            btnKinetic.classList.add('active');
+            btnKinetic.setAttribute('aria-pressed', 'true');
+            btnEditorial.classList.remove('active');
+            btnEditorial.setAttribute('aria-pressed', 'false');
+        }
+    }
+
+    // Update Hero text if present on page
+    const themeData = THEME_CONCEPTS[theme];
+    const titleMain = document.querySelector('.hero-title-main');
+    const titleGradient = document.querySelector('.hero-title-gradient');
+    const tagBadge = document.querySelector('.hero-tag-badge');
+
+    if (titleMain && titleGradient && themeData) {
+        if (trackEvent) {
+            titleMain.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+            titleGradient.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+            titleMain.style.opacity = '0';
+            titleGradient.style.opacity = '0';
+            setTimeout(() => {
+                titleMain.textContent = themeData.titleMain;
+                titleGradient.textContent = themeData.titleGradient;
+                titleMain.style.opacity = '1';
+                titleGradient.style.opacity = '1';
+            }, 200);
+        } else {
+            titleMain.textContent = themeData.titleMain;
+            titleGradient.textContent = themeData.titleGradient;
+        }
+    }
+
+    if (tagBadge && themeData) {
+        tagBadge.textContent = themeData.tagBadge;
+    }
+
+    // Telemetry tracking
+    if (trackEvent && window.VibeTelemetry) {
+        window.VibeTelemetry.track('theme_switched', { theme: theme });
+    }
+}
+
 // ── INITIALIZATION ───────────────────────────────────
 function initApp() {
     // Core Navigation (scroll tracking; mobile toggle managed centrally by core-utils.js)
@@ -1155,6 +1278,7 @@ function initApp() {
     }
 
     // Critical Features
+    initThemeConcept();
     initScrollProgress();
     initDailyAffirmation();
     initCardDemo();
@@ -1193,3 +1317,6 @@ window.initCardDemo = initCardDemo;
 window.initItemFilter = initItemFilter;
 window.copyText = copyText;
 window.initMetricsCounters = initMetricsCounters;
+window.applyThemeConcept = applyThemeConcept;
+window.initThemeConcept = initThemeConcept;
+

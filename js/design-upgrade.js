@@ -1,39 +1,10 @@
 /**
  * THE VIBE CHECK PROJECT - DESIGN CONCEPT CONTROLLER
- * Enables seamless live toggling between:
- * Concept 1: Warm Modern Editorial & Glassmorphism (Default)
- * Concept 2: Playful Kinetic & Vibrant Cyber-Soul
+ * Supports 3D Tilt and Card Demo activation; theme toggle logic is centralized in js/script.js.
  */
 
 (function () {
-    const THEMES = {
-        editorial: {
-            titleMain: "Words that lift.",
-            titleGradient: "Moments that matter.",
-            tagBadge: "✨ Anonymous Affirmations & Vibe Checks"
-        },
-        kinetic: {
-            titleMain: "Drop Good Vibes.",
-            titleGradient: "Zero Awkwardness.",
-            tagBadge: "⚡ 100% Free · Anonymous · No Sign-Up"
-        }
-    };
-
     function initDesignUpgrade() {
-        const savedTheme = localStorage.getItem('vibe_design_concept') || 'editorial';
-        applyTheme(savedTheme, false);
-
-        // Setup Switcher Buttons
-        const btnEditorial = document.getElementById('btnThemeEditorial');
-        const btnKinetic = document.getElementById('btnThemeKinetic');
-
-        if (btnEditorial) {
-            btnEditorial.addEventListener('click', () => applyTheme('editorial', true));
-        }
-        if (btnKinetic) {
-            btnKinetic.addEventListener('click', () => applyTheme('kinetic', true));
-        }
-
         // Setup 3D Cursor Tilt for Daily Spark Card
         initCard3DTilt();
 
@@ -41,57 +12,6 @@
         const cardDemo = document.querySelector('.card-demo-wrapper');
         if (cardDemo) {
             cardDemo.classList.add('active');
-        }
-    }
-
-    function applyTheme(themeName, animate) {
-        if (!THEMES[themeName]) themeName = 'editorial';
-
-        document.body.setAttribute('data-design-concept', themeName);
-        localStorage.setItem('vibe_design_concept', themeName);
-
-        // Update Switcher Button States
-        const btnEditorial = document.getElementById('btnThemeEditorial');
-        const btnKinetic = document.getElementById('btnThemeKinetic');
-
-        if (btnEditorial && btnKinetic) {
-            if (themeName === 'editorial') {
-                btnEditorial.classList.add('active');
-                btnKinetic.classList.remove('active');
-            } else {
-                btnKinetic.classList.add('active');
-                btnEditorial.classList.remove('active');
-            }
-        }
-
-        // Update Headline and Badge Texts
-        const titleMain = document.querySelector('.hero-title-main');
-        const titleGradient = document.querySelector('.hero-title-gradient');
-        const tagBadge = document.querySelector('.hero-tag-badge');
-
-        const themeData = THEMES[themeName];
-
-        if (titleMain && titleGradient) {
-            if (animate) {
-                titleMain.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
-                titleGradient.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
-                titleMain.style.opacity = '0';
-                titleGradient.style.opacity = '0';
-
-                setTimeout(() => {
-                    titleMain.textContent = themeData.titleMain;
-                    titleGradient.textContent = themeData.titleGradient;
-                    titleMain.style.opacity = '1';
-                    titleGradient.style.opacity = '1';
-                }, 200);
-            } else {
-                titleMain.textContent = themeData.titleMain;
-                titleGradient.textContent = themeData.titleGradient;
-            }
-        }
-
-        if (tagBadge) {
-            tagBadge.textContent = themeData.tagBadge;
         }
     }
 
@@ -115,9 +35,17 @@
         });
     }
 
+    // Expose applyTheme backwards-compatibility hook
+    window.applyTheme = function (themeName, animate) {
+        if (window.applyThemeConcept) {
+            window.applyThemeConcept(themeName, animate);
+        }
+    };
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initDesignUpgrade);
     } else {
         initDesignUpgrade();
     }
 })();
+

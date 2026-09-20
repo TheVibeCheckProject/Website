@@ -107,28 +107,36 @@
             <div class="nav-logo">
                 <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
             </div>
-            <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu"
-                aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-links" style="align-items: center;">
-                <li>
-                    <a href="blog/index.html#crisis" class="nav-crisis-badge">
-                        <span class="nav-crisis-heart">❤️</span>
-                        <span class="nav-crisis-text">Emergency Support</span>
-                    </a>
-                </li>
-                <li><a href="send-card.html" style="color: var(--color-primary); font-weight: 700;">💌 Send A Card</a></li>
-                <li><a href="situations.html">Situations</a></li>
-                <li><a href="index.html#vibeOfDay">Daily Spark</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="faq.html">FAQ</a></li>
-                <li><a href="blog/index.html">Blog</a></li>
-            </ul>
-        </div>
-    </nav>
+                <ul class="nav-links" style="align-items: center;">
+                    <li>
+                        <a href="blog/index.html#crisis" class="nav-crisis-badge">
+                            <span class="nav-crisis-heart">❤️</span>
+                            <span class="nav-crisis-text">Emergency Support</span>
+                        </a>
+                    </li>
+                    <li><a href="send-card.html" style="color: var(--color-primary); font-weight: 700;">💌 Send A Card</a></li>
+                    <li><a href="situations.html">Situations</a></li>
+                    <li><a href="index.html#vibeOfDay">Daily Spark</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="blog/index.html">Blog</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <div class="nav-theme-switcher" id="navThemeSwitcher" role="region" aria-label="Theme Switcher">
+                        <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Switch Design Theme (Warm Editorial / Playful Kinetic)" title="Switch Concept Theme">
+                            <span class="theme-segment active" id="btnThemeEditorial" data-theme="editorial">🌸 <span class="theme-label">Warm</span></span>
+                            <span class="theme-segment" id="btnThemeKinetic" data-theme="kinetic">⚡ <span class="theme-label">Kinetic</span></span>
+                        </button>
+                    </div>
+                    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu"
+                        aria-expanded="false">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
 
     <!-- Hero Section -->
     <section class="hero" style="min-height: 45vh;">
@@ -199,9 +207,9 @@
                             </tr>
                             <tr>
                                 <td><strong>Advertising &amp; Marketing</strong></td>
-                                <td><code>__gads</code>, <code>__gpi</code>, <code>IDE</code><br><em>Google AdSense (ca-pub-2492108586092522)</em></td>
+                                <td><code>__gads</code>, <code>__gpi</code>, <code>IDE</code>, <code>DSID</code><br><em>Google AdSense (pub-2492108586092522)</em></td>
                                 <td>13 months</td>
-                                <td>Serves personalized or contextual display advertisements, measures ad impressions, and prevents excessive ad repetition.</td>
+                                <td>Serves interest-based or contextual display advertisements on approved content surfaces, measures impressions, and prevents ad frequency fatigue.</td>
                             </tr>
                             <tr>
                                 <td><strong>Affiliate Attribution</strong></td>
@@ -221,22 +229,26 @@
 
                 <h3>3. Third-Party Advertising Disclosures (Google AdSense)</h3>
                 <div class="legal-callout warning">
-                    <h4>📢 GOOGLE ADSENSE &amp; PERSONALIZED ADVERTISING</h4>
+                    <h4>📢 GOOGLE ADSENSE &amp; INTEREST-BASED ADVERTISING</h4>
                     <p>
-                        The Vibe Check Project uses <strong>Google AdSense</strong> to display advertisements that support our free emotional wellness resources.
+                        The Vibe Check Project uses <strong>Google AdSense</strong> (Publisher ID: <code>pub-2492108586092522</code>) to display web advertisements that support our free hosting and open-access wellness resources.
+                    </p>
+                    <p>
+                        <strong>Ad-Free Safe Zones:</strong> In alignment with our mental health and wellness mission, advertisements are strictly excluded from personal card reveal/unboxing experiences (<code>view-card.html</code>), the card creation canvas (<code>send-card.html</code>), private card history (<code>my-cards.html</code>), and emergency crisis support sections (<code>#crisis</code>).
                     </p>
                     <p style="margin-bottom: 0;">
-                        Third-party vendors, including Google, use cookies to serve ads based on your prior visits to this website or other sites on the Internet. Google's use of advertising cookies enables it and its partners to serve ads based on your visit to our platform and/or other websites across the web.
+                        Third-party vendors, including Google, use cookies (such as DoubleClick cookies) to serve interest-based ads based on your prior visits to this website or other sites across the Internet. Google's use of advertising cookies enables it and its partners to serve ads based on your visit to our platform and/or other sites on the web.
                     </p>
                 </div>
                 <p>
-                    You have absolute control over personalized advertising. You may disable ad personalization or opt out of third-party cookie tracking through the following tools:
+                    You have complete control over personalized and interest-based advertising. You may manage ad preferences or opt out of third-party cookie tracking through any of the following tools:
                 </p>
                 <ul>
-                    <li><strong>Google Ads Settings:</strong> Opt out of personalized Google ads directly via <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer">Google My Ad Center</a>.</li>
-                    <li><strong>Digital Advertising Alliance (USA):</strong> Opt out of participating ad networks at <a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer">AboutAds.info Consumer Choice Page</a>.</li>
+                    <li><strong>Google Ads Settings:</strong> Opt out of personalized Google ads directly via <a href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer">Google Ad Settings</a> or <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer">Google My Ad Center</a>.</li>
+                    <li><strong>Digital Advertising Alliance (USA):</strong> Opt out of participating ad networks at the <a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer">AboutAds.info Consumer Choice Page</a>.</li>
                     <li><strong>Network Advertising Initiative:</strong> Universal opt-out at <a href="https://optout.networkadvertising.org/" target="_blank" rel="noopener noreferrer">NAI Consumer Opt-Out</a>.</li>
-                    <li><strong>European Interactive Digital Advertising Alliance (EU/EEA):</strong> Exercise choice at <a href="https://www.youronlinechoices.com/" target="_blank" rel="noopener noreferrer">Your Online Choices</a>.</li>
+                    <li><strong>European Interactive Digital Advertising Alliance (EU/EEA):</strong> Exercise your choice at <a href="https://www.youronlinechoices.com/" target="_blank" rel="noopener noreferrer">Your Online Choices</a>.</li>
+                    <li><strong>Google Advertising Policies:</strong> Learn how Google handles advertising data at <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">Google Advertising & Privacy Technologies</a>.</li>
                 </ul>
 
                 <h3>4. Client Storage (localStorage) vs. Traditional Cookies</h3>

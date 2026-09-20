@@ -368,6 +368,7 @@
     <noscript>
         <link rel="stylesheet" href="css/styles.css?v=108">
     </noscript>
+    <link rel="stylesheet" href="css/design-upgrade.css?v=1">
 
     <!-- Lucide Icons (Script Removed for Performance, replaced with inline SVGs) -->
     <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2492108586092522"
@@ -463,7 +464,11 @@
         <section class="hero">
             <div class="hero-bg" id="hero-bg"></div>
             <div class="hero-content">
-                <h1 class="hero-title">Small Words. Giant Waves.</h1>
+                <div class="hero-tag-badge">✨ Anonymous Affirmations &amp; Vibe Checks</div>
+                <h1 class="hero-title" id="mainHeroTitle">
+                    <span class="hero-title-main">Words that lift.</span>
+                    <span class="hero-title-gradient">Moments that matter.</span>
+                </h1>
                 <p class="hero-subtitle">
                     A mindful reminder at the right moment can shift someone's entire day.
                     Draw your daily spark below, or send a free card in 30 seconds.
@@ -516,7 +521,7 @@
                     </p>
                 </div>
 
-                <div class="card-demo-wrapper reveal">
+                <div class="card-demo-wrapper active">
                     <!-- Particle canvas -->
                     <canvas id="demoCanvas" aria-hidden="true"></canvas>
 
@@ -680,12 +685,18 @@
         </footer>
     </div>
 
+    <!-- Floating Design Concept Switcher -->
+    <div class="theme-switcher-dock" id="themeSwitcherDock" role="region" aria-label="Design Variation Switcher">
+        <span class="switcher-label">🎨 Concept:</span>
+        <button type="button" class="switcher-btn active" id="btnThemeEditorial" data-theme="editorial">1: Warm Editorial</button>
+        <button type="button" class="switcher-btn" id="btnThemeKinetic" data-theme="kinetic">2: Playful Kinetic</button>
+    </div>
+
     <!-- Main JavaScript -->
     <script src="js/core-utils.js?v=108" defer></script>
     <script src="js/script.js?v=108" defer></script>
     <script src="js/animations.js?v=108" defer></script>
-
-
+    <script src="js/design-upgrade.js?v=1" defer></script>
 
 </body>
 

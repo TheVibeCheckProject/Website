@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. HERO TITLE — Letters cascade into place (Desktop Only)
     // ==========================================
     const heroTitle = document.querySelector('.hero-title');
-    if (heroTitle) {
+    if (heroTitle && !heroTitle.querySelector('.hero-title-main')) {
         if (isMobile) {
             // Simple fade in for mobile
             heroTitle.style.opacity = '1';

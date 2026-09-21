@@ -250,112 +250,35 @@ function burstParticles(count) {
 })();
 
 // ========================================================
-// ── UNIVERSAL DUAL THEME CONTROLLER (Warm vs Kinetic) ──
+// ── PERMANENT WARM EDITORIAL THEME CONTROLLER ──
 // ========================================================
 (function initGlobalThemeController() {
-    function getStoredTheme() {
-        try {
-            return localStorage.getItem('vibe_theme_concept') || localStorage.getItem('vibe_design_concept') || 'editorial';
-        } catch (e) {
-            return 'editorial';
-        }
-    }
-
-    function applyTheme(themeName, trackEvent = false) {
-        const theme = (themeName === 'kinetic') ? 'kinetic' : 'editorial';
-        document.documentElement.setAttribute('data-design-concept', theme);
+    function lockEditorialTheme() {
+        document.documentElement.setAttribute('data-design-concept', 'editorial');
         if (document.body) {
-            document.body.setAttribute('data-design-concept', theme);
+            document.body.setAttribute('data-design-concept', 'editorial');
         }
-
         try {
-            localStorage.setItem('vibe_theme_concept', theme);
-            localStorage.setItem('vibe_design_concept', theme);
+            localStorage.setItem('vibe_theme_concept', 'editorial');
+            localStorage.setItem('vibe_design_concept', 'editorial');
         } catch (e) { }
 
-        // Update switcher buttons across any header nav
-        const btnEditorial = document.getElementById('btnThemeEditorial');
-        const btnKinetic = document.getElementById('btnThemeKinetic');
-        if (btnEditorial && btnKinetic) {
-            if (theme === 'editorial') {
-                btnEditorial.classList.add('active');
-                btnEditorial.setAttribute('aria-pressed', 'true');
-                btnKinetic.classList.remove('active');
-                btnKinetic.setAttribute('aria-pressed', 'false');
-            } else {
-                btnKinetic.classList.add('active');
-                btnKinetic.setAttribute('aria-pressed', 'true');
-                btnEditorial.classList.remove('active');
-                btnEditorial.setAttribute('aria-pressed', 'false');
-            }
-        }
-
-        // Homepage hero updates if present
         const titleMain = document.querySelector('.hero-title-main');
         const titleGradient = document.querySelector('.hero-title-gradient');
         const tagBadge = document.querySelector('.hero-tag-badge');
         if (titleMain && titleGradient) {
-            if (theme === 'kinetic') {
-                titleMain.textContent = "Drop Good Vibes.";
-                titleGradient.textContent = "Zero Awkwardness.";
-                if (tagBadge) tagBadge.textContent = "⚡ 100% Free · Anonymous · No Sign-Up";
-            } else {
-                titleMain.textContent = "Words that lift.";
-                titleGradient.textContent = "Moments that matter.";
-                if (tagBadge) tagBadge.textContent = "✨ Anonymous Affirmations & Vibe Checks";
-            }
-        }
-
-        if (trackEvent && window.VibeTelemetry) {
-            window.VibeTelemetry.track('theme_switched', { theme: theme });
+            titleMain.textContent = "Words that lift.";
+            titleGradient.textContent = "Moments that matter.";
+            if (tagBadge) tagBadge.textContent = "✨ Anonymous Affirmations & Vibe Checks";
         }
     }
 
-    function wireThemeListeners() {
-        const toggleBtn = document.getElementById('themeToggleBtn');
-        const btnEditorial = document.getElementById('btnThemeEditorial');
-        const btnKinetic = document.getElementById('btnThemeKinetic');
-
-        if (toggleBtn && !toggleBtn._themeWired) {
-            toggleBtn._themeWired = true;
-            toggleBtn.addEventListener('click', (e) => {
-                const specificSegment = e.target.closest('[data-theme]');
-                const currentTheme = document.documentElement.getAttribute('data-design-concept') || 'editorial';
-                let nextTheme;
-                if (specificSegment) {
-                    const clickedTheme = specificSegment.getAttribute('data-theme');
-                    nextTheme = (clickedTheme === currentTheme) ? (currentTheme === 'editorial' ? 'kinetic' : 'editorial') : clickedTheme;
-                } else {
-                    nextTheme = currentTheme === 'editorial' ? 'kinetic' : 'editorial';
-                }
-                applyTheme(nextTheme, true);
-            });
-        } else if (!toggleBtn) {
-            if (btnEditorial && !btnEditorial._themeWired) {
-                btnEditorial._themeWired = true;
-                btnEditorial.addEventListener('click', () => applyTheme('editorial', true));
-            }
-            if (btnKinetic && !btnKinetic._themeWired) {
-                btnKinetic._themeWired = true;
-                btnKinetic.addEventListener('click', () => applyTheme('kinetic', true));
-            }
-        }
-    }
-
-    // Apply immediately on script execution to avoid flash of unstyled theme
-    applyTheme(getStoredTheme(), false);
-
+    lockEditorialTheme();
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            applyTheme(getStoredTheme(), false);
-            wireThemeListeners();
-        });
-    } else {
-        wireThemeListeners();
+        document.addEventListener('DOMContentLoaded', lockEditorialTheme);
     }
-
-    window.applyThemeConcept = applyTheme;
-    window.initThemeConcept = wireThemeListeners;
+    window.applyThemeConcept = lockEditorialTheme;
+    window.initThemeConcept = function () { };
 })();
 
 // ========================================================

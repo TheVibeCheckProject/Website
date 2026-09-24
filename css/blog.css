@@ -1366,6 +1366,12 @@
     z-index: auto;
 }
 
+/* Listicle/message page header: clear the fixed nav at every width (mobile rules cut the
+   top padding to 40px, which put the H1 under the 65px nav) */
+main > header.page-header {
+    padding-top: calc(72px + clamp(20px, 4vw, 40px));
+}
+
 /* Generic `section` padding (128px) left a large gap above the first message */
 .blog-article-wrapper .messages-container {
     padding-top: 8px;

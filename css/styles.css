@@ -1093,7 +1093,57 @@ section {
 }
 
 .cta-section .section-subtitle {
-    color: rgba(255, 255, 255, 0.9);
+    color: #fff;
+    text-shadow: 0 1px 12px rgba(90, 20, 55, 0.35);
+}
+
+/* Pink/white text on the pink→yellow gradient was nearly unreadable; use dark chips instead */
+.cta-section .cta-bonus,
+.cta-section .trust-badge-pill {
+    display: inline-block;
+    background: rgba(26, 22, 37, 0.8);
+    border-color: transparent;
+    color: #fff;
+    text-shadow: none;
+}
+
+.cta-section .cta-bonus {
+    margin-top: 12px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.cta-section .join-form .btn-large {
+    max-width: 100%;
+    white-space: normal;
+}
+
+@media (max-width: 600px) {
+    .cta-section .join-form .btn-large {
+        padding: 16px 20px;
+        font-size: 16px;
+    }
+
+    .stats-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 20px 10px;
+    }
+
+    .stat-card .stat {
+        font-size: clamp(28px, 9vw, 40px);
+    }
+
+    .stat-card .stat-label {
+        font-size: 14px;
+    }
 }
 
 .cta-section .btn-primary {
@@ -1167,6 +1217,18 @@ footer {
 .footer-container {
     max-width: var(--max-width);
     margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+    /* Link columns side by side on phones instead of one long stack */
+    .footer .footer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 28px 16px;
+    }
+
+    .footer .footer-grid .footer-section:first-child {
+        grid-column: 1 / -1;
+    }
 }
 
 .footer-grid {
@@ -1326,6 +1388,8 @@ footer {
 
     .hero {
         min-height: 80vh;
+        /* keep hero content (badges, titles) clear of the 65px fixed nav */
+        padding-top: 72px;
     }
 
     .hero-cta {
@@ -4188,7 +4252,8 @@ nav.menu-open .nav-hamburger span:nth-child(3) {
 
 .faq-hero {
     min-height: auto !important;
-    padding: clamp(36px, 5vw, 64px) 20px clamp(20px, 3vw, 36px) !important;
+    /* top padding clears the fixed nav (65-71px) */
+    padding: calc(72px + clamp(24px, 4vw, 40px)) 20px clamp(20px, 3vw, 36px) !important;
 }
 
 .faq-container {
@@ -4912,7 +4977,8 @@ html.reduce-motion .blog-showcase-card:hover {
 
 .situations-header {
     text-align: center;
-    padding: clamp(36px, 5vw, 64px) 20px clamp(20px, 3vw, 36px);
+    /* clears the fixed nav (65-71px tall) */
+    padding: calc(72px + clamp(28px, 4vw, 48px)) 20px clamp(20px, 3vw, 36px);
     max-width: 800px;
     margin: 0 auto;
 }

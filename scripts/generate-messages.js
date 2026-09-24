@@ -1,3 +1,10 @@
+/**
+ * WARNING (2026-09): do not run as-is. The five pages this generates (blog/<slug>/index.html)
+ * were hand-tuned afterwards for SEO (titles, meta descriptions, trailing-slash canonicals)
+ * and those edits are not in data/messages.json or templates/message-page.html. Running this
+ * would regress them. Port those values into the data first if you need to regenerate.
+ * Not part of `npm run build`.
+ */
 const fs = require('fs');
 const path = require('path');
 

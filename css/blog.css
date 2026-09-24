@@ -948,7 +948,6 @@
 }
 
 .blog-card-img .card-info {
-    box-sizing: border-box;
     width: 100%;
     position: absolute;
     bottom: -60px;
@@ -1563,41 +1562,4 @@ main > header.page-header {
     .crisis-chip:hover {
         transform: translateY(-50%) scale(1.08);
     }
-}
-
-/* ==========================================================================
-   Google AdSense Ad Containers (Zero Cumulative Layout Shift Protection)
-   ========================================================================== */
-.ad-unit-wrapper {
-    min-height: 280px;
-    margin: 36px auto;
-    width: 100%;
-    max-width: 970px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    position: relative;
-    padding: 12px 0;
-    overflow: hidden;
-    clear: both;
-}
-
-.ad-unit-wrapper .ad-label {
-    display: block;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-text-muted, #888888);
-    margin-bottom: 8px;
-    user-select: none;
-    line-height: 1;
-}
-
-.ad-unit-wrapper ins.adsbygoogle {
-    width: 100%;
-    min-height: 250px;
-    background: transparent;
 }

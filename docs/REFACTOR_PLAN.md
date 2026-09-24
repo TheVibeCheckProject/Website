@@ -39,9 +39,9 @@ Ordered by value. Each item is verified with the Phase 2 tests before committing
 
 - [x] **Claude** · M — Move `view-card.html`'s ~300 lines of inline script into `js/view-card.js` (the recipient page is the most important page to keep maintainable)
 - [x] **Claude** · M — Replace inline `style="…"` attributes with classes on send-card, view-card and the homepage (upsell box, hints, buttons)
-- [ ] **Claude** · L — Consolidate `css/styles.css` (~4,700 lines): merge selectors defined multiple times, drop overridden declarations, split into base / components / page sections
-- [ ] **Claude** · S — Remove duplicate rules shared between `styles.css` and `blog.css` (e.g. the ad containers)
-- [ ] **Claude** · S — Trim Google Fonts: some pages load 6–7 families; standardise on Space Grotesk + Outfit (+ Caveat / Playfair where actually used)
+- [x] **Claude** · L — Consolidate `css/styles.css`: drop overridden declarations and duplicates (done). *Not done on purpose:* physically regrouping rules into base / components / pages — reordering CSS changes which rule wins, so it only pays off alongside a design refresh.
+- [x] **Claude** · S — Remove duplicate rules shared between `styles.css` and `blog.css` (e.g. the ad containers)
+- [x] **Claude** · S — Trim Google Fonts (already resolved: every page now loads only the 5 families in use, once)
 - [ ] **Claude** · M — Split `js/script.js` by page (home, blog/situations filters, FAQ) so each page loads only what it uses
 - [ ] **You + Claude** · S — Bring the 2 odd articles (mindfulness, self-care) onto the shared `css/article.css` — small visual change, you approve screenshots first
 

@@ -253,8 +253,6 @@ nav.scrolled {
     bottom: -4px;
     left: 0;
     width: 0;
-    height: 2px;
-    background: var(--color-primary);
     transition: width var(--transition-base);
 }
 
@@ -349,8 +347,6 @@ nav.menu-open .nav-links a::after {
 }
 
 .hero-content {
-    position: relative;
-    z-index: 1;
     max-width: var(--max-width);
     padding: var(--space-3xl) var(--space-md);
     text-align: center;
@@ -362,12 +358,7 @@ nav.menu-open .nav-links a::after {
     font-weight: 700;
     line-height: 1.1;
     margin-bottom: var(--space-lg);
-    background: linear-gradient(135deg, #FF6B9D 0%, #FEC84A 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
     opacity: 0;
-    animation: fadeInUp 0.8s ease-out 0.2s forwards;
 }
 
 .hero-subtitle {
@@ -595,7 +586,6 @@ section {
 .steps {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--space-2xl);
     margin-top: var(--space-2xl);
 }
 
@@ -688,7 +678,6 @@ section {
 .features-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-lg);
     margin-top: var(--space-2xl);
 }
 
@@ -3725,74 +3714,10 @@ nav.menu-open .nav-hamburger span:nth-child(3) {
 }
 
 /* ── Situations Directory Styles (Extracted from situations.html) ── */
-.situations-section {
-    padding: 0 20px 80px;
-    max-width: 1440px;
-    margin: 0 auto;
-}
-
-.situations-header {
-    text-align: center;
-    padding: clamp(48px, 6vw, 80px) 20px 32px;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.situations-header h1 {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    color: #fff;
-    margin-bottom: 16px;
-    text-shadow: 0 0 20px rgba(167, 139, 250, 0.4);
-    background: linear-gradient(135deg, #FF6B9D 0%, #FEC84A 50%, #67E8F9 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.situations-header p {
-    font-size: clamp(1.05rem, 2vw, 1.25rem);
-    color: var(--color-text-secondary);
-    line-height: 1.6;
-}
 
 .situations-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
     width: min(100% - 32px, 1440px);
     margin: 0 auto;
-}
-
-.situations-sidebar {
-    width: 100%;
-}
-
-.situations-search-box {
-    margin-bottom: 20px;
-}
-
-.situations-search-box .form-input {
-    width: 100%;
-    padding: 14px 18px;
-    border-radius: 12px;
-    background: var(--color-bg-medium);
-    border: 1px solid rgba(255, 107, 157, 0.2);
-    color: var(--color-text-primary);
-    font-size: 15px;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.situations-search-box .form-input:focus {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.15);
-}
-
-.situations-categories {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
 }
 
 .situations-categories .filter-pill {
@@ -3821,113 +3746,16 @@ nav.menu-open .nav-hamburger span:nth-child(3) {
     box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
 }
 
-.situations-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
-    gap: 24px;
-}
-
-.situation-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    padding: 28px;
-    color: var(--color-text-primary);
-    transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(10px);
-}
-
-.situation-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 60%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.situation-icon {
-    font-size: 2.2rem;
-    margin-bottom: 18px;
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.situation-card h3 {
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-    font-weight: 700;
-}
-
-.situation-card p {
-    color: var(--color-text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 20px;
-    flex-grow: 1;
-}
-
-.situation-card-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: auto;
-    flex-wrap: wrap;
-}
-
 .situation-card-actions .btn {
-    flex: 1;
     min-width: 120px;
-    padding: 10px 14px;
-    font-size: 13px;
-    text-align: center;
-    text-decoration: none;
-    white-space: nowrap;
 }
-
-.premium-bg-1 { background: linear-gradient(135deg, rgba(167, 139, 250, 0.06), rgba(167, 139, 250, 0.01)); }
-.premium-bg-2 { background: linear-gradient(135deg, rgba(255, 107, 157, 0.06), rgba(255, 107, 157, 0.01)); }
-.premium-bg-3 { background: linear-gradient(135deg, rgba(103, 232, 249, 0.06), rgba(103, 232, 249, 0.01)); }
-.premium-bg-4 { background: linear-gradient(135deg, rgba(254, 200, 74, 0.06), rgba(254, 200, 74, 0.01)); }
 
 @media (min-width: 1024px) {
-    .situations-layout {
-        display: grid;
-        grid-template-columns: 280px 1fr;
-        gap: 40px;
-        align-items: start;
-    }
-
-    .situations-sidebar {
-        position: sticky;
-        top: 100px;
-    }
-
-    .situations-categories {
-        flex-direction: column;
-        gap: 10px;
-    }
 
     .situations-categories .filter-pill {
         width: 100%;
         text-align: left;
         justify-content: flex-start;
-    }
-
-    .situations-grid {
-        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -3935,10 +3763,6 @@ nav.menu-open .nav-hamburger span:nth-child(3) {
     .situations-layout {
         grid-template-columns: 300px 1fr;
         gap: 48px;
-    }
-
-    .situations-grid {
-        grid-template-columns: repeat(4, 1fr);
     }
 }
 

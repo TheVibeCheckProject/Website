@@ -2,7 +2,6 @@
 
 .send-card-page {
     min-height: 100vh;
-    background: var(--color-bg-dark);
     padding: var(--space-2xl) var(--space-md);
     display: flex;
     align-items: center;
@@ -13,11 +12,8 @@
     width: min(100% - 32px, 1440px);
     max-width: 1440px;
     margin-inline: auto;
-    background: var(--color-bg-medium);
     border-radius: 24px;
     padding: var(--space-2xl);
-    border: 2px solid rgba(255, 107, 157, 0.2);
-    box-shadow: var(--shadow-xl);
 }
 
 @media (max-width: 767px) {
@@ -79,8 +75,6 @@
     padding: 16px 20px;
     font-size: 16px;
     font-family: var(--font-body);
-    background: var(--color-bg-dark);
-    border: 2px solid rgba(255, 107, 157, 0.2);
     border-radius: 12px;
     color: var(--color-text-primary);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -89,7 +83,6 @@
 .form-input:focus,
 .form-textarea:focus {
     outline: none;
-    border-color: var(--color-primary);
     box-shadow: 0 0 0 4px rgba(255, 107, 157, 0.1);
 }
 
@@ -1136,7 +1129,6 @@
     gap: 6px;
     position: relative;
     z-index: 1;
-    cursor: pointer;
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;

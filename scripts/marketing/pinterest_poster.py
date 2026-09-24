@@ -146,7 +146,7 @@ def load_groq_api_key():
     if key:
         return key
     # Fall back to the Agent's .env file
-    env_path = Path("C:/Users/devin/OneDrive/Desktop/Assistant/.env")
+    env_path = Path.home() / "OneDrive" / "Desktop" / "Assistant" / ".env"
     if env_path.exists():
         for line in env_path.read_text(encoding="utf-8").splitlines():
             if line.startswith("GROQ_API_KEY="):

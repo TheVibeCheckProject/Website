@@ -84,7 +84,7 @@ Designed in high-resolution for your phone lock screen so your first glance of t
 See you tomorrow morning.
 
 Warmly,  
-Devin @ The Vibe Check Project
+The Vibe Check Project
 ```
 
 ---
@@ -116,7 +116,7 @@ Think of one person who has been on your mind recently. Someone who is stressed,
 Pick someone. It takes one minute. You never know which day is the day someone desperately needed to hear from you.
 
 Talk soon,  
-Devin
+The Vibe Check Project
 ```
 
 ---
@@ -145,7 +145,7 @@ Store paper cards cost $6.99 for a single folded piece of paper. For $4.99 once,
 *(Not required. The free card tool and daily morning sparks remain 100% free forever).*
 
 Talk soon,  
-Devin @ The Vibe Check Project
+The Vibe Check Project
 
 P.S. Reply to this email anytime. I read every single one.
 ```
@@ -209,7 +209,7 @@ If words feel too heavy right now, you can send them one of our gentle, low-pres
 And remember: check in on yourself today, too.
 
 Warmly,  
-Devin & The Vibe Check Project
+The Vibe Check Project
 ```
 
 ---

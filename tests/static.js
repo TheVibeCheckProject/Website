@@ -98,8 +98,13 @@ for (const url of sitemapUrls) {
     t.check(exists(p), 'sitemap URL has no page', url);
 }
 
-// ── Honesty guard: numbers that were once fabricated must not come back ──
+// ── Guards: the owner's name stays off the site; fabricated numbers must not come back ──
 const claims = /Maya R\.|12,480|5,200\+|5,000\+ humans|1,200\+ cards|100% of proceeds/;
-for (const rel of pages) t.check(!claims.test(read(rel)), `fabricated claim reintroduced: ${rel}`);
+const ownerName = /\bDevin\b|\bGriffin\b/i;
+for (const rel of pages) {
+    const html = read(rel);
+    t.check(!claims.test(html), `fabricated claim reintroduced: ${rel}`);
+    t.check(!ownerName.test(html), `owner's name appears on a public page: ${rel}`);
+}
 
 t.finish();

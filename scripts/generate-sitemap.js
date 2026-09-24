@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { execFileSync } = require('child_process');
 
 const BASE_URL = 'https://thevibecheckproject.com';
 const WEBSITE_DIR = path.join(__dirname, '..');
@@ -28,7 +29,9 @@ const EXCLUDE_DIRS = [
     'css',
     'js',
     'docs',
-    'newsletter-content'
+    'newsletter-content',
+    'scratch',
+    'data'
 ];
 
 function getHtmlFiles(dir, fileList = []) {
@@ -52,8 +55,18 @@ function getHtmlFiles(dir, fileList = []) {
     return fileList;
 }
 
+// Last-modified date (YYYY-MM-DD) from git history; falls back to the file's mtime for
+// uncommitted files or when git isn't available (e.g. a shallow CI checkout).
+function lastModified(file) {
+    try {
+        const out = execFileSync('git', ['log', '-1', '--format=%cs', '--', file], { cwd: WEBSITE_DIR, encoding: 'utf8' }).trim();
+        if (/^\d{4}-\d{2}-\d{2}$/.test(out)) return out;
+    } catch (e) { /* fall through */ }
+    return fs.statSync(file).mtime.toISOString().slice(0, 10);
+}
+
 function generateSitemap() {
-    const files = getHtmlFiles(WEBSITE_DIR);
+    const files = getHtmlFiles(WEBSITE_DIR).sort();
     let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
 
@@ -101,6 +114,7 @@ function generateSitemap() {
 
         xml += '  <url>\n';
         xml += `    <loc>${url}</loc>\n`;
+        xml += `    <lastmod>${lastModified(file)}</lastmod>\n`;
         xml += `    <changefreq>${freq}</changefreq>\n`;
         xml += `    <priority>${priority}</priority>\n`;
         xml += '  </url>\n';

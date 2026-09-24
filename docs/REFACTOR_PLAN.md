@@ -14,7 +14,7 @@ The daily newsletter has sent nothing since ~Sep 20. The fix only runs once it's
 - [ ] **You** · S — Merge and push: `git checkout main && git merge site-overhaul && git push`
 - [ ] **You** · S — After deploy, spot-check: homepage, send a card, open it, My Vibes, one blog post
 - [ ] **You** · S — Next morning, confirm the newsletter arrived (GitHub → Actions → Daily Newsletter)
-- [ ] **You** · S — In MailerLite, change the welcome email's wallpaper links from `.png` to `.webp` (the `.png` files don't exist)
+- [x] ~~Welcome email wallpaper links~~: wallpapers dropped (Sept 2026); the new welcome email has none
 
 ## Phase 1 — Turn on the new services (your accounts)
 

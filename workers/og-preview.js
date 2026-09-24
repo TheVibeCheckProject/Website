@@ -6,12 +6,16 @@
  * previews on iMessage, WhatsApp, Discord, and Telegram show the
  * recipient's name and the affirmation snippet instead of generic text.
  *
- * Deployment instructions:
- * 1. In Cloudflare Dashboard → Workers & Pages → Create Worker
- * 2. Paste this entire file and deploy.
- * 3. Add a route: www.thevibecheckproject.com/view-card.html*
- *    (or thevibecheckproject.com/view-card.html* if you also use the apex domain)
- * 4. No environment secrets required — card data comes from the URL param.
+ * Deployed as the "vibe-card-preview" worker (Sept 2026). To update: open it in
+ * Cloudflare → Edit code → paste this file → Deploy.
+ *
+ * Setup from scratch:
+ * 1. Cloudflare → Workers & Pages → Create application → Start with Hello World → Deploy.
+ * 2. Edit code → paste this entire file → Deploy.
+ * 3. Domains tab → Add Route (not Add Domain):
+ *      Zone: thevibecheckproject.com   Route: thevibecheckproject.com/view-card.html*
+ *      Failure mode: Fail open (proceed)
+ * 4. No secrets required — card data comes from the URL param.
  */
 
 function escapeHtml(str) {

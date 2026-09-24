@@ -718,25 +718,6 @@ nav {
 }
 
 /* ── Footer ── */
-.footer-simple {
-    padding: 60px 20px;
-    text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    width: 100%;
-}
-
-.footer-nav {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.footer-nav a {
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 13px;
-}
 
 .copyright {
     color: var(--text-muted);
@@ -868,7 +849,6 @@ nav {
 @media (max-width: 767px) {
     .card-ctas,
     .viral-bridge-actions,
-    .mobile-action-pill,
     .page-footer {
         padding-bottom: calc(12px + env(safe-area-inset-bottom, 16px));
     }

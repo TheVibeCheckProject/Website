@@ -6,7 +6,6 @@
 
 /* 1. Fix the collapsed void on Card Demo Stage and Social Proof */
 .card-demo-wrapper,
-.ambient-proof-card,
 .stat-card {
     opacity: 1 !important;
     transform: none !important;
@@ -65,13 +64,11 @@
 }
 
 /* 4. Harmonize Newsletter Transition */
-.newsletter-section,
 .cta-section {
     position: relative;
     overflow: hidden;
 }
 
-.newsletter-section::before,
 .cta-section::before {
     content: '';
     position: absolute;

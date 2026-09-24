@@ -1035,18 +1035,6 @@
     margin-bottom: 15px;
 }
 
-.text-box {
-    background: rgba(255, 255, 255, 0.03);
-    border-left: 4px solid var(--color-primary);
-    padding: 25px;
-    border-radius: 0 16px 16px 0;
-    margin: 30px 0;
-    color: var(--color-text-primary);
-    font-weight: 500;
-    font-size: 1.25rem;
-    font-style: italic;
-}
-
 .author-meta {
     display: flex;
     align-items: center;

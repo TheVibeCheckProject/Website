@@ -1855,8 +1855,6 @@ html.reduce-motion .send-button {
     }
 }
 
-
-
 /* ── Studio helpers (previously inline styles) ── */
 .step-num-wrap { cursor: pointer; }
 .send-card-page .form-label-inline { margin-bottom: 0; }

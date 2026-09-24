@@ -81,7 +81,6 @@
     pointer-events: none;
 }
 
-
 /* ─── Hero, Daily Spark dock and mood pills ─── */
 body[data-design-concept="editorial"],
 body:not([data-design-concept]) {

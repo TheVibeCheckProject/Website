@@ -144,7 +144,6 @@ html {
     scrollbar-color: rgba(255, 107, 157, 0.45) var(--color-bg-dark);
 }
 
-
 /* Main Content */
 #main-content {
     opacity: 1;
@@ -1483,7 +1482,6 @@ footer {
     line-height: 1.6;
 }
 
-
 /* ============================================
    WONKY DESIGN SYSTEM
    Nothing is perfect. Nothing should be.
@@ -1863,9 +1861,6 @@ footer {
     color: var(--color-secondary);
     opacity: 0.3;
 }
-
-
-
 
 .how-it-works-section .section-header::before {
     content: '↓';
@@ -2461,7 +2456,6 @@ footer {
         margin-right: 8px;
     }
 }
-
 
 /* ===================================
    Blog Header — Clean Standout Title
@@ -4453,53 +4447,10 @@ html.reduce-motion .blog-showcase-card:hover {
 /* ==========================================================================
    Google AdSense Ad Containers (Zero Cumulative Layout Shift Protection)
    ========================================================================== */
-.ad-unit-wrapper {
-    min-height: 280px;
-    margin: 36px auto;
-    width: 100%;
-    max-width: 970px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    position: relative;
-    padding: 12px 0;
-    overflow: hidden;
-    clear: both;
-}
-
-.ad-unit-wrapper .ad-label {
-    display: block;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-text-muted, #888888);
-    margin-bottom: 8px;
-    user-select: none;
-    line-height: 1;
-}
-
-.ad-unit-wrapper ins.adsbygoogle {
-    width: 100%;
-    min-height: 250px;
-    background: transparent;
-}
 
 /* Collapse a unit until AdSense reports it filled (it sets data-ad-status="filled").
    Unfilled units (no inventory, blocked, or an invalid data-ad-slot) otherwise render as
    an empty 280px "ADVERTISEMENT" box. Width is kept so AdSense can still measure the slot. */
-.ad-unit-wrapper:not(:has(ins.adsbygoogle[data-ad-status="filled"])) {
-    min-height: 0;
-    height: 0;
-    margin: 0 auto;
-    padding: 0;
-    visibility: hidden;
-}
-
-
-
 
 /* Footer text (shared partial) */
 .footer .footer-about { color: var(--color-text-muted); font-size: 14px; line-height: 1.7; }

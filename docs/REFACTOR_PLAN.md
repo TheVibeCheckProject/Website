@@ -23,8 +23,8 @@ Code is ready and switched off until configured. Setup steps are in each worker'
 - [x] **You** · S — Deploy `workers/og-preview.js` as the `vibe-card-preview` worker on route `thevibecheckproject.com/view-card.html*` (done 2026-09-24, verified live)
 - [x] **You** · M — Deploy `workers/counter.js` + D1 (done 2026-09-24: `vibe-counter.caseagent72401.workers.dev`, wired into `js/core-utils.js`, read receipts verified). GitHub secret `VIBE_COUNTER_URL` added, so newsletter sends are counted too
 - [x] **You** · M — Deploy `workers/premium-verify.js` (done 2026-09-24: `vibe-premium` worker, restricted Stripe key, payment-link ID, D1 cap; Payment Link redirects with `session_id`; site switched to verified mode)
-- [ ] **You** · S — AdSense: create ad units and send me the slot IDs (all 28 spots use the invalid `"auto"`), **or** decide to rely on Auto ads and I'll remove the manual spots
-- [ ] **You** · S — Decide on `assets/downloads/Premium_Vibe_Check_Themes.zip` (public, unlinked): keep or delete
+- [x] **You** · S — AdSense: decided to drop it (2026-09-24). Removed from all pages, CSS, ads.txt and the legal pages. *You:* you can also close the site in your AdSense account
+- [ ] **You + Claude** — Subscriber gift brainstorm (after the refactor): better signup gift; decide then whether the old premium-designs zip is reused or deleted
 - [x] **Claude** · S — After you set the URLs above: rebuild, verify counters/receipts/premium end to end
 
 ## Phase 2 — Safety net (do before more refactoring)
@@ -56,7 +56,7 @@ Ordered by value. Each item is verified with the Phase 2 tests before committing
 
 ## Open questions for you
 
-1. AdSense: real ad units, or Auto ads only?
+1. ~~AdSense~~ — dropped.
 2. Premium: keep the per-device model, or add a "restore purchase" flow (email + Stripe receipt lookup) later?
-3. Is `WeCare@TheVibeCheckProject.com` the right support address everywhere (site, Premium errors, legal pages)?
+3. ~~Support email~~ — confirmed `wecare@thevibecheckproject.com`. Card emails (EmailJS) currently send from a Gmail noreply address; consider switching.
 4. Should Premium stay at $4.99, and should the premium zip (if kept) be delivered to buyers?

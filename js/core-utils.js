@@ -156,7 +156,7 @@ function burstParticles(count) {
 // Backed by our own Cloudflare Worker (workers/counter.js). counterapi.dev v1,
 // which this used to call, was shut down (HTTP 410). Leave the URL empty to disable all
 // counter traffic; pages then show their static fallback numbers.
-const VIBE_COUNTER_URL = '';
+const VIBE_COUNTER_URL = 'https://vibe-counter.caseagent72401.workers.dev';
 
 const VibeCounter = {
     enabled: !!VIBE_COUNTER_URL,

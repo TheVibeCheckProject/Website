@@ -9,7 +9,10 @@
  *   POST /hit/:name              -> { name, count }   increments by 1
  *   GET  /get?names=a,b,c        -> { counts: { a: 3, b: 0, c: 12 } }   (max 50 names)
  *
- * Deployment (one time, ~5 minutes):
+ * Deployed as "vibe-counter" (https://vibe-counter.caseagent72401.workers.dev) with D1 database
+ * "vibe-counter" bound as DB (Sept 2026).
+ *
+ * Setup from scratch:
  *   1. Cloudflare Dashboard → Storage & Databases → D1 → Create database "vibe-counter".
  *   2. In its Console tab run:
  *        CREATE TABLE IF NOT EXISTS counters (name TEXT PRIMARY KEY, count INTEGER NOT NULL DEFAULT 0);

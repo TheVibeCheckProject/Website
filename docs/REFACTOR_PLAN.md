@@ -29,9 +29,9 @@ Code is ready and switched off until configured. Setup steps are in each worker'
 
 ## Phase 2 — Safety net (do before more refactoring)
 
-- [ ] **Claude** · M — Add `npm test`: syntax check, broken-link + SEO audit, and browser tests for the core flows (create card → open card, blog "Send as Card", My Vibes, Premium unlock) using Edge
-- [ ] **Claude** · S — Add a visual-regression check (the computed-style fingerprint used during this refactor) so CSS cleanups can prove nothing changed
-- [ ] **Claude** · S — Add `.gitattributes` to normalise line endings (removes the constant CRLF warnings and whitespace noise in diffs)
+- [x] **Claude** · M — Add `npm test`: syntax check, broken-link + SEO audit, and browser tests for the core flows (create card → open card, blog "Send as Card", My Vibes, Premium unlock) using Edge
+- [x] **Claude** · S — Add a visual-regression check (the computed-style fingerprint used during this refactor) so CSS cleanups can prove nothing changed
+- [x] **Claude** · S — Add `.gitattributes` to normalise line endings (removes the constant CRLF warnings and whitespace noise in diffs)
 
 ## Phase 3 — Remaining code cleanup
 

@@ -36,3 +36,14 @@ Each file's header comment has step-by-step setup.
 | `mailerlite-proxy.js` | Accepts newsletter signups without exposing the MailerLite key. | Live. |
 | `counter.js` | Cards-sent / newsletter counters and My Vibes read receipts (Worker + D1). | Enable by setting `VIBE_COUNTER_URL` in `js/core-utils.js`. |
 | `premium-verify.js` | Confirms a Stripe payment before Premium unlocks. | Enable by setting `PREMIUM_VERIFY_URL` in `js/core-utils.js`. |
+
+## Tests (`tests/`)
+
+| Command | What it checks | Time |
+| :--- | :--- | :--- |
+| `npm test` | Runs both checks below. Do this before every push. | ~2 min |
+| `npm run test:static` | JS syntax, JSON-LD, broken internal links, SEO rules (canonical, one H1, sitemap), stale `?v=` hashes, shared nav/footer present, no fabricated claims. | seconds |
+| `npm run test:e2e` | In Edge: every page loads with no JS errors or sideways scroll on a phone; blog "Send as Card" → create card → recipient opens it; sender preview; crafted links; My Vibes list/delete; Premium return; blog index and FAQ. | ~2 min |
+| `npm run test:visual -- --update` then `npm run test:visual` | Before/after comparison of the computed styles of every element (phone + desktop, plus menu/modal/step/flip states). Use around refactors that shouldn't change the look. | ~4 min each |
+
+The browser tests need Microsoft Edge installed (Playwright `channel: 'msedge'`).

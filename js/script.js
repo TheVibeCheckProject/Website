@@ -1154,9 +1154,8 @@ function applyThemeConcept(themeName, trackEvent = false) {
     const tagBadge = document.querySelector('.hero-tag-badge');
 
     if (titleMain && titleGradient && themeData) {
-            titleMain.textContent = themeData.titleMain;
-            titleGradient.textContent = themeData.titleGradient;
-        }
+        titleMain.textContent = themeData.titleMain;
+        titleGradient.textContent = themeData.titleGradient;
     }
 
     if (tagBadge && themeData) {

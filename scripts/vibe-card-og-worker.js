@@ -37,7 +37,12 @@ function decodeCardData(url) {
     try {
         const param = new URL(url).searchParams.get('data');
         if (!param) return null;
-        const json = decodeURIComponent(atob(param));
+        // Links are base64url (see send-card-logic.js) — restore standard base64 + padding before atob
+        const sanitized = param.trim().replace(/[^A-Za-z0-9\-_+/]/g, '');
+        if (!sanitized) return null;
+        let b64 = sanitized.replace(/-/g, '+').replace(/_/g, '/');
+        b64 += '='.repeat((4 - (b64.length % 4)) % 4);
+        const json = decodeURIComponent(atob(b64));
         const card = JSON.parse(json);
         return card && typeof card === 'object' ? card : null;
     } catch {

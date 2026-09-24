@@ -130,25 +130,15 @@ body {
     pointer-events: none;
 }
 
+/* The vertical twin of the progress bar used to stand in for a hidden native scrollbar.
+   The native scrollbar is back (hiding it broke drag-to-scroll and hid page length),
+   so this decorative bar would only overlap it. */
 #scroll-progress-y {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    width: 5px;
-    height: 0%;
-    background: linear-gradient(0deg, var(--color-accent), var(--color-primary), #ff9a3c, var(--color-secondary));
-    z-index: 1001;
-    transition: height 0.1s ease;
-    pointer-events: none;
-}
-
-/* Hide native scrollbar — replaced by custom progress bars */
-html {
-    scrollbar-width: none;
-}
-
-::-webkit-scrollbar {
     display: none;
+}
+
+html {
+    scrollbar-color: rgba(255, 107, 157, 0.45) var(--color-bg-dark);
 }
 
 
@@ -314,6 +304,49 @@ nav.scrolled {
 
 .nav-links a:hover::after {
     width: 100%;
+}
+
+/* Long-form articles: their inline <style> sets `.blog-post { margin: 40px auto 80px }`,
+   which tucked the category tag and first line under the fixed nav. */
+main.blog-post {
+    margin-top: 112px;
+}
+
+/* Shared nav (templates/partials/nav.html) */
+.nav-links {
+    align-items: center;
+}
+
+.nav-links a.nav-cta {
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.nav-links a[aria-current="page"] {
+    color: var(--color-text-primary);
+}
+
+.nav-links a[aria-current="page"]::after {
+    width: 100%;
+}
+
+/* In the open mobile menu, mark the current page with colour instead of the underline bar */
+nav.nav-open .nav-links a[aria-current="page"],
+nav.menu-open .nav-links a[aria-current="page"] {
+    color: var(--color-primary);
+}
+
+nav.nav-open .nav-links a::after,
+nav.menu-open .nav-links a::after {
+    display: none;
+}
+
+.nav-links a:focus-visible,
+.nav-logo-link:focus-visible,
+.nav-hamburger:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+    border-radius: 4px;
 }
 
 /* Hero Section */
@@ -3148,7 +3181,12 @@ nav.menu-open .nav-hamburger span:nth-child(3) {
     transform: translateY(-7px) rotate(-45deg);
 }
 
-@media (max-width: 768px) {
+/* Collapse to the hamburger below 1100px: seven links + crisis badge + logo do not fit */
+@media (max-width: 1099px) {
+    .nav-links {
+        display: none;
+    }
+
     .nav-hamburger {
         display: flex;
     }

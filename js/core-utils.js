@@ -216,7 +216,14 @@ const VibeCounter = {
 (function initMobileNav() {
     const btn = document.getElementById('nav-hamburger');
     const nav = document.getElementById('nav');
-    if (!btn || !nav) return;
+    if (!nav) return;
+
+    // Solid header once the page scrolls
+    const syncScrolled = () => nav.classList.toggle('scrolled', window.pageYOffset > 50);
+    window.addEventListener('scroll', syncScrolled, { passive: true });
+    syncScrolled();
+
+    if (!btn) return;
 
     let previouslyFocused = null;
 

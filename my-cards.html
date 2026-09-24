@@ -42,8 +42,8 @@
         rel="stylesheet">
 
     <!-- Core Stylesheets -->
-    <link rel="stylesheet" href="css/styles.css?v=108">
-    <link rel="stylesheet" href="css/my-cards.css?v=108">
+    <link rel="stylesheet" href="css/styles.css?v=86147737ab">
+    <link rel="stylesheet" href="css/my-cards.css?v=a251890772">
 </head>
 
 <body data-design-concept="editorial">
@@ -52,32 +52,35 @@
     <div class="bg-orb bg-orb-2" aria-hidden="true"></div>
 
     <!-- Main Site Navigation -->
-    <nav id="nav">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
-            </div>
-            <ul class="nav-links" style="align-items: center;">
-                <li>
-                    <a href="blog/index.html#crisis" class="nav-crisis-badge">
-                        <span class="nav-crisis-heart">❤️</span>
-                        <span class="nav-crisis-text">Emergency Support</span>
-                    </a>
-                </li>
-                <li><a href="send-card.html" style="color: var(--color-primary); font-weight: 700;">💌 Send A Card</a></li>
-                <li><a href="my-cards.html" class="active" style="color: #fff; font-weight: 700;">My Vibes</a></li>
-                <li><a href="situations.html">Situations</a></li>
-                <li><a href="faq.html">FAQ</a></li>
-                <li><a href="about.html">About</a></li>
-            </ul>
-            <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu"
-                    aria-expanded="false">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+    <!-- site-nav:start (generated from templates/partials/nav.html — edit there, then npm run build:layout) -->
+<nav id="nav" aria-label="Main">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
         </div>
-    </nav>
+        <ul class="nav-links" id="nav-links">
+            <li>
+                <a href="blog/index.html#crisis" class="nav-crisis-badge">
+                    <span class="nav-crisis-heart" aria-hidden="true">❤️</span>
+                    <span class="nav-crisis-text">Emergency Support</span>
+                </a>
+            </li>
+            <li><a href="send-card.html" class="nav-cta" data-nav="send">💌 Send a Card</a></li>
+            <li><a href="situations.html" data-nav="situations">Situations</a></li>
+            <li><a href="blog/index.html" data-nav="guides">Guides</a></li>
+            <li><a href="my-cards.html" data-nav="vibes" aria-current="page">My Vibes</a></li>
+            <li><a href="faq.html" data-nav="faq">FAQ</a></li>
+            <li><a href="about.html" data-nav="about">About</a></li>
+        </ul>
+        <button class="nav-hamburger" id="nav-hamburger" type="button" aria-label="Open navigation menu"
+            aria-expanded="false" aria-controls="nav-links">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</nav>
+<!-- site-nav:end -->
 
     <!-- Dashboard Content Page -->
     <main class="my-cards-page">
@@ -176,8 +179,8 @@
     </div>
 
     <!-- Core Scripts -->
-    <script src="js/core-utils.js?v=108"></script>
-    <script src="js/vibe-history.js?v=108"></script>
+    <script src="js/core-utils.js?v=ecb893f0f7"></script>
+    <script src="js/vibe-history.js?v=3874544877"></script>
 
     <!-- Dashboard Controller Script -->
     <script>

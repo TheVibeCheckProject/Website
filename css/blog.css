@@ -731,6 +731,14 @@
     white-space: nowrap;
 }
 
+/* The card is an <a>; without this the inner label inherits the browser's link blue + underline */
+.topic-hub-card .cat-btn {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-primary, #FF6B9D);
+    text-decoration: none;
+}
+
 @media (max-width: 650px) {
     .topic-hubs-grid {
         grid-template-columns: repeat(2, 1fr);

@@ -859,29 +859,6 @@ function initParallax() {
     }, { passive: true });
 }
 
-function initRotatingLogo() {
-    const words = ["Advice", "Guides", "Blogs"];
-    const fonts = ["'Pacifico', cursive", "'Caveat', cursive", "'Permanent Marker', cursive"];
-    const colors = ["#FEC84A", "#67E8F9", "#FF6B9D"];
-    const spans = document.querySelectorAll('.rotating-logo-word');
-    if (!spans.length) return;
-    let idx = 0;
-    setInterval(() => {
-        idx = (idx + 1) % words.length;
-        spans.forEach(span => {
-            span.classList.add('out');
-            setTimeout(() => {
-                span.textContent = words[idx];
-                span.style.fontFamily = fonts[idx];
-                span.style.color = colors[idx];
-                document.title = `The Vibe Check Project | ${words[idx]}`;
-                span.classList.remove('out');
-                span.classList.add('in');
-            }, 500);
-        });
-    }, 3000);
-}
-
 function initLiveCounters() {
     initMetricsCounters();
 }
@@ -1148,14 +1125,6 @@ function applyThemeConcept(themeName, trackEvent = false) {
 
 // ── INITIALIZATION ───────────────────────────────────
 function initApp() {
-    // Core Navigation (scroll tracking; mobile toggle managed centrally by core-utils.js)
-    const nav = document.getElementById('nav');
-    if (nav) {
-        window.addEventListener('scroll', () => {
-            nav.classList.toggle('scrolled', window.pageYOffset > 50);
-        }, { passive: true });
-    }
-
     // Scroll reveal for .reveal / .reveal-left / .reveal-right elements
     const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
     if (revealEls.length && 'IntersectionObserver' in window) {
@@ -1196,7 +1165,6 @@ function initApp() {
 
     // Non-critical features deferred to 3s after load for Lighthouse performance
     setTimeout(() => {
-        initRotatingLogo();
         initParallax();
         initLiveCounters();
         createEmailModal();

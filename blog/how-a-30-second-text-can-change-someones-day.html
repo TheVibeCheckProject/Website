@@ -13,8 +13,8 @@
     <meta property="og:description" content="Discover how sending a simple 30-second text message can completely transform someone's day. Practical examples and psychology behind daily kindness.">
     <meta property="og:image" content="https://thevibecheckproject.com/assets/og-image.png">
 
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Fredoka:wght@300;400;500;600;700&amp;family=Caveat:wght@400;700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="../css/styles.css?v=6">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Fredoka:wght@300;400;500;600;700&amp;family=Caveat:wght@400;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../css/styles.css?v=86147737ab">
 
     <style>
         .blog-post {
@@ -233,21 +233,35 @@
     <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
 
-    <nav id="nav" class="scrolled">
-        <div class="nav-container">
-            <a href="../index.html" class="nav-logo">✨ The Vibe Check Project</a>
-            <ul class="nav-links" style="align-items: center;">
-                <li>
-                    <a href="../blog/index.html#crisis" class="nav-crisis-badge">
-                        <span class="nav-crisis-heart">❤️</span>
-                        <span class="nav-crisis-text">Emergency Support</span>
-                    </a>
-                </li>
-                <li><a href="../blog/index.html">Advice &amp; Guides</a></li>
-                <li><a href="../send-card.html" class="btn btn-secondary" style="padding: 6px 16px; border-width: 1px; font-size: 14px;">Send a Card</a></li>
-            </ul>
+    <!-- site-nav:start (generated from templates/partials/nav.html — edit there, then npm run build:layout) -->
+<nav id="nav" aria-label="Main">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <a href="../index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
         </div>
-    </nav>
+        <ul class="nav-links" id="nav-links">
+            <li>
+                <a href="../blog/index.html#crisis" class="nav-crisis-badge">
+                    <span class="nav-crisis-heart" aria-hidden="true">❤️</span>
+                    <span class="nav-crisis-text">Emergency Support</span>
+                </a>
+            </li>
+            <li><a href="../send-card.html" class="nav-cta" data-nav="send">💌 Send a Card</a></li>
+            <li><a href="../situations.html" data-nav="situations">Situations</a></li>
+            <li><a href="../blog/index.html" data-nav="guides" aria-current="page">Guides</a></li>
+            <li><a href="../my-cards.html" data-nav="vibes">My Vibes</a></li>
+            <li><a href="../faq.html" data-nav="faq">FAQ</a></li>
+            <li><a href="../about.html" data-nav="about">About</a></li>
+        </ul>
+        <button class="nav-hamburger" id="nav-hamburger" type="button" aria-label="Open navigation menu"
+            aria-expanded="false" aria-controls="nav-links">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</nav>
+<!-- site-nav:end -->
 
     <main class="blog-post">
         <span class="blog-tag">Everyday Kindness</span>
@@ -555,49 +569,56 @@
         </section>
     </main>
 
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-grid">
-                <div class="footer-section">
-                    <h4>About</h4>
-                    <p style="color: var(--color-text-muted); font-size: 14px; line-height: 1.7;">The Vibe Check Project
-                        exists to spread positivity through daily affirmations and uplifting messages. Because small
-                        words can make a big impact.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Project</h4>
-                    <ul class="footer-links">
-                        <li><a href="../blog/index.html">Advice &amp; Guides</a></li>
-                        <li><a href="../about.html">About Us</a></li>
-                        <li><a href="../contact.html">Contact</a></li>
-                        <li><a href="../faq.html">FAQ</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Legal</h4>
-                    <ul class="footer-links">
-                        <li><a href="../privacy.html">Privacy Policy</a></li>
-                        <li><a href="../terms.html">Terms of Service</a></li>
-                        <li><a href="../cookies.html">Cookie Policy</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Connect</h4>
-                    <ul class="footer-links">
-                        <li><a href="https://x.com/thevibecheckpro" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
-                        <li><a href="https://www.tiktok.com/@thevibecheckproject" target="_blank" rel="noopener noreferrer">TikTok</a></li>
-                        <li><a href="https://ko-fi.com/thevibecheckproject" target="_blank" rel="noopener noreferrer">Ko-fi</a></li>
-                    </ul>
-                </div>
+    <!-- site-footer:start (generated from templates/partials/footer.html) -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h4>About</h4>
+                <p style="color: var(--color-text-muted); font-size: 14px; line-height: 1.7;">
+                    The Vibe Check Project exists to spread positivity through daily affirmations and uplifting messages. Because small words make a big impact.
+                </p>
             </div>
-            <div class="footer-bottom">
-                <p style="font-size: 0.8rem; color: #a0a0a0; margin-bottom: 10px;">Disclaimer: We do not provide
-                    therapy, counseling, or medical advice. Our content is for positive emotional support and
-                    inspiration only.</p>
-                <p>✨ Made with love by The Vibe Check Project • Spreading good since 2025</p>
+
+            <div class="footer-section">
+                <h4>Project</h4>
+                <ul class="footer-links">
+                    <li><a href="../send-card.html">Send a Card</a></li>
+                    <li><a href="../situations.html">Browse by Situation</a></li>
+                    <li><a href="../blog/index.html">Advice &amp; Guides</a></li>
+                    <li><a href="../my-cards.html">My Vibes</a></li>
+                    <li><a href="../about.html">About Us</a></li>
+                    <li><a href="../faq.html">FAQ</a></li>
+                    <li><a href="../contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="../privacy.html">Privacy Policy</a></li>
+                    <li><a href="../terms.html">Terms of Service</a></li>
+                    <li><a href="../cookies.html">Cookie Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <ul class="footer-links">
+                    <li><a href="https://x.com/thevibecheckpro" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
+                    <li><a href="https://www.tiktok.com/@thevibecheckproject" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+                    <li><a href="https://ko-fi.com/thevibecheckproject" target="_blank" rel="noopener noreferrer">Ko-fi</a></li>
+                </ul>
             </div>
         </div>
-    </footer>
+
+        <div class="footer-bottom">
+            <p style="font-size: 0.82rem; color: var(--color-text-muted); margin-bottom: 10px; line-height: 1.6;"><strong>Disclaimer:</strong> The Vibe Check Project provides peer emotional inspiration and positive support, not clinical therapy, psychotherapy, or medical care. If you or someone you know is in crisis, please call or text <strong>988</strong> (USA/Canada) or text <strong>HOME</strong> to <strong>741741</strong>.</p>
+            <p>✨ The Vibe Check Project • Founded by Devin Griffin • Spreading good since 2025</p>
+        </div>
+    </div>
+</footer>
+<!-- site-footer:end -->
 
 
 
@@ -648,4 +669,5 @@
 
 
 
+    <script src="../js/core-utils.js?v=ecb893f0f7" defer></script>
 </body></html>

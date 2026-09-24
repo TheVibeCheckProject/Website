@@ -253,20 +253,20 @@ function createEmailModal() {
             <div class="modal-content">
                 <button class="modal-close" onclick="closeEmailModal()" aria-label="Close signup dialog">&times;</button>
                 <div class="modal-header">
-                    <h2 id="email-modal-title">✨ The Sunday Vibe & Daily Spark</h2>
-                    <p>One gentle affirmation every morning + 3 free high-res phone wallpapers delivered immediately.</p>
+                    <h2 id="email-modal-title">✨ The Daily Spark</h2>
+                    <p>One gentle affirmation in your inbox every morning.</p>
                 </div>
                 <form id="email-signup-form" class="modal-form">
                     <div class="form-group"><input type="email" id="signup-email" class="form-input" placeholder="your.email@example.com" required /></div>
                     <div class="form-group"><input type="text" id="signup-name" class="form-input" placeholder="Your first name (optional)" /></div>
-                    <button type="submit" class="btn btn-primary btn-large btn-block">Get Wallpapers & Good Vibes ✨</button>
+                    <button type="submit" class="btn btn-primary btn-large btn-block">Get Daily Vibes ✨</button>
                     <p class="form-error" id="signup-error" role="alert" hidden></p>
                     <p class="form-note">100% Free forever. No spam, ever. Unsubscribe anytime.</p>
                 </form>
                 <div id="signup-success" style="display: none;" class="success-message">
                     <div class="success-icon">✨</div>
                     <h3>Welcome to the community!</h3>
-                    <p>Check your email for your wallpaper downloads & welcome note. Your first daily spark arrives tomorrow morning.</p>
+                    <p>Check your email for a little welcome from us. Your first daily spark arrives tomorrow morning.</p>
                     <button class="btn btn-secondary" onclick="closeEmailModal()">Close</button>
                 </div>
             </div>

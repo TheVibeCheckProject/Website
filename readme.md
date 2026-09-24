@@ -23,7 +23,7 @@ Anyone can send a personalised encouragement card as a link: no sign-up, no app.
 *.html                 top-level pages (home, card studio, card viewer, My Vibes, FAQ, legal…)
 blog/                  articles, listicles, message pages, category hubs
 css/  js/              styles and scripts (?v= hashes are set by the build)
-assets/                images, card backgrounds, wallpapers, Pinterest pins
+assets/                images, card backgrounds, Pinterest pins
 data/                  source data for generated pages and Pinterest tooling
 templates/             message-page template + shared nav/footer partials
 scripts/build/         static-site build (npm run build)

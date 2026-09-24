@@ -893,7 +893,6 @@ section {
 }
 
 /* Pink/white text on the pink→yellow gradient was nearly unreadable; use dark chips instead */
-.cta-section .cta-bonus,
 .cta-section .trust-badge-pill {
     display: inline-block;
     background: rgba(26, 22, 37, 0.8);
@@ -902,15 +901,6 @@ section {
     text-shadow: none;
 }
 
-.cta-section .cta-bonus {
-    margin-top: 12px;
-    padding: 6px 14px;
-    border-radius: 999px;
-    font-family: var(--font-body);
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.5;
-}
 
 .cta-section .join-form .btn-large {
     max-width: 100%;

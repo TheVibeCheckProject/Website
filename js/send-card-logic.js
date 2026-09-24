@@ -1248,7 +1248,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (postSendForm) {
                         const done = document.createElement('p');
                         done.style.cssText = 'color:#a3e635;font-weight:600;font-size:14px;padding:8px 0;';
-                        done.textContent = `✓ 30-Day Reminder set for ${recipientName || 'your friend'}! Check your inbox for confirmation & free wallpapers.`;
+                        done.textContent = `✓ 30-Day Reminder set for ${recipientName || 'your friend'}! Check your inbox for a welcome email.`;
                         postSendForm.replaceChildren(done);
                     }
                 }).catch(err => console.error('Reminder registration error:', err));

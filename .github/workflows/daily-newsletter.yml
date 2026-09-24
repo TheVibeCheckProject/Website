@@ -27,6 +27,7 @@ jobs:
           MAILERLITE_API_KEY: ${{ secrets.MAILERLITE_API_KEY }}
           MAILERLITE_GROUP_ID: ${{ secrets.MAILERLITE_GROUP_ID }}
           DATE_OVERRIDE: ${{ github.event.inputs.date_override }}
+          VIBE_COUNTER_URL: ${{ secrets.VIBE_COUNTER_URL }}
         run: node scripts/send-newsletter.js
 
       - name: Notify on failure

@@ -295,29 +295,31 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Themes for Front Face */
-.theme-blue.flip-card-front {
-    background: linear-gradient(135deg, #1e3a8a, #1d4ed8);
+/* Occasion themes (card.themeGroup). Applied to the front face, and to the back face
+   when the card has no background image. */
+.flip-card-face.theme-birthday {
+    background: radial-gradient(120% 90% at 50% 0%, rgba(251, 191, 36, 0.28), transparent 60%),
+        linear-gradient(145deg, #2a1608, #3b1230);
 }
 
-.theme-purple.flip-card-front {
-    background: linear-gradient(135deg, #4c1d95, #6d28d9);
+.flip-card-face.theme-anxiety {
+    background: radial-gradient(120% 90% at 50% 0%, rgba(96, 165, 250, 0.28), transparent 60%),
+        linear-gradient(145deg, #0b1a2e, #111a3a);
 }
 
-.theme-pink.flip-card-front {
-    background: linear-gradient(135deg, #831843, #be185d);
+.flip-card-face.theme-celebrate {
+    background: radial-gradient(120% 90% at 50% 0%, rgba(250, 204, 21, 0.26), transparent 60%),
+        linear-gradient(145deg, #1f1a06, #2b1224);
 }
 
-.theme-green.flip-card-front {
-    background: linear-gradient(135deg, #064e3b, #059669);
+.flip-card-face.theme-love {
+    background: radial-gradient(120% 90% at 50% 0%, rgba(244, 114, 182, 0.3), transparent 60%),
+        linear-gradient(145deg, #2a0c1c, #1e0f2a);
 }
 
-.theme-orange.flip-card-front {
-    background: linear-gradient(135deg, #7c2d12, #c2410c);
-}
-
-.theme-black.flip-card-front {
-    background: #000;
+.flip-card-face.theme-healing {
+    background: radial-gradient(120% 90% at 50% 0%, rgba(167, 139, 250, 0.28), transparent 60%),
+        linear-gradient(145deg, #15122b, #0f1d24);
 }
 
 .front-emoji {
@@ -438,6 +440,16 @@ body {
 .has-bg * {
     position: relative;
     z-index: 1;
+}
+
+/* Keep text legible over light pastel photo/video backgrounds */
+.has-bg .affirmation {
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+}
+
+.has-bg .card-message {
+    color: rgba(255, 255, 255, 0.92);
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
 }
 
 video.card-bg-video {

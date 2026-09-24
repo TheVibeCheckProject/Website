@@ -1057,38 +1057,16 @@ function initMetricsCounters(config = {}) {
         }
     }
 
-    const endpoints = [
-        {
-            el: cardEl,
-            url: 'https://api.counterapi.dev/v1/thevibecheckproject/cards-sent/',
-            baseline: defaultCards
-        },
-        {
-            el: newsletterEl,
-            url: 'https://api.counterapi.dev/v1/thevibecheckproject/newsletters-sent/',
-            baseline: defaultNewsletters
-        }
-    ];
-
-    // 2. Asynchronous Fetch with AbortController timeout
-    endpoints.forEach(({ el, url, baseline }) => {
-        if (!el) return;
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-
-        fetch(url, { signal: controller.signal })
-            .then(res => {
-                if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-                return res.json();
-            })
-            .then(data => {
-                clearTimeout(timeoutId);
-                if (data && typeof data.count === 'number' && data.count > baseline) {
-                    el.textContent = `${data.count.toLocaleString()}+`;
+    // 2. Live counts from VibeCounter (core-utils.js); the baseline stays if the
+    //    service is disabled/unreachable or reports less than the baseline.
+    if (!window.VibeCounter || (!cardEl && !newsletterEl)) return;
+    window.VibeCounter.getMany(['cards-sent', 'newsletters-sent'], timeoutMs).then(counts => {
+        if (!counts) return;
+        [[cardEl, counts['cards-sent'], defaultCards], [newsletterEl, counts['newsletters-sent'], defaultNewsletters]]
+            .forEach(([el, count, baseline]) => {
+                if (el && typeof count === 'number' && count > baseline) {
+                    el.textContent = `${count.toLocaleString()}+`;
                 }
-            })
-            .catch(() => {
-                // 3. Graceful Failure: baseline is preserved
             });
     });
 }

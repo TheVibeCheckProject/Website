@@ -198,67 +198,26 @@
     }
 }
 
-/* ── Fluid 3-Panel Workspace on Viewports >=1280px (Message & Tone -> 3D Stage -> Delivery) ── */
+/* Desktop (>=1280px): same two-column studio (form | sticky preview), capped width so
+   line lengths stay readable. The old 3-panel variant flattened the form with
+   display:contents, which scattered the back link and success screen across the grid. */
 @media (min-width: 1280px) {
     .send-card-container {
-        width: min(100% - 48px, 1560px);
-        max-width: 1560px;
+        width: min(100% - 48px, 1240px);
+        max-width: 1240px;
     }
 
     .send-card-layout {
-        display: grid;
-        grid-template-columns: minmax(360px, 1fr) minmax(400px, 1.1fr) minmax(360px, 1fr);
-        gap: 32px;
-        align-items: start;
-        overflow: visible;
-        height: auto;
+        grid-template-columns: minmax(0, 1.1fr) minmax(380px, 0.9fr);
+        gap: 48px;
     }
 
-    .send-card-form-col {
-        display: contents;
-    }
+}
 
-    .card-form,
-    .form-slider-container,
-    .form-slider-track {
-        display: contents;
-    }
-
-    /* Panel 1: Message & Tone (Step 1) */
-    #step1.form-step {
-        grid-column: 1;
-        grid-row: 1;
-        position: relative !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        pointer-events: all !important;
-        transform: none !important;
-        background: var(--color-bg-medium);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 20px;
-        padding: 24px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-    }
-
-    /* Panel 2: 3D Interactive Stage */
+@media (min-width: 1024px) {
     .send-card-preview-col {
-        grid-column: 2;
-        grid-row: 1;
         position: sticky;
-        top: 86px;
-        z-index: 20;
-    }
-
-    /* Panel 3: Delivery (Step 2 and Step 3) */
-    #step2.form-step,
-    #step3.form-step {
-        grid-column: 3;
-        grid-row: 1;
-        background: var(--color-bg-medium);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 20px;
-        padding: 24px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        top: 96px;
     }
 }
 
@@ -378,9 +337,9 @@
 }
 
 .motion-toggle-btn.motion-reduced {
-    background: rgba(239, 68, 68, 0.12);
-    border-color: rgba(239, 68, 68, 0.35);
-    color: #fca5a5;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--color-text-secondary);
 }
 
 /* ── Vibe Category Tabs ─────────────────────────────────── */

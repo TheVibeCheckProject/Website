@@ -152,6 +152,43 @@ function burstParticles(count) {
     }
 }
 
+// ── Counters & read receipts ──
+// Backed by our own Cloudflare Worker (scripts/vibe-counter-worker.js). counterapi.dev v1,
+// which this used to call, was shut down (HTTP 410). Leave the URL empty to disable all
+// counter traffic; pages then show their static fallback numbers.
+const VIBE_COUNTER_URL = '';
+
+const VibeCounter = {
+    enabled: !!VIBE_COUNTER_URL,
+    _name(name) {
+        return String(name).toLowerCase().replace(/[^a-z0-9_:-]/g, '').slice(0, 64);
+    },
+    /** Fire-and-forget increment. */
+    hit(name) {
+        if (!this.enabled) return;
+        try {
+            fetch(`${VIBE_COUNTER_URL}/hit/${this._name(name)}`, { method: 'POST', keepalive: true, mode: 'cors' }).catch(() => { });
+        } catch (e) { }
+    },
+    /** Resolves to { name: count } for the requested names, or null when unavailable. */
+    async getMany(names, timeoutMs = 4000) {
+        if (!this.enabled || !names.length) return null;
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
+        try {
+            const qs = names.map(n => this._name(n)).join(',');
+            const res = await fetch(`${VIBE_COUNTER_URL}/get?names=${encodeURIComponent(qs)}`, { signal: controller.signal, cache: 'no-store' });
+            if (!res.ok) return null;
+            const data = await res.json();
+            return data && typeof data.counts === 'object' ? data.counts : null;
+        } catch (e) {
+            return null;
+        } finally {
+            clearTimeout(timer);
+        }
+    }
+};
+
 // ── Premium Unlock (Stripe return) ──
 // Runs on every page via core-utils so buyers are unlocked no matter which
 // page Stripe redirects them to after payment (?premium=1).
@@ -460,4 +497,5 @@ window.burstParticles = burstParticles;
 window.isMobile = isMobile;
 window.VibeTelemetry = VibeTelemetry;
 window.VibeAB = VibeAB;
+window.VibeCounter = VibeCounter;
 

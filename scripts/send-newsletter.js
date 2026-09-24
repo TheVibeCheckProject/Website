@@ -127,8 +127,10 @@ async function main() {
   }));
   console.log(`🚀 Newsletter sent for ${today}: "${email.subject}"`);
 
-  // Increment newsletter send counter (fire-and-forget)
-  fetch('https://api.counterapi.dev/v1/thevibecheckproject/newsletters-sent/up').catch(() => {});
+  // Increment newsletter send counter (scripts/vibe-counter-worker.js); skipped when not configured
+  if (process.env.VIBE_COUNTER_URL) {
+    await fetch(`${process.env.VIBE_COUNTER_URL.replace(/\/$/, '')}/hit/newsletters-sent`, { method: 'POST' }).catch(() => {});
+  }
 }
 
 main().catch(err => {

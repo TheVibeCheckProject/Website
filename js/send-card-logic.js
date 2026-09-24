@@ -1,5 +1,16 @@
-// ── Global State (v102) ──
-const isPremium = localStorage.getItem('premium_unlocked') === '1';
+// ── Safe storage (Safari private mode / blocked storage throws on access) ──
+function storageGet(key) {
+    try { return window.localStorage.getItem(key); } catch (e) { return null; }
+}
+function storageSet(key, val) {
+    try { window.localStorage.setItem(key, val); } catch (e) { }
+}
+
+// ── Global State ──
+const isPremium = storageGet('premium_unlocked') === '1';
+
+// Payload limits — keep in sync with docs/SYSTEM_WIRING_SPEC.md §3.1
+const LIMITS = { name: 50, affirmation: 280, note: 500 };
 
 let selectedAffirmation = '';
 let selectedSound = 'chime';
@@ -8,7 +19,7 @@ let selectedBackground = '';
 
 // ── Motion Accessibility State (Reduced Motion) ──
 let isReducedMotion = (function () {
-    const stored = localStorage.getItem('vibe_reduced_motion');
+    const stored = storageGet('vibe_reduced_motion');
     if (stored !== null) return stored === '1';
     return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 })();
@@ -16,7 +27,7 @@ let isReducedMotion = (function () {
 function applyMotionPreference(reduced, persist = true) {
     isReducedMotion = reduced;
     if (persist) {
-        localStorage.setItem('vibe_reduced_motion', reduced ? '1' : '0');
+        storageSet('vibe_reduced_motion', reduced ? '1' : '0');
     }
     document.documentElement.classList.toggle('reduce-motion', reduced);
 
@@ -24,7 +35,7 @@ function applyMotionPreference(reduced, persist = true) {
     const text = document.getElementById('motionToggleText');
     const btn = document.getElementById('motionToggleBtn');
 
-    if (icon) icon.textContent = reduced ? '🛑' : '✨';
+    if (icon) icon.textContent = reduced ? '⏸' : '✨';
     if (text) text.textContent = reduced ? 'Motion Off' : 'Motion On';
     if (btn) {
         btn.classList.toggle('motion-reduced', reduced);
@@ -54,7 +65,7 @@ function initMotionControl() {
     try {
         const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
         mediaQuery.addEventListener('change', (e) => {
-            if (localStorage.getItem('vibe_reduced_motion') === null) {
+            if (storageGet('vibe_reduced_motion') === null) {
                 applyMotionPreference(e.matches, false);
             }
         });
@@ -158,11 +169,18 @@ function renderOccasionChips() {
     });
 }
 
+// ?preset= aliases (docs/SYSTEM_WIRING_SPEC.md "Preset Resolution & Alias Mapping")
+const OCCASION_ALIASES = {
+    hard_day: 'tough_day', bad_day: 'tough_day', breakup: 'tough_day',
+    hype: 'proud', celebrate: 'proud',
+    thank_you: 'gratitude', love: 'gratitude',
+    anxiety: 'calm', panic: 'calm', burnout: 'calm',
+    grief: 'healing', loss: 'healing', illness: 'healing', sympathy: 'healing'
+};
+
 function applyOccasionTemplate(templateId, isAutoFromUrl = false) {
-    let resolvedId = (templateId || '').toLowerCase();
-    if (resolvedId === 'grief' || resolvedId === 'loss' || resolvedId === 'sympathy') resolvedId = 'healing';
-    if (resolvedId === 'panic' || resolvedId === 'anxiety') resolvedId = 'calm';
-    if (resolvedId === 'breakup' || resolvedId === 'hard_day') resolvedId = 'tough_day';
+    let resolvedId = (templateId || '').toLowerCase().replace(/-/g, '_');
+    resolvedId = OCCASION_ALIASES[resolvedId] || resolvedId;
 
     const template = occasionTemplates.find(t => t.id === resolvedId);
     if (!template) return;
@@ -233,6 +251,7 @@ function handleExternalMessage() {
     if (recipientParam) {
         let cleanRec = recipientParam;
         try { cleanRec = decodeURIComponent(recipientParam); } catch (e) { }
+        cleanRec = cleanRec.trim().substring(0, LIMITS.name);
         const recInput = document.getElementById('recipientName');
         if (recInput) recInput.value = cleanRec;
 
@@ -263,6 +282,7 @@ function handleExternalMessage() {
         try {
             if (cleanNote.includes('%')) cleanNote = decodeURIComponent(personalNoteText);
         } catch (e) { }
+        cleanNote = cleanNote.substring(0, LIMITS.note);
         const pInput = document.getElementById('personalMessage');
         if (pInput) {
             pInput.value = cleanNote;
@@ -283,6 +303,9 @@ function handleExternalMessage() {
         } catch (e) {
             console.warn("⚠️ Failed to decode message param, using raw:", e);
         }
+        // Blog/homepage "Send as Card" buttons pass their text here. It is our own
+        // content, so it is allowed on the card front for free users too.
+        decodedMsg = decodedMsg.replace(/^["“”']+|["“”']+$/g, '').trim().substring(0, LIMITS.affirmation);
 
         window._externalMessage = decodedMsg;
         selectedAffirmation = decodedMsg;
@@ -397,7 +420,7 @@ const categoryDefs = [
         id: 'healing', label: 'Healing', emoji: '🕊️',
         color: '#818cf8', glow: 'rgba(129,140,248,0.25)',
         gradient: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
-        premium: true, themeGroup: 'grief',
+        premium: true, themeGroup: 'healing',
         affirmations: [
             "There is no timeline for healing.",
             "Grief is love with nowhere to go. That's okay.",
@@ -551,7 +574,10 @@ function handlePremModalKeydown(e) {
 
 function showPremModal(context = 'general', badgeText = '') {
     const overlay = document.getElementById('premOverlay');
-    if (overlay) overlay.classList.add('open');
+    if (overlay) {
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+    }
     document.body.style.overflow = 'hidden';
 
     _prevFocusedBeforePrem = document.activeElement;
@@ -584,7 +610,10 @@ function hidePremModal(e) {
         // Allow closing from: overlay backdrop click, dismiss button, or direct call
         if (modal && modal.contains(e.target) && !isDismissBtn) return;
     }
-    if (overlay) overlay.classList.remove('open');
+    if (overlay) {
+        overlay.classList.remove('open');
+        overlay.setAttribute('aria-hidden', 'true');
+    }
     document.body.style.overflow = '';
     document.removeEventListener('keydown', handlePremModalKeydown);
 
@@ -1028,15 +1057,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const updateEvents = ['input', 'keyup', 'change', 'blur', 'compositionend'];
+    const updateEvents = ['input', 'change', 'compositionend'];
     [senderInput, messageInput, recipientInput].forEach(input => {
         if (input) {
             updateEvents.forEach(evt => input.addEventListener(evt, updatePreview));
         }
     });
-
-    const previewTimer = setInterval(updatePreview, 500);
-    window._previewTimer = previewTimer;
 
     const cardForm = document.getElementById('cardForm');
     if (cardForm) {
@@ -1049,13 +1075,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Anti-bypass paywall verification: If affirmation is not in curated catalog, enforce premium
+            // Paywall check: typing your own front affirmation is Premium. Curated
+            // affirmations and messages handed over by our own pages (?message=) are free.
             if (!isPremium) {
                 const cleanAff = (selectedAffirmation || '').replace(/^["']|["']$/g, '').trim();
                 const allCurated = [
                     ...freeAffirmations,
                     ...categoryDefs.flatMap(c => c.affirmations || []),
-                    ...occasionTemplates.map(t => t.affirmation)
+                    ...occasionTemplates.map(t => t.affirmation),
+                    ...(window._externalMessage ? [window._externalMessage] : [])
                 ].map(a => a.replace(/^["']|["']$/g, '').trim());
 
                 if (!allCurated.includes(cleanAff)) {
@@ -1071,17 +1099,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            const recipientName = document.getElementById('recipientName').value;
-            if (!recipientName.trim()) {
+            const recipientName = document.getElementById('recipientName').value.trim().substring(0, LIMITS.name);
+            if (!recipientName) {
                 showToast("Add their name so they know it's for them 💖", '👤');
                 const field = document.getElementById('recipientName');
                 if (field) { field.classList.add('field-shake'); setTimeout(() => field.classList.remove('field-shake'), 500); field.focus(); }
                 return;
             }
             
-            const senderName = document.getElementById('senderName').value;
-            const personalMessage = document.getElementById('personalMessage').value;
-            const recipientEmail = document.getElementById('recipientEmail').value;
+            const senderName = document.getElementById('senderName').value.trim().substring(0, LIMITS.name);
+            const personalMessage = document.getElementById('personalMessage').value.trim().substring(0, LIMITS.note);
+            const recipientEmail = document.getElementById('recipientEmail').value.trim();
             const wantsReminder = document.getElementById('senderReminderToggle')?.checked;
             const senderReminderEmail = document.getElementById('senderReminderEmail')?.value?.trim();
 
@@ -1144,7 +1172,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            fetch('https://api.counterapi.dev/v1/thevibecheckproject/cards-sent/up').catch(() => { });
+            if (window.VibeCounter) window.VibeCounter.hit('cards-sent');
 
             // Telemetry: Card Created Milestone
             if (window.VibeTelemetry) {
@@ -1181,7 +1209,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     const postSendForm = document.getElementById('senderSignupForm');
                     if (postSendForm) {
-                        postSendForm.innerHTML = `<p style="color:#a3e635;font-weight:600;font-size:14px;padding:8px 0;">✓ 30-Day Reminder set for ${recipientName || 'your friend'}! Check your inbox for confirmation & free wallpapers.</p>`;
+                        const done = document.createElement('p');
+                        done.style.cssText = 'color:#a3e635;font-weight:600;font-size:14px;padding:8px 0;';
+                        done.textContent = `✓ 30-Day Reminder set for ${recipientName || 'your friend'}! Check your inbox for confirmation & free wallpapers.`;
+                        postSendForm.replaceChildren(done);
                     }
                 }).catch(err => console.error('Reminder registration error:', err));
             }
@@ -1241,7 +1272,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (cardLinkInput) cardLinkInput.value = cardUrl;
             launchConfetti();
 
-            if (window._previewTimer) clearInterval(window._previewTimer);
             if (emailSentOK) {
                 const sTitle = document.getElementById('successTitle');
                 if (sTitle) sTitle.textContent = 'Card Sent! 💚';

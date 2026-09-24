@@ -135,36 +135,51 @@
   <!-- Instant Preloader (Runs before DOM is fully parsed) -->
   <script>
     (function () {
-      // base64url (current share links) with fallback to classic base64 (older links)
+      // base64url (current share links). Classic base64 (older links) decodes the same way
+      // once '+', '/' and padding are restored.
       window.decodeVibeCard = function (data) {
         if (!data) return null;
-        let sanitized = String(data).trim().replace(/[^A-Za-z0-9\-_]/g, '');
+        let sanitized = String(data).trim().replace(/[^A-Za-z0-9\-_+/]/g, '');
         if (!sanitized) return null;
         let s = sanitized.replace(/-/g, '+').replace(/_/g, '/');
         s += '='.repeat((4 - (s.length % 4)) % 4);
         return JSON.parse(decodeURIComponent(atob(s)));
       };
 
+      // Card links are user-crafted, so only our own background assets are honoured.
+      // Anything else (external URLs, data:, other paths) falls back to the theme gradient.
+      window.resolveVibeBackground = function (bg) {
+        if (typeof bg !== 'string') return null;
+        const m = bg.trim().match(/^(?:assets\/backgrounds\/)?([A-Za-z0-9_.-]+\.(?:webp|jpe?g|png|mp4))$/);
+        return m ? 'assets/backgrounds/' + m[1] : null;
+      };
+
+      window.__vibeCard = null;
       try {
-        const p = new URLSearchParams(window.location.search);
-        const d = p.get('data');
+        const d = new URLSearchParams(window.location.search).get('data');
         if (!d) return;
         const card = window.decodeVibeCard(d);
-        if (card && card.background) {
-          if (card.background.endsWith('.mp4')) {
-            const v = document.createElement('link');
-            v.rel = 'preload'; v.as = 'video'; v.href = card.background;
-            document.head.appendChild(v);
-          } else {
-            const img = new Image();
-            img.src = card.background;
-            // Pre-warm the cache for this background
-            if (!card.background.startsWith('http')) {
-              window.preloadedBg = img;
-            }
-          }
+        if (!card || typeof card !== 'object') return;
+        // Normalise untrusted fields once so every consumer gets plain, bounded strings
+        const clip = (v, n) => (typeof v === 'string' ? v : '').trim().slice(0, n);
+        card.id = clip(card.id, 64);
+        card.recipientName = clip(card.recipientName, 50);
+        card.senderName = clip(card.senderName, 50);
+        card.affirmation = clip(card.affirmation, 280) || "You're doing better than you think you are.";
+        card.personalMessage = clip(card.personalMessage, 500);
+        card.sound = clip(card.sound, 20) || 'chime';
+        card.themeGroup = clip(card.themeGroup, 20).toLowerCase() || 'default';
+        window.__vibeCard = card;
+        const bg = window.resolveVibeBackground(card.background);
+        if (bg && bg.endsWith('.mp4')) {
+          const v = document.createElement('link');
+          v.rel = 'preload'; v.as = 'video'; v.href = bg;
+          document.head.appendChild(v);
+        } else if (bg) {
+          window.preloadedBg = new Image(); // pre-warm the cache
+          window.preloadedBg.src = bg;
         }
-      } catch (e) { }
+      } catch (e) { console.warn('VibeCheck: could not read card link', e); }
     })();
   </script>
 </head>
@@ -191,12 +206,12 @@
     <div class="header-badge" id="headerBadge">✨ Someone sent you a vibe</div>
 
     <!-- Flip Card -->
-    <div class="flip-card" id="flipCard" tabindex="0">
+    <div class="flip-card" id="flipCard" tabindex="0" role="button" aria-label="Open your card">
       <div class="flip-card-inner" id="flipCardInner">
         <div class="flip-card-face flip-card-front" id="cardFront">
           <div class="shimmer-layer"></div>
-          <div class="front-emoji">💚</div>
-          <div class="front-label">You've got a Vibe Check!</div>
+          <div class="front-emoji" id="frontEmoji" aria-hidden="true">💚</div>
+          <h1 class="front-label" id="frontLabel">You've got a Vibe Check!</h1>
           <div class="front-hint">Tap to reveal your message</div>
         </div>
         <div class="flip-card-face flip-card-back" id="cardBack">
@@ -377,16 +392,13 @@
   <!-- Load card data & Handle Initialization -->
   <script>
     (async function () {
-      const params = new URLSearchParams(window.location.search);
-      const rawData = params.get('data');
-      if (!rawData) {
+      const card = window.__vibeCard;
+      if (!card) {
         document.getElementById('vibe-loader').classList.add('hidden');
         return;
       }
-      const encoded = rawData.trim().replace(/[^A-Za-z0-9\-_]/g, '');
 
       try {
-        const card = window.decodeVibeCard(encoded);
         const affirmationEl = document.getElementById('cardAffirmation');
         const messageEl = document.getElementById('cardMessage');
         const headerEl = document.getElementById('headerBadge');
@@ -461,25 +473,37 @@
           }
         }
 
-        // Apply Themes
-        if (card.themeGroup && card.themeGroup !== 'default') {
-          const frontFace = document.getElementById('cardFront');
-          const backFace = document.getElementById('cardBack');
-          if (frontFace) frontFace.classList.add(`theme-${card.themeGroup}`);
-          if (backFace && !card.background) backFace.classList.add(`theme-${card.themeGroup}`);
+        // Themed card front: emoji + palette per occasion (theme-* classes in view-card.css)
+        const FRONT_THEMES = {
+          birthday: { key: 'birthday', emoji: '🎂' },
+          anxiety: { key: 'anxiety', emoji: '💙' },
+          celebrate: { key: 'celebrate', emoji: '🌟' },
+          love: { key: 'love', emoji: '💖' },
+          healing: { key: 'healing', emoji: '🕊️' },
+          grief: { key: 'healing', emoji: '🕊️' }
+        };
+        const theme = FRONT_THEMES[card.themeGroup];
+        const frontFace = document.getElementById('cardFront');
+        const backFace = document.getElementById('cardBack');
+        if (theme) {
+          if (frontFace) frontFace.classList.add(`theme-${theme.key}`);
+          const emojiEl = document.getElementById('frontEmoji');
+          if (emojiEl) emojiEl.textContent = theme.emoji;
+        }
+        const frontLabel = document.getElementById('frontLabel');
+        if (frontLabel && card.recipientName) {
+          frontLabel.textContent = `${card.recipientName}, you've got a Vibe Check!`;
         }
 
-        // Apply Backgrounds (Image or Video) - BACK ONLY
-        if (card.background) {
-          const backFace = document.getElementById('cardBack');
-          const isVideo = card.background.endsWith('.mp4');
-
-          if (isVideo) {
+        // Background (image or video) on the back face — our own assets only
+        const bg = window.resolveVibeBackground(card.background);
+        if (!bg && theme && backFace) backFace.classList.add(`theme-${theme.key}`);
+        if (bg && backFace) {
+          if (bg.endsWith('.mp4')) {
             const backVid = document.getElementById('backVideo');
             if (backVid) {
-              backVid.src = card.background;
+              backVid.src = bg;
               backFace.classList.add('has-bg');
-
               await new Promise(r => {
                 backVid.oncanplaythrough = r;
                 backVid.load();
@@ -488,23 +512,14 @@
               backVid.play().catch(() => { });
             }
           } else {
-            let bgUrl = card.background;
-            if (!bgUrl.startsWith('http') && !bgUrl.startsWith('data:')) {
-              bgUrl = bgUrl.includes('assets/') ? bgUrl : `assets/backgrounds/${bgUrl}`;
-            }
-            bgUrl = `url('${bgUrl}')`;
-
-            if (backFace) {
-              backFace.style.backgroundImage = bgUrl;
-              backFace.classList.add('has-bg');
-            }
-
-            // Wait for image to load
+            backFace.style.backgroundImage = `url('${bg}')`;
+            backFace.classList.add('has-bg');
             await new Promise(r => {
-              const img = new Image();
+              const img = window.preloadedBg || new Image();
+              if (img.complete && img.naturalWidth) return r();
               img.onload = r;
               img.onerror = r;
-              img.src = card.background;
+              if (!img.src) img.src = bg;
               setTimeout(r, 2000); // Safety timeout
             });
           }
@@ -532,17 +547,35 @@
     let cardOpen = false;
     let cardSound = 'chime'; // default, updated from card data
 
-    // Read sound from card data
-    (function () {
-      const params = new URLSearchParams(window.location.search);
-      const rawData = params.get('data');
-      if (!rawData) return;
-      const encoded = rawData.trim().replace(/[^A-Za-z0-9\-_]/g, '');
-      try {
-        const card = window.decodeVibeCard(encoded);
-        if (card.sound) cardSound = card.sound;
-      } catch (e) { }
-    })();
+    const vibeCard = window.__vibeCard;
+    if (vibeCard && vibeCard.sound) cardSound = vibeCard.sound;
+
+    // The sender opening their own link (the card is in this browser's My Vibes) is a
+    // preview, not a delivery: label it and don't record a read receipt.
+    const isSenderPreview = !!(vibeCard && vibeCard.id && window.VibeHistory && window.VibeHistory.get(vibeCard.id));
+    if (isSenderPreview) {
+      const badge = document.getElementById('headerBadge');
+      if (badge) badge.textContent = `👀 Preview: this is what ${vibeCard.recipientName || 'they'} will see`;
+    }
+
+    // Desktop: the reveal panel reserves the right-hand column (no layout shift later), so
+    // shift the card to the visual centre until the reveal, then glide it into place.
+    const desktopMQ = window.matchMedia('(min-width: 1024px)');
+    function centerCardUntilReveal() {
+      if (!desktopMQ.matches || document.body.classList.contains('is-revealed')) {
+        flipCard.style.translate = '';
+        return;
+      }
+      flipCard.style.translate = '0px 0px';
+      const main = document.querySelector('.main-content').getBoundingClientRect();
+      const r = flipCard.getBoundingClientRect();
+      const dx = (main.left + main.width / 2) - (r.left + r.width / 2);
+      flipCard.style.translate = `${Math.round(dx)}px 0px`;
+    }
+    centerCardUntilReveal();
+    window.addEventListener('resize', centerCardUntilReveal);
+    // Stylesheets load async (media=print swap), so the grid may not exist yet on first run
+    window.addEventListener('load', centerCardUntilReveal);
 
     // Sound Mute Controller
     let isSoundMuted = false;
@@ -633,24 +666,10 @@
         launchConfetti();
         playCardSound();
 
-        // Read-receipt beaconing & local history status
-        try {
-          const params = new URLSearchParams(window.location.search);
-          const encoded = params.get('data');
-          if (encoded && window.decodeVibeCard) {
-            const cardObj = window.decodeVibeCard(encoded);
-            if (cardObj && cardObj.id) {
-              if (window.VibeHistory) {
-                if (typeof window.VibeHistory.beaconOpen === 'function') {
-                  window.VibeHistory.beaconOpen(cardObj.id);
-                }
-                if (typeof window.VibeHistory.markOpened === 'function') {
-                  window.VibeHistory.markOpened(cardObj.id);
-                }
-              }
-            }
-          }
-        } catch (e) { }
+        // Read receipt for the sender's My Vibes dashboard (skipped for the sender's own preview)
+        if (vibeCard && vibeCard.id && !isSenderPreview && window.VibeHistory) {
+          window.VibeHistory.beaconOpen(vibeCard.id);
+        }
 
         if (window.VibeTelemetry) {
           window.VibeTelemetry.track('card_flipped', { sound: cardSound });
@@ -661,6 +680,10 @@
         if (!document.body.classList.contains('is-revealed')) {
           setTimeout(() => {
             document.body.classList.add('is-revealed');
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+              flipCard.style.transition = 'translate 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+            }
+            centerCardUntilReveal();
             if (window.VibeTelemetry) {
               window.VibeTelemetry.track('post_card_revealed');
             }

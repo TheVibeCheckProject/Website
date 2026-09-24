@@ -37,8 +37,8 @@ Code is ready and switched off until configured. Setup steps are in each worker'
 
 Ordered by value. Each item is verified with the Phase 2 tests before committing.
 
-- [ ] **Claude** · M — Move `view-card.html`'s ~300 lines of inline script into `js/view-card.js` (the recipient page is the most important page to keep maintainable)
-- [ ] **Claude** · M — Replace inline `style="…"` attributes with classes on send-card, view-card and the homepage (upsell box, hints, buttons)
+- [x] **Claude** · M — Move `view-card.html`'s ~300 lines of inline script into `js/view-card.js` (the recipient page is the most important page to keep maintainable)
+- [x] **Claude** · M — Replace inline `style="…"` attributes with classes on send-card, view-card and the homepage (upsell box, hints, buttons)
 - [ ] **Claude** · L — Consolidate `css/styles.css` (~4,700 lines): merge selectors defined multiple times, drop overridden declarations, split into base / components / page sections
 - [ ] **Claude** · S — Remove duplicate rules shared between `styles.css` and `blog.css` (e.g. the ad containers)
 - [ ] **Claude** · S — Trim Google Fonts: some pages load 6–7 families; standardise on Space Grotesk + Outfit (+ Caveat / Playfair where actually used)

@@ -78,7 +78,9 @@ const STATES = {
     for (const key of new Set([...Object.keys(base), ...Object.keys(snapshot)])) {
         const a = base[key] || [], b = snapshot[key] || [];
         if (a.length !== b.length) { differing++; console.log(`✗ ${key}: element count ${a.length} -> ${b.length}`); continue; }
-        const changed = a.map((v, i) => [v, b[i]]).filter(([v, w]) => v !== w);
+        // Compare styles only; the tag.class label is context (renaming a class isn't a visual change)
+        const styles = (x) => x.slice(x.indexOf('|'));
+        const changed = a.map((v, i) => [v, b[i]]).filter(([v, w]) => styles(v) !== styles(w));
         if (!changed.length) continue;
         differing++;
         console.log(`✗ ${key}: ${changed.length} element(s) changed`);

@@ -88,8 +88,8 @@
     </noscript>
 
 
-    <link rel="stylesheet" href="css/styles.css?v=d0b698a811">
-    <link rel="stylesheet" href="css/send-card.css?v=35743d21de">
+    <link rel="stylesheet" href="css/styles.css?v=9dd28e38ff">
+    <link rel="stylesheet" href="css/send-card.css?v=2aa1b65fce">
 </head>
 
 <body data-design-concept="editorial">
@@ -168,17 +168,17 @@
             </div>
 
             <div class="step-indicator" id="stepIndicator" role="navigation" aria-label="Creation Steps">
-                <div class="step-num-wrap sn-active" id="sn1" role="button" tabindex="0" onclick="goToStep(1)" onkeydown="if(event.key==='Enter'||event.key===' ')goToStep(1)" style="cursor: pointer;" aria-label="Step 1: Your Vibe">
+                <div class="step-num-wrap sn-active" id="sn1" role="button" tabindex="0" onclick="goToStep(1)" onkeydown="if(event.key==='Enter'||event.key===' ')goToStep(1)" aria-label="Step 1: Your Vibe">
                     <div class="step-num">1</div>
                     <span class="step-num-label">Your Vibe</span>
                 </div>
                 <div class="step-connector" id="sc1"></div>
-                <div class="step-num-wrap" id="sn2" role="button" tabindex="0" onclick="goToStep(2)" onkeydown="if(event.key==='Enter'||event.key===' ')goToStep(2)" style="cursor: pointer;" aria-label="Step 2: The Look">
+                <div class="step-num-wrap" id="sn2" role="button" tabindex="0" onclick="goToStep(2)" onkeydown="if(event.key==='Enter'||event.key===' ')goToStep(2)" aria-label="Step 2: The Look">
                     <div class="step-num">2</div>
                     <span class="step-num-label">The Look</span>
                 </div>
                 <div class="step-connector" id="sc2"></div>
-                <div class="step-num-wrap" id="sn3" role="button" tabindex="0" onclick="goToStep(3)" onkeydown="if(event.key==='Enter'||event.key===' ')goToStep(3)" style="cursor: pointer;" aria-label="Step 3: Send It">
+                <div class="step-num-wrap" id="sn3" role="button" tabindex="0" onclick="goToStep(3)" onkeydown="if(event.key==='Enter'||event.key===' ')goToStep(3)" aria-label="Step 3: Send It">
                     <div class="step-num">3</div>
                     <span class="step-num-label">Send It</span>
                 </div>
@@ -197,22 +197,20 @@
                                     <!-- Occasion Presets / Quick Picks -->
                                     <div class="form-section occasion-presets-section">
                                         <div class="occasion-header">
-                                            <label class="form-label" style="margin-bottom: 0;">⚡ Quick Presets / Occasions</label>
+                                            <label class="form-label form-label-inline">⚡ Quick Presets / Occasions</label>
                                             <span class="occasion-hint">1-click vibe, look &amp; sound</span>
                                         </div>
                                         <div class="occasion-chips-wrap" id="occasionChips" role="group" aria-label="Occasion Presets"></div>
                                     </div>
 
                                     <div class="form-section">
-                                        <div class="affirmation-section-header" style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom: 6px;">
-                                            <label class="form-label" style="margin-bottom: 0;">Choose an Affirmation <span
-                                                    style="color:#ff6b6b">*</span></label>
+                                        <div class="affirmation-section-header">
+                                            <label class="form-label form-label-inline">Choose an Affirmation <span class="required">*</span></label>
                                             <span class="occasion-hint">or pick by mood</span>
                                         </div>
                                         <div class="vibe-category-tabs" id="categoryTabs"></div>
                                         <div class="category-lock-banner" id="categoryLockBanner" style="display:none">
-                                            🔒 <strong>Premium vibes</strong> — <button onclick="showPremModal()"
-                                                style="color:#d8b4fe;font-weight:700;background:none;border:none;cursor:pointer;padding:0;font-size:inherit;font-family:inherit;">Unlock
+                                            🔒 <strong>Premium vibes</strong> — <button onclick="showPremModal()" class="lock-banner-link">Unlock
                                                 for $4.99</button>
                                         </div>
                                         <div class="affirmation-grid" id="affirmationPicker"></div>
@@ -228,23 +226,20 @@
                                 <div class="form-step" id="step2">
                                     <div class="form-section">
                                         <label class="form-label">Card Background</label>
-                                        <small
-                                            style="color: var(--color-text-muted); font-size: 12px; margin-bottom: 8px; display: block;">
+                                        <small class="form-hint form-hint-above">
                                             Choose the visual vibe for the card
                                         </small>
                                         <div class="bg-picker" id="bgPicker"></div>
                                         <small id="premiumBgHint"
-                                            style="color: var(--color-text-muted); font-size: 11px; margin-top: 8px; display: block;">
-                                            🔓 <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener noreferrer"
-                                                style="color: var(--color-primary); text-decoration: none;">Unlock
+                                            class="form-hint form-hint-premium">
+                                            🔓 <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener noreferrer" class="link-primary">Unlock
                                                 Premium — $4.99</a> for animated &amp; premium backgrounds
                                         </small>
                                     </div>
 
-                                    <div class="form-section" style="margin-top: var(--space-xl);">
+                                    <div class="form-section form-section-spaced">
                                         <label class="form-label">Card Sound</label>
-                                        <small
-                                            style="color: var(--color-text-muted); font-size: 12px; margin-bottom: 8px; display: block;">
+                                        <small class="form-hint form-hint-above">
                                             Plays when they open the card
                                         </small>
                                         <div class="sound-picker" id="soundPicker">
@@ -319,9 +314,8 @@
                                             </div>
                                         </div>
                                         <small id="premiumSoundHint"
-                                            style="color: var(--color-text-muted); font-size: 11px; margin-top: 8px; display: block;">
-                                            🔓 <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener noreferrer"
-                                                style="color: var(--color-primary); text-decoration: none;">Unlock
+                                            class="form-hint form-hint-premium">
+                                            🔓 <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener noreferrer" class="link-primary">Unlock
                                                 Premium — $4.99</a> to use all sounds
                                         </small>
                                     </div>
@@ -336,8 +330,7 @@
                                 <!-- Step 3: Send It -->
                                 <div class="form-step" id="step3">
                                     <div class="form-section">
-                                        <label class="form-label" for="recipientName">Who's this for? <span
-                                                style="color:#ff6b6b">*</span></label>
+                                        <label class="form-label" for="recipientName">Who's this for? <span class="required">*</span></label>
                                         <input type="text" class="form-input" id="recipientName" placeholder="Sarah"
                                             autocomplete="off" maxlength="50">
                                     </div>
@@ -346,8 +339,7 @@
                                         <label class="form-label" for="senderName">Your Name</label>
                                         <input type="text" class="form-input" id="senderName"
                                             placeholder="Alex (or leave blank to stay anonymous)" autocomplete="off" maxlength="50">
-                                        <small
-                                            style="color: var(--color-text-muted); font-size: 12px; margin-top: 4px; display: block;">
+                                        <small class="form-hint">
                                             Leave blank to send as "Someone special" ✨
                                         </small>
                                     </div>
@@ -362,8 +354,7 @@
                                         <label class="form-label" for="recipientEmail">Send to Their Email (Optional)</label>
                                         <input type="email" class="form-input" id="recipientEmail"
                                             placeholder="sarah@example.com">
-                                        <small
-                                            style="color: var(--color-text-muted); font-size: 12px; margin-top: 4px; display: block;">
+                                        <small class="form-hint">
                                             Leave blank and you'll get a shareable link to text or copy
                                         </small>
                                     </div>
@@ -379,7 +370,7 @@
                                             </span>
                                         </label>
                                         <div class="reminder-email-slide" id="reminderEmailSlide" style="display: none;">
-                                            <label class="form-label" for="senderReminderEmail" style="font-size: 12px; margin-bottom: 4px;">Your Email Address</label>
+                                            <label class="form-label form-label-small" for="senderReminderEmail">Your Email Address</label>
                                             <input type="email" class="form-input" id="senderReminderEmail" placeholder="your.email@example.com" autocomplete="email">
                                             <small class="reminder-privacy-hint">🔒 We respect your inbox. 1-click unsubscribe anytime.</small>
                                         </div>
@@ -433,8 +424,7 @@
                                 <button class="success-copy-btn" onclick="copyLink()">Copy</button>
                             </div>
                             <div class="quick-share-row">
-                                <button class="quick-share-btn" id="textShare" onclick="textFriend(event)"
-                                    style="background: rgba(163, 230, 53, 0.15); border-color: rgba(163, 230, 53, 0.4); color: #a3e635; font-weight: 700;">
+                                <button class="quick-share-btn quick-share-btn-highlight" id="textShare" onclick="textFriend(event)">
                                     💬 Text a Friend
                                 </button>
                                 <a class="quick-share-btn" id="whatsappShare" href="https://api.whatsapp.com/send?text=I%20sent%20you%20a%20Vibe%20Check!%20%E2%9C%A8" target="_blank"
@@ -458,9 +448,8 @@
                                 <button type="submit">Get Daily Vibes</button>
                             </form>
                             <p class="form-error" id="senderSignupError" role="alert" hidden></p>
-                            <p style="margin-top:16px;">
-                                ✨ <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener noreferrer"
-                                    style="color: var(--color-primary); font-weight:700;">Unlock Premium — $4.99</a>
+                            <p class="upsell-links">
+                                ✨ <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener noreferrer" class="link-primary link-strong">Unlock Premium — $4.99</a>
                                 &nbsp;·&nbsp;
                                 ☕ <a href="https://ko-fi.com/thevibecheckproject?utm_source=website&utm_campaign=tip-jar"
                                     target="_blank" rel="noopener noreferrer">Buy me a coffee</a>
@@ -488,7 +477,7 @@
                         <div class="card-preview" id="cardPreview" role="region" aria-label="Card Preview">
                             <!-- Animated Background Layer -->
                             <video id="previewVideo" autoplay loop muted playsinline
-                                style="display: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;"></video>
+                                class="preview-video" style="display: none;"></video>
 
                             <div class="preview-content-wrapper">
                                 <div class="preview-recipient-chip hidden" id="previewRecipientChip">
@@ -512,7 +501,7 @@
         <div class="footer-grid">
             <div class="footer-section">
                 <h4>About</h4>
-                <p style="color: var(--color-text-muted); font-size: 14px; line-height: 1.7;">
+                <p class="footer-about">
                     The Vibe Check Project exists to spread positivity through daily affirmations and uplifting messages. Because small words make a big impact.
                 </p>
             </div>
@@ -550,7 +539,7 @@
         </div>
 
         <div class="footer-bottom">
-            <p style="font-size: 0.82rem; color: var(--color-text-muted); margin-bottom: 10px; line-height: 1.6;"><strong>Disclaimer:</strong> The Vibe Check Project provides peer emotional inspiration and positive support, not clinical therapy, psychotherapy, or medical care. If you or someone you know is in crisis, please call or text <strong>988</strong> (USA/Canada) or text <strong>HOME</strong> to <strong>741741</strong>.</p>
+            <p class="footer-disclaimer"><strong>Disclaimer:</strong> The Vibe Check Project provides peer emotional inspiration and positive support, not clinical therapy, psychotherapy, or medical care. If you or someone you know is in crisis, please call or text <strong>988</strong> (USA/Canada) or text <strong>HOME</strong> to <strong>741741</strong>.</p>
             <p>✨ The Vibe Check Project • Founded by Devin Griffin • Spreading good since 2025</p>
         </div>
     </div>

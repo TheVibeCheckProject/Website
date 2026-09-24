@@ -21,7 +21,7 @@ The daily newsletter has sent nothing since ~Sep 20. The fix only runs once it's
 Code is ready and switched off until configured. Setup steps are in each worker's header comment.
 
 - [x] **You** · S — Deploy `workers/og-preview.js` as the `vibe-card-preview` worker on route `thevibecheckproject.com/view-card.html*` (done 2026-09-24, verified live)
-- [x] **You** · M — Deploy `workers/counter.js` + D1 (done 2026-09-24: `vibe-counter.caseagent72401.workers.dev`, wired into `js/core-utils.js`, read receipts verified). Optional: add GitHub secret `VIBE_COUNTER_URL` so newsletter sends are counted too
+- [x] **You** · M — Deploy `workers/counter.js` + D1 (done 2026-09-24: `vibe-counter.caseagent72401.workers.dev`, wired into `js/core-utils.js`, read receipts verified). GitHub secret `VIBE_COUNTER_URL` added, so newsletter sends are counted too
 - [ ] **You** · M — Deploy `workers/premium-verify.js` with a restricted Stripe key → set `PREMIUM_VERIFY_URL`, and change the Payment Link redirect to include `session_id={CHECKOUT_SESSION_ID}`. Stops free Premium via `?premium=1`
 - [ ] **You** · S — AdSense: create ad units and send me the slot IDs (all 28 spots use the invalid `"auto"`), **or** decide to rely on Auto ads and I'll remove the manual spots
 - [ ] **You** · S — Decide on `assets/downloads/Premium_Vibe_Check_Themes.zip` (public, unlinked): keep or delete

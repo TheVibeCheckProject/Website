@@ -1,122 +1,96 @@
 <!DOCTYPE html>
-<html>
-
+<!--
+  Welcome sequence, Email 2 (MailerLite automation "Welcome", 2 days after Email 1).
+  Subject: Someone on your mind?
+  Preview text: Three easy things you could send them today.
+  Same design as welcome-email.html.
+-->
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Why I started this (the real story)</title>
+    <meta name="color-scheme" content="dark">
+    <meta name="supported-color-schemes" content="dark">
+    <title>Someone on your mind?</title>
 </head>
+<body style="margin:0;padding:0;background-color:#1A1625;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1A1625;">
+    <tr>
+        <td align="center" style="padding:32px 16px;">
+            <table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;width:100%;background-color:#1A1625;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:17px;line-height:1.6;color:#EDE8F5;">
 
-<body
-    style="margin:0;padding:0;background-color:#1a1c2c;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;line-height:1.6;font-size:16px;">
-    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#1a1c2c;">
-        <tr>
-            <td align="center" style="padding:24px 16px;">
-                <table width="600" cellpadding="0" cellspacing="0" style="max-width:100%;background-color:#1a1c2c;">
+                <!-- Intro -->
+                <tr>
+                    <td style="padding:0 8px;">
+                        <p style="margin:0 0 16px;">Hi {$name|default('there')},</p>
+                        <p style="margin:0 0 16px;">Here's the idea behind The Vibe Check Project: most of us think about the people we care about far more often than we tell them.</p>
+                        <p style="margin:0;">So here's a small challenge for today. Think of one person who's been on your mind, and let them know.</p>
+                    </td>
+                </tr>
 
-                    <!-- Logo -->
-                    <tr>
-                        <td style="padding:20px 28px 10px;text-align:left;">
-                            <span
-                                style="font-size:22px;font-weight:700;letter-spacing:1px;color:#a0a0b0;">the</span><span
-                                style="font-size:22px;font-weight:700;letter-spacing:1px;color:#39ff14;">vibe</span><span
-                                style="font-size:22px;font-weight:700;letter-spacing:1px;color:#a0a0b0;">check</span><span
-                                style="font-size:22px;font-weight:700;letter-spacing:1px;color:#a0a0b0;">project.</span>
-                        </td>
-                    </tr>
+                <!-- Ready-to-send lines -->
+                <tr>
+                    <td style="padding:28px 8px 8px;">
+                        <p style="margin:0 0 14px;color:#C9BFDA;">Not sure what to say? Any of these works:</p>
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="padding:18px 22px;background-color:#241E33;border-left:4px solid #FF6B9D;border-radius:8px;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:18px;line-height:1.5;">
+                                    &ldquo;No need to reply. I was just thinking about you and wanted you to know.&rdquo;
+                                </td>
+                            </tr>
+                            <tr><td style="height:12px;line-height:12px;font-size:12px;">&nbsp;</td></tr>
+                            <tr>
+                                <td style="padding:18px 22px;background-color:#241E33;border-left:4px solid #FEC84A;border-radius:8px;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:18px;line-height:1.5;">
+                                    &ldquo;You've been on my mind. How are you really doing?&rdquo;
+                                </td>
+                            </tr>
+                            <tr><td style="height:12px;line-height:12px;font-size:12px;">&nbsp;</td></tr>
+                            <tr>
+                                <td style="padding:18px 22px;background-color:#241E33;border-left:4px solid #FF6B9D;border-radius:8px;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:18px;line-height:1.5;">
+                                    &ldquo;I'm proud of you for getting through this week.&rdquo;
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
 
-                    <!-- Greeting -->
-                    <tr>
-                        <td style="padding:20px 28px 10px;color:#e0e0e0;font-size:16px;">
-                            Hey {$name|there},
-                        </td>
-                    </tr>
+                <tr>
+                    <td style="padding:20px 8px 0;">
+                        <p style="margin:0;">Text one of those, or send it as a card they can open and keep.</p>
+                    </td>
+                </tr>
 
-                    <!-- Body -->
-                    <tr>
-                        <td style="padding:10px 28px;color:#e0e0e0;font-size:16px;">
-                            Two days ago you signed up. I want to tell you why this project exists.
-                        </td>
-                    </tr>
+                <!-- Button -->
+                <tr>
+                    <td align="center" style="padding:28px 8px;">
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td align="center" bgcolor="#FF6B9D" style="border-radius:999px;">
+                                    <a href="https://thevibecheckproject.com/send-card.html?utm_source=mailerlite&amp;utm_medium=email&amp;utm_campaign=welcome_day2" style="display:inline-block;padding:14px 30px;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:17px;font-weight:700;color:#1A1625;text-decoration:none;border-radius:999px;">Send someone a card</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
 
-                    <!-- Story Box -->
-                    <tr>
-                        <td style="padding:10px 28px;">
-                            <div
-                                style="background-color:rgba(255,255,255,0.06);border-left:4px solid rgba(57,255,20,0.5);padding:16px 20px;border-radius:6px;">
-                                <p
-                                    style="margin:0 0 12px 0;font-style:italic;color:#b0b0c0;font-size:15px;line-height:1.7;">
-                                    A while back, I was going through a rough stretch. Not the kind you post about — the
-                                    quiet kind, where everything looks fine from the outside but inside you're running
-                                    on empty.</p>
-                                <p
-                                    style="margin:0 0 12px 0;font-style:italic;color:#b0b0c0;font-size:15px;line-height:1.7;">
-                                    Someone sent me a simple message. Three sentences. It wasn't profound. But it
-                                    arrived on exactly the right day and it reminded me that someone was thinking about
-                                    me.</p>
-                                <p style="margin:0;font-style:italic;color:#b0b0c0;font-size:15px;line-height:1.7;">
-                                    That's it. That was the whole thing. That's why The Vibe Check Project exists.</p>
-                            </div>
-                        </td>
-                    </tr>
+                <!-- Sign-off -->
+                <tr>
+                    <td style="padding:0 8px 32px;">
+                        <p style="margin:0;">With warmth,<br><span style="color:#FEC84A;font-weight:700;">The Vibe Check Project</span></p>
+                    </td>
+                </tr>
 
-                    <tr>
-                        <td style="padding:10px 28px;color:#e0e0e0;font-size:16px;">
-                            I built this so that feeling — that "someone sees me" feeling — is something anyone can give
-                            to anyone else, for free, in about 60 seconds.
-                        </td>
-                    </tr>
+                <!-- Footer -->
+                <tr>
+                    <td style="padding:20px 8px 0;border-top:1px solid #3A3150;font-size:13px;line-height:1.5;color:#C9BFDA;">
+                        <p style="margin:0 0 8px;">You're getting this because you signed up at <a href="https://thevibecheckproject.com" style="color:#C9BFDA;">thevibecheckproject.com</a>. Just reply if you ever want to say hi.</p>
+                        <p style="margin:0;"><a href="{$unsubscribe}" style="color:#C9BFDA;">Unsubscribe</a></p>
+                    </td>
+                </tr>
 
-                    <!-- Divider -->
-                    <tr>
-                        <td style="padding:10px 28px;">
-                            <hr style="border:none;border-top:1px solid #2a2c3c;margin:10px 0;">
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding:10px 28px;color:#e0e0e0;font-size:16px;font-weight:bold;">
-                            Want to give that feeling to someone today?
-                        </td>
-                    </tr>
-
-                    <!-- CTA Button -->
-                    <tr>
-                        <td style="padding:20px 28px;text-align:center;">
-                            <a href="https://www.thevibecheckproject.com/send-card.html" target="_blank" rel="noopener noreferrer"
-                                style="display:inline-block;background-color:#39ff14;color:#1a1c2c;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;">Send
-                                a Free Card →</a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding:0 28px 10px;color:#a0a0b0;font-size:14px;">
-                            Pick someone. Takes one minute. You never know which day is the day someone needed to hear
-                            from you.
-                        </td>
-                    </tr>
-
-                    <!-- Sign-off -->
-                    <tr>
-                        <td style="padding:10px 28px 20px;color:#e0e0e0;font-size:16px;">
-                            Talk soon,<br>
-                            The Vibe Check Project
-                        </td>
-                    </tr>
-
-                    <!-- Footer -->
-                    <tr>
-                        <td
-                            style="padding:16px 28px;text-align:center;font-size:12px;color:#666;border-top:1px solid #2a2c3c;">
-                            You're receiving this because you signed up at thevibecheckproject.com<br>
-                            <a href="{$unsubscribe}" style="color:#39ff14;text-decoration:underline;">Unsubscribe</a>
-                        </td>
-                    </tr>
-
-                </table>
-            </td>
-        </tr>
-    </table>
+            </table>
+        </td>
+    </tr>
+</table>
 </body>
-
 </html>

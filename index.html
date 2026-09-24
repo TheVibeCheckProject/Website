@@ -614,19 +614,13 @@
             </div>
         </section>
 
-        <!-- Social Proof Section -->
+        <!-- Stats Section -->
         <section class="social-proof-section" style="padding: 60px 24px 80px;">
             <div class="section-container">
-                <div class="ambient-proof-card reveal">
-                    <p class="quote">
-                        "I sent an anonymous encouragement card to my sister during finals week when she was drowning in burnout. She called me crying happy tears ten minutes later. It took 30 seconds, cost nothing, and completely changed her week."
-                    </p>
-                    <p class="author">— Maya R., Community Sender</p>
-                </div>
-
                 <div class="stats-row" style="margin-top: 0;">
-                    <div class="stat-card reveal">
-                        <div class="stat" id="liveCardCount">12,480+</div>
+                    <!-- Live counts: hidden until the counter service (js/core-utils.js VibeCounter) returns real numbers -->
+                    <div class="stat-card reveal" id="liveCardCountCard" hidden>
+                        <div class="stat" id="liveCardCount"></div>
                         <p class="stat-label">Vibe Checks Sent</p>
                     </div>
                     <div class="stat-card reveal">
@@ -637,8 +631,8 @@
                         <div class="stat">100%</div>
                         <p class="stat-label">Free to Send</p>
                     </div>
-                    <div class="stat-card reveal">
-                        <div class="stat" id="liveNewsletterCount">5,200+</div>
+                    <div class="stat-card reveal" id="liveNewsletterCountCard" hidden>
+                        <div class="stat" id="liveNewsletterCount"></div>
                         <p class="stat-label">Newsletters Sent</p>
                     </div>
                 </div>
@@ -652,7 +646,7 @@
                     <span class="trust-badge-pill" style="margin-bottom: 12px; display: inline-flex;"><span class="trust-icon">✨</span> The Daily Spark</span>
                     <h2 class="section-title">A 30-Second Grounding Breath, Every Morning</h2>
                     <p class="section-subtitle">
-                        Join 5,000+ humans starting their days centered. One daily thought to anchor your day.
+                        One short, kind thought in your inbox each morning to anchor your day.
                         <br><strong class="cta-bonus">🎁 Bonus: Get 3 free high-resolution affirmation wallpapers upon joining.</strong>
                     </p>
                 </div>
@@ -735,7 +729,7 @@
 
     <!-- Main JavaScript -->
     <script src="js/core-utils.js?v=c63a21f330" defer></script>
-    <script src="js/script.js?v=a18429ddc4" defer></script>
+    <script src="js/script.js?v=86e1f4129e" defer></script>
     <script src="js/animations.js?v=038b73a88b" defer></script>
     <script src="js/design-upgrade.js?v=9db6dce73d" defer></script>
 

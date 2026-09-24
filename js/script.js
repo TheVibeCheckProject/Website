@@ -860,10 +860,6 @@ function initParallax() {
     }, { passive: true });
 }
 
-function initLiveCounters() {
-    initMetricsCounters();
-}
-
 // ── UNIVERSAL ITEM FILTER ENGINE (window.initItemFilter) ──
 function initItemFilter(config) {
     if (!config || !config.itemSelector) return;
@@ -1010,42 +1006,25 @@ async function copyText(elementId, triggerElement) {
     }
 }
 
-// ── BULLETPROOF METRICS COUNTER ENGINE (window.initMetricsCounters) ──
-function initMetricsCounters(config = {}) {
-    const cardId = config.cardCounterId || 'liveCardCount';
-    const newsletterId = config.newsletterCounterId || 'liveNewsletterCount';
-    const defaultCards = config.defaultCards || 12480;
-    const defaultNewsletters = config.defaultNewsletters || 5200;
-    const timeoutMs = config.timeoutMs || 3000;
+// ── LIVE METRICS (homepage stats) ──
+// Shows real counts from VibeCounter (core-utils.js). Each stat card stays hidden until
+// the counter service returns a number; nothing is ever shown that wasn't measured.
+function initMetricsCounters() {
+    const stats = [
+        ['cards-sent', 'liveCardCount'],
+        ['newsletters-sent', 'liveNewsletterCount'],
+    ].filter(([, id]) => document.getElementById(id));
+    if (!stats.length || !window.VibeCounter) return;
 
-    const cardEl = document.getElementById(cardId);
-    const newsletterEl = document.getElementById(newsletterId);
-
-    // 1. Instant Baseline Check
-    if (cardEl) {
-        const text = (cardEl.textContent || '').trim();
-        if (!text || text === '—' || text === '-') {
-            cardEl.textContent = `${defaultCards.toLocaleString()}+`;
-        }
-    }
-    if (newsletterEl) {
-        const text = (newsletterEl.textContent || '').trim();
-        if (!text || text === '—' || text === '-') {
-            newsletterEl.textContent = `${defaultNewsletters.toLocaleString()}+`;
-        }
-    }
-
-    // 2. Live counts from VibeCounter (core-utils.js); the baseline stays if the
-    //    service is disabled/unreachable or reports less than the baseline.
-    if (!window.VibeCounter || (!cardEl && !newsletterEl)) return;
-    window.VibeCounter.getMany(['cards-sent', 'newsletters-sent'], timeoutMs).then(counts => {
+    window.VibeCounter.getMany(stats.map(([name]) => name)).then(counts => {
         if (!counts) return;
-        [[cardEl, counts['cards-sent'], defaultCards], [newsletterEl, counts['newsletters-sent'], defaultNewsletters]]
-            .forEach(([el, count, baseline]) => {
-                if (el && typeof count === 'number' && count > baseline) {
-                    el.textContent = `${count.toLocaleString()}+`;
-                }
-            });
+        stats.forEach(([name, id]) => {
+            const count = counts[name];
+            if (typeof count !== 'number' || count < 1) return;
+            document.getElementById(id).textContent = count.toLocaleString();
+            const card = document.getElementById(id + 'Card');
+            if (card) card.hidden = false;
+        });
     });
 }
 
@@ -1167,7 +1146,6 @@ function initApp() {
     // Non-critical features deferred to 3s after load for Lighthouse performance
     setTimeout(() => {
         initParallax();
-        initLiveCounters();
         createEmailModal();
     }, 3000);
 

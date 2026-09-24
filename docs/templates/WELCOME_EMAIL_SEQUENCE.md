@@ -77,9 +77,9 @@ Save that. Screenshot it. Let it anchor your thoughts today.
 ### 🎁 Your 3 Free Mobile Affirmation Wallpapers:
 Designed in high-resolution for your phone lock screen so your first glance of the day is centered:
 
-1. *"You're doing better than you think you are."* — [Download Wallpaper 1](https://thevibecheckproject.com/assets/wallpapers/wallpaper_1_better.png)
-2. *"Rest is not weakness. It's essential."* — [Download Wallpaper 2](https://thevibecheckproject.com/assets/wallpapers/wallpaper_2_rest.png)
-3. *"Your presence makes a difference, even when you don't see it."* — [Download Wallpaper 3](https://thevibecheckproject.com/assets/wallpapers/wallpaper_3_presence.png)
+1. *"You're doing better than you think you are."* — [Download Wallpaper 1](https://thevibecheckproject.com/assets/wallpapers/wallpaper_1_better.webp)
+2. *"Rest is not weakness. It's essential."* — [Download Wallpaper 2](https://thevibecheckproject.com/assets/wallpapers/wallpaper_2_rest.webp)
+3. *"Your presence makes a difference, even when you don't see it."* — [Download Wallpaper 3](https://thevibecheckproject.com/assets/wallpapers/wallpaper_3_presence.webp)
 
 See you tomorrow morning.
 

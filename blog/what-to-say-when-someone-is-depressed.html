@@ -605,48 +605,12 @@
 
 
 
-    <script>
-        function copyText(elementId, btn) {
-            let text = document.getElementById(elementId).innerText;
-            text = text.replace(/^["“”]/, '').replace(/["“”]$/, '').trim();
-            navigator.clipboard.writeText(text).then(function () {
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!';
-                btn.classList.add('copied');
-                setTimeout(function () {
-                    btn.innerHTML = originalText;
-                    btn.classList.remove('copied');
-                }, 2000);
-            });
-        }
-    </script>
 
 
-    <script>
-        // Reading + vertical progress bars (no script.js needed on blog pages)
-        (function () {
-            var barX = document.getElementById('scroll-progress');
-            if (!barX) return;
-            var barY = document.createElement('div');
-            barY.id = 'scroll-progress-y';
-            document.body.appendChild(barY);
-            var raf = false;
-            function update() {
-                var st = window.pageYOffset || document.documentElement.scrollTop;
-                var dh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                var pct = (dh > 0 ? Math.min(st / dh * 100, 100) : 0) + '%';
-                barX.style.width = pct;
-                barY.style.height = pct;
-                raf = false;
-            }
-            window.addEventListener('scroll', function () {
-                if (!raf) { raf = true; requestAnimationFrame(update); }
-            }, { passive: true });
-        })();
-    </script>
 
 
 
 
     <script src="../js/core-utils.js?v=6b9189f349" defer></script>
+    <script src="../js/article.js?v=3f7916ec12" defer></script>
 </body></html>

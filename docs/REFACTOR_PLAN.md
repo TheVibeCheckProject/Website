@@ -22,10 +22,10 @@ Code is ready and switched off until configured. Setup steps are in each worker'
 
 - [x] **You** · S — Deploy `workers/og-preview.js` as the `vibe-card-preview` worker on route `thevibecheckproject.com/view-card.html*` (done 2026-09-24, verified live)
 - [x] **You** · M — Deploy `workers/counter.js` + D1 (done 2026-09-24: `vibe-counter.caseagent72401.workers.dev`, wired into `js/core-utils.js`, read receipts verified). GitHub secret `VIBE_COUNTER_URL` added, so newsletter sends are counted too
-- [ ] **You** · M — Deploy `workers/premium-verify.js` with a restricted Stripe key → set `PREMIUM_VERIFY_URL`, and change the Payment Link redirect to include `session_id={CHECKOUT_SESSION_ID}`. Stops free Premium via `?premium=1`
+- [x] **You** · M — Deploy `workers/premium-verify.js` (done 2026-09-24: `vibe-premium` worker, restricted Stripe key, payment-link ID, D1 cap; Payment Link redirects with `session_id`; site switched to verified mode)
 - [ ] **You** · S — AdSense: create ad units and send me the slot IDs (all 28 spots use the invalid `"auto"`), **or** decide to rely on Auto ads and I'll remove the manual spots
 - [ ] **You** · S — Decide on `assets/downloads/Premium_Vibe_Check_Themes.zip` (public, unlinked): keep or delete
-- [ ] **Claude** · S — After you set the URLs above: rebuild, verify counters/receipts/premium end to end
+- [x] **Claude** · S — After you set the URLs above: rebuild, verify counters/receipts/premium end to end
 
 ## Phase 2 — Safety net (do before more refactoring)
 

@@ -124,15 +124,26 @@ const BLOCK = /googlesyndication|clarity\.ms|workers\.dev|jsdelivr|unsplash|font
             await ctx.close();
         }
 
-        // 5. Premium return URL unlocks (legacy mode, while PREMIUM_VERIFY_URL is empty)
+        // 5. Premium return: only a Stripe-verified session unlocks (verify worker is mocked here)
         {
-            const ctx = await newContext();
-            const page = await ctx.newPage();
-            await page.goto(`${server.base}/send-card.html?premium=1`);
-            await page.waitForTimeout(600);
-            t.check(await page.evaluate(() => localStorage.getItem('premium_unlocked') === '1'), '?premium=1 unlocks Premium');
-            t.check(await page.evaluate(() => location.search === ''), 'premium params are stripped from the URL');
-            await ctx.close();
+            const premiumCase = async (query, verifyReply) => {
+                const ctx = await browser.newContext();
+                await ctx.route(/googlesyndication|clarity\.ms|jsdelivr|unsplash|fonts\.g|\/hit\//, r => r.abort());
+                await ctx.route(/vibe-premium\..*\/verify/, r => r.fulfill({ contentType: 'application/json', body: JSON.stringify(verifyReply) }));
+                const page = await ctx.newPage();
+                await page.goto(`${server.base}/send-card.html${query}`);
+                await page.waitForTimeout(1500);
+                const result = await page.evaluate(() => ({ unlocked: localStorage.getItem('premium_unlocked') === '1', search: location.search }));
+                await ctx.close();
+                return result;
+            };
+            const bare = await premiumCase('?premium=1', { valid: true });
+            t.check(!bare.unlocked, '?premium=1 without a Stripe session does not unlock');
+            const paid = await premiumCase('?premium=1&session_id=cs_live_testSession1234567890', { valid: true });
+            t.check(paid.unlocked, 'a Stripe-verified session unlocks Premium');
+            t.check(paid.search === '', 'premium params are stripped from the URL after unlocking');
+            const unpaid = await premiumCase('?premium=1&session_id=cs_live_testSession1234567890', { valid: false, reason: 'not_paid' });
+            t.check(!unpaid.unlocked, 'an unpaid session does not unlock');
         }
 
         // 6. Blog index opens at the top; FAQ accordion toggles

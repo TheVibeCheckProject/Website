@@ -8,7 +8,10 @@
  * Endpoint:
  *   GET /verify?session_id=cs_...   -> { valid: true } | { valid: false, reason }
  *
- * Deployment (one time):
+ * Deployed as "vibe-premium" (https://vibe-premium.caseagent72401.workers.dev) with
+ * STRIPE_SECRET_KEY, STRIPE_PAYMENT_LINK_ID and the vibe-counter D1 bound as DB (Sept 2026).
+ *
+ * Setup from scratch:
  *   1. Stripe Dashboard → Developers → API keys → create a *restricted* key with
  *      "Checkout Sessions: Read" only.
  *   2. Stripe Dashboard → Payment Links → your $4.99 Premium link → After payment →

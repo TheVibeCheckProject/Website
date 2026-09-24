@@ -196,7 +196,7 @@ const VibeCounter = {
 // With PREMIUM_VERIFY_URL set (workers/premium-verify.js), the unlock only happens
 // after Stripe confirms the session was paid. While it is empty, ?premium=1 alone unlocks
 // (the original behaviour), so buyers are never locked out before the worker is deployed.
-const PREMIUM_VERIFY_URL = '';
+const PREMIUM_VERIFY_URL = 'https://vibe-premium.caseagent72401.workers.dev';
 
 (function handlePremiumReturn() {
     let params;

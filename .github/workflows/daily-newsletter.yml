@@ -27,7 +27,8 @@ jobs:
           MAILERLITE_API_KEY: ${{ secrets.MAILERLITE_API_KEY }}
           MAILERLITE_GROUP_ID: ${{ secrets.MAILERLITE_GROUP_ID }}
           DATE_OVERRIDE: ${{ github.event.inputs.date_override }}
-          VIBE_COUNTER_URL: ${{ secrets.VIBE_COUNTER_URL }}
+          # Public (also in js/core-utils.js), so not a secret
+          VIBE_COUNTER_URL: https://vibe-counter.caseagent72401.workers.dev
         run: node scripts/newsletter/send-newsletter.js
 
       # GitHub emails the repo owner when a scheduled run fails; this adds a visible annotation.

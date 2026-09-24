@@ -8,11 +8,11 @@
         content="Have questions about sending free affirmation cards, privacy, or soundscapes? Explore our FAQ to see how our free, anonymous cheer-sharing platform works.">
     <title>Affirmation Cards FAQ - Help Guide | The Vibe Check Project</title>
 
-    <link rel="canonical" href="https://thevibecheckproject.com/faq.html">
+    <link rel="canonical" href="https://thevibecheckproject.com/faq">
 
     <!-- Open Graph / Twitter Card -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://thevibecheckproject.com/faq.html">
+    <meta property="og:url" content="https://thevibecheckproject.com/faq">
     <meta property="og:title" content="Affirmation Cards FAQ - Help Guide | The Vibe Check Project">
     <meta property="og:description"
         content="Have questions about sending free affirmation cards, privacy, or soundscapes? Explore our FAQ to see how our free, anonymous cheer-sharing platform works.">
@@ -46,14 +46,14 @@
         rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="css/styles.css?v=108">
+    <link rel="stylesheet" href="css/styles.css?v=d92d609a0a">
 
     <!-- Structured Data (FAQ Schema) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      "@id": "https://thevibecheckproject.com/faq.html#faq",
+      "@id": "https://thevibecheckproject.com/faq#faq",
       "mainEntity": [
         {
           "@type": "Question",
@@ -92,7 +92,7 @@
           "name": "What is the Premium Unlock?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "The optional $4.99 one-time unlock provides lifetime access to our library of 10+ premium animated card themes and audio soundscapes. It also helps cover our server costs to keep the platform free for everyone else."
+            "text": "The optional $4.99 one-time unlock unlocks writing your own affirmation, the Calm, Celebrate, Love and Healing collections, 14 premium backgrounds (6 of them animated) and 5 extra sounds. It is saved in the browser you buy it on. It also helps cover our server costs to keep the platform free for everyone else."
           }
         },
         {
@@ -122,36 +122,38 @@
 
     <div id="main-content">
         <!-- Navigation -->
-        <nav id="nav">
-            <div class="nav-container">
-                <div class="nav-logo">
-                    <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
-                </div>
-                <ul class="nav-links" style="align-items: center;">
-                    <li>
-                        <a href="blog/index.html#crisis" class="nav-crisis-badge">
-                            <span class="nav-crisis-heart">❤️</span>
-                            <span class="nav-crisis-text">Emergency Support</span>
-                        </a>
-                    </li>
-                    <li><a href="send-card.html" style="color: var(--color-primary); font-weight: 700;">💌 Send A Card</a></li>
-                    <li><a href="my-cards.html">My Vibes</a></li>
-                    <li><a href="situations.html">Situations</a></li>
-                    <li><a href="index.html#vibeOfDay">Daily Spark</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="blog/index.html">Blog</a></li>
-                </ul>
-                <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu"
-                        aria-expanded="false">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-            </div>
-        </nav>
+        <!-- site-nav:start (generated from templates/partials/nav.html — edit there, then npm run build:layout) -->
+<nav id="nav" aria-label="Main">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <li>
+                <a href="blog/index.html#crisis" class="nav-crisis-badge">
+                    <span class="nav-crisis-heart" aria-hidden="true">❤️</span>
+                    <span class="nav-crisis-text">Emergency Support</span>
+                </a>
+            </li>
+            <li><a href="send-card.html" class="nav-cta" data-nav="send">💌 Send a Card</a></li>
+            <li><a href="situations.html" data-nav="situations">Situations</a></li>
+            <li><a href="blog/index.html" data-nav="guides">Guides</a></li>
+            <li><a href="my-cards.html" data-nav="vibes">My Vibes</a></li>
+            <li><a href="faq.html" data-nav="faq" aria-current="page">FAQ</a></li>
+            <li><a href="about.html" data-nav="about">About</a></li>
+        </ul>
+        <button class="nav-hamburger" id="nav-hamburger" type="button" aria-label="Open navigation menu"
+            aria-expanded="false" aria-controls="nav-links">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</nav>
+<!-- site-nav:end -->
 
         <!-- Page Header -->
-        <section class="hero faq-hero" style="min-height: auto; padding: clamp(36px, 5vw, 64px) 20px clamp(20px, 3vw, 36px); padding-top: 100px;">
+        <section class="hero faq-hero">
             <div class="hero-content">
                 <h1 class="hero-title" style="font-size: clamp(38px, 6vw, 60px);">Frequently Asked Questions</h1>
                 <p class="hero-subtitle">
@@ -227,7 +229,7 @@
                                     <span class="faq-icon">+</span>
                                 </button>
                                 <div class="faq-answer">
-                                    <p>The optional $4.99 one-time unlock provides lifetime access to our library of 10+ premium animated card themes and audio soundscapes. It also helps cover our server costs to keep the platform free for everyone else.</p>
+                                    <p>The optional $4.99 one-time unlock unlocks writing your own affirmation, the Calm, Celebrate, Love and Healing collections, 14 premium backgrounds (6 of them animated) and 5 extra sounds. It is saved in the browser you buy it on. It also helps cover our server costs to keep the platform free for everyone else.</p>
                                 </div>
                             </div>
 
@@ -268,53 +270,56 @@
         </section>
 
         <!-- Footer -->
-        <footer>
-            <div class="footer-container">
-                <div class="footer-grid">
-                    <div class="footer-section">
-                        <h4>About</h4>
-                        <p style="color: var(--color-text-muted); font-size: 14px; line-height: 1.7;">
-                            The Vibe Check Project exists to spread positivity through daily affirmations and uplifting messages. Because small words make a big impact.
-                        </p>
-                    </div>
-
-                    <div class="footer-section">
-                        <h4>Project</h4>
-                        <ul class="footer-links">
-                            <li><a href="send-card.html">Send a Card</a></li>
-                            <li><a href="situations.html">Browse by Situation</a></li>
-                            <li><a href="blog/index.html">Advice &amp; Guides</a></li>
-                            <li><a href="about.html">About Us</a></li>
-                            <li><a href="faq.html">FAQ</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-section">
-                        <h4>Legal</h4>
-                        <ul class="footer-links">
-                            <li><a href="privacy.html">Privacy Policy</a></li>
-                            <li><a href="terms.html">Terms of Service</a></li>
-                            <li><a href="cookies.html">Cookie Policy</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-section">
-                        <h4>Connect</h4>
-                        <ul class="footer-links">
-                            <li><a href="https://x.com/thevibecheckpro" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
-                            <li><a href="https://www.tiktok.com/@thevibecheckproject" target="_blank" rel="noopener noreferrer">TikTok</a></li>
-                            <li><a href="https://ko-fi.com/thevibecheckproject" target="_blank" rel="noopener noreferrer">Ko-fi</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="footer-bottom">
-                    <p style="font-size: 0.82rem; color: var(--color-text-muted); margin-bottom: 10px; line-height: 1.6;"><strong>Disclaimer:</strong> The Vibe Check Project provides peer emotional inspiration and positive support, not clinical therapy, psychotherapy, or medical care. If you or someone you know is in crisis, please call or text <strong>988</strong> (USA/Canada) or text <strong>HOME</strong> to <strong>741741</strong>.</p>
-                    <p>✨ The Vibe Check Project • Founded by Devin Griffin • Spreading good since 2025</p>
-                </div>
+        <!-- site-footer:start (generated from templates/partials/footer.html) -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h4>About</h4>
+                <p class="footer-about">
+                    The Vibe Check Project exists to spread positivity through daily affirmations and uplifting messages. Because small words make a big impact.
+                </p>
             </div>
-        </footer>
+
+            <div class="footer-section">
+                <h4>Project</h4>
+                <ul class="footer-links">
+                    <li><a href="send-card.html">Send a Card</a></li>
+                    <li><a href="situations.html">Browse by Situation</a></li>
+                    <li><a href="blog/index.html">Advice &amp; Guides</a></li>
+                    <li><a href="my-cards.html">My Vibes</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="cookies.html">Cookie Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <ul class="footer-links">
+                    <li><a href="https://x.com/thevibecheckpro" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
+                    <li><a href="https://www.tiktok.com/@thevibecheckproject" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+                    <li><a href="https://ko-fi.com/thevibecheckproject" target="_blank" rel="noopener noreferrer">Ko-fi</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="footer-disclaimer"><strong>Disclaimer:</strong> The Vibe Check Project provides peer emotional inspiration and positive support, not clinical therapy, psychotherapy, or medical care. If you or someone you know is in crisis, please call or text <strong>988</strong> (USA/Canada) or text <strong>HOME</strong> to <strong>741741</strong>.</p>
+            <p>✨ The Vibe Check Project • Spreading good since 2025</p>
+        </div>
+    </div>
+</footer>
+<!-- site-footer:end -->
     </div>
 
     <!-- FAQ Initialization & Deep-Linking URL Hash Controller -->
@@ -364,8 +369,8 @@
     </script>
 
     <!-- Main JavaScript -->
-    <script src="js/core-utils.js?v=108" defer></script>
-    <script src="js/script.js?v=108" defer></script>
+    <script src="js/core-utils.js?v=986d751688" defer></script>
+    <script src="js/script.js?v=873fca0ac9" defer></script>
 </body>
 
 </html>

@@ -7,6 +7,7 @@
     <meta name="description"
         content="Revisit, track, and re-share the personalized digital affirmation cards you've sent. Stored securely and privately on your device with no login needed.">
     <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://thevibecheckproject.com/my-cards">
     <title>My Sent Vibes - Track Your Cards | The Vibe Check Project</title>
 
     <!-- Open Graph / Twitter Card -->
@@ -15,7 +16,7 @@
     <meta property="og:title" content="My Sent Vibes - Track Your Cards | The Vibe Check Project">
     <meta property="og:description"
         content="Revisit, track, and re-share the personalized digital affirmation cards you've sent. Stored securely and privately on your device with no login needed.">
-    <meta property="og:url" content="https://thevibecheckproject.com/my-cards.html">
+    <meta property="og:url" content="https://thevibecheckproject.com/my-cards">
     <meta property="og:image" content="https://thevibecheckproject.com/assets/og-vibe-card.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -42,8 +43,8 @@
         rel="stylesheet">
 
     <!-- Core Stylesheets -->
-    <link rel="stylesheet" href="css/styles.css?v=108">
-    <link rel="stylesheet" href="css/my-cards.css?v=108">
+    <link rel="stylesheet" href="css/styles.css?v=d92d609a0a">
+    <link rel="stylesheet" href="css/my-cards.css?v=09b6f0fa7c">
 </head>
 
 <body data-design-concept="editorial">
@@ -52,32 +53,35 @@
     <div class="bg-orb bg-orb-2" aria-hidden="true"></div>
 
     <!-- Main Site Navigation -->
-    <nav id="nav">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
-            </div>
-            <ul class="nav-links" style="align-items: center;">
-                <li>
-                    <a href="blog/index.html#crisis" class="nav-crisis-badge">
-                        <span class="nav-crisis-heart">❤️</span>
-                        <span class="nav-crisis-text">Emergency Support</span>
-                    </a>
-                </li>
-                <li><a href="send-card.html" style="color: var(--color-primary); font-weight: 700;">💌 Send A Card</a></li>
-                <li><a href="my-cards.html" class="active" style="color: #fff; font-weight: 700;">My Vibes</a></li>
-                <li><a href="situations.html">Situations</a></li>
-                <li><a href="faq.html">FAQ</a></li>
-                <li><a href="about.html">About</a></li>
-            </ul>
-            <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu"
-                    aria-expanded="false">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+    <!-- site-nav:start (generated from templates/partials/nav.html — edit there, then npm run build:layout) -->
+<nav id="nav" aria-label="Main">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
         </div>
-    </nav>
+        <ul class="nav-links" id="nav-links">
+            <li>
+                <a href="blog/index.html#crisis" class="nav-crisis-badge">
+                    <span class="nav-crisis-heart" aria-hidden="true">❤️</span>
+                    <span class="nav-crisis-text">Emergency Support</span>
+                </a>
+            </li>
+            <li><a href="send-card.html" class="nav-cta" data-nav="send">💌 Send a Card</a></li>
+            <li><a href="situations.html" data-nav="situations">Situations</a></li>
+            <li><a href="blog/index.html" data-nav="guides">Guides</a></li>
+            <li><a href="my-cards.html" data-nav="vibes" aria-current="page">My Vibes</a></li>
+            <li><a href="faq.html" data-nav="faq">FAQ</a></li>
+            <li><a href="about.html" data-nav="about">About</a></li>
+        </ul>
+        <button class="nav-hamburger" id="nav-hamburger" type="button" aria-label="Open navigation menu"
+            aria-expanded="false" aria-controls="nav-links">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</nav>
+<!-- site-nav:end -->
 
     <!-- Dashboard Content Page -->
     <main class="my-cards-page">
@@ -176,8 +180,59 @@
     </div>
 
     <!-- Core Scripts -->
-    <script src="js/core-utils.js?v=108"></script>
-    <script src="js/vibe-history.js?v=108"></script>
+<!-- site-footer:start (generated from templates/partials/footer.html) -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h4>About</h4>
+                <p class="footer-about">
+                    The Vibe Check Project exists to spread positivity through daily affirmations and uplifting messages. Because small words make a big impact.
+                </p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Project</h4>
+                <ul class="footer-links">
+                    <li><a href="send-card.html">Send a Card</a></li>
+                    <li><a href="situations.html">Browse by Situation</a></li>
+                    <li><a href="blog/index.html">Advice &amp; Guides</a></li>
+                    <li><a href="my-cards.html">My Vibes</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="cookies.html">Cookie Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <ul class="footer-links">
+                    <li><a href="https://x.com/thevibecheckpro" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
+                    <li><a href="https://www.tiktok.com/@thevibecheckproject" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+                    <li><a href="https://ko-fi.com/thevibecheckproject" target="_blank" rel="noopener noreferrer">Ko-fi</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="footer-disclaimer"><strong>Disclaimer:</strong> The Vibe Check Project provides peer emotional inspiration and positive support, not clinical therapy, psychotherapy, or medical care. If you or someone you know is in crisis, please call or text <strong>988</strong> (USA/Canada) or text <strong>HOME</strong> to <strong>741741</strong>.</p>
+            <p>✨ The Vibe Check Project • Spreading good since 2025</p>
+        </div>
+    </div>
+</footer>
+<!-- site-footer:end -->
+
+    <script src="js/core-utils.js?v=986d751688"></script>
+    <script src="js/vibe-history.js?v=3874544877"></script>
 
     <!-- Dashboard Controller Script -->
     <script>
@@ -245,6 +300,7 @@
 
                 if (allCards.length === 0) {
                     cardsGrid.style.display = 'none';
+                    cardsGrid.innerHTML = '';
                     dashboardToolbar.style.display = 'none';
                     emptyState.style.display = 'block';
                     return;

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Welcome card</title>
+<!--
+  Welcome-email card: a flat card shows "Welcome to The Vibe Check Project", flips to a
+  message, holds, flips back. No scene or particles: during the holds nothing changes,
+  which keeps the GIF small. Rendered frame by frame by render.js via window.renderFrame(t).
+-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600&family=Outfit:wght@600&family=Space+Grotesk:wght@700&display=block">
+<style>
+    :root { --bg: #1A1625; --pink: #FF6B9D; --gold: #FEC84A; --text: #FEFEFE; --muted: #D6C8EC; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1080px; height: 1350px; background: var(--bg); overflow: hidden; }
+
+    #stage { width: 1080px; height: 1350px; display: grid; place-items: center; perspective: 2600px; }
+    #card { width: 820px; height: 1140px; position: relative; transform-style: preserve-3d; }
+    .face {
+        position: absolute; inset: 0; border-radius: 56px; backface-visibility: hidden;
+        padding: 14px; background: linear-gradient(135deg, var(--pink), var(--gold));
+        box-shadow: 0 40px 90px rgba(0, 0, 0, 0.45);
+    }
+    .face .inner {
+        width: 100%; height: 100%; border-radius: 44px;
+        background: radial-gradient(120% 80% at 50% 0%, #34264a 0%, #211a30 55%, #1b1628 100%);
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        text-align: center; padding: 90px 80px; color: var(--text);
+    }
+    .back { transform: rotateY(180deg); }
+
+    .seal {
+        width: 170px; height: 170px; border-radius: 50%; display: grid; place-items: center;
+        background: radial-gradient(circle at 40% 35%, var(--gold), var(--pink) 65%, #C73866);
+        font-size: 84px; margin-bottom: 70px;
+    }
+    .eyebrow { font: 700 46px 'Space Grotesk'; letter-spacing: 12px; color: var(--gold); margin-bottom: 26px; }
+    .title { font: italic 600 124px/1.05 'Cormorant Garamond'; }
+    .rule { width: 300px; height: 3px; background: rgba(255, 255, 255, 0.18); margin: 64px 0 50px; border-radius: 2px; }
+    .tag { font: 600 44px 'Outfit'; color: var(--muted); }
+
+    .quote-mark { font: italic 600 220px/0.6 'Cormorant Garamond'; color: var(--pink); margin-bottom: 40px; }
+    .message { font: italic 600 112px/1.12 'Cormorant Garamond'; }
+    .site { font: 700 40px 'Space Grotesk'; color: var(--gold); letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<div id="stage">
+    <div id="card">
+        <div class="face front"><div class="inner">
+            <div class="seal">✨</div>
+            <div class="eyebrow">WELCOME TO</div>
+            <div class="title">The Vibe Check<br>Project</div>
+            <div class="rule"></div>
+            <div class="tag">A little good, every morning.</div>
+        </div></div>
+        <div class="face back"><div class="inner">
+            <div class="quote-mark">&ldquo;</div>
+            <div class="message" id="message"></div>
+            <div class="rule"></div>
+            <div class="site">✨ thevibecheckproject.com</div>
+        </div></div>
+    </div>
+</div>
+<script>
+const CFG = { loopSeconds: 8.1, message: "We're really glad you're here." };
+// Timeline (s): hold welcome → flip → hold message → flip back → hold welcome
+// The loop ends exactly as the card lands back on the welcome side, so the whole welcome hold
+// sits at the start (identical frames are merged into one long frame in the GIF).
+const T = { flip1: 2.8, flipDur: 1.1, flip2: 7.0 }; // ~3.1s to read the message
+const ease = p => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
+const clamp01 = v => Math.max(0, Math.min(1, v));
+const card = document.getElementById('card');
+
+window.renderFrame = function (t) {
+    const f1 = ease(clamp01((t - T.flip1) / T.flipDur));
+    const f2 = ease(clamp01((t - T.flip2) / T.flipDur));
+    const turning = Math.sin(f1 * Math.PI) + Math.sin(f2 * Math.PI); // 0 at rest, 1 mid-flip
+    // Slight lift toward the viewer mid-flip gives depth without any scene
+    card.style.transform = `translateZ(${turning * 120}px) rotateY(${(f1 - f2) * 180}deg)`;
+    return true;
+};
+
+window.setup = function (opts) {
+    Object.assign(CFG, opts || {});
+    // Background: a colour matching the email body, or 'transparent' (GIF transparency is
+    // on/off per pixel, so the soft shadow is dropped to avoid a dark fringe)
+    if (CFG.bg === 'transparent') {
+        document.documentElement.style.background = document.body.style.background = 'transparent';
+        document.querySelectorAll('.face').forEach(f => { f.style.boxShadow = 'none'; });
+    } else if (CFG.bg) {
+        document.documentElement.style.background = document.body.style.background = CFG.bg;
+    }
+    // Optional artwork behind the card text (one of the site's card backgrounds), with a
+    // dark wash so the text stays readable
+    if (CFG.cardBg) {
+        document.querySelectorAll('.face .inner').forEach(el => {
+            const w = CFG.wash ?? 0.55; // darkening over the art: busy photos need more, soft gradients less
+            el.style.background = `linear-gradient(180deg, rgba(20,14,32,${w - 0.06}), rgba(20,14,32,${w + 0.06})), url('${CFG.cardBg}') center / cover`;
+            el.style.textShadow = '0 2px 14px rgba(0,0,0,0.55)';
+        });
+    }
+    const msg = document.getElementById('message');
+    msg.textContent = CFG.message;
+    // Longer messages get smaller type so they always fit the card
+    msg.style.fontSize = (CFG.message.length <= 32 ? 112 : CFG.message.length <= 64 ? 96 : 80) + 'px';
+    return Promise.all([
+        document.fonts.load('700 46px "Space Grotesk"'),
+        document.fonts.load('600 44px "Outfit"'),
+        document.fonts.load('italic 600 112px "Cormorant Garamond"'),
+    ]).then(() => { window.renderFrame(0); return { loopSeconds: CFG.loopSeconds }; });
+};
+</script>
+</body>
+</html>

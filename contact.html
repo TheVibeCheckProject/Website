@@ -8,11 +8,11 @@
         content="Get in touch with The Vibe Check Project team. Send us your feedback, card theme ideas, partnership inquiries, or general questions about our mission.">
     <title>Contact Us - Support & Feedback | The Vibe Check Project</title>
 
-    <link rel="canonical" href="https://thevibecheckproject.com/contact.html">
+    <link rel="canonical" href="https://thevibecheckproject.com/contact">
 
     <!-- Open Graph / Twitter Card -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://thevibecheckproject.com/contact.html">
+    <meta property="og:url" content="https://thevibecheckproject.com/contact">
     <meta property="og:title" content="Contact Us - Support & Feedback | The Vibe Check Project">
     <meta property="og:description"
         content="Get in touch with The Vibe Check Project team. Send us your feedback, card theme ideas, partnership inquiries, or general questions about our mission.">
@@ -33,8 +33,8 @@
       "@graph": [
         {
           "@type": "ContactPage",
-          "@id": "https://thevibecheckproject.com/contact.html#contact",
-          "url": "https://thevibecheckproject.com/contact.html",
+          "@id": "https://thevibecheckproject.com/contact#contact",
+          "url": "https://thevibecheckproject.com/contact",
           "name": "Contact The Vibe Check Project",
           "description": "Get in touch with The Vibe Check Project team. Send us your feedback, card theme ideas, partnership inquiries, or general questions about our mission.",
           "isPartOf": {
@@ -45,7 +45,7 @@
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://thevibecheckproject.com/contact.html#breadcrumb",
+          "@id": "https://thevibecheckproject.com/contact#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
@@ -57,7 +57,7 @@
               "@type": "ListItem",
               "position": 2,
               "name": "Contact",
-              "item": "https://thevibecheckproject.com/contact.html"
+              "item": "https://thevibecheckproject.com/contact"
             }
           ]
         }
@@ -91,43 +91,43 @@
     </noscript>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="css/styles.css?v=6">
+    <link rel="stylesheet" href="css/styles.css?v=d92d609a0a">
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2492108586092522"
-        crossorigin="anonymous"></script>
 </head>
 
 <body data-design-concept="editorial">
     <!-- Navigation -->
-    <nav id="nav">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
-            </div>
-                <ul class="nav-links" style="align-items: center;">
-                    <li>
-                        <a href="blog/index.html#crisis" class="nav-crisis-badge">
-                            <span class="nav-crisis-heart">❤️</span>
-                            <span class="nav-crisis-text">Emergency Support</span>
-                        </a>
-                    </li>
-                    <li><a href="send-card.html" style="color: var(--color-primary); font-weight: 700;">💌 Send A Card</a></li>
-                    <li><a href="situations.html">Situations</a></li>
-                    <li><a href="index.html#vibeOfDay">Daily Spark</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="faq.html">FAQ</a></li>
-                    <li><a href="blog/index.html">Blog</a></li>
-                </ul>
-                <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu"
-                        aria-expanded="false">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-            </div>
-        </nav>
+    <!-- site-nav:start (generated from templates/partials/nav.html — edit there, then npm run build:layout) -->
+<nav id="nav" aria-label="Main">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <li>
+                <a href="blog/index.html#crisis" class="nav-crisis-badge">
+                    <span class="nav-crisis-heart" aria-hidden="true">❤️</span>
+                    <span class="nav-crisis-text">Emergency Support</span>
+                </a>
+            </li>
+            <li><a href="send-card.html" class="nav-cta" data-nav="send">💌 Send a Card</a></li>
+            <li><a href="situations.html" data-nav="situations">Situations</a></li>
+            <li><a href="blog/index.html" data-nav="guides">Guides</a></li>
+            <li><a href="my-cards.html" data-nav="vibes">My Vibes</a></li>
+            <li><a href="faq.html" data-nav="faq">FAQ</a></li>
+            <li><a href="about.html" data-nav="about">About</a></li>
+        </ul>
+        <button class="nav-hamburger" id="nav-hamburger" type="button" aria-label="Open navigation menu"
+            aria-expanded="false" aria-controls="nav-links">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</nav>
+<!-- site-nav:end -->
 
     <!-- Hero Section -->
     <section class="hero" style="min-height: 60vh;">
@@ -221,10 +221,7 @@
                 <div class="step">
                     <h3>What is the Premium Unlock?</h3>
                     <p>
-                        A one-time $4.99 purchase that unlocks 10+ premium card design themes (with more added
-                        constantly) — Birthday, Grief Support,
-                        Hype-Up, Love, Anxiety Relief, Friendship, Self-Love, Congratulations, Just Because, and "I See
-                        You" — plus all relaxing sounds. Yours forever, right in your browser.
+                        A one-time $4.99 purchase that unlocks writing your own affirmation, the Calm, Celebrate, Love and Healing collections, 14 premium backgrounds (6 of them animated) and 5 extra sounds. It's saved in the browser you buy it on, so if you clear your browser data or switch devices, email us and we'll help.
                     </p>
                 </div>
 
@@ -267,61 +264,60 @@
     </section>
 
     <!-- Footer -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-grid">
-                <div class="footer-section">
-                    <h4>About</h4>
-                    <p style="color: var(--color-text-muted); font-size: 14px; line-height: 1.7;">
-                        The Vibe Check Project exists to spread positivity through daily affirmations and uplifting
-                        messages. Because small words can make a big impact.
-                    </p>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Project</h4>
-                    <ul class="footer-links">
-                        <li><a href="send-card.html">Send a Card</a></li>
-                        <li><a href="situations.html">Browse by Situation</a></li>
-                        <li><a href="blog/index.html">Advice &amp; Guides</a></li>
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Legal</h4>
-                    <ul class="footer-links">
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                        <li><a href="terms.html">Terms of Service</a></li>
-                        <li><a href="cookies.html">Cookie Policy</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Connect</h4>
-                    <ul class="footer-links">
-                        <li><a href="https://x.com/thevibecheckpro" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
-                        <li><a href="https://www.tiktok.com/@thevibecheckproject" target="_blank"
-                                rel="noopener noreferrer">TikTok</a>
-                        </li>
-                        <li><a href="https://ko-fi.com/thevibecheckproject" target="_blank" rel="noopener noreferrer">Ko-fi</a>
-                        </li>
-                    </ul>
-                </div>
+    <!-- site-footer:start (generated from templates/partials/footer.html) -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h4>About</h4>
+                <p class="footer-about">
+                    The Vibe Check Project exists to spread positivity through daily affirmations and uplifting messages. Because small words make a big impact.
+                </p>
             </div>
 
-            <div class="footer-bottom">
-                <p style="font-size: 0.82rem; color: var(--color-text-muted); margin-bottom: 10px; line-height: 1.6;"><strong>Disclaimer:</strong> The Vibe Check Project provides peer emotional inspiration and positive support, not clinical therapy, psychotherapy, or medical care. If you or someone you know is in crisis, please call or text <strong>988</strong> (USA/Canada) or text <strong>HOME</strong> to <strong>741741</strong>.</p>
-                <p>✨ The Vibe Check Project • Founded by Devin Griffin • Spreading good since 2025</p>
+            <div class="footer-section">
+                <h4>Project</h4>
+                <ul class="footer-links">
+                    <li><a href="send-card.html">Send a Card</a></li>
+                    <li><a href="situations.html">Browse by Situation</a></li>
+                    <li><a href="blog/index.html">Advice &amp; Guides</a></li>
+                    <li><a href="my-cards.html">My Vibes</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="cookies.html">Cookie Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <ul class="footer-links">
+                    <li><a href="https://x.com/thevibecheckpro" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
+                    <li><a href="https://www.tiktok.com/@thevibecheckproject" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+                    <li><a href="https://ko-fi.com/thevibecheckproject" target="_blank" rel="noopener noreferrer">Ko-fi</a></li>
+                </ul>
             </div>
         </div>
-    </footer>
+
+        <div class="footer-bottom">
+            <p class="footer-disclaimer"><strong>Disclaimer:</strong> The Vibe Check Project provides peer emotional inspiration and positive support, not clinical therapy, psychotherapy, or medical care. If you or someone you know is in crisis, please call or text <strong>988</strong> (USA/Canada) or text <strong>HOME</strong> to <strong>741741</strong>.</p>
+            <p>✨ The Vibe Check Project • Spreading good since 2025</p>
+        </div>
+    </div>
+</footer>
+<!-- site-footer:end -->
 
     <!-- JavaScript -->
-    <script src="js/core-utils.js?v=104" defer></script>
-    <script src="js/script.js" defer></script>
+    <script src="js/core-utils.js?v=986d751688" defer></script>
+    <script src="js/script.js?v=873fca0ac9" defer></script>
     <script>document.addEventListener('DOMContentLoaded', () => lucide.createIcons());</script>
 </body>
 

@@ -68,10 +68,6 @@
             "width": 1200,
             "height": 630
           },
-          "founder": {
-            "@type": "Person",
-            "name": "Devin Griffin"
-          },
           "sameAs": [
             "https://x.com/thevibecheckpro",
             "https://www.tiktok.com/@thevibecheckproject",
@@ -411,15 +407,13 @@
             margin: 0 auto 16px;
         }
     </style>
-    <link rel="stylesheet" href="css/styles.css?v=108" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="css/styles.css?v=d92d609a0a" media="print" onload="this.media='all'">
     <noscript>
-        <link rel="stylesheet" href="css/styles.css?v=108">
+        <link rel="stylesheet" href="css/styles.css?v=d92d609a0a">
     </noscript>
-    <link rel="stylesheet" href="css/design-upgrade.css?v=1">
+    <link rel="stylesheet" href="css/home.css?v=8f30ebc730">
 
     <!-- Lucide Icons (Script Removed for Performance, replaced with inline SVGs) -->
-    <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2492108586092522"
-        crossorigin="anonymous"></script>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -440,7 +434,7 @@
           "@type": "WebApplication",
           "@id": "https://thevibecheckproject.com/#app",
           "name": "The Vibe Check Card Sender",
-          "url": "https://thevibecheckproject.com/send-card.html",
+          "url": "https://thevibecheckproject.com/send-card",
           "applicationCategory": "LifestyleApplication",
           "operatingSystem": "All",
           "browserRequirements": "Requires JavaScript. Requires HTML5.",
@@ -474,38 +468,35 @@
     <!-- Main Content -->
     <div id="main-content">
         <!-- Navigation -->
-        <nav id="nav">
-            <div class="nav-container">
-                <div class="nav-logo">
-                    <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
-                    <span class="logo-divider">|</span>
-                    <a href="blog/index.html" class="rotating-logo-word-wrap">
-                        <span class="rotating-logo-word in">Advice</span>
-                    </a>
-                </div>
-                <ul class="nav-links" style="align-items: center;">
-                    <li>
-                        <a href="blog/index.html#crisis" class="nav-crisis-badge">
-                            <span class="nav-crisis-heart">❤️</span>
-                            <span class="nav-crisis-text">Emergency Support</span>
-                        </a>
-                    </li>
-                    <li><a href="send-card.html" style="color: var(--color-primary); font-weight: 700;">💌 Send A Card</a></li>
-                    <li><a href="my-cards.html">My Vibes</a></li>
-                    <li><a href="#vibeOfDay">Daily Spark</a></li>
-                    <li><a href="situations.html">Situations</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="faq.html">FAQ</a></li>
-                    <li><a href="blog/index.html">Blog</a></li>
-                </ul>
-                <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation menu"
-                        aria-expanded="false">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-            </div>
-        </nav>
+        <!-- site-nav:start (generated from templates/partials/nav.html — edit there, then npm run build:layout) -->
+<nav id="nav" aria-label="Main">
+    <div class="nav-container">
+        <div class="nav-logo">
+            <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <li>
+                <a href="blog/index.html#crisis" class="nav-crisis-badge">
+                    <span class="nav-crisis-heart" aria-hidden="true">❤️</span>
+                    <span class="nav-crisis-text">Emergency Support</span>
+                </a>
+            </li>
+            <li><a href="send-card.html" class="nav-cta" data-nav="send">💌 Send a Card</a></li>
+            <li><a href="situations.html" data-nav="situations">Situations</a></li>
+            <li><a href="blog/index.html" data-nav="guides">Guides</a></li>
+            <li><a href="my-cards.html" data-nav="vibes">My Vibes</a></li>
+            <li><a href="faq.html" data-nav="faq">FAQ</a></li>
+            <li><a href="about.html" data-nav="about">About</a></li>
+        </ul>
+        <button class="nav-hamburger" id="nav-hamburger" type="button" aria-label="Open navigation menu"
+            aria-expanded="false" aria-controls="nav-links">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</nav>
+<!-- site-nav:end -->
 
         <!-- Hero Section -->
         <section class="hero">
@@ -617,31 +608,25 @@
             </div>
         </section>
 
-        <!-- Social Proof Section -->
+        <!-- Stats Section -->
         <section class="social-proof-section" style="padding: 60px 24px 80px;">
             <div class="section-container">
-                <div class="ambient-proof-card reveal">
-                    <p class="quote">
-                        "I sent an anonymous encouragement card to my sister during finals week when she was drowning in burnout. She called me crying happy tears ten minutes later. It took 30 seconds, cost nothing, and completely changed her week."
-                    </p>
-                    <p class="author">— Maya R., Community Sender</p>
-                </div>
-
                 <div class="stats-row" style="margin-top: 0;">
-                    <div class="stat-card reveal">
-                        <div class="stat" id="liveCardCount">12,480+</div>
+                    <!-- Live counts: hidden until the counter service (js/core-utils.js VibeCounter) returns real numbers -->
+                    <div class="stat-card reveal" id="liveCardCountCard" hidden>
+                        <div class="stat" id="liveCardCount"></div>
                         <p class="stat-label">Vibe Checks Sent</p>
                     </div>
                     <div class="stat-card reveal">
-                        <div class="stat">20</div>
+                        <div class="stat">18</div>
                         <p class="stat-label">Card Themes</p>
                     </div>
                     <div class="stat-card reveal">
                         <div class="stat">100%</div>
                         <p class="stat-label">Free to Send</p>
                     </div>
-                    <div class="stat-card reveal">
-                        <div class="stat" id="liveNewsletterCount">5,200+</div>
+                    <div class="stat-card reveal" id="liveNewsletterCountCard" hidden>
+                        <div class="stat" id="liveNewsletterCount"></div>
                         <p class="stat-label">Newsletters Sent</p>
                     </div>
                 </div>
@@ -655,8 +640,8 @@
                     <span class="trust-badge-pill" style="margin-bottom: 12px; display: inline-flex;"><span class="trust-icon">✨</span> The Daily Spark</span>
                     <h2 class="section-title">A 30-Second Grounding Breath, Every Morning</h2>
                     <p class="section-subtitle">
-                        Join 5,000+ humans starting their days centered. One daily thought to anchor your day.
-                        <br><strong style="color: var(--color-primary-light);">🎁 Bonus: Get 3 free high-resolution affirmation wallpapers upon joining.</strong>
+                        One short, kind thought in your inbox each morning to anchor your day.
+                        <br><strong class="cta-bonus">🎁 Bonus: Get 3 free high-resolution affirmation wallpapers upon joining.</strong>
                     </p>
                 </div>
                 <form id="join-form" class="join-form" novalidate>
@@ -683,61 +668,63 @@
         </div>
 
         <!-- Footer -->
-        <footer>
-            <div class="footer-container">
-                <div class="footer-grid">
-                    <div class="footer-section">
-                        <h4>About</h4>
-                        <p style="color: var(--color-text-muted); font-size: 14px; line-height: 1.7;">
-                            The Vibe Check Project exists to spread positivity through daily affirmations and uplifting messages. Because small words make a big impact.
-                        </p>
-                    </div>
-
-                    <div class="footer-section">
-                        <h4>Project</h4>
-                        <ul class="footer-links">
-                            <li><a href="send-card.html">Send a Card</a></li>
-                            <li><a href="situations.html">Browse by Situation</a></li>
-                            <li><a href="blog/index.html">Advice &amp; Guides</a></li>
-                            <li><a href="about.html">About Us</a></li>
-                            <li><a href="faq.html">FAQ</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-section">
-                        <h4>Legal</h4>
-                        <ul class="footer-links">
-                            <li><a href="privacy.html">Privacy Policy</a></li>
-                            <li><a href="terms.html">Terms of Service</a></li>
-                            <li><a href="cookies.html">Cookie Policy</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-section">
-                        <h4>Connect</h4>
-                        <ul class="footer-links">
-                            <li><a href="https://x.com/thevibecheckpro" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
-                            <li><a href="https://www.tiktok.com/@thevibecheckproject" target="_blank" rel="noopener noreferrer">TikTok</a></li>
-                            <li><a href="https://ko-fi.com/thevibecheckproject" target="_blank" rel="noopener noreferrer">Ko-fi</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="footer-bottom">
-                    <p style="font-size: 0.82rem; color: var(--color-text-muted); margin-bottom: 10px; line-height: 1.6;"><strong>Disclaimer:</strong> The Vibe Check Project provides peer emotional inspiration and positive support, not clinical therapy, psychotherapy, or medical care. If you or someone you know is in crisis, please call or text <strong>988</strong> (USA/Canada) or text <strong>HOME</strong> to <strong>741741</strong>.</p>
-                    <p>✨ The Vibe Check Project • Founded by Devin Griffin • Spreading good since 2025</p>
-                </div>
+        <!-- site-footer:start (generated from templates/partials/footer.html) -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h4>About</h4>
+                <p class="footer-about">
+                    The Vibe Check Project exists to spread positivity through daily affirmations and uplifting messages. Because small words make a big impact.
+                </p>
             </div>
-        </footer>
+
+            <div class="footer-section">
+                <h4>Project</h4>
+                <ul class="footer-links">
+                    <li><a href="send-card.html">Send a Card</a></li>
+                    <li><a href="situations.html">Browse by Situation</a></li>
+                    <li><a href="blog/index.html">Advice &amp; Guides</a></li>
+                    <li><a href="my-cards.html">My Vibes</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="cookies.html">Cookie Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <ul class="footer-links">
+                    <li><a href="https://x.com/thevibecheckpro" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
+                    <li><a href="https://www.tiktok.com/@thevibecheckproject" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+                    <li><a href="https://ko-fi.com/thevibecheckproject" target="_blank" rel="noopener noreferrer">Ko-fi</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="footer-disclaimer"><strong>Disclaimer:</strong> The Vibe Check Project provides peer emotional inspiration and positive support, not clinical therapy, psychotherapy, or medical care. If you or someone you know is in crisis, please call or text <strong>988</strong> (USA/Canada) or text <strong>HOME</strong> to <strong>741741</strong>.</p>
+            <p>✨ The Vibe Check Project • Spreading good since 2025</p>
+        </div>
+    </div>
+</footer>
+<!-- site-footer:end -->
     </div>
 
 
     <!-- Main JavaScript -->
-    <script src="js/core-utils.js?v=108" defer></script>
-    <script src="js/script.js?v=108" defer></script>
-    <script src="js/animations.js?v=108" defer></script>
-    <script src="js/design-upgrade.js?v=1" defer></script>
+    <script src="js/core-utils.js?v=986d751688" defer></script>
+    <script src="js/script.js?v=873fca0ac9" defer></script>
+    <script src="js/animations.js?v=ac756b2185" defer></script>
 
 </body>
 

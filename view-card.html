@@ -123,48 +123,62 @@
       rel="stylesheet">
   </noscript>
 
-
   <!-- Async CSS to prevent blocking splash screen -->
-  <link rel="stylesheet" href="css/styles.css?v=108" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="css/view-card.css?v=108" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="css/styles.css?v=d92d609a0a" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="css/view-card.css?v=037f2c6b15" media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="css/styles.css?v=108">
-    <link rel="stylesheet" href="css/view-card.css?v=108">
+    <link rel="stylesheet" href="css/styles.css?v=d92d609a0a">
+    <link rel="stylesheet" href="css/view-card.css?v=037f2c6b15">
   </noscript>
 
   <!-- Instant Preloader (Runs before DOM is fully parsed) -->
   <script>
     (function () {
-      // base64url (current share links) with fallback to classic base64 (older links)
+      // base64url (current share links). Classic base64 (older links) decodes the same way
+      // once '+', '/' and padding are restored.
       window.decodeVibeCard = function (data) {
         if (!data) return null;
-        let sanitized = String(data).trim().replace(/[^A-Za-z0-9\-_]/g, '');
+        let sanitized = String(data).trim().replace(/[^A-Za-z0-9\-_+/]/g, '');
         if (!sanitized) return null;
         let s = sanitized.replace(/-/g, '+').replace(/_/g, '/');
         s += '='.repeat((4 - (s.length % 4)) % 4);
         return JSON.parse(decodeURIComponent(atob(s)));
       };
 
+      // Card links are user-crafted, so only our own background assets are honoured.
+      // Anything else (external URLs, data:, other paths) falls back to the theme gradient.
+      window.resolveVibeBackground = function (bg) {
+        if (typeof bg !== 'string') return null;
+        const m = bg.trim().match(/^(?:assets\/backgrounds\/)?([A-Za-z0-9_.-]+\.(?:webp|jpe?g|png|mp4))$/);
+        return m ? 'assets/backgrounds/' + m[1] : null;
+      };
+
+      window.__vibeCard = null;
       try {
-        const p = new URLSearchParams(window.location.search);
-        const d = p.get('data');
+        const d = new URLSearchParams(window.location.search).get('data');
         if (!d) return;
         const card = window.decodeVibeCard(d);
-        if (card && card.background) {
-          if (card.background.endsWith('.mp4')) {
-            const v = document.createElement('link');
-            v.rel = 'preload'; v.as = 'video'; v.href = card.background;
-            document.head.appendChild(v);
-          } else {
-            const img = new Image();
-            img.src = card.background;
-            // Pre-warm the cache for this background
-            if (!card.background.startsWith('http')) {
-              window.preloadedBg = img;
-            }
-          }
+        if (!card || typeof card !== 'object') return;
+        // Normalise untrusted fields once so every consumer gets plain, bounded strings
+        const clip = (v, n) => (typeof v === 'string' ? v : '').trim().slice(0, n);
+        card.id = clip(card.id, 64);
+        card.recipientName = clip(card.recipientName, 50);
+        card.senderName = clip(card.senderName, 50);
+        card.affirmation = clip(card.affirmation, 280) || "You're doing better than you think you are.";
+        card.personalMessage = clip(card.personalMessage, 500);
+        card.sound = clip(card.sound, 20) || 'chime';
+        card.themeGroup = clip(card.themeGroup, 20).toLowerCase() || 'default';
+        window.__vibeCard = card;
+        const bg = window.resolveVibeBackground(card.background);
+        if (bg && bg.endsWith('.mp4')) {
+          const v = document.createElement('link');
+          v.rel = 'preload'; v.as = 'video'; v.href = bg;
+          document.head.appendChild(v);
+        } else if (bg) {
+          window.preloadedBg = new Image(); // pre-warm the cache
+          window.preloadedBg.src = bg;
         }
-      } catch (e) { }
+      } catch (e) { console.warn('VibeCheck: could not read card link', e); }
     })();
   </script>
 </head>
@@ -191,12 +205,12 @@
     <div class="header-badge" id="headerBadge">✨ Someone sent you a vibe</div>
 
     <!-- Flip Card -->
-    <div class="flip-card" id="flipCard" tabindex="0">
+    <div class="flip-card" id="flipCard" tabindex="0" role="button" aria-label="Open your card">
       <div class="flip-card-inner" id="flipCardInner">
         <div class="flip-card-face flip-card-front" id="cardFront">
           <div class="shimmer-layer"></div>
-          <div class="front-emoji">💚</div>
-          <div class="front-label">You've got a Vibe Check!</div>
+          <div class="front-emoji" id="frontEmoji" aria-hidden="true">💚</div>
+          <h1 class="front-label" id="frontLabel">You've got a Vibe Check!</h1>
           <div class="front-hint">Tap to reveal your message</div>
         </div>
         <div class="flip-card-face flip-card-back" id="cardBack">
@@ -205,8 +219,7 @@
           <div class="shimmer-layer"></div>
           <div class="affirmation" id="cardAffirmation">You've got a vibe!</div>
           <div class="card-message" id="cardMessage">Someone wanted to send you some good vibes ✨</div>
-          <a href="https://thevibecheckproject.com" target="_blank" rel="noopener noreferrer"
-            style="position:absolute;bottom:10px;font-size:10px;color:rgba(255,255,255,0.3);text-decoration:none;letter-spacing:0.5px;font-family:var(--font-body);">
+          <a href="https://thevibecheckproject.com" target="_blank" rel="noopener noreferrer" class="card-powered-by">
             Powered by ✨ The Vibe Check Project
           </a>
         </div>
@@ -247,15 +260,13 @@
       </button>
 
       <!-- Premium upsell — prominent CTA with price anchoring -->
-      <div
-        style="margin:24px 0;padding:22px 24px;background:linear-gradient(135deg,rgba(163,230,53,0.08),rgba(168,85,247,0.08));border:1px solid rgba(163,230,53,0.25);border-radius:16px;text-align:center;">
-        <div style="font-size:11.5px;text-transform:uppercase;letter-spacing:1px;font-weight:700;color:var(--green);margin-bottom:6px;">Lifetime Access • No Subscriptions</div>
-        <p style="color:var(--text-primary);font-size:17px;font-weight:700;margin-bottom:6px;">Create Your Own Stunning Cards ✨</p>
-        <p style="color:var(--text-secondary);font-size:13px;margin-bottom:14px;line-height:1.5;">
-          Unlock 14+ themes, live animated canvases, and 8 relaxing audio soundscapes for less than the price of a single paper store card ($6.99).
+      <div class="premium-upsell">
+        <div class="premium-upsell-eyebrow">One-time • No Subscription</div>
+        <p class="premium-upsell-title">Create Your Own Stunning Cards ✨</p>
+        <p class="premium-upsell-text">
+          Write your own words, unlock 14 premium backgrounds (6 animated) and every sound, for one payment of $4.99.
         </p>
-        <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener noreferrer" id="viewCardPremBtn"
-          style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#a3e635,#84cc16);color:#0a0a0a;font-weight:700;border-radius:10px;text-decoration:none;font-family:var(--font-display);font-size:14px;transition:transform 0.2s,box-shadow 0.2s;">
+        <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener noreferrer" id="viewCardPremBtn" class="premium-upsell-btn">
           Unlock Premium — $4.99 One-Time
         </a>
       </div>
@@ -279,404 +290,10 @@
     </div>
   </div>
 
-  <!-- Email capture handler -->
-  <script>
-    async function handleViewCardSignup(e) {
-      e.preventDefault();
-      const email = e.target.querySelector('input').value;
-      const btn = e.target.querySelector('button');
-      btn.textContent = 'Joining...';
-      btn.disabled = true;
+  <script src="js/core-utils.js?v=986d751688"></script>
+  <script src="js/vibe-history.js?v=3874544877"></script>
+  <script src="js/view-card.js?v=dbed5994e2"></script>
 
-      if (window.VibeTelemetry) {
-        window.VibeTelemetry.track('recipient_email_signup_started');
-      }
-
-      try {
-        const PROXY_URL = 'https://vibe-check-proxy.caseagent72401.workers.dev/';
-
-        const response = await fetch(PROXY_URL, {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify({
-            email: email,
-            groups: ['180628908682512348'],
-            fields: { signup_source: 'view-card' }
-          })
-        });
-        if (response.ok) {
-          e.target.innerHTML = '<p style="color:var(--green);font-size:16px;font-weight:700;">✨ You\'re in! Check your inbox.</p>';
-          if (window.VibeTelemetry) {
-            window.VibeTelemetry.track('recipient_email_signup_success');
-            window.VibeTelemetry.setTag('newsletter_subscriber', 'true');
-          }
-        } else {
-          showViewCardEmailError('Hmm, that didn\'t go through — please try again.');
-          btn.textContent = 'Join Free';
-          btn.disabled = false;
-        }
-      } catch (err) {
-        showViewCardEmailError('Couldn\'t connect — check your connection and try again.');
-        btn.textContent = 'Join Free';
-        btn.disabled = false;
-      }
-    }
-
-    function showViewCardEmailError(msg) {
-      const err = document.getElementById('viewCardEmailError');
-      if (!err) return;
-      err.textContent = msg;
-      err.hidden = false;
-    }
-
-    // Share the revealed card: native share sheet on mobile, clipboard fallback on desktop
-    async function shareVibeCard(btn) {
-      const url = window.location.href;
-      const title = document.title || "You've Got a Vibe Check! ✨";
-      const text = 'Someone sent me this beautiful vibe check card 💚';
-
-      if (window.VibeTelemetry) {
-        window.VibeTelemetry.track('card_share_initiated', { method: navigator.share ? 'native' : 'clipboard' });
-        window.VibeTelemetry.setTag('recipient_shared', 'true');
-      }
-
-      if (typeof launchConfetti === 'function') launchConfetti();
-
-      if (navigator.share) {
-        try { await navigator.share({ title: title, text: text, url: url }); } catch (e) { /* dismissed */ }
-        return;
-      }
-      const original = btn.innerHTML;
-      try {
-        await navigator.clipboard.writeText(url);
-        btn.innerHTML = '✓ Link Copied — Share the Love!';
-        setTimeout(() => { btn.innerHTML = original; }, 2500);
-      } catch (e) {
-        let field = document.getElementById('shareLinkField');
-        if (!field) {
-          field = document.createElement('input');
-          field.id = 'shareLinkField';
-          field.readOnly = true;
-          field.setAttribute('aria-label', 'Your card link — copy it to share');
-          field.style.cssText = 'width:100%;margin-top:8px;padding:10px 12px;border-radius:10px;border:1px solid rgba(163,230,53,0.35);background:rgba(0,0,0,0.4);color:#fff;font-size:12px;';
-          btn.insertAdjacentElement('afterend', field);
-          field.addEventListener('click', () => { field.select(); });
-        }
-        field.value = url;
-        field.hidden = false;
-        field.select();
-        btn.innerHTML = '↑ Copy the link above';
-      }
-    }
-  </script>
-
-  <!-- Load card data & Handle Initialization -->
-  <script>
-    (async function () {
-      const params = new URLSearchParams(window.location.search);
-      const rawData = params.get('data');
-      if (!rawData) {
-        document.getElementById('vibe-loader').classList.add('hidden');
-        return;
-      }
-      const encoded = rawData.trim().replace(/[^A-Za-z0-9\-_]/g, '');
-
-      try {
-        const card = window.decodeVibeCard(encoded);
-        const affirmationEl = document.getElementById('cardAffirmation');
-        const messageEl = document.getElementById('cardMessage');
-        const headerEl = document.getElementById('headerBadge');
-
-        // Apply Text Content
-        if (affirmationEl) affirmationEl.textContent = card.affirmation;
-        if (messageEl) {
-          const sender = card.senderName;
-          if (sender) {
-            messageEl.textContent = card.personalMessage
-              ? `${sender} says: "${card.personalMessage}"`
-              : `${sender} wanted to send you some good vibes ✨`;
-          } else {
-            messageEl.textContent = card.personalMessage
-              ? `Someone special says: "${card.personalMessage}"`
-              : 'Someone special wanted to send you some good vibes ✨';
-          }
-        }
-        if (headerEl) {
-          headerEl.textContent = card.senderName
-            ? `✨ ${card.senderName} sent you a vibe`
-            : '✨ Someone anonymously sent you a vibe';
-        }
-        if (card.recipientName) document.title = `${card.recipientName}, You've Got a Vibe Check! ✨`;
-
-        // Setup Reciprocal Viral Bridge
-        const sender = (card.senderName || '').trim();
-        const bridgeTitle = document.getElementById('viralBridgeTitle');
-        const bridgeSubtitle = document.getElementById('viralBridgeSubtitle');
-        const btnReply1 = document.getElementById('btnReplyThankYou');
-        const btnReply2 = document.getElementById('btnReplyEnergy');
-
-        if (sender) {
-          if (bridgeTitle) bridgeTitle.textContent = `Make ${sender}'s day right back! 💚`;
-          if (bridgeSubtitle) bridgeSubtitle.textContent = `${sender} took a moment out of their day to send you good vibes. Send an instant reply card in 10 seconds:`;
-          if (btnReply1) {
-            const note1 = encodeURIComponent(`Thank you so much for the vibe check, ${sender}! Your message meant the world to me ✨`);
-            btnReply1.href = `send-card.html?recipient=${encodeURIComponent(sender)}&preset=gratitude&note=${note1}&viralReply=1`;
-            btnReply1.innerHTML = `<span>💌</span> <span>Send a "Thank You" Vibe to ${sender}</span>`;
-            btnReply1.onclick = () => { if (window.VibeTelemetry) window.VibeTelemetry.track('reciprocal_reply_clicked', { type: 'thank_you' }); };
-          }
-          if (btnReply2) {
-            const note2 = encodeURIComponent(`Sending you the biggest hug and warmest energy right back! You are amazing 🌟`);
-            btnReply2.href = `send-card.html?recipient=${encodeURIComponent(sender)}&preset=healing&note=${note2}&viralReply=1`;
-            btnReply2.innerHTML = `<span>🫂</span> <span>Send Warm Energy Back</span>`;
-            btnReply2.onclick = () => { if (window.VibeTelemetry) window.VibeTelemetry.track('reciprocal_reply_clicked', { type: 'warm_energy' }); };
-          }
-        } else {
-          if (bridgeTitle) bridgeTitle.textContent = `Pay this feeling forward 💚`;
-          if (bridgeSubtitle) bridgeSubtitle.textContent = `Someone anonymously sent you love today. Pass the kindness along to a friend in your life:`;
-          if (btnReply1) {
-            btnReply1.href = `send-card.html?preset=gratitude&viralReply=1`;
-            btnReply1.innerHTML = `<span>✨</span> <span>Send a Vibe Check to a Friend</span>`;
-            btnReply1.onclick = () => { if (window.VibeTelemetry) window.VibeTelemetry.track('reciprocal_reply_clicked', { type: 'pay_forward' }); };
-          }
-          if (btnReply2) {
-            btnReply2.href = `send-card.html?preset=healing&viralReply=1`;
-            btnReply2.innerHTML = `<span>💌</span> <span>Send an Anonymous Card</span>`;
-            btnReply2.onclick = () => { if (window.VibeTelemetry) window.VibeTelemetry.track('reciprocal_reply_clicked', { type: 'anonymous' }); };
-          }
-        }
-
-        // Dynamic Reciprocal CTA for Primary Action Button
-        const sendBackBtn = document.getElementById('sendBackBtn');
-        if (sendBackBtn) {
-          if (sender) {
-            sendBackBtn.textContent = `Reply to ${sender} 💌`;
-            sendBackBtn.href = `send-card.html?recipient=${encodeURIComponent(sender)}&preset=gratitude&viralReply=1`;
-          } else {
-            sendBackBtn.textContent = 'Send a Card to Someone ✨';
-            sendBackBtn.href = 'send-card.html?preset=gratitude&viralReply=1';
-          }
-        }
-
-        // Apply Themes
-        if (card.themeGroup && card.themeGroup !== 'default') {
-          const frontFace = document.getElementById('cardFront');
-          const backFace = document.getElementById('cardBack');
-          if (frontFace) frontFace.classList.add(`theme-${card.themeGroup}`);
-          if (backFace && !card.background) backFace.classList.add(`theme-${card.themeGroup}`);
-        }
-
-        // Apply Backgrounds (Image or Video) - BACK ONLY
-        if (card.background) {
-          const backFace = document.getElementById('cardBack');
-          const isVideo = card.background.endsWith('.mp4');
-
-          if (isVideo) {
-            const backVid = document.getElementById('backVideo');
-            if (backVid) {
-              backVid.src = card.background;
-              backFace.classList.add('has-bg');
-
-              await new Promise(r => {
-                backVid.oncanplaythrough = r;
-                backVid.load();
-                setTimeout(r, 3000); // Safety timeout
-              });
-              backVid.play().catch(() => { });
-            }
-          } else {
-            let bgUrl = card.background;
-            if (!bgUrl.startsWith('http') && !bgUrl.startsWith('data:')) {
-              bgUrl = bgUrl.includes('assets/') ? bgUrl : `assets/backgrounds/${bgUrl}`;
-            }
-            bgUrl = `url('${bgUrl}')`;
-
-            if (backFace) {
-              backFace.style.backgroundImage = bgUrl;
-              backFace.classList.add('has-bg');
-            }
-
-            // Wait for image to load
-            await new Promise(r => {
-              const img = new Image();
-              img.onload = r;
-              img.onerror = r;
-              img.src = card.background;
-              setTimeout(r, 2000); // Safety timeout
-            });
-          }
-        }
-
-        // Everything is ready
-        setTimeout(() => {
-          document.getElementById('vibe-loader').classList.add('hidden');
-        }, 100);
-
-      } catch (e) {
-        console.error("Card init error:", e);
-        document.getElementById('vibe-loader').classList.add('hidden');
-      }
-    })();
-  </script>
-
-  <script src="js/core-utils.js?v=108"></script>
-  <script src="js/vibe-history.js?v=108"></script>
-
-  <!-- Flip card + particles + share logic -->
-  <script>
-    // Flip card
-    const flipCard = document.getElementById('flipCard');
-    let cardOpen = false;
-    let cardSound = 'chime'; // default, updated from card data
-
-    // Read sound from card data
-    (function () {
-      const params = new URLSearchParams(window.location.search);
-      const rawData = params.get('data');
-      if (!rawData) return;
-      const encoded = rawData.trim().replace(/[^A-Za-z0-9\-_]/g, '');
-      try {
-        const card = window.decodeVibeCard(encoded);
-        if (card.sound) cardSound = card.sound;
-      } catch (e) { }
-    })();
-
-    // Sound Mute Controller
-    let isSoundMuted = false;
-    try {
-      isSoundMuted = localStorage.getItem('vibe_sound_muted') === 'true';
-    } catch (e) {}
-
-    const soundToggleBtn = document.getElementById('soundToggleBtn');
-    const soundToggleIcon = document.getElementById('soundToggleIcon');
-
-    function updateSoundToggleUI() {
-      if (soundToggleIcon) soundToggleIcon.textContent = isSoundMuted ? '🔇' : '🔊';
-      if (soundToggleBtn) {
-        soundToggleBtn.setAttribute('aria-label', isSoundMuted ? 'Unmute sound effects' : 'Mute sound effects');
-        soundToggleBtn.classList.toggle('is-muted', isSoundMuted);
-      }
-    }
-    updateSoundToggleUI();
-
-    if (soundToggleBtn) {
-      soundToggleBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        isSoundMuted = !isSoundMuted;
-        try {
-          localStorage.setItem('vibe_sound_muted', String(isSoundMuted));
-        } catch (err) {}
-        updateSoundToggleUI();
-        if (window.soundEngine && typeof window.soundEngine.setMuted === 'function') {
-          window.soundEngine.setMuted(isSoundMuted);
-        }
-      });
-    }
-
-    function playCardSound() {
-      if (isSoundMuted) return;
-      if (window.soundEngine && typeof soundEngine.play === 'function') {
-        soundEngine.play(cardSound);
-      }
-    }
-
-    // ── Desktop 3D Tilt ──
-    (function () {
-      if (window.matchMedia("(pointer: fine)").matches) {
-        const inner = document.getElementById('flipCardInner');
-
-        flipCard.addEventListener('mousemove', (e) => {
-          if (cardOpen) return;
-
-          const rect = flipCard.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-
-          const centerX = rect.width / 2;
-          const centerY = rect.height / 2;
-
-          const rotateX = (centerY - y) / 10;
-          const rotateY = (x - centerX) / 10;
-
-          inner.style.transition = 'transform 0.1s ease-out';
-          inner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        });
-
-        flipCard.addEventListener('mouseleave', () => {
-          if (cardOpen) return;
-          inner.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
-          inner.style.transform = 'rotateX(0deg) rotateY(0deg)';
-        });
-      }
-    })();
-
-    flipCard.addEventListener('click', () => {
-      cardOpen = !cardOpen;
-      flipCard.classList.toggle('flipped', cardOpen);
-
-      const inner = document.getElementById('flipCardInner');
-
-      // Reset 3D tilt before flipping
-      inner.style.transform = '';
-      inner.style.transition = 'transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1)';
-
-      inner.classList.remove('flipping');
-      void inner.offsetWidth; // trigger reflow
-      inner.classList.add('flipping');
-      setTimeout(() => inner.classList.remove('flipping'), 1000);
-
-      if (cardOpen) {
-        burstParticles(30);
-        launchConfetti();
-        playCardSound();
-
-        // Read-receipt beaconing & local history status
-        try {
-          const params = new URLSearchParams(window.location.search);
-          const encoded = params.get('data');
-          if (encoded && window.decodeVibeCard) {
-            const cardObj = window.decodeVibeCard(encoded);
-            if (cardObj && cardObj.id) {
-              if (window.VibeHistory) {
-                if (typeof window.VibeHistory.beaconOpen === 'function') {
-                  window.VibeHistory.beaconOpen(cardObj.id);
-                }
-                if (typeof window.VibeHistory.markOpened === 'function') {
-                  window.VibeHistory.markOpened(cardObj.id);
-                }
-              }
-            }
-          }
-        } catch (e) { }
-
-        if (window.VibeTelemetry) {
-          window.VibeTelemetry.track('card_flipped', { sound: cardSound });
-          window.VibeTelemetry.setTag('card_revealed', 'true');
-        }
-
-        // Cinematic Reveal Sequence
-        if (!document.body.classList.contains('is-revealed')) {
-          setTimeout(() => {
-            document.body.classList.add('is-revealed');
-            if (window.VibeTelemetry) {
-              window.VibeTelemetry.track('post_card_revealed');
-            }
-          }, 1200); // 1.2s pause to read before the world moves
-        }
-      }
-    });
-    flipCard.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flipCard.click(); }
-    });
-
-    // Ambient particles (desktop only)
-    burstParticles(15);
-
-
-  </script>
 </body>
 
 </html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Neutral card backgrounds</title>
+<!--
+  Procedural card backgrounds: soft layered gradients (no photos, no noise) so they read
+  as calm and neutral, and compress well in GIFs. generate.js screenshots #art for each
+  palette in PALETTES.
+-->
+<style>
+    html, body { margin: 0; background: #000; }
+    #art { width: 1024px; height: 1024px; position: relative; overflow: hidden; }
+    #art > div { position: absolute; inset: 0; }
+</style>
+</head>
+<body>
+<div id="art">
+    <div id="base"></div>
+    <div id="glow"></div>
+    <div id="haze"></div>
+    <div id="horizon"></div>
+</div>
+<script>
+const PALETTES = {
+    // Sage green into warm stone: calm, natural, reads neither pink nor blue
+    sage: { top: '#9AAE9F', mid: '#6F8279', bottom: '#3E4744', glow: 'rgba(255, 238, 205, 0.55)', haze: 'rgba(214, 222, 208, 0.35)', horizon: 'rgba(255, 244, 222, 0.16)' },
+    // Warm sand and taupe: soft and earthy, like morning light on stone
+    sand: { top: '#CDBBA0', mid: '#9A8672', bottom: '#4F4339', glow: 'rgba(255, 240, 214, 0.6)', haze: 'rgba(236, 222, 200, 0.35)', horizon: 'rgba(255, 246, 228, 0.16)' },
+    // Slate into deep teal: cool and grounded, with a warm glow to keep it friendly
+    slate: { top: '#8A9AA6', mid: '#56707A', bottom: '#27363D', glow: 'rgba(255, 232, 196, 0.5)', haze: 'rgba(196, 214, 220, 0.32)', horizon: 'rgba(255, 240, 214, 0.14)' },
+};
+window.paint = function (name) {
+    const p = PALETTES[name];
+    document.getElementById('base').style.background = `linear-gradient(180deg, ${p.top} 0%, ${p.mid} 52%, ${p.bottom} 100%)`;
+    // Soft sun-like glow, upper third
+    document.getElementById('glow').style.background = `radial-gradient(38% 30% at 62% 30%, ${p.glow} 0%, transparent 70%)`;
+    // Two drifting haze bands for depth
+    document.getElementById('haze').style.background =
+        `radial-gradient(70% 18% at 30% 58%, ${p.haze} 0%, transparent 70%), radial-gradient(60% 14% at 75% 72%, ${p.haze} 0%, transparent 70%)`;
+    // A faint horizon line of light
+    document.getElementById('horizon').style.background = `linear-gradient(180deg, transparent 60%, ${p.horizon} 64%, transparent 70%)`;
+    return Object.keys(PALETTES);
+};
+window.names = () => Object.keys(PALETTES);
+</script>
+</body>
+</html>

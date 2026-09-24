@@ -331,7 +331,7 @@ async function handleEmailSignup(e) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 email: document.getElementById('signup-email').value,
-                fields: { name: document.getElementById('signup-name').value || 'Friend', signup_source: 'homepage' },
+                fields: { name: document.getElementById('signup-name').value.trim(), signup_source: 'homepage' }, // blank name -> the email's own fallback greeting
                 groups: ['180628908682512348']
             })
         });
@@ -384,7 +384,7 @@ function initJoinForm() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     email,
-                    fields: { name: 'Friend', signup_source: 'homepage-join-section' },
+                    fields: { signup_source: 'homepage-join-section' },
                     groups: ['180628908682512348']
                 })
             });
@@ -637,7 +637,8 @@ function scheduleDemoResume(delay = 10000) {
 
 function startDemoRotation() {
     clearInterval(demoRotationTimer);
-    if (demoIsHovered) return;
+    // No auto-advancing content for visitors who asked for reduced motion; pills still work
+    if (demoIsHovered || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const vibeKeys = Object.keys(demoVibes);
     demoRotationTimer = setInterval(() => {
         if (demoIsHovered || demoIsFlipping) return;
@@ -859,33 +860,6 @@ function initParallax() {
     }, { passive: true });
 }
 
-function initRotatingLogo() {
-    const words = ["Advice", "Guides", "Blogs"];
-    const fonts = ["'Pacifico', cursive", "'Caveat', cursive", "'Permanent Marker', cursive"];
-    const colors = ["#FEC84A", "#67E8F9", "#FF6B9D"];
-    const spans = document.querySelectorAll('.rotating-logo-word');
-    if (!spans.length) return;
-    let idx = 0;
-    setInterval(() => {
-        idx = (idx + 1) % words.length;
-        spans.forEach(span => {
-            span.classList.add('out');
-            setTimeout(() => {
-                span.textContent = words[idx];
-                span.style.fontFamily = fonts[idx];
-                span.style.color = colors[idx];
-                document.title = `The Vibe Check Project | ${words[idx]}`;
-                span.classList.remove('out');
-                span.classList.add('in');
-            }, 500);
-        });
-    }, 3000);
-}
-
-function initLiveCounters() {
-    initMetricsCounters();
-}
-
 // ── UNIVERSAL ITEM FILTER ENGINE (window.initItemFilter) ──
 function initItemFilter(config) {
     if (!config || !config.itemSelector) return;
@@ -1032,64 +1006,25 @@ async function copyText(elementId, triggerElement) {
     }
 }
 
-// ── BULLETPROOF METRICS COUNTER ENGINE (window.initMetricsCounters) ──
-function initMetricsCounters(config = {}) {
-    const cardId = config.cardCounterId || 'liveCardCount';
-    const newsletterId = config.newsletterCounterId || 'liveNewsletterCount';
-    const defaultCards = config.defaultCards || 12480;
-    const defaultNewsletters = config.defaultNewsletters || 5200;
-    const timeoutMs = config.timeoutMs || 3000;
+// ── LIVE METRICS (homepage stats) ──
+// Shows real counts from VibeCounter (core-utils.js). Each stat card stays hidden until
+// the counter service returns a number; nothing is ever shown that wasn't measured.
+function initMetricsCounters() {
+    const stats = [
+        ['cards-sent', 'liveCardCount'],
+        ['newsletters-sent', 'liveNewsletterCount'],
+    ].filter(([, id]) => document.getElementById(id));
+    if (!stats.length || !window.VibeCounter) return;
 
-    const cardEl = document.getElementById(cardId);
-    const newsletterEl = document.getElementById(newsletterId);
-
-    // 1. Instant Baseline Check
-    if (cardEl) {
-        const text = (cardEl.textContent || '').trim();
-        if (!text || text === '—' || text === '-') {
-            cardEl.textContent = `${defaultCards.toLocaleString()}+`;
-        }
-    }
-    if (newsletterEl) {
-        const text = (newsletterEl.textContent || '').trim();
-        if (!text || text === '—' || text === '-') {
-            newsletterEl.textContent = `${defaultNewsletters.toLocaleString()}+`;
-        }
-    }
-
-    const endpoints = [
-        {
-            el: cardEl,
-            url: 'https://api.counterapi.dev/v1/thevibecheckproject/cards-sent/',
-            baseline: defaultCards
-        },
-        {
-            el: newsletterEl,
-            url: 'https://api.counterapi.dev/v1/thevibecheckproject/newsletters-sent/',
-            baseline: defaultNewsletters
-        }
-    ];
-
-    // 2. Asynchronous Fetch with AbortController timeout
-    endpoints.forEach(({ el, url, baseline }) => {
-        if (!el) return;
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-
-        fetch(url, { signal: controller.signal })
-            .then(res => {
-                if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-                return res.json();
-            })
-            .then(data => {
-                clearTimeout(timeoutId);
-                if (data && typeof data.count === 'number' && data.count > baseline) {
-                    el.textContent = `${data.count.toLocaleString()}+`;
-                }
-            })
-            .catch(() => {
-                // 3. Graceful Failure: baseline is preserved
-            });
+    window.VibeCounter.getMany(stats.map(([name]) => name)).then(counts => {
+        if (!counts) return;
+        stats.forEach(([name, id]) => {
+            const count = counts[name];
+            if (typeof count !== 'number' || count < 1) return;
+            document.getElementById(id).textContent = count.toLocaleString();
+            const card = document.getElementById(id + 'Card');
+            if (card) card.hidden = false;
+        });
     });
 }
 
@@ -1115,70 +1050,23 @@ function initScrollProgress() {
     }, { passive: true });
 }
 
-// ── DUAL CONCEPT THEME SYSTEM (WARM EDITORIAL vs PLAYFUL KINETIC) ──
-const THEME_CONCEPTS = {
-    editorial: {
-        titleMain: "Words that lift.",
-        titleGradient: "Moments that matter.",
-        tagBadge: "✨ Anonymous Affirmations & Vibe Checks"
-    },
-    kinetic: {
-        titleMain: "Drop Good Vibes.",
-        titleGradient: "Zero Awkwardness.",
-        tagBadge: "⚡ 100% Free · Anonymous · No Sign-Up"
-    }
-};
-
-function initThemeConcept() {
-    applyThemeConcept('editorial', false);
-}
-
-function applyThemeConcept(themeName, trackEvent = false) {
-    const theme = 'editorial';
-
-    // Apply data-design-concept to document.documentElement and body
-    document.documentElement.setAttribute('data-design-concept', theme);
-    if (document.body) {
-        document.body.setAttribute('data-design-concept', theme);
-    }
-
-    try {
-        localStorage.setItem('vibe_theme_concept', theme);
-        localStorage.setItem('vibe_design_concept', theme);
-    } catch (e) { }
-
-    // Update Hero text if present on page
-    const themeData = THEME_CONCEPTS[theme];
-    const titleMain = document.querySelector('.hero-title-main');
-    const titleGradient = document.querySelector('.hero-title-gradient');
-    const tagBadge = document.querySelector('.hero-tag-badge');
-
-    if (titleMain && titleGradient && themeData) {
-            titleMain.textContent = themeData.titleMain;
-            titleGradient.textContent = themeData.titleGradient;
-        }
-    }
-
-    if (tagBadge && themeData) {
-        tagBadge.textContent = themeData.tagBadge;
-    }
-
-    // Telemetry tracking
-    if (trackEvent && window.VibeTelemetry) {
-        window.VibeTelemetry.track('theme_switched', { theme: theme });
-    }
+// ── DAILY SPARK DOCK TILT (desktop pointer only) ──
+function initDailySparkTilt() {
+    const dock = document.querySelector('.hero-affirmation-dock');
+    if (!dock || !window.matchMedia('(pointer: fine)').matches) return;
+    dock.addEventListener('mousemove', (e) => {
+        const r = dock.getBoundingClientRect();
+        const rotateX = (-(e.clientY - r.top - r.height / 2) / r.height) * 12;
+        const rotateY = ((e.clientX - r.left - r.width / 2) / r.width) * 12;
+        dock.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-4px)`;
+    });
+    dock.addEventListener('mouseleave', () => {
+        dock.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+    });
 }
 
 // ── INITIALIZATION ───────────────────────────────────
 function initApp() {
-    // Core Navigation (scroll tracking; mobile toggle managed centrally by core-utils.js)
-    const nav = document.getElementById('nav');
-    if (nav) {
-        window.addEventListener('scroll', () => {
-            nav.classList.toggle('scrolled', window.pageYOffset > 50);
-        }, { passive: true });
-    }
-
     // Scroll reveal for .reveal / .reveal-left / .reveal-right elements
     const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
     if (revealEls.length && 'IntersectionObserver' in window) {
@@ -1209,19 +1097,18 @@ function initApp() {
     }
 
     // Critical Features
-    initThemeConcept();
     initScrollProgress();
     initDailyAffirmation();
     initCardDemo();
+    initDailySparkTilt();
+    document.querySelector('.card-demo-wrapper')?.classList.add('active');
     initJoinForm();
     initFaqAccordion();
     initMetricsCounters();
 
     // Non-critical features deferred to 3s after load for Lighthouse performance
     setTimeout(() => {
-        initRotatingLogo();
         initParallax();
-        initLiveCounters();
         createEmailModal();
     }, 3000);
 
@@ -1248,6 +1135,4 @@ window.initCardDemo = initCardDemo;
 window.initItemFilter = initItemFilter;
 window.copyText = copyText;
 window.initMetricsCounters = initMetricsCounters;
-window.applyThemeConcept = applyThemeConcept;
-window.initThemeConcept = initThemeConcept;
 

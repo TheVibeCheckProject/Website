@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Welcome card preview</title>
+<style>
+    body { margin: 0; font-family: system-ui, sans-serif; background: #1A1625; color: #EDE8F5;
+           display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); min-height: 100vh; }
+    section { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px; }
+    img { width: 240px; height: auto; } /* the size it will show at in the email */
+    p { margin: 0; font-size: 15px; } small { opacity: 0.6; }
+</style>
+</head>
+<body>
+    <section style="background:#ffffff;color:#222"><img src="../../../assets/email/welcome-card.gif" alt=""><p>Light email</p></section>
+    <section><img src="../../../assets/email/welcome-card.gif" alt=""><p>Dark email (#1A1625)</p></section>
+</body>
+</html>

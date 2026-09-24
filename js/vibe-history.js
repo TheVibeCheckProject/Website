@@ -1,7 +1,7 @@
 /**
  * THE VIBE CHECK PROJECT — Card History & Persistence Engine
  * Manages client-side storage of sent affirmation cards with auto-pruning,
- * read-receipt verification via CounterAPI, and telemetry integration.
+ * read-receipt verification via VibeCounter (core-utils.js), and telemetry integration.
  * Zero external accounts or databases required — strictly client-side.
  */
 
@@ -10,7 +10,7 @@
 
     const STORAGE_KEY = 'vibe_sent_cards_v1';
     const MAX_CARDS = 50;
-    const COUNTER_NAMESPACE = 'thevibecheckproject-opens';
+    const OPEN_COUNTER_PREFIX = 'open:'; // read receipts live in VibeCounter (core-utils.js)
 
     // Theme metadata mapping for badges, styling, and categorization
     const THEME_METAS = {
@@ -228,15 +228,8 @@
          * Safe fire-and-forget beacon.
          */
         beaconOpen(id) {
-            if (!id) return;
-            try {
-                const endpoint = `https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${encodeURIComponent(id)}/up`;
-                if (navigator.sendBeacon) {
-                    navigator.sendBeacon(endpoint);
-                } else {
-                    fetch(endpoint, { mode: 'no-cors' }).catch(() => { });
-                }
-            } catch (e) { }
+            if (!id || !window.VibeCounter) return;
+            window.VibeCounter.hit(OPEN_COUNTER_PREFIX + id);
         },
 
         /**
@@ -245,29 +238,21 @@
          */
         async syncReadReceipts(onCardUpdated) {
             const cards = StorageSafe.read();
-            const unopened = cards.filter(c => !c.opened && c.id);
-            if (unopened.length === 0) return false;
+            const unopened = cards.filter(c => !c.opened && c.id).slice(0, 25);
+            if (unopened.length === 0 || !window.VibeCounter) return false;
+
+            // One batched request; resolves null if the counter service is disabled/unreachable
+            const counts = await window.VibeCounter.getMany(unopened.map(c => OPEN_COUNTER_PREFIX + c.id));
+            if (!counts) return false;
 
             let updatedAny = false;
-            const checkPromises = unopened.slice(0, 10).map(async (card) => {
-                try {
-                    const endpoint = `https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${encodeURIComponent(card.id)}/`;
-                    const res = await fetch(endpoint, { cache: 'no-store' });
-                    if (!res.ok) return;
-                    const data = await res.json();
-                    if (data && typeof data.count === 'number' && data.count > 0) {
-                        card.opened = true;
-                        updatedAny = true;
-                        if (typeof onCardUpdated === 'function') {
-                            onCardUpdated(card);
-                        }
-                    }
-                } catch (e) {
-                    // Fail silently to never impact user flow
+            unopened.forEach(card => {
+                if ((counts[window.VibeCounter._name(OPEN_COUNTER_PREFIX + card.id)] || 0) > 0) {
+                    card.opened = true;
+                    updatedAny = true;
+                    if (typeof onCardUpdated === 'function') onCardUpdated(card);
                 }
             });
-
-            await Promise.allSettled(checkPromises);
 
             if (updatedAny) {
                 StorageSafe.write(cards);

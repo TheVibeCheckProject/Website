@@ -8,7 +8,7 @@ const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
 // ── Toast Notification System ──
 let toastTimer = null;
-function showToast(message, icon) {
+function showToast(message, icon, durationMs = 3200) {
     let toast = document.getElementById('vibeToast');
     if (!toast) {
         toast = document.createElement('div');
@@ -21,7 +21,7 @@ function showToast(message, icon) {
     toast.querySelector('.toast-msg').textContent = message;
     toast.classList.add('visible');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('visible'), 3200);
+    toastTimer = setTimeout(() => toast.classList.remove('visible'), durationMs);
 }
 
 // ── Sound Engine (Web Audio API synthesized sounds) ──
@@ -152,34 +152,123 @@ function burstParticles(count) {
     }
 }
 
+// ── Counters & read receipts ──
+// Backed by our own Cloudflare Worker (workers/counter.js). counterapi.dev v1,
+// which this used to call, was shut down (HTTP 410). Leave the URL empty to disable all
+// counter traffic; pages then show their static fallback numbers.
+const VIBE_COUNTER_URL = 'https://vibe-counter.caseagent72401.workers.dev';
+
+const VibeCounter = {
+    enabled: !!VIBE_COUNTER_URL,
+    _name(name) {
+        return String(name).toLowerCase().replace(/[^a-z0-9_:-]/g, '').slice(0, 64);
+    },
+    /** Fire-and-forget increment. */
+    hit(name) {
+        if (!this.enabled) return;
+        try {
+            fetch(`${VIBE_COUNTER_URL}/hit/${this._name(name)}`, { method: 'POST', keepalive: true, mode: 'cors' }).catch(() => { });
+        } catch (e) { }
+    },
+    /** Resolves to { name: count } for the requested names, or null when unavailable. */
+    async getMany(names, timeoutMs = 4000) {
+        if (!this.enabled || !names.length) return null;
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
+        try {
+            const qs = names.map(n => this._name(n)).join(',');
+            const res = await fetch(`${VIBE_COUNTER_URL}/get?names=${encodeURIComponent(qs)}`, { signal: controller.signal, cache: 'no-store' });
+            if (!res.ok) return null;
+            const data = await res.json();
+            return data && typeof data.counts === 'object' ? data.counts : null;
+        } catch (e) {
+            return null;
+        } finally {
+            clearTimeout(timer);
+        }
+    }
+};
+
 // ── Premium Unlock (Stripe return) ──
 // Runs on every page via core-utils so buyers are unlocked no matter which
-// page Stripe redirects them to after payment (?premium=1).
+// page Stripe redirects them to after payment (?premium=1&session_id=cs_...).
+//
+// With PREMIUM_VERIFY_URL set (workers/premium-verify.js), the unlock only happens
+// after Stripe confirms the session was paid. While it is empty, ?premium=1 alone unlocks
+// (the original behaviour), so buyers are never locked out before the worker is deployed.
+const PREMIUM_VERIFY_URL = 'https://vibe-premium.caseagent72401.workers.dev';
+
 (function handlePremiumReturn() {
+    let params;
+    try { params = new URLSearchParams(window.location.search); } catch (e) { return; }
+    if (params.get('premium') !== '1') return;
+    const sessionId = params.get('session_id') || '';
+    // Strip ?premium/&session_id once we have a definite answer (kept on network errors so a
+    // refresh retries the check)
+    const cleanUrl = () => {
+        try { window.history.replaceState({}, document.title, window.location.pathname); } catch (e) { }
+    };
+
+    const whenReady = (fn) => (document.body ? fn() : document.addEventListener('DOMContentLoaded', fn));
+    const failed = (msg) => whenReady(() => showToast(msg, '💌', 9000));
+
+    const unlock = (reloadAfter) => {
+        cleanUrl();
+        try { localStorage.setItem('premium_unlocked', '1'); } catch (e) {
+            failed("Your browser blocked saving Premium. Try again outside private browsing.");
+            return;
+        }
+        if (reloadAfter) {
+            // Pages read the premium flag at load, so reload once to apply it
+            try { sessionStorage.setItem('premium_just_unlocked', '1'); } catch (e) { }
+            window.location.reload();
+            return;
+        }
+        whenReady(() => showToast('Premium unlocked. Thank you for supporting the project!', '✨'));
+    };
+
+    if (!PREMIUM_VERIFY_URL) {
+        unlock(false);
+        return;
+    }
+    const help = 'If you were charged, email WeCare@TheVibeCheckProject.com and we’ll fix it right away.';
+    if (!sessionId) {
+        cleanUrl();
+        failed(`We couldn’t confirm that purchase. ${help}`);
+        return;
+    }
+    fetch(`${PREMIUM_VERIFY_URL}/verify?session_id=${encodeURIComponent(sessionId)}`, { cache: 'no-store' })
+        .then(res => res.json())
+        .then(data => {
+            if (data && data.valid) return unlock(true);
+            cleanUrl();
+            failed(`We couldn’t confirm that purchase. ${help}`);
+        })
+        .catch(() => failed(`We couldn’t reach our payment check. Refresh this page to try again. ${help}`));
+})();
+
+// Confirmation after the verified-unlock reload
+(function () {
     try {
-        const params = new URLSearchParams(window.location.search);
-        if (params.get('premium') !== '1') return;
-        localStorage.setItem('premium_unlocked', '1');
-        window.history.replaceState({}, document.title, window.location.pathname);
-        const badge = document.createElement('div');
-        badge.textContent = '✦ Premium Unlocked';
-        badge.style.cssText = 'position:fixed;top:12px;right:12px;background:#6c63ff;color:white;padding:6px 12px;border-radius:20px;font-size:12px;z-index:9999;font-weight:bold;box-shadow:0 4px 12px rgba(108,99,255,0.4);';
-        const show = () => document.body.appendChild(badge);
-        if (document.body) show();
-        else document.addEventListener('DOMContentLoaded', show);
-        setTimeout(() => {
-            badge.style.transition = 'opacity 0.5s';
-            badge.style.opacity = '0';
-            setTimeout(() => badge.remove(), 500);
-        }, 4000);
-    } catch (e) { /* unlock is best-effort */ }
+        if (sessionStorage.getItem('premium_just_unlocked') !== '1') return;
+        sessionStorage.removeItem('premium_just_unlocked');
+        const show = () => showToast('Premium unlocked. Thank you for supporting the project!', '✨');
+        if (document.body) show(); else document.addEventListener('DOMContentLoaded', show);
+    } catch (e) { }
 })();
 
 // ── Mobile nav toggle with accessible focus trap ──
 (function initMobileNav() {
     const btn = document.getElementById('nav-hamburger');
     const nav = document.getElementById('nav');
-    if (!btn || !nav) return;
+    if (!nav) return;
+
+    // Solid header once the page scrolls
+    const syncScrolled = () => nav.classList.toggle('scrolled', window.pageYOffset > 50);
+    window.addEventListener('scroll', syncScrolled, { passive: true });
+    syncScrolled();
+
+    if (!btn) return;
 
     let previouslyFocused = null;
 
@@ -247,38 +336,6 @@ function burstParticles(count) {
     // Never restore the page with the menu stuck open (back/forward cache).
     window.addEventListener('pagehide', close);
     window.addEventListener('pageshow', close);
-})();
-
-// ========================================================
-// ── PERMANENT WARM EDITORIAL THEME CONTROLLER ──
-// ========================================================
-(function initGlobalThemeController() {
-    function lockEditorialTheme() {
-        document.documentElement.setAttribute('data-design-concept', 'editorial');
-        if (document.body) {
-            document.body.setAttribute('data-design-concept', 'editorial');
-        }
-        try {
-            localStorage.setItem('vibe_theme_concept', 'editorial');
-            localStorage.setItem('vibe_design_concept', 'editorial');
-        } catch (e) { }
-
-        const titleMain = document.querySelector('.hero-title-main');
-        const titleGradient = document.querySelector('.hero-title-gradient');
-        const tagBadge = document.querySelector('.hero-tag-badge');
-        if (titleMain && titleGradient) {
-            titleMain.textContent = "Words that lift.";
-            titleGradient.textContent = "Moments that matter.";
-            if (tagBadge) tagBadge.textContent = "✨ Anonymous Affirmations & Vibe Checks";
-        }
-    }
-
-    lockEditorialTheme();
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', lockEditorialTheme);
-    }
-    window.applyThemeConcept = lockEditorialTheme;
-    window.initThemeConcept = function () { };
 })();
 
 // ========================================================
@@ -460,4 +517,5 @@ window.burstParticles = burstParticles;
 window.isMobile = isMobile;
 window.VibeTelemetry = VibeTelemetry;
 window.VibeAB = VibeAB;
+window.VibeCounter = VibeCounter;
 

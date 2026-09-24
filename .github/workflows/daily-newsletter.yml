@@ -27,16 +27,10 @@ jobs:
           MAILERLITE_API_KEY: ${{ secrets.MAILERLITE_API_KEY }}
           MAILERLITE_GROUP_ID: ${{ secrets.MAILERLITE_GROUP_ID }}
           DATE_OVERRIDE: ${{ github.event.inputs.date_override }}
-        run: node scripts/send-newsletter.js
+          VIBE_COUNTER_URL: ${{ secrets.VIBE_COUNTER_URL }}
+        run: node scripts/newsletter/send-newsletter.js
 
-      - name: Notify on failure
+      # GitHub emails the repo owner when a scheduled run fails; this adds a visible annotation.
+      - name: Report failure
         if: failure()
-        env:
-          MAILERLITE_API_KEY: ${{ secrets.MAILERLITE_API_KEY }}
-        run: |
-          echo "🚨 Newsletter send FAILED for $(date +'%Y-%m-%d')"
-          curl -s -X POST "https://connect.mailerlite.com/api/subscribers" \
-            -H "Authorization: Bearer $MAILERLITE_API_KEY" \
-            -H "Content-Type: application/json" \
-            -d '{"email":"hello@thevibecheckproject.com","fields":{"name":"ALERT","last_failure":"'"$(date +'%Y-%m-%d %H:%M')"'"}}'
-          echo "⚠️ Failure logged — check GitHub Actions for details"
+        run: echo "::error title=Daily newsletter failed::No email was sent for $(date +'%Y-%m-%d'). Check the log above (missing batch.json entry or MailerLite error)."

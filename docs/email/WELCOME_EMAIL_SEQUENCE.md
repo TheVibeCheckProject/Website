@@ -6,7 +6,7 @@ Sign-ups reach MailerLite through the proxy worker `https://vibe-check-proxy.cas
 | Step | Wait | File | Subject | Preview text |
 |---|---|---|---|---|
 | Email 1 | right away | `welcome-email.html` | Welcome — we made you something ✨ | A little card, just for you. |
-| Email 2 | 2 days | `welcome-email-2.html` | Someone on your mind? | Three easy things you could send them today. |
+| Email 2 | 1 day | `welcome-email-2.html` | Someone on your mind? | Three easy things you could send them today. |
 | Email 3 | 3 days | `welcome-email-3.html` | What Premium is (and isn't) | The free cards stay free. Here's what $4.99 adds. |
 
 Each file is pasted whole into MailerLite's code editor (Content → Custom HTML code).

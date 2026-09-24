@@ -23,8 +23,10 @@ const ROOT = path.join(__dirname, '..', '..');
 const PARTIALS = path.join(ROOT, 'templates', 'partials');
 const SKIP_DIRS = new Set(['node_modules', '.git', 'docs', 'scratch', 'assets', 'css', 'js', 'data', 'scripts', 'workers', 'tests', 'partials', 'newsletter-content', '.github']);
 
-const navPartial = fs.readFileSync(path.join(PARTIALS, 'nav.html'), 'utf8').trim();
-const footerPartial = fs.readFileSync(path.join(PARTIALS, 'footer.html'), 'utf8').trim();
+// Partials may be checked out with CRLF; pages get their own line ending applied below
+const readPartial = (name) => fs.readFileSync(path.join(PARTIALS, name), 'utf8').replace(/\r\n/g, '\n').trim();
+const navPartial = readPartial('nav.html');
+const footerPartial = readPartial('footer.html');
 
 const NAV_START = '<!-- site-nav:start (generated from templates/partials/nav.html — edit there, then npm run build:layout) -->';
 const NAV_END = '<!-- site-nav:end -->';

@@ -9,7 +9,7 @@ function storageSet(key, val) {
 // ── Global State ──
 const isPremium = storageGet('premium_unlocked') === '1';
 
-// Payload limits — keep in sync with docs/SYSTEM_WIRING_SPEC.md §3.1
+// Payload limits (also enforced by view-card.html; see docs/README.md "Card links")
 const LIMITS = { name: 50, affirmation: 280, note: 500 };
 
 let selectedAffirmation = '';
@@ -169,7 +169,7 @@ function renderOccasionChips() {
     });
 }
 
-// ?preset= aliases (docs/SYSTEM_WIRING_SPEC.md "Preset Resolution & Alias Mapping")
+// ?preset= aliases
 const OCCASION_ALIASES = {
     hard_day: 'tough_day', bad_day: 'tough_day', breakup: 'tough_day',
     hype: 'proud', celebrate: 'proud',

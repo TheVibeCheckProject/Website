@@ -1,52 +1,42 @@
-# The Vibe Check Project — Documentation Hub
+# How the site works
 
-Welcome to the central documentation index for **The Vibe Check Project** (`thevibecheckproject.com`).
+- [scripts.md](scripts.md): every build script, newsletter job and Cloudflare Worker
+- [email/](email/): welcome sequence and daily newsletter templates (copies of what lives in MailerLite)
+- [marketing/](marketing/): Pinterest strategy, quickstart and pin tracker
 
----
+## Pages
 
-## 📐 Technical Architecture & Standards
-
-| Document | Purpose |
+| Page | Role |
 | :--- | :--- |
-| [**`SYSTEM_WIRING_SPEC.md`**](./SYSTEM_WIRING_SPEC.md) | Canonical technical standard for URL contracts (`?data=`, `?preset=`, `?note=`, `?viralReply=`), serialization pipelines, and client storage. |
-| [**`DESIGN_SYSTEM_TOKENS.md`**](./DESIGN_SYSTEM_TOKENS.md) | Master design tokens: Color palettes, gradients, glassmorphism layers, typography, and responsive breakpoint rules. |
-| [**`AGENT_EXECUTION_RUNBOOK.md`**](./AGENT_EXECUTION_RUNBOOK.md) | Phased engineering runbook, strict approval gates, and static compilation invariants. |
-| [**`TESTING_AND_QA_CHECKLIST.md`**](./TESTING_AND_QA_CHECKLIST.md) | End-to-end QA checklist: 5 canonical viewports (390px to 1920px), Journey Protocols (A, B, C), and headless Edge test commands. |
+| `index.html` | Homepage: Daily Spark, interactive demo card, newsletter signup |
+| `send-card.html` + `js/send-card-logic.js` | Card studio: 3 steps (affirmation → look & sound → names, note, send) |
+| `view-card.html` | What the recipient opens (no nav, not indexed) |
+| `my-cards.html` + `js/vibe-history.js` | Sender's history, stored in the browser only (not indexed) |
+| `situations.html`, `faq.html`, `about.html`, `contact.html`, legal pages | Static pages |
+| `blog/` | Articles, listicles, message pages and category hubs (see scripts.md for which are generated) |
 
----
+Shared on every page: `css/styles.css`, `js/core-utils.js` (mobile nav, toasts, sound engine, Clarity telemetry, counters, Premium unlock). `js/script.js` powers the homepage, blog index, situations and FAQ; `js/article.js` the long-form articles.
 
-## 💎 Product & Monetization
+## Card links
 
-| Document | Purpose |
-| :--- | :--- |
-| [**`MONETIZATION_WORKFLOW.md`**](./MONETIZATION_WORKFLOW.md) | Premium upgrade flow ($4.99 1-time unlock), Stripe checkout webhook, and 30-day reminder MailerLite proxy. |
-| [**`design-improvements/`**](./design-improvements/) | Architectural audits and specifications for each primary surface: |
-| ├── [01-blog-ecosystem.md](./design-improvements/01-blog-ecosystem.md) | Blog feed, category hubs, and SMS chat bubble templates. |
-| ├── [02-faq-page.md](./design-improvements/02-faq-page.md) | Two-column desktop layout, sticky category rail, and instant keyword filter. |
-| ├── [03-card-creator-studio.md](./design-improvements/03-card-creator-studio.md) | Widescreen studio, sticky preview dock, and 3D card flip note preview. |
-| ├── [04-homepage.md](./design-improvements/04-homepage.md) | Dual-theme kinetic hero, real-time counters, and situation discovery cards. |
-| ├── [05-recipient-and-dashboard.md](./design-improvements/05-recipient-and-dashboard.md) | Unboxing experience, reciprocal viral reply bridge, and "My Vibes" dashboard. |
-| └── [06-situations-directory.md](./design-improvements/06-situations-directory.md) | 4-column responsive grid with sticky mood navigation. |
+A card is not stored anywhere. `send-card-logic.js` turns it into a link:
 
----
+```
+JSON { id, recipientName, senderName, affirmation, personalMessage, sound, themeGroup, background, createdAt }
+  → encodeURIComponent → btoa → base64url  →  https://thevibecheckproject.com/view-card.html?data=…
+```
 
-## 🚀 Growth & Marketing Operations
+Limits: names 50, affirmation 280, note 500 characters. `view-card.html` decodes it, trims every field, and only accepts backgrounds from `assets/backgrounds/`. Links must keep the `view-card.html` path: old cards and the preview worker depend on it.
 
-| Document | Purpose |
-| :--- | :--- |
-| [**`PINTEREST_QUICKSTART.md`**](./PINTEREST_QUICKSTART.md) | Quickstart guide for generating pins and running automated posting scripts. |
-| [**`pinterest-strategy.md`**](./pinterest-strategy.md) | Strategic Pinterest board taxonomy, keyword optimization, and publishing schedules. |
-| [**`pin-tracker.md`**](./pin-tracker.md) | Log of generated and scheduled Pinterest pins. |
-| [**`pinterest-pin-generator.html`**](./pinterest-pin-generator.html) | Internal browser-based visual pin creation canvas tool. |
+`?message=`, `?preset=` (birthday, tough_day, proud, gratitude, calm, healing + aliases), `?recipient=`, `?note=` and `?viralReply=1` pre-fill the studio.
 
----
+## Premium
 
-## 💌 Email Sequences & Content Templates
+$4.99 via a Stripe Payment Link. It unlocks writing your own affirmation, the Calm/Celebrate/Love/Healing collections, 14 premium backgrounds (6 animated) and 5 extra sounds, stored as `premium_unlocked` in localStorage. Until `workers/premium-verify.js` is deployed, returning with `?premium=1` unlocks without a payment check.
 
-| Document | Purpose |
-| :--- | :--- |
-| [**`templates/WELCOME_EMAIL_SEQUENCE.md`**](./templates/WELCOME_EMAIL_SEQUENCE.md) | Strategy and timing for 3-part subscriber onboarding email sequence. |
-| [**`templates/welcome-email-1.html`**](./templates/welcome-email-1.html) | Welcome Email 1: The First Vibe Check + Wallpaper Pack delivery. |
-| [**`templates/welcome-email-2.html`**](./templates/welcome-email-2.html) | Welcome Email 2: How to send a 30-second vibe check that matters. |
-| [**`templates/welcome-email-3.html`**](./templates/welcome-email-3.html) | Welcome Email 3: Free monthly themes & community highlights. |
-| [**`templates/DAILY_AFFIRMATION_TEMPLATE.md`**](./templates/DAILY_AFFIRMATION_TEMPLATE.md) | Markdown structure and formatting for daily morning affirmation newsletters. |
+## Editing rules
+
+- Header/footer: edit `templates/partials/`, then `npm run build`. Never edit between the `site-nav` / `site-footer` markers.
+- CSS/JS: never hand-edit `?v=`; `npm run build` sets content hashes.
+- Listicles and message pages: edit `data/*.json`, not the generated HTML.
+- Don't invent stats, testimonials or claims. Homepage counts only appear when the counter service returns real numbers.

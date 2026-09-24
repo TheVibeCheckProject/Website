@@ -1050,57 +1050,19 @@ function initScrollProgress() {
     }, { passive: true });
 }
 
-// ── DUAL CONCEPT THEME SYSTEM (WARM EDITORIAL vs PLAYFUL KINETIC) ──
-const THEME_CONCEPTS = {
-    editorial: {
-        titleMain: "Words that lift.",
-        titleGradient: "Moments that matter.",
-        tagBadge: "✨ Anonymous Affirmations & Vibe Checks"
-    },
-    kinetic: {
-        titleMain: "Drop Good Vibes.",
-        titleGradient: "Zero Awkwardness.",
-        tagBadge: "⚡ 100% Free · Anonymous · No Sign-Up"
-    }
-};
-
-function initThemeConcept() {
-    applyThemeConcept('editorial', false);
-}
-
-function applyThemeConcept(themeName, trackEvent = false) {
-    const theme = 'editorial';
-
-    // Apply data-design-concept to document.documentElement and body
-    document.documentElement.setAttribute('data-design-concept', theme);
-    if (document.body) {
-        document.body.setAttribute('data-design-concept', theme);
-    }
-
-    try {
-        localStorage.setItem('vibe_theme_concept', theme);
-        localStorage.setItem('vibe_design_concept', theme);
-    } catch (e) { }
-
-    // Update Hero text if present on page
-    const themeData = THEME_CONCEPTS[theme];
-    const titleMain = document.querySelector('.hero-title-main');
-    const titleGradient = document.querySelector('.hero-title-gradient');
-    const tagBadge = document.querySelector('.hero-tag-badge');
-
-    if (titleMain && titleGradient && themeData) {
-        titleMain.textContent = themeData.titleMain;
-        titleGradient.textContent = themeData.titleGradient;
-    }
-
-    if (tagBadge && themeData) {
-        tagBadge.textContent = themeData.tagBadge;
-    }
-
-    // Telemetry tracking
-    if (trackEvent && window.VibeTelemetry) {
-        window.VibeTelemetry.track('theme_switched', { theme: theme });
-    }
+// ── DAILY SPARK DOCK TILT (desktop pointer only) ──
+function initDailySparkTilt() {
+    const dock = document.querySelector('.hero-affirmation-dock');
+    if (!dock || !window.matchMedia('(pointer: fine)').matches) return;
+    dock.addEventListener('mousemove', (e) => {
+        const r = dock.getBoundingClientRect();
+        const rotateX = (-(e.clientY - r.top - r.height / 2) / r.height) * 12;
+        const rotateY = ((e.clientX - r.left - r.width / 2) / r.width) * 12;
+        dock.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-4px)`;
+    });
+    dock.addEventListener('mouseleave', () => {
+        dock.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+    });
 }
 
 // ── INITIALIZATION ───────────────────────────────────
@@ -1135,10 +1097,11 @@ function initApp() {
     }
 
     // Critical Features
-    initThemeConcept();
     initScrollProgress();
     initDailyAffirmation();
     initCardDemo();
+    initDailySparkTilt();
+    document.querySelector('.card-demo-wrapper')?.classList.add('active');
     initJoinForm();
     initFaqAccordion();
     initMetricsCounters();
@@ -1172,6 +1135,4 @@ window.initCardDemo = initCardDemo;
 window.initItemFilter = initItemFilter;
 window.copyText = copyText;
 window.initMetricsCounters = initMetricsCounters;
-window.applyThemeConcept = applyThemeConcept;
-window.initThemeConcept = initThemeConcept;
 

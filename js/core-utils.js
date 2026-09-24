@@ -339,38 +339,6 @@ const PREMIUM_VERIFY_URL = '';
 })();
 
 // ========================================================
-// ── PERMANENT WARM EDITORIAL THEME CONTROLLER ──
-// ========================================================
-(function initGlobalThemeController() {
-    function lockEditorialTheme() {
-        document.documentElement.setAttribute('data-design-concept', 'editorial');
-        if (document.body) {
-            document.body.setAttribute('data-design-concept', 'editorial');
-        }
-        try {
-            localStorage.setItem('vibe_theme_concept', 'editorial');
-            localStorage.setItem('vibe_design_concept', 'editorial');
-        } catch (e) { }
-
-        const titleMain = document.querySelector('.hero-title-main');
-        const titleGradient = document.querySelector('.hero-title-gradient');
-        const tagBadge = document.querySelector('.hero-tag-badge');
-        if (titleMain && titleGradient) {
-            titleMain.textContent = "Words that lift.";
-            titleGradient.textContent = "Moments that matter.";
-            if (tagBadge) tagBadge.textContent = "✨ Anonymous Affirmations & Vibe Checks";
-        }
-    }
-
-    lockEditorialTheme();
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', lockEditorialTheme);
-    }
-    window.applyThemeConcept = lockEditorialTheme;
-    window.initThemeConcept = function () { };
-})();
-
-// ========================================================
 // ── APEX TELEMETRY & EXPERIMENTATION ENGINE (VibeTelemetry) ──
 // ========================================================
 const VibeTelemetry = (function () {

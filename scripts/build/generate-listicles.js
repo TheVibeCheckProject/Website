@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
-const TEMPLATE_FILE = path.join(__dirname, '../templates/message-page.html');
-const DATA_FILE = path.join(__dirname, '../data/listicles.json');
-const BLOG_DIR = path.join(__dirname, '../blog');
+const TEMPLATE_FILE = path.join(__dirname, '../../templates/message-page.html');
+const DATA_FILE = path.join(__dirname, '../../data/listicles.json');
+const BLOG_DIR = path.join(__dirname, '../../blog');
 
 const template = fs.readFileSync(TEMPLATE_FILE, 'utf-8');
 const { listicles } = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));

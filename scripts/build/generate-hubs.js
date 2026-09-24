@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
 
-const BLOG_DIR = path.join(__dirname, '../blog');
+const BLOG_DIR = path.join(__dirname, '../../blog');
 const INDEX_HTML = path.join(BLOG_DIR, 'index.html');
 
 const sourceHtml = fs.readFileSync(INDEX_HTML, 'utf-8');

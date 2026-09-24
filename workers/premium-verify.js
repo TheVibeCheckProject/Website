@@ -19,7 +19,7 @@
  *        STRIPE_SECRET_KEY      (secret)   the restricted key from step 1
  *        STRIPE_PAYMENT_LINK_ID (optional) plink_... of the Premium link, so sessions from
  *                                          other products can't unlock Premium
- *      Optional: bind the "vibe-counter" D1 database as DB (see vibe-counter-worker.js) to cap
+ *      Optional: bind the "vibe-counter" D1 database as DB (see counter.js) to cap
  *      how many browsers one purchase can unlock (MAX_DEVICES below).
  *   5. Put the worker URL in PREMIUM_VERIFY_URL in js/core-utils.js, then `npm run build:assets`.
  *      Until then the site keeps the old unverified behaviour, so real buyers are never locked out.

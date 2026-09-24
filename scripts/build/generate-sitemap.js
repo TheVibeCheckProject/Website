@@ -3,7 +3,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const BASE_URL = 'https://thevibecheckproject.com';
-const WEBSITE_DIR = path.join(__dirname, '..');
+const WEBSITE_DIR = path.join(__dirname, '..', '..');
 const SITEMAP_PATH = path.join(WEBSITE_DIR, 'sitemap.xml');
 
 // Pages to exclude from sitemap (e.g. non-content files and noindexed pages)
@@ -30,6 +30,8 @@ const EXCLUDE_DIRS = [
     'js',
     'docs',
     'newsletter-content',
+    'workers',
+    'tests',
     'scratch',
     'data'
 ];

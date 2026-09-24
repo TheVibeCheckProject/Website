@@ -9,13 +9,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run build:hubs && npm run build:listicles && npm run build:layout && npm run build:assets && npm run build:sitemap",
-    "build:hubs": "node scripts/generate-hubs.js",
-    "build:listicles": "node scripts/generate-listicles.js",
-    "build:layout": "node scripts/sync-layout.js",
-    "build:assets": "node scripts/version-assets.js",
-    "build:sitemap": "node scripts/generate-sitemap.js",
-    "generate-pins": "node scripts/generate-pins.js",
-    "pin-post": "python scripts/pinterest_poster.py"
+    "build:hubs": "node scripts/build/generate-hubs.js",
+    "build:listicles": "node scripts/build/generate-listicles.js",
+    "build:layout": "node scripts/build/sync-layout.js",
+    "build:assets": "node scripts/build/version-assets.js",
+    "build:sitemap": "node scripts/build/generate-sitemap.js",
+    "generate-pins": "node scripts/marketing/generate-pins.js",
+    "pin-post": "python scripts/marketing/pinterest_poster.py"
   },
   "repository": {
     "type": "git",

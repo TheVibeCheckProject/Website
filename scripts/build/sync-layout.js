@@ -19,9 +19,9 @@
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = path.join(__dirname, '..');
+const ROOT = path.join(__dirname, '..', '..');
 const PARTIALS = path.join(ROOT, 'templates', 'partials');
-const SKIP_DIRS = new Set(['node_modules', '.git', 'docs', 'scratch', 'assets', 'css', 'js', 'data', 'scripts', 'partials', 'newsletter-content', '.github']);
+const SKIP_DIRS = new Set(['node_modules', '.git', 'docs', 'scratch', 'assets', 'css', 'js', 'data', 'scripts', 'workers', 'tests', 'partials', 'newsletter-content', '.github']);
 
 const navPartial = fs.readFileSync(path.join(PARTIALS, 'nav.html'), 'utf8').trim();
 const footerPartial = fs.readFileSync(path.join(PARTIALS, 'footer.html'), 'utf8').trim();

@@ -77,7 +77,7 @@ async function main() {
   const today = process.env.DATE_OVERRIDE || getTodayCentral();
   console.log(`📅 Date: ${today}`);
 
-  const batchPath = path.join(__dirname, '..', 'newsletter-content', 'batch.json');
+  const batchPath = path.join(__dirname, '..', '..', 'newsletter-content', 'batch.json');
   if (!fs.existsSync(batchPath)) {
     console.error('batch.json not found');
     process.exit(1);
@@ -129,7 +129,7 @@ async function main() {
   }));
   console.log(`🚀 Newsletter sent for ${today}: "${email.subject}"`);
 
-  // Increment newsletter send counter (scripts/vibe-counter-worker.js); skipped when not configured
+  // Increment newsletter send counter (workers/counter.js); skipped when not configured
   if (process.env.VIBE_COUNTER_URL) {
     await fetch(`${process.env.VIBE_COUNTER_URL.replace(/\/$/, '')}/hit/newsletters-sent`, { method: 'POST' }).catch(() => {});
   }

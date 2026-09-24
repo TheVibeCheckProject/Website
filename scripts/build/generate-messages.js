@@ -8,9 +8,9 @@
 const fs = require('fs');
 const path = require('path');
 
-const DATA_FILE = path.join(__dirname, '../data/messages.json');
-const TEMPLATE_FILE = path.join(__dirname, '../templates/message-page.html');
-const BLOG_DIR = path.join(__dirname, '../blog');
+const DATA_FILE = path.join(__dirname, '../../data/messages.json');
+const TEMPLATE_FILE = path.join(__dirname, '../../templates/message-page.html');
+const BLOG_DIR = path.join(__dirname, '../../blog');
 
 const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
 const template = fs.readFileSync(TEMPLATE_FILE, 'utf-8');

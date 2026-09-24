@@ -3,9 +3,9 @@ const fs = require('fs');
 const path = require('path');
 
 async function generatePins() {
-    const messagesPath = path.join(__dirname, '../data/messages.json');
-    const generatorPath = 'file://' + path.join(__dirname, '../docs/pinterest-pin-generator.html');
-    const outputDir = path.join(__dirname, '../assets/pinterest-pins');
+    const messagesPath = path.join(__dirname, '../../data/messages.json');
+    const generatorPath = 'file://' + path.join(__dirname, 'pin-generator.html');
+    const outputDir = path.join(__dirname, '../../assets/pinterest-pins');
 
     if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true });

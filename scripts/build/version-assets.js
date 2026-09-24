@@ -12,8 +12,8 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-const ROOT = path.join(__dirname, '..');
-const SKIP_DIRS = new Set(['node_modules', '.git', 'docs', 'scratch', 'assets', 'css', 'js', 'data', 'scripts', 'newsletter-content', '.github']);
+const ROOT = path.join(__dirname, '..', '..');
+const SKIP_DIRS = new Set(['node_modules', '.git', 'docs', 'scratch', 'assets', 'css', 'js', 'data', 'scripts', 'workers', 'tests', 'newsletter-content', '.github']);
 
 const hashes = {};
 for (const dir of ['css', 'js']) {

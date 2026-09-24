@@ -2,7 +2,7 @@
 // Auto-generates newsletter-content/batch.json for the next calendar month.
 // Uses Google Gemini API (free tier) to produce varied, on-brand email content.
 // Run via GitHub Actions on the 25th of each month, or manually:
-//   TARGET_MONTH=2026-05 node scripts/generate-batch.mjs
+//   TARGET_MONTH=2026-05 node scripts/newsletter/generate-batch.mjs
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import fs from 'fs';
@@ -43,7 +43,7 @@ function buildEmailHtml(subject, paragraphs) {
   return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${subject}</title></head><body style="margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;"><table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:24px 16px;"><table width="560" style="background:#fff;border-radius:12px;overflow:hidden;max-width:100%;"><tr><td style="background:#7c3aed;padding:20px 32px;text-align:center;"><span style="color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;">✨ The Vibe Check Project</span></td></tr><tr><td style="padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;">${body}</td></tr><tr><td style="padding:0 32px 32px;text-align:center;"><a href="https://thevibecheckproject.com/send-card.html" style="display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;">Send a Vibe Check →</a></td></tr><tr><td style="background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;">You're receiving this because you signed up at thevibecheckproject.com<br><a href="{$unsubscribe}" style="color:#7c3aed;">Unsubscribe</a></td></tr></table></td></tr></table></body></html>`;
 }
 
-const BATCH_PATH = path.join(__dirname, '..', 'newsletter-content', 'batch.json');
+const BATCH_PATH = path.join(__dirname, '..', '..', 'newsletter-content', 'batch.json');
 const KEEP_PAST_DAYS = 14; // prune older entries so the file doesn't grow forever
 
 function readExistingBatch() {

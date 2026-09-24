@@ -153,7 +153,7 @@ function burstParticles(count) {
 }
 
 // ── Counters & read receipts ──
-// Backed by our own Cloudflare Worker (scripts/vibe-counter-worker.js). counterapi.dev v1,
+// Backed by our own Cloudflare Worker (workers/counter.js). counterapi.dev v1,
 // which this used to call, was shut down (HTTP 410). Leave the URL empty to disable all
 // counter traffic; pages then show their static fallback numbers.
 const VIBE_COUNTER_URL = '';
@@ -193,7 +193,7 @@ const VibeCounter = {
 // Runs on every page via core-utils so buyers are unlocked no matter which
 // page Stripe redirects them to after payment (?premium=1&session_id=cs_...).
 //
-// With PREMIUM_VERIFY_URL set (scripts/premium-verify-worker.js), the unlock only happens
+// With PREMIUM_VERIFY_URL set (workers/premium-verify.js), the unlock only happens
 // after Stripe confirms the session was paid. While it is empty, ?premium=1 alone unlocks
 // (the original behaviour), so buyers are never locked out before the worker is deployed.
 const PREMIUM_VERIFY_URL = '';

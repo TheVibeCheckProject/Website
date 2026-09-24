@@ -32,7 +32,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TARGET_MONTH: ${{ github.event.inputs.target_month }}
-        run: node scripts/generate-batch.mjs
+        run: node scripts/newsletter/generate-batch.mjs
 
       - name: Commit updated batch.json
         env:

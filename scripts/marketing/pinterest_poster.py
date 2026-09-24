@@ -3,15 +3,15 @@ Pinterest Auto-Poster — Browser Automation
 Posts pin images to Pinterest boards via Selenium, no API access needed.
 
 Usage:
-    python scripts/pinterest_poster.py                    # Post next batch (3 pins)
-    python scripts/pinterest_poster.py --limit 5          # Post 5 pins
-    python scripts/pinterest_poster.py --dry-run          # Preview without posting
-    python scripts/pinterest_poster.py --category anxiety # Only post from one category
-    python scripts/pinterest_poster.py --headless         # Run without visible browser
-    python scripts/pinterest_poster.py --schedule         # Schedule pins for future dates
-    python scripts/pinterest_poster.py --schedule --interval 4h  # Every 4 hours
-    python scripts/pinterest_poster.py --schedule --interval 1d  # Once per day
-    python scripts/pinterest_poster.py --schedule --start-time "2026-03-12 09:00"  # Start at specific time
+    python scripts/marketing/pinterest_poster.py                    # Post next batch (3 pins)
+    python scripts/marketing/pinterest_poster.py --limit 5          # Post 5 pins
+    python scripts/marketing/pinterest_poster.py --dry-run          # Preview without posting
+    python scripts/marketing/pinterest_poster.py --category anxiety # Only post from one category
+    python scripts/marketing/pinterest_poster.py --headless         # Run without visible browser
+    python scripts/marketing/pinterest_poster.py --schedule         # Schedule pins for future dates
+    python scripts/marketing/pinterest_poster.py --schedule --interval 4h  # Every 4 hours
+    python scripts/marketing/pinterest_poster.py --schedule --interval 1d  # Once per day
+    python scripts/marketing/pinterest_poster.py --schedule --start-time "2026-03-12 09:00"  # Start at specific time
 
 Requirements:
     pip install selenium webdriver-manager groq
@@ -52,8 +52,9 @@ except ImportError:
 # ==========================================
 
 SCRIPT_DIR = Path(__file__).parent
-DATA_DIR = SCRIPT_DIR.parent / "data"
-PINS_DIR = SCRIPT_DIR.parent / "assets" / "pinterest-pins"
+ROOT_DIR = SCRIPT_DIR.parent.parent
+DATA_DIR = ROOT_DIR / "data"
+PINS_DIR = ROOT_DIR / "assets" / "pinterest-pins"
 
 MESSAGES_FILE = DATA_DIR / "messages.json"
 TRACKER_FILE = DATA_DIR / "posted_pins.json"
@@ -356,7 +357,7 @@ def save_json(filepath, data):
 
 def try_kill_processes():
     """Surgically kill only Chrome processes using our project-local profile and clean up locks."""
-    profile_dir = SCRIPT_DIR.parent / ".pinterest-profile"
+    profile_dir = ROOT_DIR / ".pinterest-profile"
     profile_path_str = str(profile_dir.resolve())
     print(f"🧹 Polishing session lock (targeting specific automation profile)...")
     
@@ -405,7 +406,7 @@ def get_driver(headless=False):
     options.add_argument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
     
     # Use persistent profile to keep login session
-    profile_dir = SCRIPT_DIR.parent / ".pinterest-profile"
+    profile_dir = ROOT_DIR / ".pinterest-profile"
     profile_dir.mkdir(exist_ok=True)
     options.add_argument(f"--user-data-dir={profile_dir}")
     

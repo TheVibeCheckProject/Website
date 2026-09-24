@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 // Daily newsletter sender — runs via GitHub Actions
 // Reads today's email from newsletter-content/batch.json
-// Creates a MailerLite campaign and sends it immediately
+// Checks it (email.js), creates a MailerLite campaign and sends it immediately
 
 const fs = require('fs');
 const path = require('path');
+const { renderEmail, checkEmail } = require('./email');
 
 const API_KEY = process.env.MAILERLITE_API_KEY;
 const GROUP_ID = process.env.MAILERLITE_GROUP_ID;
@@ -95,6 +96,13 @@ async function main() {
 
   console.log(`📧 Subject: "${email.subject}" (${email.type})`);
 
+  // Refuse to send anything that fails the content check (invented stories, missing fields)
+  const problems = checkEmail(email);
+  if (problems.length) {
+    console.error(`❌ The email for ${today} failed the content check, nothing was sent:\n  - ${problems.join('\n  - ')}`);
+    process.exit(1);
+  }
+
   // Idempotency check before creating anything
   console.log('Checking for an existing send for this date...');
   if (await withRetry(() => alreadySent(today))) {
@@ -111,7 +119,7 @@ async function main() {
         subject: email.subject,
         from_name: 'The Vibe Check Project',
         from: 'wecare@thevibecheckproject.com',
-        content: email.body_html,
+        content: renderEmail(email),
       }
     ],
     groups: [GROUP_ID],

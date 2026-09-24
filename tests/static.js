@@ -107,4 +107,21 @@ for (const rel of pages) {
     t.check(!ownerName.test(html), `owner's name appears on a public page: ${rel}`);
 }
 
+// ── Daily emails: every queued day passes the content check (no invented stories) and none is missing ──
+{
+    const { checkEmail } = require('../scripts/newsletter/email');
+    const batch = JSON.parse(read('newsletter-content/batch.json'));
+    const today = new Date().toISOString().slice(0, 10);
+    const upcoming = batch.emails.filter(e => e.date >= today);
+    for (const e of upcoming) {
+        const problems = checkEmail(e);
+        t.check(problems.length === 0, `daily email ${e.date} fails the content check`, problems.join('; '));
+    }
+    const dates = new Set(upcoming.map(e => e.date));
+    const from = today > batch.start_date ? today : batch.start_date;
+    for (let d = new Date(from + 'T00:00:00Z'); d.toISOString().slice(0, 10) <= batch.end_date; d.setUTCDate(d.getUTCDate() + 1)) {
+        t.check(dates.has(d.toISOString().slice(0, 10)), 'no daily email for', d.toISOString().slice(0, 10));
+    }
+}
+
 t.finish();

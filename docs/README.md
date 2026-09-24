@@ -1,7 +1,7 @@
 # How the site works
 
 - [scripts.md](scripts.md): every build script, newsletter job and Cloudflare Worker
-- [email/](email/): welcome sequence and daily newsletter templates (copies of what lives in MailerLite)
+- [email/](email/): the welcome emails (copies of what lives in MailerLite); the daily email design is `scripts/newsletter/email.js`
 - [marketing/](marketing/): Pinterest strategy, quickstart and pin tracker
 
 ## Pages

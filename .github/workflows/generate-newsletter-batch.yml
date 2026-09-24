@@ -34,7 +34,9 @@ jobs:
           TARGET_MONTH: ${{ github.event.inputs.target_month }}
         run: node scripts/newsletter/generate-batch.mjs
 
+      # Runs even when generation fails part-way, so the days that passed the check are kept
       - name: Commit updated batch.json
+        if: success() || failure()
         env:
           TARGET_MONTH: ${{ github.event.inputs.target_month }}
         run: |

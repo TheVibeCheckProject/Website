@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!--
+  Welcome email (MailerLite automation "Welcome", Email 1). Paste into MailerLite's code editor.
+  Before sending: upload assets/email/welcome-card.gif in MailerLite's File manager and put its
+  link where it says PASTE_GIF_LINK_HERE (or, once the site is merged, use
+  https://thevibecheckproject.com/assets/email/welcome-card.gif).
+  Colours: background #1A1625, text #EDE8F5, secondary #C9BFDA, pink #FF6B9D, gold #FEC84A.
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <meta name="supported-color-schemes" content="dark">
+    <title>Welcome to The Vibe Check Project</title>
+</head>
+<body style="margin:0;padding:0;background-color:#1A1625;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1A1625;">
+    <tr>
+        <td align="center" style="padding:32px 16px;">
+            <table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;width:100%;background-color:#1A1625;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:17px;line-height:1.6;color:#EDE8F5;">
+
+                <!-- Greeting -->
+                <tr>
+                    <td style="padding:0 8px 8px;">
+                        <p style="margin:0 0 16px;">Hi {$name|default('there')},</p>
+                        <p style="margin:0;">Welcome to The Vibe Check Project. We made you a little card to say we're really glad you're here.</p>
+                    </td>
+                </tr>
+
+                <!-- The card (animated GIF; apps that don't animate show the welcome side) -->
+                <tr>
+                    <td align="center" style="padding:28px 8px;">
+                        <img src="PASTE_GIF_LINK_HERE" width="260" alt="A card that says: Welcome to The Vibe Check Project. A little good, every morning." style="display:block;width:260px;max-width:100%;height:auto;border:0;">
+                    </td>
+                </tr>
+
+                <!-- Body -->
+                <tr>
+                    <td style="padding:0 8px;">
+                        <p style="margin:0 0 16px;">From here on, we'll send a little good your way. A kind word, a small reminder, something to make the morning a bit lighter.</p>
+                        <p style="margin:0;">And if someone crossed your mind while reading this, you can send them a card too. It's free.</p>
+                    </td>
+                </tr>
+
+                <!-- Button -->
+                <tr>
+                    <td align="center" style="padding:28px 8px;">
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td align="center" bgcolor="#FF6B9D" style="border-radius:999px;">
+                                    <a href="https://thevibecheckproject.com/send-card.html?utm_source=mailerlite&amp;utm_medium=email&amp;utm_campaign=welcome" style="display:inline-block;padding:14px 30px;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:17px;font-weight:700;color:#1A1625;text-decoration:none;border-radius:999px;">Send someone a card</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Sign-off -->
+                <tr>
+                    <td style="padding:0 8px 32px;">
+                        <p style="margin:0;">With warmth,<br><span style="color:#FEC84A;font-weight:700;">The Vibe Check Project</span></p>
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td style="padding:20px 8px 0;border-top:1px solid #3A3150;font-size:13px;line-height:1.5;color:#C9BFDA;">
+                        <p style="margin:0 0 8px;">You're getting this because you signed up at <a href="https://thevibecheckproject.com" style="color:#C9BFDA;">thevibecheckproject.com</a>. Just reply if you ever want to say hi.</p>
+                        <p style="margin:0;"><a href="{$unsubscribe}" style="color:#C9BFDA;">Unsubscribe</a></p>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

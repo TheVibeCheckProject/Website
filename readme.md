@@ -34,12 +34,12 @@ Comprehensive technical specifications, design tokens, monetization flows, and r
 
 - **Frontend:** Pure HTML5, Vanilla CSS3, Modern JavaScript (ES6+ modular logic, zero heavyweight frameworks)
 - **Hosting:** GitHub Pages with custom apex domain routing (`CNAME`)
-- **Fonts:** Space Grotesk (display), Inter (body) via Google Fonts
-- **Icons:** Lucide Icons (CDN)
+- **Fonts:** Space Grotesk (display), Outfit (body) via Google Fonts
+- **Icons:** Inline SVG (Lucide-style) and emoji
 - **Email & Newsletters:** MailerLite API (subscriber capture + daily 9:00 AM EST automated affirmation broadcast)
-- **Edge Functions:** Cloudflare Workers (dynamic OpenGraph card link unfurling + MailerLite proxy)
+- **Edge Functions:** Cloudflare Workers: OpenGraph card link previews, MailerLite signup proxy, counters/read receipts (Worker + D1), optional Stripe Premium verification
 - **Analytics:** Microsoft Clarity (privacy-first heatmaps and session telemetry)
-- **Card Counter:** counterapi.dev live persistent counter
+- **Counters & Read Receipts:** self-hosted Cloudflare Worker + D1 (`scripts/vibe-counter-worker.js`); counterapi.dev v1, used previously, was shut down
 
 ---
 
@@ -83,7 +83,9 @@ Website/
 │   └── my-cards.css         # Saved vibes dashboard cards, empty states, export controls
 │
 ├── data/                    # Structured data assets
-│   └── affirmations_database.csv # 1,000+ situation-specific affirmations
+│   ├── affirmations_database.csv # One affirmation per day of the month (daily spark)
+│   ├── listicles.json       # Source messages for the 100/50/75 message listicles
+│   └── messages.json        # Source messages for the /blog/<slug>/ message pages
 │
 ├── docs/                    # Central engineering, design, and marketing documentation
 │   ├── README.md            # Master documentation index
@@ -91,7 +93,8 @@ Website/
 │   └── templates/           # Email onboarding sequences and newsletter templates
 │
 ├── js/                      # Modular client-side scripts
-│   ├── script.js            # Core utilities, mobile nav, live counters, item filter
+│   ├── core-utils.js        # Loaded on every page: mobile nav, toasts, sound, telemetry, counters, premium unlock
+│   ├── script.js            # Homepage/blog/situations behaviour: daily spark, demo card, filters, FAQ
 │   ├── send-card-logic.js   # Card composer state machine, serialization, paywall logic
 │   └── vibe-history.js      # LocalStorage history manager for sent and received cards
 │
@@ -101,17 +104,22 @@ Website/
 │   ├── README.md            # Comprehensive documentation index of all automation scripts
 │   ├── generate-hubs.js     # Category hub compiler
 │   ├── generate-listicles.js# Viral message listicle compiler
-│   ├── generate-sitemap.js  # SEO sitemap regenerator
+│   ├── generate-sitemap.js  # SEO sitemap regenerator (with git-based lastmod)
+│   ├── sync-layout.js       # Stamps the shared nav/footer partials into every page
+│   ├── version-assets.js    # Content-hash cache busting for css/ and js/
 │   ├── send-newsletter.js   # Daily morning newsletter sender (called by GitHub Actions)
 │   ├── generate-batch.mjs   # AI affirmation batch generator (called by GitHub Actions)
 │   ├── vibe-card-og-worker.js # Cloudflare Open Graph crawler preview worker
 │   ├── mailerlite-proxy.js  # Cloudflare MailerLite proxy worker
+│   ├── vibe-counter-worker.js   # Cloudflare Worker + D1: counters and read receipts
+│   ├── premium-verify-worker.js # Cloudflare Worker: verifies Stripe Premium purchases
 │   ├── pinterest_poster.py  # Selenium Pinterest automation
 │   └── legacy/              # Archived migration & verification scripts
 │
-└── templates/               # Reusable HTML template partials
-    ├── category-hub.html    # Template for blog category hubs
-    └── message-page.html    # Template for message listicle articles
+└── templates/               # Reusable HTML templates
+    ├── partials/            # nav.html + footer.html shared by every page (npm run build:layout)
+    └── message-page.html    # Template for message listicles and message pages
+                             # (category hubs are generated from blog/index.html)
 ```
 
 ---
@@ -124,12 +132,14 @@ npx serve .
 # or
 python -m http.server 8085
 
-# Build static category hubs, listicles, and sitemap
+# Full build: hubs -> listicles -> shared nav/footer -> asset cache-busting -> sitemap
 npm run build
 
 # Build individual targets
 npm run build:hubs
 npm run build:listicles
+npm run build:layout     # stamp templates/partials/{nav,footer}.html into every page
+npm run build:assets     # rewrite css/js ?v= to content hashes (run after editing any asset)
 npm run build:sitemap
 
 # Marketing & Automations
@@ -142,12 +152,17 @@ npm run pin-post
 ## Deploying
 
 ```bash
+npm run build            # keeps nav/footer, asset versions and sitemap in sync
 git add .
 git commit -m "your message"
-git push origin feature/responsive-parity-standards
+git push origin main
 ```
 
-GitHub Pages automatically builds and publishes from the configured branch.
+GitHub Pages publishes from `main`. Cloudflare Workers in `scripts/*-worker.js` and `scripts/mailerlite-proxy.js` are deployed separately in the Cloudflare dashboard; each file has setup steps in its header comment.
+
+### Editing the header or footer
+
+The nav and footer on every page are generated. Edit `templates/partials/nav.html` or `footer.html`, then run `npm run build:layout`. Hand edits between the `site-nav` / `site-footer` markers are overwritten.
 
 ---
 

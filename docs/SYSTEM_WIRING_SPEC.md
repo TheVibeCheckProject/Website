@@ -423,8 +423,19 @@ function initMetricsCounters(config?: MetricsConfig): void;
 
 #### Behavioral Contract:
 1. **Instant Baseline:** Immediately checks if element content contains `—` or is empty. If so, immediately writes verified baseline (`"12,480+"` and `"5,200+"`).
-2. **Asynchronous Fetch:** Dispatches `fetch()` to CounterAPI endpoint with an `AbortController` timeout of 3000ms.
+2. **Asynchronous Fetch:** Calls `window.VibeCounter.getMany(['cards-sent', 'newsletters-sent'])` (one batched request to the self-hosted counter worker, `scripts/vibe-counter-worker.js`) with a 3000ms timeout. While `VIBE_COUNTER_URL` in `js/core-utils.js` is empty, no request is made and the baseline stays.
 3. **Graceful Failure:** If the request succeeds and returns `count > baseline`, formats number with commas and updates the element. If network error, timeout, or rate-limiting occurs, **the baseline is preserved**. The element is never reverted to `—`.
+
+---
+
+### 5.3.1 Counter & Read-Receipt Service (`window.VibeCounter`)
+
+| Call | Endpoint | Used by |
+| :--- | :--- | :--- |
+| `VibeCounter.hit(name)` | `POST {VIBE_COUNTER_URL}/hit/:name` | card created (`cards-sent`), card opened by recipient (`open:<cardId>`), daily newsletter (`newsletters-sent`, from GitHub Actions) |
+| `VibeCounter.getMany(names)` | `GET {VIBE_COUNTER_URL}/get?names=a,b` → `{ counts }` | homepage stats, My Vibes read-receipt sync (max 25 cards per sync) |
+
+Names: lowercase `a-z 0-9 _ : -`, max 64 chars. A sender previewing their own card (card id present in their local history) never sends `open:` hits.
 
 ---
 

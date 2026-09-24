@@ -10,11 +10,13 @@ These active scripts compile templates and CSV datasets into production-ready st
 
 | Script | Purpose | Execution |
 | :--- | :--- | :--- |
-| **`generate-hubs.js`** | Compiles category hub pages (`blog/mental-health/index.html`, etc.) from `templates/category-hub.html`. | `npm run build:hubs` |
-| **`generate-listicles.js`** | Compiles viral listicles (e.g., *100 Encouraging Messages*) from CSV message banks into `blog/`. | `npm run build:listicles` |
-| **`generate-sitemap.js`** | Scans all static pages and blog posts to regenerate the root `sitemap.xml`. | `npm run build:sitemap` |
+| **`generate-hubs.js`** | Compiles the four category hub pages (`blog/mental-health/index.html`, etc.) from `blog/index.html`. | `npm run build:hubs` |
+| **`generate-listicles.js`** | Compiles the 100/50/75-message listicles from `data/listicles.json` (fails if a title's count doesn't match or a message repeats). | `npm run build:listicles` |
+| **`sync-layout.js`** | Stamps `templates/partials/nav.html` + `footer.html` into every page (relative paths, active link, core-utils include). | `npm run build:layout` |
+| **`version-assets.js`** | Rewrites every `css/*.css?v=` / `js/*.js?v=` reference to a hash of the file contents (cache busting). | `npm run build:assets` |
+| **`generate-sitemap.js`** | Scans all static pages and blog posts to regenerate the root `sitemap.xml` (lastmod from git). | `npm run build:sitemap` |
 | **`generate-affirmations.mjs`** | Generates morning affirmation batches using Gemini AI for the daily newsletter. | `node scripts/generate-affirmations.mjs` |
-| **`generate-messages.js`** | Generates situation-specific affirmation data arrays. | `node scripts/generate-messages.js` |
+| **`generate-messages.js`** | Generates the five `blog/<slug>/` message pages from `data/messages.json`. ⚠️ Don't run as-is: it would overwrite SEO edits made to those pages afterwards (see file header). | — |
 | **`add-seo.js`** | Injects Schema.org JSON-LD and OpenGraph metadata into static articles. | `node scripts/add-seo.js` |
 | **`convert-images.js`** | Batch converts raw images into web-optimized `.webp` format. | `node scripts/convert-images.js` |
 
@@ -45,6 +47,8 @@ Serverless workers deployed to Cloudflare to support dynamic features on the sta
 | :--- | :--- |
 | **`vibe-card-og-worker.js`** | Edge worker that intercepts crawler requests (iMessage, WhatsApp, Twitter, Slack) to serve dynamic Open Graph image and card preview metadata for `?data=` links. |
 | **`mailerlite-proxy.js`** | Edge worker proxy that securely captures newsletter signups and forwards them to MailerLite without exposing API credentials to the client. |
+| **`vibe-counter-worker.js`** | Worker + D1 database behind the homepage stats and My Vibes read receipts (replaces counterapi.dev v1, which was shut down). Enable by setting `VIBE_COUNTER_URL` in `js/core-utils.js`. |
+| **`premium-verify-worker.js`** | Confirms a Stripe Checkout Session was paid before Premium unlocks. Enable by setting `PREMIUM_VERIFY_URL` in `js/core-utils.js` and adding `session_id={CHECKOUT_SESSION_ID}` to the Payment Link redirect. |
 
 ---
 

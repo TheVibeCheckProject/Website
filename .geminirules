@@ -26,3 +26,6 @@
 - Cheerio Scraper Lock: In `blog/index.html`, never rename or delete `a.blog-card-img`, `.pre-text`, `.drop-v`, `.rest-text`, `.sub-desc`, `.slider-wrapper`, or `.category-grid`.
 - Template Token Lock: In `templates/message-page.html`, preserve `{{title}}`, `{{header_title}}`, `{{description}}`, `{{slug}}`, `{{messages_html}}`, and `var(--dynamic-color)`.
 - Browser Testing: Never disrupt or kill Google Chrome. Browser automation must strictly target Microsoft Edge (`channel: 'msedge'`).
+- Shared Layout Lock: The <nav> and <footer> on every page are generated from `templates/partials/nav.html` and `footer.html` by `npm run build:layout`. Never hand-edit between the `site-nav` / `site-footer` markers.
+- Asset Versioning: Never hand-bump `?v=` on css/js references. Run `npm run build:assets` (content hashes) after editing any file in css/ or js/.
+- Honest Social Proof: Never invent testimonials, user counts, or statistics. Counters must come from the live counter service (`window.VibeCounter`).

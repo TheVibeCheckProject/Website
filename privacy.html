@@ -140,7 +140,7 @@
         <div class="section-container">
             <div class="legal-content">
                 <div class="legal-meta-bar">
-                    <div class="legal-meta-item">📅 <strong>Effective Date:</strong> September 20, 2026</div>
+                    <div class="legal-meta-item">📅 <strong>Effective Date:</strong> September 24, 2026</div>
                     <div class="legal-meta-item">🛡️ <strong>Standards:</strong> GDPR (EU/UK), CCPA/CPRA (CA), COPPA, CalOPPA</div>
                     <div class="legal-meta-item">📬 <strong>Privacy Contact:</strong> <a href="mailto:WeCare@TheVibeCheckProject.com">WeCare@TheVibeCheckProject.com</a></div>
                 </div>
@@ -160,7 +160,10 @@
                         Unlike traditional social media or messaging platforms, <strong>we do not store your personalized card messages, sender names, or recipient names on any central server or database</strong>.
                     </p>
                     <p style="margin-bottom: 0;">
-                        When you compose a card, the text is compressed and encoded entirely within your browser into a <strong>Base64URL query string</strong> (e.g., <code>view-card.html?data=...</code>). When your recipient opens the link, their web browser decodes the data locally on their screen. The message exists solely in the URL link you share and in your device's local memory.
+                        When you compose a card, the text is encoded entirely within your browser into a <strong>Base64URL query string</strong> (e.g., <code>view-card.html?data=...</code>). When your recipient opens the link, their web browser decodes the data locally on their screen. The message exists solely in the URL link you share and in your device's local memory.
+                    </p>
+                    <p style="margin-bottom: 0; margin-top: 12px;">
+                        <strong>Exceptions:</strong> if you choose to email the card, the card details are passed through our email delivery provider (see Section 3A). Because the card lives in its link, anyone the link is forwarded to can read it, and services that generate link previews (for example messaging apps) may read the name and affirmation to build the preview.
                     </p>
                 </div>
 
@@ -169,6 +172,8 @@
                 <h4>A. Information You Voluntarily Provide</h4>
                 <ul>
                     <li><strong>Email Subscriptions (Daily Spark Newsletter):</strong> If you choose to subscribe to our free daily affirmation list, we collect your email address. Processing is handled via <strong>MailerLite</strong>. You may unsubscribe with a single click at any time.</li>
+                    <li><strong>30-Day Check-In Reminder:</strong> If you tick "Remind me to check back in," we send your email address, the sender name you entered, and the recipient's first name to <strong>MailerLite</strong> so we can email you that reminder. Unsubscribing stops it.</li>
+                    <li><strong>Emailing a Card:</strong> If you enter a recipient's email address when creating a card, that address, the names you entered, your affirmation, your personal note, and the card link are sent through <strong>EmailJS</strong> (<a href="https://www.emailjs.com/legal/privacy-policy/" target="_blank" rel="noopener noreferrer">privacy policy</a>) solely to deliver that one email. Only enter an address if you believe the recipient would welcome the message.</li>
                     <li><strong>Direct Inquiries:</strong> If you contact us via email at <code>WeCare@TheVibeCheckProject.com</code> or through our contact form, we collect your name, email address, and correspondence text solely to answer your inquiry.</li>
                 </ul>
 
@@ -177,10 +182,15 @@
                     The Platform uses standard browser <code>localStorage</code> to store preferences locally on your physical device. This data never leaves your browser:
                 </p>
                 <ul>
-                    <li><code>vibe_saved_cards</code>: Stores a local history of cards you have created so you can view them on the "My Vibes" page;</li>
-                    <li><code>vibe_theme_concept</code>: Remembers your UI design preferences (Editorial vs. Playful Kinetic);</li>
-                    <li><code>vibe_premium_unlocked</code>: Stores local verification of your one-time Stripe Premium Unlock.</li>
+                    <li><code>vibe_sent_cards_v1</code>: A local history of cards you have created (up to 50), shown on the "My Vibes" page;</li>
+                    <li><code>premium_unlocked</code>: Records your one-time Stripe Premium Unlock on this device;</li>
+                    <li><code>vibe_reduced_motion</code> and <code>vibe_sound_muted</code>: Your motion and sound preferences;</li>
+                    <li><code>vibe_theme_concept</code> / <code>vibe_design_concept</code>: The site's display style;</li>
+                    <li><code>vibe_ab_*</code>: Which version of a button label you were shown, so it stays consistent between visits.</li>
                 </ul>
+                <p>
+                    <strong>Read receipts and counters:</strong> When a recipient opens a card, we may record an anonymous "opened" count against that card's random ID on our own Cloudflare-hosted counter, so the sender's My Vibes page can show "Opened." No names, messages, or contact details are stored. The same service keeps site-wide totals such as the number of cards sent.
+                </p>
                 <p>
                     You can inspect, export, or wipe this data at any time through your browser developer tools or settings.
                 </p>

@@ -112,7 +112,8 @@
 - ✅ **Testimonials** — placeholder (Sarah M., James T., Alex K.) removed. Replaced with honest "We just launched — be first to send a card" CTA. Add real quotes here when you have them by editing `index.html` testimonials section.
 - ✅ **Live card counter** — COMPLETE
   - Replaced fake animated "10K+" stat with a real live counter powered by **counterapi.dev** (free, no account needed)
-  - `send-card.html`: increments counter via `GET https://api.counterapi.dev/v1/thevibecheckproject/cards-sent/up` on every card creation
+  - ⚠️ 2026-09: counterapi.dev v1 was shut down (HTTP 410), so the counter and read receipts stopped working. Replaced by our own Cloudflare Worker + D1 (`scripts/vibe-counter-worker.js`), enabled via `VIBE_COUNTER_URL` in `js/core-utils.js`.
+  - `send-card.html`: increments `cards-sent` via `VibeCounter.hit()` on every card creation
   - `index.html`: fetches current count on page load and displays in `#liveCardCount` element
   - Stats row now shows: "Vibe Checks Sent" (live) | "13 Card Themes" | "100% Free to Send"
 - ✅ **Social links updated** — COMPLETE

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!--
+  30-day check-in email (MailerLite automation "30-Day Check-in": joins group "30-Day Check-ins"
+  → wait 30 days → this email → remove from group). Paste into MailerLite's code editor.
+  Subject: Time to check in on {$recipient_checked|default('them')}?
+  Preview text: It's been 30 days since you sent them a card.
+  Fields (sent by js/send-card-logic.js): name, recipient_checked. Same design as welcome-email.html.
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <meta name="supported-color-schemes" content="dark">
+    <title>Time to check in</title>
+</head>
+<body style="margin:0;padding:0;background-color:#1A1625;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1A1625;">
+    <tr>
+        <td align="center" style="padding:32px 16px;">
+            <table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;width:100%;background-color:#1A1625;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:17px;line-height:1.6;color:#EDE8F5;">
+
+                <tr>
+                    <td style="padding:0 8px;">
+                        <p style="margin:0 0 16px;">Hi {$name|default('there')},</p>
+                        <p style="margin:0 0 16px;">A month ago you sent a card to <strong style="color:#FEC84A;">{$recipient_checked|default('someone you care about')}</strong> and asked us to remind you to check back in. This is that reminder.</p>
+                        <p style="margin:0;">It doesn't have to be big. A quick text, a call, or another card all say the same thing: you're still thinking of them.</p>
+                    </td>
+                </tr>
+
+                <!-- A few easy openers -->
+                <tr>
+                    <td style="padding:28px 8px 8px;">
+                        <p style="margin:0 0 14px;color:#C9BFDA;">If you're not sure how to start:</p>
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="padding:16px 22px;background-color:#241E33;border-left:4px solid #FF6B9D;border-radius:8px;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:18px;line-height:1.5;">
+                                    &ldquo;Hey, you crossed my mind today. How have you been?&rdquo;
+                                </td>
+                            </tr>
+                            <tr><td style="height:12px;line-height:12px;font-size:12px;">&nbsp;</td></tr>
+                            <tr>
+                                <td style="padding:16px 22px;background-color:#241E33;border-left:4px solid #FEC84A;border-radius:8px;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:18px;line-height:1.5;">
+                                    &ldquo;Just checking in. No need to reply, I'm here if you want to talk.&rdquo;
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Button: send-card with their name filled in -->
+                <tr>
+                    <td align="center" style="padding:28px 8px;">
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td align="center" bgcolor="#FF6B9D" style="border-radius:999px;">
+                                    <a href="https://thevibecheckproject.com/send-card.html?to={$recipient_checked}&amp;utm_source=mailerlite&amp;utm_medium=email&amp;utm_campaign=checkin_30d" style="display:inline-block;padding:14px 30px;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:17px;font-weight:700;color:#1A1625;text-decoration:none;border-radius:999px;">Send them another card</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding:0 8px 28px;">
+                        <p style="margin:0;color:#C9BFDA;">Your first card is still saved under <a href="https://thevibecheckproject.com/my-cards.html" style="color:#FF6B9D;">My Vibes</a> on the device you made it on.</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding:0 8px 32px;">
+                        <p style="margin:0;">Thank you for being someone who stays in touch.<br><span style="color:#FEC84A;font-weight:700;">The Vibe Check Project</span></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding:20px 8px 0;border-top:1px solid #3A3150;font-size:13px;line-height:1.5;color:#C9BFDA;">
+                        <p style="margin:0 0 8px;">You're getting this one-time reminder because you asked for it when you sent a card at <a href="https://thevibecheckproject.com" style="color:#C9BFDA;">thevibecheckproject.com</a>.</p>
+                        <p style="margin:0;"><a href="{$unsubscribe}" style="color:#C9BFDA;">Unsubscribe</a></p>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

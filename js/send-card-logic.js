@@ -11,6 +11,7 @@ const isPremium = storageGet('premium_unlocked') === '1';
 
 // Payload limits (also enforced by view-card.html; see docs/README.md "Card links")
 const LIMITS = { name: 50, affirmation: 280, note: 500 };
+const CHECKIN_GROUP_ID = ''; // MailerLite group "30-Day Check-ins"
 
 let selectedAffirmation = '';
 let selectedSound = 'chime';
@@ -264,7 +265,9 @@ function handleExternalMessage() {
 
         const banner = document.getElementById('viralReplyBanner');
         const bannerName = document.getElementById('viralReplyName');
-        if (banner && bannerName) {
+        // "Replying with love" only for replies to a received card; the 30-day check-in
+        // email also passes ?to= but that isn't a reply
+        if (banner && bannerName && isViralReply) {
             bannerName.textContent = cleanRec;
             banner.style.display = 'flex';
         }
@@ -1232,11 +1235,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify({
                         email: senderReminderEmail,
-                        groups: ['180628908682512348'],
+                        // "30-Day Check-ins" group only: a MailerLite automation sends one email
+                        // after 30 days (docs/email/checkin-30-day.html). Not the daily-email group,
+                        // since they asked for a reminder, not a newsletter.
+                        groups: [CHECKIN_GROUP_ID],
                         fields: {
                             name: senderName || '',
                             signup_source: 'send-card-checkin-30d',
-                            recipient_checked: recipientName || 'Friend'
+                            recipient_checked: recipientName || ''
                         }
                     })
                 }).then(() => {
@@ -1248,7 +1254,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (postSendForm) {
                         const done = document.createElement('p');
                         done.style.cssText = 'color:#a3e635;font-weight:600;font-size:14px;padding:8px 0;';
-                        done.textContent = `✓ 30-Day Reminder set for ${recipientName || 'your friend'}! Check your inbox for a welcome email.`;
+                        done.textContent = `✓ We'll email you in 30 days to check in on ${recipientName || 'them'}.`;
                         postSendForm.replaceChildren(done);
                     }
                 }).catch(err => console.error('Reminder registration error:', err));

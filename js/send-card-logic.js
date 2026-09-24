@@ -678,6 +678,40 @@ const backgroundDefs = [
     { id: 'plasma_anim', label: 'Sunstone Plasma', image: 'assets/backgrounds/Solar_Plasma_and_Flares_Visualization.mp4', premium: true, isVideo: true },
 ];
 
+// The six animated backgrounds weigh ~10 MB together and sit on step 2, which most visitors
+// never open. Fetch each thumbnail only while it is on screen, and pause it when it leaves.
+// Inactive steps are hidden with visibility/opacity, which IntersectionObserver ignores, so
+// "on screen" also requires the thumbnail's step to be the active one.
+const _onScreenThumbs = new Set();
+function refreshVideoThumbs() {
+    document.querySelectorAll('#bgPicker video[data-src]').forEach(v => {
+        const step = v.closest('.form-step');
+        const visible = _onScreenThumbs.has(v) && (!step || step.classList.contains('active'));
+        if (visible) {
+            if (!v.src) v.src = v.dataset.src;
+            if (!isReducedMotion) v.play().catch(() => { });
+        } else if (v.src) {
+            v.pause();
+        }
+    });
+}
+
+function lazyVideoThumbs(container) {
+    const videos = container.querySelectorAll('video[data-src]');
+    if (!('IntersectionObserver' in window)) {
+        videos.forEach(v => _onScreenThumbs.add(v));
+        refreshVideoThumbs();
+        return;
+    }
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(({ target, isIntersecting }) => {
+            if (isIntersecting) _onScreenThumbs.add(target); else _onScreenThumbs.delete(target);
+        });
+        refreshVideoThumbs();
+    }, { rootMargin: '100px' });
+    videos.forEach(v => io.observe(v));
+}
+
 function triggerFoilSweep() {
     if (isReducedMotion) return;
     const preview = document.querySelector('.card-preview');
@@ -920,6 +954,7 @@ function goToStep(step) {
     document.querySelectorAll('.form-step').forEach((el, index) => {
         el.classList.toggle('active', index + 1 === currentStep);
     });
+    refreshVideoThumbs();
 
     [1, 2, 3].forEach(n => {
         const wrap = document.getElementById('sn' + n);
@@ -949,9 +984,10 @@ document.addEventListener('DOMContentLoaded', () => {
             el.dataset.bgId = bg.id;
 
             if (bg.isVideo) {
+                // data-src: loaded only when the thumbnail scrolls into view (see lazyVideoThumbs)
                 el.innerHTML = `
                     <div class="bg-thumb" style="background: #000; position: relative; overflow: hidden;">
-                        <video src="${bg.image}" autoplay loop muted playsinline 
+                        <video data-src="${bg.image}" loop muted playsinline preload="none"
                             style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity: 0.8;"></video>
                         <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:white; font-size:10px; font-weight:bold; background:rgba(0,0,0,0.2); z-index:2;">LIVE</div>
                     </div>
@@ -979,6 +1015,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             bgPickerEl.appendChild(el);
         });
+        lazyVideoThumbs(bgPickerEl);
     }
 
     // Initialize Occasion Presets & Motion Accessibility

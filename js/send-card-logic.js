@@ -1234,7 +1234,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         email: senderReminderEmail,
                         groups: ['180628908682512348'],
                         fields: {
-                            name: senderName || 'Thoughtful Friend',
+                            name: senderName || '',
                             signup_source: 'send-card-checkin-30d',
                             recipient_checked: recipientName || 'Friend'
                         }

@@ -331,7 +331,7 @@ async function handleEmailSignup(e) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 email: document.getElementById('signup-email').value,
-                fields: { name: document.getElementById('signup-name').value || 'Friend', signup_source: 'homepage' },
+                fields: { name: document.getElementById('signup-name').value.trim(), signup_source: 'homepage' }, // blank name -> the email's own fallback greeting
                 groups: ['180628908682512348']
             })
         });
@@ -384,7 +384,7 @@ function initJoinForm() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     email,
-                    fields: { name: 'Friend', signup_source: 'homepage-join-section' },
+                    fields: { signup_source: 'homepage-join-section' },
                     groups: ['180628908682512348']
                 })
             });

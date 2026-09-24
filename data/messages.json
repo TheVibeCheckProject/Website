@@ -2,7 +2,8 @@
     "categories": [
         {
             "id": "encouragement",
-            "title": "Encouraging Card Messages & Hype Texts",
+            "title": "Encouraging Card Messages - Hype",
+            "meta_description": "Copyable encouraging messages and quotes to write in a greeting card or send via text. Uplifting words to motivate, inspire, and brighten their day.",
             "header_title": "Encouraging Card Messages",
             "slug": "encouraging-messages-for-cards",
             "description": "Short, powerful texts and card messages to encourage someone taking a big step, starting a new job, or just needing a hype man.",
@@ -22,7 +23,8 @@
         },
         {
             "id": "grief",
-            "title": "Grief Support & Sympathy Card Messages",
+            "title": "Sympathy Card Messages - Comfort",
+            "meta_description": "Heartfelt sympathy messages to write in a condolence card or text when words fail. Offer sincere support and comfort to someone grieving a loved one.",
             "header_title": "Grief Support Messages",
             "slug": "sympathy-card-messages",
             "description": "What to write in a sympathy card when there are no words. Simple, supportive messages for someone who is grieving.",
@@ -42,7 +44,8 @@
         },
         {
             "id": "anxiety",
-            "title": "Anxiety Support & Grounding Texts",
+            "title": "Texts for Anxiety - Calming Words",
+            "meta_description": "Grounding, supportive text messages you can send someone who is feeling anxious, spiraling, or overwhelmed right now. Reassure them with steady love.",
             "header_title": "Anxiety Support Texts",
             "slug": "texts-for-anxiety",
             "description": "Grounding messages and texts to send someone having a panic attack or struggling with severe anxiety.",
@@ -62,7 +65,8 @@
         },
         {
             "id": "just-because",
-            "title": "Just Because & Thinking Of You Messages",
+            "title": "Just Because Messages - Friendship",
+            "meta_description": "Short, sweet text messages and quotes to send someone just because you were thinking of them today. Brighten their day with unexpected positivity.",
             "header_title": "Just Because Messages",
             "slug": "just-because-messages",
             "description": "Because you don't need a crisis to tell someone they matter. Messages to make their day completely out of nowhere.",
@@ -82,7 +86,8 @@
         },
         {
             "id": "breakup",
-            "title": "Breakup Support & Heartbreak Messages",
+            "title": "Breakup Support Texts - Healing",
+            "meta_description": "Empathetic text messages and card quotes to comfort a friend crying through heartbreak or a breakup. Thoughtful words to remind them they are loved.",
             "header_title": "Breakup Support Texts",
             "slug": "breakup-support-messages",
             "description": "When their world just collapsed, platitudes don't work. Here's what to text a friend crying through a breakup.",

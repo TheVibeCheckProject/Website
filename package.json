@@ -8,9 +8,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build:hubs && npm run build:listicles && npm run build:layout && npm run build:assets && npm run build:sitemap",
+    "build": "npm run build:hubs && npm run build:listicles && npm run build:messages && npm run build:layout && npm run build:assets && npm run build:sitemap",
     "build:hubs": "node scripts/build/generate-hubs.js",
     "build:listicles": "node scripts/build/generate-listicles.js",
+    "build:messages": "node scripts/build/generate-messages.js",
     "build:layout": "node scripts/build/sync-layout.js",
     "build:assets": "node scripts/build/version-assets.js",
     "build:sitemap": "node scripts/build/generate-sitemap.js",

@@ -1,75 +1,26 @@
 /**
- * WARNING (2026-09): do not run as-is. The five pages this generates (blog/<slug>/index.html)
- * were hand-tuned afterwards for SEO (titles, meta descriptions, trailing-slash canonicals)
- * and those edits are not in data/messages.json or templates/message-page.html. Running this
- * would regress them. Port those values into the data first if you need to regenerate.
- * Not part of `npm run build`.
+ * Builds the message pages (blog/<slug>/index.html) from data/messages.json.
+ * `title` / `meta_description` are the search-facing values; `description` is the
+ * visible intro under the H1.
  */
 const fs = require('fs');
 const path = require('path');
+const { renderBubble, renderPage } = require('./lib/message-page');
 
-const DATA_FILE = path.join(__dirname, '../../data/messages.json');
-const TEMPLATE_FILE = path.join(__dirname, '../../templates/message-page.html');
-const BLOG_DIR = path.join(__dirname, '../../blog');
+const ROOT = path.join(__dirname, '..', '..');
+const { categories } = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/messages.json'), 'utf8'));
 
-const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
-const template = fs.readFileSync(TEMPLATE_FILE, 'utf-8');
+for (const cat of categories) {
+    const mid = Math.floor(cat.messages.length / 2);
+    const messagesHtml = cat.messages
+        // #messages-mid is the template's "Curated Favorites" table-of-contents target
+        .map((msg, i) => (i === mid ? '\n        <span id="messages-mid"></span>' : '') + renderBubble(msg, `msg-${cat.id}-${i}`))
+        .join('');
 
-if (!fs.existsSync(BLOG_DIR)) {
-    fs.mkdirSync(BLOG_DIR);
+    const html = renderPage({ ...cat, path: `${cat.slug}/` }, messagesHtml, 2);
+
+    const dir = path.join(ROOT, 'blog', cat.slug);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'index.html'), html, 'utf8');
+    console.log(`Generated message page: blog/${cat.slug}/`);
 }
-
-for (const cat of data.categories) {
-    const slugDir = path.join(BLOG_DIR, cat.slug);
-    if (!fs.existsSync(slugDir)) {
-        fs.mkdirSync(slugDir, { recursive: true });
-    }
-
-    let messagesHtml = '';
-
-    cat.messages.forEach((msg, index) => {
-        const msgId = `msg-${cat.id}-${index}`;
-        messagesHtml += `
-        <div class="copyable-message-block">
-            <div class="copyable-message-text" id="${msgId}">${msg}</div>
-            <div class="copyable-message-actions">
-                <button class="btn btn-copy" onclick="copyText('${msgId}', this)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                    Copy Text
-                </button>
-                <a href="../send-card.html" 
-                   onclick="var msg = this.closest('.copyable-message-actions').previousElementSibling.innerText.trim(); window.location.href = this.href + '?message=' + encodeURIComponent(msg); return false;"
-                   class="btn btn-secondary" style="border: 1px solid rgba(255,255,255,0.2);">Send as Card ✨</a>
-            </div>
-        </div>
-        `;
-    });
-
-    // Helper to fix relative URLs for deeper directory (blog/category/index.html is 2 levels deep)
-    function fixUrls(html) {
-        let fixed = html;
-        // Fix asset/CSS/JS references - since these pages are in blog/category/ (2 levels deep),
-        // they need ../../ to reach the root assets.
-        fixed = fixed.replace(/(href|src)="(\.\.\/)+([^"]+)"/g, '$1="../../$3"');
-        fixed = fixed.replace(/url\(\'(\.\.\/)+/g, "url('../../");
-        
-        // Ensure scripts and links that were already ../../ aren't double-processed (the regex above handles ../ correctly)
-        
-        return fixed;
-    }
-
-    let outputHtml = fixUrls(template
-        .replace(/{{title}}/g, cat.title)
-        .replace(/{{header_title}}/g, cat.header_title)
-        .replace(/{{description}}/g, cat.description)
-        .replace(/{{slug}}/g, cat.slug)
-        .replace(/var\(--dynamic-color\)/g, cat.color_theme)
-        .replace(/{{messages_html}}/g, messagesHtml));
-
-    const outputPath = path.join(slugDir, 'index.html');
-    fs.writeFileSync(outputPath, outputHtml, 'utf-8');
-
-    console.log(`Generated page for ${cat.title} at /blog/${cat.slug}/index.html`);
-}
-
-console.log("Programmatic SEO generation complete!");

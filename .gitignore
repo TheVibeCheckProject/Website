@@ -7,3 +7,4 @@ node_modules/
 .pinterest-profile/
 scratch/
 tests/.visual-baseline.json
+assets/email/*-back-preview.png

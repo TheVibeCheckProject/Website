@@ -11,7 +11,7 @@ const isPremium = storageGet('premium_unlocked') === '1';
 
 // Payload limits (also enforced by view-card.html; see docs/README.md "Card links")
 const LIMITS = { name: 50, affirmation: 280, note: 500 };
-const CHECKIN_GROUP_ID = ''; // MailerLite group "30-Day Check-ins"
+const CHECKIN_GROUP_ID = '199536380251997858'; // MailerLite group "30-Day Check-ins"
 
 let selectedAffirmation = '';
 let selectedSound = 'chime';

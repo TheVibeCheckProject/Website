@@ -54,13 +54,10 @@ function decodeCardData(url) {
  * Builds the personalised OG meta content values from the card object.
  */
 function buildOGValues(card) {
-    const name = card.recipientName && card.recipientName.trim()
-        ? card.recipientName.trim()
-        : null;
-
-    const affirmation = card.affirmation && card.affirmation.trim()
-        ? card.affirmation.trim()
-        : null;
+    // Links are user-crafted: fields may be missing or not strings at all
+    const str = (v) => (typeof v === 'string' ? v.trim() : '');
+    const name = str(card.recipientName).slice(0, 50) || null;
+    const affirmation = str(card.affirmation) || null;
 
     const title = name
         ? `${escapeHtml(name)}, someone sent you a Vibe Check ✨`
@@ -78,9 +75,10 @@ function buildOGValues(card) {
  * right before </head>.
  */
 class OGInjector {
-    constructor(ogValues) {
+    constructor(ogValues, cardUrl) {
         this.title = ogValues.title;
         this.description = ogValues.description;
+        this.cardUrl = cardUrl;
         this.injected = false;
     }
 
@@ -88,8 +86,8 @@ class OGInjector {
         if (this.injected) return;
         this.injected = true;
 
-        const siteUrl = 'https://www.thevibecheckproject.com';
-        const cardUrl = `${siteUrl}/view-card.html`;
+        const siteUrl = 'https://thevibecheckproject.com'; // canonical host (no www)
+        const cardUrl = escapeHtml(this.cardUrl);
         const imageUrl = `${siteUrl}/assets/og-vibe-card.jpg`;
 
         const tags = `
@@ -133,9 +131,17 @@ export default {
 
         const ogValues = buildOGValues(card);
 
-        // Use HTMLRewriter to inject tags before </head>
+        // og:url = this card's own link on the canonical host, so a share resolves to the card
+        const reqUrl = new URL(url);
+        const cardUrl = `https://thevibecheckproject.com${reqUrl.pathname}${reqUrl.search}`;
+
+        // Drop the page's static OG/Twitter tags, then inject the personalised set, so
+        // crawlers never see two competing og:title / og:description values.
+        const removeTag = { element(el) { el.remove(); } };
         return new HTMLRewriter()
-            .on('head', new OGInjector(ogValues))
+            .on('meta[property^="og:"]', removeTag)
+            .on('meta[name^="twitter:"]', removeTag)
+            .on('head', new OGInjector(ogValues, cardUrl))
             .transform(originResponse);
     }
 };

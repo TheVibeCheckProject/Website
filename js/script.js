@@ -637,7 +637,8 @@ function scheduleDemoResume(delay = 10000) {
 
 function startDemoRotation() {
     clearInterval(demoRotationTimer);
-    if (demoIsHovered) return;
+    // No auto-advancing content for visitors who asked for reduced motion; pills still work
+    if (demoIsHovered || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const vibeKeys = Object.keys(demoVibes);
     demoRotationTimer = setInterval(() => {
         if (demoIsHovered || demoIsFlipping) return;

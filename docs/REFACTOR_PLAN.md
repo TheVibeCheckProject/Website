@@ -58,5 +58,5 @@ Ordered by value. Each item is verified with the Phase 2 tests before committing
 
 1. ~~AdSense~~ — dropped.
 2. Premium: keep the per-device model, or add a "restore purchase" flow (email + Stripe receipt lookup) later?
-3. ~~Support email~~ — confirmed `wecare@thevibecheckproject.com`. Card emails (EmailJS) currently send from a Gmail noreply address; consider switching.
+3. ~~Support email~~ — confirmed `wecare@thevibecheckproject.com`. Card emails (EmailJS, template_bpj8rue) send from the Gmail noreply address with Reply-To set to wecare@ (done 2026-09-24). EmailJS free plan = 200 emails/month; if it runs out regularly, move card emails to MailerSend (3,000/month free, own domain) via a worker.
 4. Should Premium stay at $4.99, and should the premium zip (if kept) be delivered to buyers?

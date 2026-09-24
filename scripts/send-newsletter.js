@@ -87,8 +87,10 @@ async function main() {
   const email = batch.emails.find(e => e.date === today);
 
   if (!email) {
-    console.log(`No email scheduled for ${today} — skipping.`);
-    process.exit(0);
+    // Fail loudly: a silent skip hid a multi-day outage in Sept 2026 when batch.json was
+    // overwritten. A failed run triggers GitHub's failure email and the notify step.
+    console.error(`❌ No email in batch.json for ${today} (covers ${batch.start_date} → ${batch.end_date}). Add content or run the "Generate Newsletter Batch" workflow.`);
+    process.exit(1);
   }
 
   console.log(`📧 Subject: "${email.subject}" (${email.type})`);

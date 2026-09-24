@@ -43,13 +43,35 @@ function buildEmailHtml(subject, paragraphs) {
   return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${subject}</title></head><body style="margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;"><table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:24px 16px;"><table width="560" style="background:#fff;border-radius:12px;overflow:hidden;max-width:100%;"><tr><td style="background:#7c3aed;padding:20px 32px;text-align:center;"><span style="color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;">✨ The Vibe Check Project</span></td></tr><tr><td style="padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;">${body}</td></tr><tr><td style="padding:0 32px 32px;text-align:center;"><a href="https://thevibecheckproject.com/send-card.html" style="display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;">Send a Vibe Check →</a></td></tr><tr><td style="background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;">You're receiving this because you signed up at thevibecheckproject.com<br><a href="{$unsubscribe}" style="color:#7c3aed;">Unsubscribe</a></td></tr></table></td></tr></table></body></html>`;
 }
 
+const BATCH_PATH = path.join(__dirname, '..', 'newsletter-content', 'batch.json');
+const KEEP_PAST_DAYS = 14; // prune older entries so the file doesn't grow forever
+
+function readExistingBatch() {
+  try {
+    const batch = JSON.parse(fs.readFileSync(BATCH_PATH, 'utf8'));
+    return Array.isArray(batch.emails) ? batch.emails : [];
+  } catch {
+    return [];
+  }
+}
+
 async function main() {
   const targetMonth = getTargetMonth();
-  const dates = getDatesForMonth(targetMonth);
   const [year, month] = targetMonth.split('-').map(Number);
   const monthName = new Date(year, month - 1, 1).toLocaleString('en-US', { month: 'long' });
 
-  console.log(`Generating batch for ${monthName} ${year} (${dates.length} days)...`);
+  // Merge, never replace: this runs on the 25th, and overwriting batch.json with only next
+  // month deleted the unsent last days of the current month. Dates that already have an
+  // email (including hand-edited ones) are kept and not regenerated.
+  const existing = readExistingBatch();
+  const have = new Set(existing.map(e => e.date));
+  const dates = getDatesForMonth(targetMonth).filter(d => !have.has(d));
+  if (dates.length === 0) {
+    console.log(`✅ ${monthName} ${year} is already fully covered in batch.json — nothing to generate.`);
+    return;
+  }
+
+  console.log(`Generating ${dates.length} missing day(s) for ${monthName} ${year}...`);
 
   const prompt = `Generate ${dates.length} daily newsletter emails for "The Vibe Check Project" — a platform that encourages people to send emotional support and affirmation cards to their friends and loved ones.
 
@@ -105,13 +127,15 @@ Brand voice rules:
     console.warn(`⚠️  Expected ${dates.length} emails, got ${emails.length}`);
   }
 
-  const processed = emails.map((email, i) => {
+  const wanted = new Set(dates);
+  const processed = emails.slice(0, dates.length).map((email, i) => {
     const paragraphs = Array.isArray(email.paragraphs) && email.paragraphs.length > 0
       ? email.paragraphs
       : (email.body_text || '').split('\n\n').filter(Boolean);
 
     const result = {
-      date: email.date || dates[i],
+      // Trust the requested date list over whatever date the model echoed back
+      date: wanted.has(email.date) ? email.date : dates[i],
       type: email.type,
       subject: email.subject,
       preview_text: email.preview_text,
@@ -122,17 +146,22 @@ Brand voice rules:
     return result;
   });
 
+  const cutoff = new Date(Date.now() - KEEP_PAST_DAYS * 86400000).toISOString().slice(0, 10);
+  const byDate = new Map();
+  for (const e of existing) if (e.date >= cutoff) byDate.set(e.date, e);
+  for (const e of processed) if (!byDate.has(e.date)) byDate.set(e.date, e);
+  const merged = [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date));
+
   const batch = {
     generated: new Date().toISOString().split('T')[0],
-    start_date: dates[0],
-    end_date: dates[dates.length - 1],
-    emails: processed,
+    start_date: merged[0].date,
+    end_date: merged[merged.length - 1].date,
+    emails: merged,
   };
 
-  const outputPath = path.join(__dirname, '..', 'newsletter-content', 'batch.json');
-  fs.writeFileSync(outputPath, JSON.stringify(batch, null, 2), 'utf8');
-  console.log(`✅ Generated ${processed.length} emails → newsletter-content/batch.json`);
-  console.log(`   Coverage: ${batch.start_date} to ${batch.end_date}`);
+  fs.writeFileSync(BATCH_PATH, JSON.stringify(batch, null, 2), 'utf8');
+  console.log(`✅ Added ${processed.length} emails → newsletter-content/batch.json`);
+  console.log(`   Coverage: ${batch.start_date} to ${batch.end_date} (${merged.length} emails)`);
 }
 
 main().catch(err => {

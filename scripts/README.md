@@ -35,7 +35,7 @@ These scripts are triggered automatically on scheduled crons via `.github/workfl
 | Script | Workflow | Schedule | Description |
 | :--- | :--- | :--- | :--- |
 | **`send-newsletter.js`** | `.github/workflows/daily-newsletter.yml` | Daily at 9:00 AM EST (14:00 UTC) | Reads today's entry from `newsletter-content/batch.json` and broadcasts the daily morning affirmation email via MailerLite. |
-| **`generate-batch.mjs`** | `.github/workflows/generate-newsletter-batch.yml` | Weekly cron | Pre-generates the upcoming batch of daily newsletter affirmations. |
+| **`generate-batch.mjs`** | `.github/workflows/generate-newsletter-batch.yml` | Monthly, 10:00 UTC on the 25th | Generates next month's emails with Gemini and **merges** them into `batch.json` (existing dates are never overwritten; a fully covered month is skipped). |
 
 ---
 

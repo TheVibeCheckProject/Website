@@ -121,7 +121,13 @@ Built on the owner's CodePen carousel (`1.html`, `2.css`, `3.js`, used unchanged
 3. **Words:** tap the card's words (or "✎ Change the words") → carousel glides up, glass panel with
    "How's your person doing?" mood bubbles + a 3D word wheel; chosen words go onto every background.
    Free moods use the site's 10 free affirmations; premium moods = Calm/Celebrate/Love/Healing + write-your-own.
-   **Undecided:** the owner may prefer choosing words BEFORE seeing the cards (a separate step 1).
+   **Update 2026-09-25:** the owner disliked the docked bottom panel (look and placement). The preview now
+   opens with a **"sky of words"** as step 1 (`#vcSky`): situations as glowing words at the top (one swipeable
+   line on phones); their quotes float at different depths (near = big and bright, far = small and blurred),
+   drifting with gentle parallax. Tapping one glides it to the centre, the sky dissolves into the carousel
+   with those words on every card; tapping a card's words brings the sky back. The docked panel code is
+   still in the file but no longer opened. Awaiting the owner's verdict. (Other experiments by another session:
+   `word-picker-ideas.html`, `studio-3d.html` in the same folder.)
 4. **"Choose this card"** → card lifts, flips open ("Write inside"): affirmation hero panel on the
    chosen background, To / From / note / sound. A **mandatory glass help guide** shows on first open
    (until "Got it"; "Don't show this again" is saved in localStorage `vc_skip_write_help`); a **?** next

@@ -126,7 +126,10 @@ Built on the owner's CodePen carousel (`1.html`, `2.css`, `3.js`, used unchanged
    line on phones); their quotes float at different depths (near = big and bright, far = small and blurred),
    drifting with gentle parallax. Tapping one glides it to the centre, the sky dissolves into the carousel
    with those words on every card; tapping a card's words brings the sky back. The docked panel code is
-   still in the file but no longer opened. Awaiting the owner's verdict. (Other experiments by another session:
+   still in the file but no longer opened. Owner feedback round 1: "not fluid, want the words much smokier" →
+   now an SVG smoke filter (#vcSmoke: animated feTurbulence + feDisplacementMap + haze) and per-frame
+   wandering motion (sums of slow sines, eased parallax); phrases condense out of / dissolve into haze.
+   Awaiting the owner's verdict. Watch phone performance (the filter is heavy). (Other experiments by another session:
    `word-picker-ideas.html`, `studio-3d.html` in the same folder.)
 4. **"Choose this card"** → card lifts, flips open ("Write inside"): affirmation hero panel on the
    chosen background, To / From / note / sound. A **mandatory glass help guide** shows on first open

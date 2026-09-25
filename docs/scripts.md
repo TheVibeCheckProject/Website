@@ -36,7 +36,7 @@ Each file's header comment has step-by-step setup.
 | Worker | Purpose | Status |
 | :--- | :--- | :--- |
 | `og-preview.js` | Personalised link previews (iMessage, WhatsApp…) for `view-card.html?data=` links. | Live; redeploy after changes. |
-| `newsletter-trigger.js` | Cloudflare Cron Triggers start the daily email (9 AM Central) and the monthly generator (25th) on time via GitHub `workflow_dispatch`; GitHub's own schedules are only a later backup. Needs secret `GITHUB_TOKEN` (fine-grained, Actions read/write). | Being set up (2026-09-25). |
+| `newsletter-trigger.js` | Cloudflare Cron Triggers start the daily email (9 AM Central) and the monthly generator (25th) on time via GitHub `workflow_dispatch`; GitHub's own schedules are only a later backup. Needs secret `GITHUB_TOKEN` (fine-grained, Actions read/write). | Deployed 2026-09-25 as `vibe-newsletter-trigger`; first run 2026-09-26. |
 | `mailerlite-proxy.js` | Accepts newsletter signups without exposing the MailerLite key. | Live. |
 | `counter.js` | Cards-sent / newsletter counters and My Vibes read receipts (Worker + D1). | Enable by setting `VIBE_COUNTER_URL` in `js/core-utils.js`. |
 | `premium-verify.js` | Confirms a Stripe payment before Premium unlocks. | Enable by setting `PREMIUM_VERIFY_URL` in `js/core-utils.js`. |

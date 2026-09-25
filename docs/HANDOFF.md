@@ -43,7 +43,7 @@ There is a free daily affirmation email (MailerLite) and a welcome email series.
 | EmailJS (free: 200 emails/mo) | emails a card to its recipient | `js/send-card-logic.js`, service `service_cn9gjbv`, template `template_bpj8rue`; sends from the Gmail noreply address, Reply-To `wecare@thevibecheckproject.com` |
 | Stripe | Premium payment link | `https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02` |
 | GitHub Actions | daily email send + monthly content generation | `.github/workflows/` (their own schedules are a late, off-the-hour backup only) |
-| Cloudflare Worker `vibe-newsletter-trigger` | starts those two workflows on time (GitHub's schedule ran 3–4 h late / skipped) | `workers/newsletter-trigger.js`; crons `0 14 * * *`, `0 15 * * *` (sends only when it's 9 AM in Chicago), `0 10 25 * *`; secret `GITHUB_TOKEN`. **Setup in progress 2026-09-25.** |
+| Cloudflare Worker `vibe-newsletter-trigger` | starts those two workflows on time (GitHub's schedule ran 3–4 h late / skipped) | `workers/newsletter-trigger.js`; crons `0 14 * * *`, `0 15 * * *` (sends only when it's 9 AM in Chicago), `0 10 25 * *`; secret `GITHUB_TOKEN`. **Deployed 2026-09-25** (secret + 3 crons set). First real run: 2026-09-26 9 AM Central. Verify in GitHub → Actions → Daily Newsletter (event "workflow_dispatch"); if missing, check the worker's Logs (401/403 = token repo or "Actions: Read and write" permission). |
 
 GitHub Actions secrets in use: `MAILERLITE_API_KEY`, `MAILERLITE_GROUP_ID`, `GEMINI_API_KEY`. (Unused
 `STRIPE_SECRET_KEY` and `ANTHROPIC_API_KEY` were deleted.) Support address: `wecare@thevibecheckproject.com`.

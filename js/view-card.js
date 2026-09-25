@@ -58,45 +58,6 @@ function showViewCardEmailError(msg) {
   err.hidden = false;
 }
 
-// Share the revealed card: native share sheet on mobile, clipboard fallback on desktop
-async function shareVibeCard(btn) {
-  const url = window.location.href;
-  const title = document.title || "You've Got a Vibe Check! ✨";
-  const text = 'Someone sent me this beautiful vibe check card 💚';
-
-  if (window.VibeTelemetry) {
-    window.VibeTelemetry.track('card_share_initiated', { method: navigator.share ? 'native' : 'clipboard' });
-    window.VibeTelemetry.setTag('recipient_shared', 'true');
-  }
-
-  if (typeof launchConfetti === 'function') launchConfetti();
-
-  if (navigator.share) {
-    try { await navigator.share({ title: title, text: text, url: url }); } catch (e) { /* dismissed */ }
-    return;
-  }
-  const original = btn.innerHTML;
-  try {
-    await navigator.clipboard.writeText(url);
-    btn.innerHTML = '✓ Link Copied — Share the Love!';
-    setTimeout(() => { btn.innerHTML = original; }, 2500);
-  } catch (e) {
-    let field = document.getElementById('shareLinkField');
-    if (!field) {
-      field = document.createElement('input');
-      field.id = 'shareLinkField';
-      field.readOnly = true;
-      field.setAttribute('aria-label', 'Your card link — copy it to share');
-      field.style.cssText = 'width:100%;margin-top:8px;padding:10px 12px;border-radius:10px;border:1px solid rgba(163,230,53,0.35);background:rgba(0,0,0,0.4);color:#fff;font-size:12px;';
-      btn.insertAdjacentElement('afterend', field);
-      field.addEventListener('click', () => { field.select(); });
-    }
-    field.value = url;
-    field.hidden = false;
-    field.select();
-    btn.innerHTML = '↑ Copy the link above';
-  }
-}
 
 // ── Render the card ──
 (async function () {
@@ -169,17 +130,6 @@ async function shareVibeCard(btn) {
       }
     }
 
-    // Dynamic Reciprocal CTA for Primary Action Button
-    const sendBackBtn = document.getElementById('sendBackBtn');
-    if (sendBackBtn) {
-      if (sender) {
-        sendBackBtn.textContent = `Reply to ${sender} 💌`;
-        sendBackBtn.href = `send-card.html?recipient=${encodeURIComponent(sender)}&preset=gratitude&viralReply=1`;
-      } else {
-        sendBackBtn.textContent = 'Send a Card to Someone ✨';
-        sendBackBtn.href = 'send-card.html?preset=gratitude&viralReply=1';
-      }
-    }
 
     // Themed card front: emoji + palette per occasion (theme-* classes in view-card.css)
     const FRONT_THEMES = {
@@ -379,9 +329,10 @@ flipCard.addEventListener('click', () => {
       window.VibeTelemetry.setTag('card_revealed', 'true');
     }
 
-    // Cinematic Reveal Sequence
+    // Cinematic Reveal Sequence: give them time to read the card before anything else appears
     if (!document.body.classList.contains('is-revealed')) {
       setTimeout(() => {
+        if (!cardOpen || document.body.classList.contains('is-revealed')) return; // flipped back meanwhile
         document.body.classList.add('is-revealed');
         if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
           flipCard.style.transition = 'translate 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -390,7 +341,7 @@ flipCard.addEventListener('click', () => {
         if (window.VibeTelemetry) {
           window.VibeTelemetry.track('post_card_revealed');
         }
-      }, 1200); // 1.2s pause to read before the world moves
+      }, 4000);
     }
   }
 });

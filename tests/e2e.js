@@ -79,6 +79,9 @@ const BLOCK = /googlesyndication|clarity\.ms|workers\.dev|jsdelivr|unsplash|font
             await page.waitForTimeout(1600);
             t.check((await page.textContent('#cardAffirmation')).includes("I'm right here"), 'recipient sees the affirmation');
             t.check((await page.textContent('#cardMessage')).includes('Alex says'), 'recipient sees the sender note');
+            // The reply panel waits ~4s so the card can be read first
+            t.check(!(await page.evaluate(() => document.body.classList.contains('is-revealed'))), 'reveal panel waits while the card is read');
+            await page.waitForTimeout(3000);
             t.check(await page.evaluate(() => document.body.classList.contains('is-revealed')), 'reveal panel appears after flip');
             t.check(errors.length === 0, 'no JS errors on the recipient page', errors.join(' | '));
             await ctx.close();

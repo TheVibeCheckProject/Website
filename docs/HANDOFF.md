@@ -129,7 +129,11 @@ Built on the owner's CodePen carousel (`1.html`, `2.css`, `3.js`, used unchanged
    still in the file but no longer opened. Owner feedback round 1: "not fluid, want the words much smokier" →
    now an SVG smoke filter (#vcSmoke: animated feTurbulence + feDisplacementMap + haze) and per-frame
    wandering motion (sums of slow sines, eased parallax); phrases condense out of / dissolve into haze.
-   Awaiting the owner's verdict. Watch phone performance (the filter is heavy). (Other experiments by another session:
+   Owner feedback round 2 (2026-09-25): **still not it, and laggy.** Don't iterate further on the SVG
+   turbulence/displacement filter (too heavy: it re-renders every phrase every frame). Next step: the owner
+   finds a reference effect they love (CodePen / freefrontend: "smoke text", "text dissolve", "fog
+   typography"; likely WebGL or canvas) and drops it in assets/testassetcode/, same as the carousel and
+   send button. Build from that. The sky-of-words code (#vcSky) can be replaced wholesale. (Other experiments by another session:
    `word-picker-ideas.html`, `studio-3d.html` in the same folder.)
 4. **"Choose this card"** → card lifts, flips open ("Write inside"): affirmation hero panel on the
    chosen background, To / From / note / sound. A **mandatory glass help guide** shows on first open

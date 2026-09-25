@@ -3,7 +3,8 @@ name: Generate Newsletter Batch
 on:
   schedule:
     # 10:00 AM UTC on the 25th of every month
-    - cron: '0 10 25 * *'
+    # Backup only: the vibe-newsletter-trigger Cloudflare worker starts this on time on the 25th.
+    - cron: '43 13 25 * *'
   workflow_dispatch:
     inputs:
       target_month:

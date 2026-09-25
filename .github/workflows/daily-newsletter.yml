@@ -2,8 +2,10 @@ name: Daily Newsletter
 
 on:
   schedule:
-    # 9:00 AM EST = 14:00 UTC
-    - cron: '0 14 * * *'
+    # Backup only: the vibe-newsletter-trigger Cloudflare worker starts this on time at 9 AM Central.
+    # GitHub's schedule runs late (hours) or not at all at busy times, so this is set later and off the
+    # hour; if the worker already sent today's email, the sender skips it (no duplicates).
+    - cron: '37 16 * * *'
   workflow_dispatch:
     inputs:
       date_override:

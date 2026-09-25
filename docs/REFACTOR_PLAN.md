@@ -13,7 +13,8 @@ Legend: **You** = needs your accounts/decisions · **Claude** = code work I can 
 - [x] **You** · S — Merged and pushed (2026-09-24); daily newsletter fix live
 - [x] **You** · S — Spot-checked on a phone; the issues found were fixed (sign-up popup, sound buttons, contact page, card page reveal)
 - [ ] **You** · S — Confirm the daily email arrives each morning (GitHub → Actions → Daily Newsletter)
-- [ ] **You** · S — Real Premium test purchase + refund in Stripe; paste the new EmailJS template (`docs/email/emailjs-card-email.html`)
+- [ ] **You** · S — Real Premium test purchase + refund in Stripe
+- [x] **You** · S — New EmailJS card email template pasted into the dashboard (2026-09-24)
 - [x] ~~Welcome email wallpaper links~~: wallpapers dropped (Sept 2026); the new welcome email has none
 
 ## Phase 1 — Turn on the new services (your accounts)

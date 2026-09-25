@@ -82,8 +82,8 @@ daily list — with fields `name`, `recipient_checked`. Automation: joins group 
 
 ### 4.4 EmailJS card email
 New dark design in `docs/email/emailjs-card-email.html` (variables `{{to_name}}`, `{{from_name}}`,
-`{{message}}`, `{{card_link}}`). The owner pastes it into the EmailJS dashboard; recipient name falls
-back to "there".
+`{{message}}`, `{{card_link}}`). Live in the EmailJS dashboard (done 2026-09-24); recipient name falls
+back to "there". Edit both copies together.
 
 ## 5. What was done in this round (Sept 2026), newest first
 
@@ -187,5 +187,4 @@ npm run test:visual  # computed-style fingerprint vs baseline (--update to accep
 
 See `docs/REFACTOR_PLAN.md` for the remaining cleanup list (split `js/script.js` by page, two odd
 articles onto `article.css`, self-host Unsplash images, review Gemini-written blog posts).
-Owner tasks after merge that may still be outstanding: a real Premium test purchase + refund in Stripe;
-paste the new EmailJS template.
+Owner task that may still be outstanding: a real Premium test purchase + refund in Stripe.

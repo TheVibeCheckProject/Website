@@ -118,23 +118,13 @@ Built on the owner's CodePen carousel (`1.html`, `2.css`, `3.js`, used unchanged
 2. **Premium vs free:** free users can never bring premium cards (animated backgrounds, Nebula) into
    focus. Premium cards sit grouped at the end of the ring, behind frosted glass with a sweeping light
    band and a 🔒 badge; tapping one opens a Premium sheet. A preview-only Free/Premium switch sits top-left.
-3. **Words:** tap the card's words (or "✎ Change the words") → carousel glides up, glass panel with
-   "How's your person doing?" mood bubbles + a 3D word wheel; chosen words go onto every background.
-   Free moods use the site's 10 free affirmations; premium moods = Calm/Celebrate/Love/Healing + write-your-own.
-   **Update 2026-09-25:** the owner disliked the docked bottom panel (look and placement). The preview now
-   opens with a **"sky of words"** as step 1 (`#vcSky`): situations as glowing words at the top (one swipeable
-   line on phones); their quotes float at different depths (near = big and bright, far = small and blurred),
-   drifting with gentle parallax. Tapping one glides it to the centre, the sky dissolves into the carousel
-   with those words on every card; tapping a card's words brings the sky back. The docked panel code is
-   still in the file but no longer opened. Owner feedback round 1: "not fluid, want the words much smokier" →
-   now an SVG smoke filter (#vcSmoke: animated feTurbulence + feDisplacementMap + haze) and per-frame
-   wandering motion (sums of slow sines, eased parallax); phrases condense out of / dissolve into haze.
-   Owner feedback round 2 (2026-09-25): **still not it, and laggy.** Don't iterate further on the SVG
-   turbulence/displacement filter (too heavy: it re-renders every phrase every frame). Next step: the owner
-   finds a reference effect they love (CodePen / freefrontend: "smoke text", "text dissolve", "fog
-   typography"; likely WebGL or canvas) and drops it in assets/testassetcode/, same as the carousel and
-   send button. Build from that. The sky-of-words code (#vcSky) can be replaced wholesale. (Other experiments by another session:
-   `word-picker-ideas.html`, `studio-3d.html` in the same folder.)
+3. **Words: removed for now (2026-09-25).** The owner rejected every word picker so far: a docked
+   bottom panel with mood bubbles + 3D wheel ("don't like docked, don't like the look"), and a "sky of
+   words" with smoky floating phrases ("not fluid, laggy"). All word-picker code was taken out of
+   `preview.html`, and other experiments were moved to `assets/testassetcode/_archive/`. The owner's
+   direction: **keep only the carousel and the send button (the pieces worked on most)**. For the words,
+   wait for the owner to bring a reference effect they love (as with the carousel and send button).
+   Content to reuse later: the "situations" with quotes (e.g. "They went quiet") in the archived files.
 4. **"Choose this card"** → card lifts, flips open ("Write inside"): affirmation hero panel on the
    chosen background, To / From / note / sound. A **mandatory glass help guide** shows on first open
    (until "Got it"; "Don't show this again" is saved in localStorage `vc_skip_write_help`); a **?** next
@@ -156,7 +146,7 @@ Owner feedback that shaped it (don't regress): wide wonky flight, trail must sta
 into place), one colour (no gradient, no rainbow letters), hard curve with the first letter near 90°.
 
 ### 6.3 Next steps / open decisions (ask the owner)
-1. Words first, or cards first? (§6.1 point 3)
+1. How to pick the words (§6.1 point 3): open; wait for the owner's reference.
 2. Put the send animation into the card flow: tap "Send it" on the inside of the card → card closes →
    plane animation. Decide how the card leaves (plane "carries" it, or it floats away first).
 3. **GSAP:** the send animation uses GSAP + MorphSVG/DrawSVG (free since 2025, from jsDelivr). The

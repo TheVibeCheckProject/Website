@@ -1239,6 +1239,7 @@ footer {
     align-items: center;
     justify-content: center;
     padding: var(--space-md);
+    overflow-y: auto; /* taller than a short phone screen: scroll instead of cutting off the top */
     animation: fadeIn 0.3s ease-out;
 }
 
@@ -1247,6 +1248,7 @@ footer {
     border-radius: 24px;
     max-width: 500px;
     width: 100%;
+    margin: auto 0; /* centred when it fits, starts at the top when it doesn't */
     padding: var(--space-2xl);
     position: relative;
     border: 2px solid rgba(255, 107, 157, 0.2);
@@ -1422,6 +1424,30 @@ footer {
 
     .modal-header h2 {
         font-size: 28px;
+    }
+}
+
+/* Phones: the desktop padding left the form half the screen wide (button text wrapped
+   onto four lines) and pushed the title off the top */
+@media (max-width: 480px) {
+    .modal-overlay { padding: 12px; }
+
+    .modal-content {
+        padding: 44px 20px 24px;
+        border-radius: 20px;
+    }
+
+    .modal-header {
+        margin-bottom: 20px;
+    }
+
+    .modal-header h2 {
+        font-size: 24px;
+    }
+
+    .modal-close {
+        top: 8px;
+        right: 8px;
     }
 }
 

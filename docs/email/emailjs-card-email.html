@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!--
+  The email a card's recipient gets when the sender enters their email address.
+  Sent by EmailJS (service_cn9gjbv, template template_bpj8rue) from js/send-card-logic.js.
+  Paste into EmailJS → Email Templates → template_bpj8rue → Content → "Edit content" → code view.
+  Subject: {{from_name}} sent you a little something ✨
+  Variables: {{to_name}}, {{from_name}}, {{message}}, {{card_link}}.
+  Same palette as the MailerLite emails (docs/email/welcome-email.html).
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <meta name="supported-color-schemes" content="dark">
+    <title>You got a card</title>
+</head>
+<body style="margin:0;padding:0;background-color:#1A1625;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#1A1625;">
+    <tr>
+        <td align="center" style="padding:32px 16px;">
+            <table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;width:100%;background-color:#1A1625;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:17px;line-height:1.6;color:#EDE8F5;">
+
+                <tr>
+                    <td align="center" style="padding:0 8px 8px;">
+                        <p style="margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:3px;color:#FEC84A;">YOU GOT A CARD</p>
+                        <p style="margin:0;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:28px;line-height:1.3;color:#EDE8F5;">{{from_name}} was thinking of you</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding:24px 8px 0;">
+                        <p style="margin:0;">Hi {{to_name}}, {{from_name}} made you a card with The Vibe Check Project. Here's a little of what they wanted you to hear:</p>
+                    </td>
+                </tr>
+
+                <!-- Their note -->
+                <tr>
+                    <td style="padding:24px 8px;">
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td align="center" style="padding:28px 26px;background-color:#241E33;border-radius:16px;border-top:4px solid #FF6B9D;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:21px;line-height:1.45;color:#EDE8F5;">
+                                    &ldquo;{{message}}&rdquo;
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Button -->
+                <tr>
+                    <td align="center" style="padding:4px 8px 28px;">
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td align="center" bgcolor="#FF6B9D" style="border-radius:999px;">
+                                    <a href="{{card_link}}" style="display:inline-block;padding:15px 34px;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:17px;font-weight:700;color:#1A1625;text-decoration:none;border-radius:999px;">Open your card ✨</a>
+                                </td>
+                            </tr>
+                        </table>
+                        <p style="margin:14px 0 0;font-size:14px;color:#C9BFDA;">Turn your sound on. Some cards come with music.</p>
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td style="padding:20px 8px 0;border-top:1px solid #3A3150;font-size:13px;line-height:1.5;color:#C9BFDA;">
+                        <p style="margin:0 0 8px;">{{from_name}} sent this card using <a href="https://thevibecheckproject.com" style="color:#C9BFDA;">thevibecheckproject.com</a>, where anyone can send a free card to someone they care about.</p>
+                        <p style="margin:0;">You won't get any more emails from us unless someone sends you another card.</p>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

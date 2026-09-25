@@ -909,6 +909,7 @@ nav {
     z-index: 1000;
     width: 44px;
     height: 44px;
+    min-height: 44px; /* styles.css sets 48px on touch buttons, which made this circle an oval */
     border-radius: 50%;
     background: rgba(26, 22, 37, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.15);

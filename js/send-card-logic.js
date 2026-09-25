@@ -1270,7 +1270,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     await emailjs.send('service_cn9gjbv', 'template_bpj8rue', {
                         to_email: recipientEmail,
-                        to_name: recipientName || 'Friend',
+                        to_name: recipientName || 'there', // "Hi there," in docs/email/emailjs-card-email.html
                         from_name: senderName || 'Someone special',
                         sender_name: senderName || 'Someone special',
                         message: noteForEmail,

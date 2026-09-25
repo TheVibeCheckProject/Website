@@ -1043,6 +1043,12 @@
     color: var(--color-primary);
 }
 
+/* styles.css gives touch-screen buttons min-height: 48px, which stretched this 28px circle
+   into an oval on phones; a 40px circle keeps it round and easier to tap */
+@media (hover: none) {
+    .sound-preview-btn { width: 40px; height: 40px; min-height: 40px; font-size: 12px; }
+}
+
 .premium-lock {
     position: absolute;
     top: -6px;

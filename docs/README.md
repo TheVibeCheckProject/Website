@@ -1,7 +1,11 @@
 # How the site works
 
+**New here (human or AI)? Read [HANDOFF.md](HANDOFF.md) first:** current state, work in progress and open decisions.
+
+- [HANDOFF.md](HANDOFF.md): current state, the card-flow redesign in progress, traps already hit
+- [REFACTOR_PLAN.md](REFACTOR_PLAN.md): remaining cleanup checklist
 - [scripts.md](scripts.md): every build script, newsletter job and Cloudflare Worker
-- [email/](email/): the welcome emails (copies of what lives in MailerLite); the daily email design is `scripts/newsletter/email.js`
+- [email/](email/): copies of every email (welcome series, 30-day check-in, EmailJS card email); the daily email design is `scripts/newsletter/email.js`
 - [marketing/](marketing/): Pinterest strategy, quickstart and pin tracker
 
 ## Pages
@@ -32,7 +36,7 @@ Limits: names 50, affirmation 280, note 500 characters. `view-card.html` decodes
 
 ## Premium
 
-$4.99 via a Stripe Payment Link. It unlocks writing your own affirmation, the Calm/Celebrate/Love/Healing collections, 14 premium backgrounds (6 animated) and 5 extra sounds, stored as `premium_unlocked` in localStorage. Until `workers/premium-verify.js` is deployed, returning with `?premium=1` unlocks without a payment check.
+$4.99 via a Stripe Payment Link. It unlocks writing your own affirmation, the Calm/Celebrate/Love/Healing collections, 14 premium backgrounds (6 animated) and 5 extra sounds, stored as `premium_unlocked` in localStorage (per browser). Unlocking is verified: the Stripe Payment Link returns to `send-card.html?premium=1&session_id=…` and `workers/premium-verify.js` (the `vibe-premium` worker) confirms the payment with Stripe first.
 
 ## Editing rules
 

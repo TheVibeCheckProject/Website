@@ -1,6 +1,7 @@
 # Initial Refactor — Remaining Plan
 
-Status as of 2026-09-24. All work so far is on the `site-overhaul` branch (20 commits, not pushed).
+Status as of 2026-09-24: the overhaul is merged and live (PRs #1 and #2); work now happens directly on `main`.
+For the overall picture and the card-flow redesign in progress, read [HANDOFF.md](HANDOFF.md) first.
 Each phase is sized to be done and reviewed on its own. Tick items off as they land.
 
 Legend: **You** = needs your accounts/decisions · **Claude** = code work I can do · Size: S (<30 min) · M (~1 hr) · L (multi-hour)
@@ -9,11 +10,10 @@ Legend: **You** = needs your accounts/decisions · **Claude** = code work I can 
 
 ## Phase 0 — Ship what's done (urgent)
 
-The daily newsletter has sent nothing since ~Sep 20. The fix only runs once it's on `main`.
-
-- [ ] **You** · S — Merge and push: `git checkout main && git merge site-overhaul && git push`
-- [ ] **You** · S — After deploy, spot-check: homepage, send a card, open it, My Vibes, one blog post
-- [ ] **You** · S — Next morning, confirm the newsletter arrived (GitHub → Actions → Daily Newsletter)
+- [x] **You** · S — Merged and pushed (2026-09-24); daily newsletter fix live
+- [x] **You** · S — Spot-checked on a phone; the issues found were fixed (sign-up popup, sound buttons, contact page, card page reveal)
+- [ ] **You** · S — Confirm the daily email arrives each morning (GitHub → Actions → Daily Newsletter)
+- [ ] **You** · S — Real Premium test purchase + refund in Stripe; paste the new EmailJS template (`docs/email/emailjs-card-email.html`)
 - [x] ~~Welcome email wallpaper links~~: wallpapers dropped (Sept 2026); the new welcome email has none
 
 ## Phase 1 — Turn on the new services (your accounts)

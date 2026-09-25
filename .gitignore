@@ -8,3 +8,6 @@ node_modules/
 scratch/
 tests/.visual-baseline.json
 assets/email/*-back-preview.png
+
+# Local prototypes (third-party CodePen code, experiments). assets/ is published, never commit these
+assets/testassetcode/

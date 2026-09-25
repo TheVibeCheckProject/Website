@@ -1,6 +1,6 @@
 # The Vibe Check Project
 
-Static site (plain HTML/CSS/JS, no framework) on GitHub Pages behind Cloudflare. See `docs/README.md` for how it works and `docs/scripts.md` for tooling.
+Static site (plain HTML/CSS/JS, no framework) on GitHub Pages behind Cloudflare. See `docs/HANDOFF.md` for the current state and work in progress, `docs/README.md` for how it works and `docs/scripts.md` for tooling.
 
 ## Rules
 - Run `npm run build` after changing pages, CSS/JS, the nav/footer partials or `data/*.json`. It regenerates hubs, listicles and message pages, stamps the shared nav/footer, sets `?v=` content hashes and rebuilds the sitemap.

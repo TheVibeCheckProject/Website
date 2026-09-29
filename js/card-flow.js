@@ -57,6 +57,10 @@
         composerInput, composerPrompt, mainCta, drawer, sendStage, sendSvg, sendSlot;
 
     const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+    // The visible page without the scrollbar. (viewW() includes a desktop scrollbar, which
+    // made the portal window 15px narrower than its gold frame: a dark strip down the right side.)
+    const viewW = () => document.documentElement.clientWidth;
+    const viewH = () => document.documentElement.clientHeight;
     const nextFrame = () => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     const lerp = (a, b, t) => a + (b - a) * t;
     const clamp01 = (t) => Math.min(1, Math.max(0, t));
@@ -245,7 +249,7 @@
     // One frame of the fly-through. e = 0: the window is exactly the card. e = 1: you're inside.
     function applyPortalFrame(e) {
         portal.e = e;
-        const vw = window.innerWidth, vh = window.innerHeight;
+        const vw = viewW(), vh = viewH();
         const r0 = portal.from;
         const w1 = vw + OVERSHOOT * 2, h1 = vh + OVERSHOOT * 2;
 
@@ -883,7 +887,7 @@
         drawer.classList.add('is-sending');            // the panel steps aside
         sendStage.classList.add('is-flying');
         // ...and the button glides to centre stage, at the size the demo plays at
-        const vw = window.innerWidth, vh = window.innerHeight;
+        const vw = viewW(), vh = viewH();
         const s = Math.min(vw / 1400, vh / 1080);
         placeSendSvg((vw - 1400 * s) / 2, (vh - 1080 * s) / 2, s);
         await wait(750 * PACE);
@@ -1107,7 +1111,7 @@
         });
 
         const onResize = () => {
-            starfield.resize(window.innerWidth, window.innerHeight);
+            starfield.resize(viewW(), viewH());
             if (isPortalMode && !isBusy) applyPortalFrame(1);
             if (!isSending && sendStage.classList.contains('is-armed')) alignToSlot();
         };
@@ -1155,7 +1159,7 @@
 
         initCardRing();
         renderOccasionRow();
-        starfield.resize(window.innerWidth, window.innerHeight);
+        starfield.resize(viewW(), viewH());
 
         // A ?message= from our own pages opens with those words first
         if (window._externalMessage) {

@@ -609,6 +609,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 showPremModal(collection ? 'collection_at_send' : 'write_own', collection ? 'This collection' : 'Writing your own words');
                 return;
             }
+            // The same for a Premium card or sound, however it was reached
+            const bgDef = backgroundDefs.find(b => b.image === selectedBackground);
+            const soundDef = SOUND_DEFS.find(s => s.id === selectedSound);
+            if (!isPremium && bgDef && bgDef.premium) {
+                showToast(`${bgDef.label} is a Premium card ✨`, '🔒');
+                showPremModal('bg_at_send', bgDef.label);
+                return;
+            }
+            if (!isPremium && soundDef && soundDef.premium) {
+                showToast(`The ${soundDef.label} sound is part of Premium ✨`, '🔒');
+                showPremModal('sound_at_send', `The ${soundDef.label} sound`);
+                return;
+            }
 
             const recipientCheck = document.getElementById('recipientName').value.trim();
             if (!recipientCheck) {

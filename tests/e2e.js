@@ -184,6 +184,16 @@ const BLOCK = /googlesyndication|clarity\.ms|workers\.dev|jsdelivr|unsplash|font
             await page.evaluate(() => document.getElementById('cardForm').requestSubmit());
             t.check(!!(await page.$('#premOverlay.open')) && !(await page.$('#successMessage.show')), 'free user sending a Premium collection quote is stopped at send');
             await page.click('#premLater');
+            // A Premium card or sound reached some other way is also stopped at send
+            await page.evaluate(() => { selectedAffirmation = freeAffirmations[0]; selectedBackground = backgroundDefs.find(b => b.premium).image; });
+            await page.evaluate(() => document.getElementById('cardForm').requestSubmit());
+            t.check(!!(await page.$('#premOverlay.open')) && !(await page.$('#successMessage.show')), 'free user sending a Premium card is stopped at send');
+            await page.click('#premLater');
+            await page.evaluate(() => { selectedBackground = backgroundDefs[0].image; selectedSound = 'harp'; });
+            await page.evaluate(() => document.getElementById('cardForm').requestSubmit());
+            t.check(!!(await page.$('#premOverlay.open')) && !(await page.$('#successMessage.show')), 'free user sending a Premium sound is stopped at send');
+            await page.click('#premLater');
+            await page.evaluate(() => { selectedSound = 'chime'; });
             await page.locator('#portalTopicsDock .flow-chip', { hasText: 'Your own' }).click();
             await page.waitForTimeout(700);
             t.check(!!(await page.$('#premOverlay.open')), 'free user: "your own words" opens the Premium sheet');

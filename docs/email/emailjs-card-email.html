@@ -5,6 +5,7 @@
   Paste into EmailJS → Email Templates → template_bpj8rue → Content → "Edit content" → code view.
   Subject: {{from_name}} sent you a little something ✨
   Variables: {{to_name}}, {{from_name}}, {{message}}, {{card_link}}.
+  The email never shows the card's affirmation or note: they're the surprise when the card opens.
   Same palette as the MailerLite emails (docs/email/welcome-email.html).
 -->
 <html lang="en">
@@ -30,17 +31,19 @@
 
                 <tr>
                     <td style="padding:24px 8px 0;">
-                        <p style="margin:0;">Hi {{to_name}}, {{from_name}} made you a card with The Vibe Check Project. Here's a little of what they wanted you to hear:</p>
+                        <p style="margin:0;">Hi {{to_name}}, {{from_name}} made you a card with The Vibe Check Project. What they wrote is sealed inside, just for you.</p>
                     </td>
                 </tr>
 
-                <!-- Their note -->
+                <!-- Sealed: never the card's words or note (they're the surprise); {{message}} is a short
+                     line from js/send-card-logic.js -->
                 <tr>
                     <td style="padding:24px 8px;">
                         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                             <tr>
                                 <td align="center" style="padding:28px 26px;background-color:#241E33;border-radius:16px;border-top:4px solid #FF6B9D;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:21px;line-height:1.45;color:#EDE8F5;">
-                                    &ldquo;{{message}}&rdquo;
+                                    <span style="display:block;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-style:normal;font-size:12px;font-weight:700;letter-spacing:3px;color:#FEC84A;margin-bottom:10px;">FOR {{to_name}}</span>
+                                    {{message}}
                                 </td>
                             </tr>
                         </table>

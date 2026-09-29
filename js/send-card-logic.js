@@ -761,10 +761,9 @@ document.addEventListener('DOMContentLoaded', () => {
             let emailSentOK = false;
             if (recipientEmail && typeof emailjs !== 'undefined') {
                 try {
-                    // Personal note rendered inside the email template's quote block
-                    const noteForEmail = (personalMessage && personalMessage.trim())
-                        ? personalMessage.trim()
-                        : (selectedAffirmation || 'Wanted to send some good vibes your way today ✨');
+                    // The email never gives away what's inside: no affirmation, no note. They're a
+                    // surprise for when the card is opened. (The EmailJS template shows {{message}}.)
+                    const noteForEmail = "It's waiting for you inside. Open it when you have a quiet moment.";
 
                     await emailjs.send('service_cn9gjbv', 'template_bpj8rue', {
                         to_email: recipientEmail,
@@ -772,8 +771,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         from_name: senderName || 'Someone special',
                         sender_name: senderName || 'Someone special',
                         message: noteForEmail,
-                        personal_message: noteForEmail,
-                        affirmation: selectedAffirmation || '',
                         card_link: cardUrl,
                         card_url: cardUrl,
                         cardUrl: cardUrl,
@@ -784,7 +781,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         view_card_url: cardUrl,
                         card_link_url: cardUrl,
                         card: cardUrl,
-                        card_data: encoded,
                         href: cardUrl
                     });
                     emailSentOK = true;

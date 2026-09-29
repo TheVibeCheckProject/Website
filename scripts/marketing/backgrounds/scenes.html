@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Scene card backgrounds</title>
+<!--
+  Painted card backgrounds (canvas, no photos): layered ridges and dunes from seeded noise,
+  star fields, moon and sun glows, soft bokeh light and a fine grain. Deterministic: the same
+  scene always paints the same picture. scenes.js renders each SCENE to an image.
+  Cards show the centre of the square (portrait crop), so keep the subject in the middle third.
+-->
+<style>html, body { margin: 0; background: #000; } canvas { display: block; }</style>
+</head>
+<body>
+<canvas id="art" width="1024" height="1024"></canvas>
+<script>
+const S = 1024;
+const ctx = document.getElementById('art').getContext('2d');
+
+// Seeded random + smooth 1D noise, so every render is identical
+function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+function noise1D(seed) {
+    const r = rng(seed), pts = Array.from({ length: 64 }, r);
+    return (x) => { const i = Math.floor(x), f = x - i, a = pts[((i % 64) + 64) % 64], b = pts[(((i + 1) % 64) + 64) % 64]; const u = f * f * (3 - 2 * f); return a + (b - a) * u; };
+}
+function fbm(n, x, oct = 4) { let v = 0, amp = 0.5, fr = 1; for (let o = 0; o < oct; o++) { v += amp * n(x * fr); amp *= 0.5; fr *= 2.1; } return v; }
+
+function sky(stops) { const g = ctx.createLinearGradient(0, 0, 0, S); stops.forEach(([o, c]) => g.addColorStop(o, c)); ctx.fillStyle = g; ctx.fillRect(0, 0, S, S); }
+const clear = (c) => c.replace(/rgba\(([^,]+),([^,]+),([^,]+),[^)]+\)/, 'rgba($1,$2,$3,0)');
+// Fades to the same colour at zero alpha (fading to black leaves a grey ring round the light)
+function glow(x, y, r, color, alpha = 1) { const g = ctx.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, color); g.addColorStop(0.35, color.replace(/,([\d.]+)\)$/, (m, a) => ',' + (a * 0.45).toFixed(3) + ')')); g.addColorStop(1, clear(color)); ctx.globalAlpha = alpha; ctx.fillStyle = g; ctx.fillRect(x - r, y - r, r * 2, r * 2); ctx.globalAlpha = 1; }
+function stars(seed, count, yMax, color = '255,255,255') {
+    const r = rng(seed);
+    for (let i = 0; i < count; i++) {
+        const x = r() * S, y = r() * yMax, s = r() < 0.94 ? r() * 1.3 + 0.3 : r() * 2.2 + 1.2, a = 0.25 + r() * 0.75 * (1 - y / yMax * 0.6);
+        ctx.fillStyle = `rgba(${color},${a})`; ctx.beginPath(); ctx.arc(x, y, s, 0, Math.PI * 2); ctx.fill();
+        if (s > 2) glow(x, y, s * 6, `rgba(${color},0.35)`);
+    }
+}
+// A ridge of hills/dunes: base height, amplitude, noise scale; filled with a vertical gradient
+function ridge(seed, base, amp, scale, fillTop, fillBottom, rim) {
+    const n = noise1D(seed);
+    ctx.beginPath(); ctx.moveTo(0, S);
+    const h = (x) => base - Math.max(0, (fbm(n, x / scale, 5) - 0.28) * 1.9) * amp;
+    for (let x = 0; x <= S; x += 4) ctx.lineTo(x, h(x));
+    ctx.lineTo(S, S); ctx.closePath();
+    const g = ctx.createLinearGradient(0, base - amp, 0, S); g.addColorStop(0, fillTop); g.addColorStop(1, fillBottom);
+    ctx.fillStyle = g; ctx.fill();
+    if (rim) { ctx.save(); ctx.clip(); ctx.strokeStyle = rim; ctx.lineWidth = 3; ctx.beginPath(); for (let x = 0; x <= S; x += 4) { const y = h(x); x ? ctx.lineTo(x, y + 1.5) : ctx.moveTo(x, y + 1.5); } ctx.stroke(); ctx.restore(); }
+}
+function haze(y, h, color) { const g = ctx.createLinearGradient(0, y - h, 0, y + h); g.addColorStop(0, clear(color)); g.addColorStop(0.5, color); g.addColorStop(1, clear(color)); ctx.fillStyle = g; ctx.fillRect(0, y - h, S, h * 2); }
+function bokeh(seed, count, colors, rMin, rMax, yMin = 0, yMax = S) {
+    const r = rng(seed);
+    for (let i = 0; i < count; i++) {
+        const x = r() * S, y = yMin + r() * (yMax - yMin), rad = rMin + r() * (rMax - rMin), c = colors[Math.floor(r() * colors.length)], a = 0.08 + r() * 0.22;
+        const g = ctx.createRadialGradient(x, y, 0, x, y, rad);
+        g.addColorStop(0, `rgba(${c},${a * 0.7})`); g.addColorStop(0.82, `rgba(${c},${a})`); g.addColorStop(0.93, `rgba(${c},${a * 1.25})`); g.addColorStop(1, `rgba(${c},0)`);
+        ctx.filter = `blur(${Math.max(0.5, rad / 30)}px)`;
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2); ctx.fill();
+        ctx.filter = 'none';
+    }
+}
+function reflection(x, y, w, h, color) {
+    const r = rng(7);
+    ctx.save(); ctx.filter = 'blur(6px)';
+    for (let i = 0; i < 26; i++) { const t = i / 26, yy = y + t * h, ww = w * (1 - t * 0.7) * (0.55 + r() * 0.45); ctx.fillStyle = color.replace('A', (0.32 * (1 - t)).toFixed(3)); ctx.fillRect(x - ww / 2 + (r() - 0.5) * 30, yy, ww, 7 + t * 10); }
+    ctx.restore();
+}
+function grain(seed, amount = 10) {
+    const img = ctx.getImageData(0, 0, S, S), d = img.data, r = rng(seed);
+    for (let i = 0; i < d.length; i += 4) { const n = (r() - 0.5) * amount; d[i] += n; d[i + 1] += n; d[i + 2] += n; }
+    ctx.putImageData(img, 0, 0);
+}
+function vignette(a = 0.45) { const g = ctx.createRadialGradient(S / 2, S / 2, S * 0.3, S / 2, S / 2, S * 0.75); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, `rgba(0,0,0,${a})`); ctx.fillStyle = g; ctx.fillRect(0, 0, S, S); }
+
+const SCENES = {
+    // Moonrise over layered violet mountains, stars, low mist
+    moonrise() {
+        sky([[0, '#0d0b24'], [0.45, '#2a1f55'], [0.7, '#5b3a78'], [1, '#1a1030']]);
+        stars(11, 520, 620);
+        glow(560, 330, 330, 'rgba(255,236,210,0.28)');
+        glow(560, 330, 120, 'rgba(255,246,228,0.55)');
+        ctx.fillStyle = '#FFF4E0'; ctx.beginPath(); ctx.arc(560, 330, 46, 0, Math.PI * 2); ctx.fill();
+        ridge(21, 640, 230, 260, '#3b2a66', '#241a45', 'rgba(255,220,240,0.18)');
+        haze(640, 60, 'rgba(210,170,230,0.18)');
+        ridge(22, 740, 200, 200, '#2a1d4d', '#181133', 'rgba(255,210,235,0.12)');
+        haze(760, 50, 'rgba(190,150,220,0.16)');
+        ridge(23, 860, 170, 160, '#1b1234', '#0e0a1f');
+        vignette(0.5); grain(1, 9);
+    },
+    // Golden-hour dunes in rose and peach under a low sun
+    'rose-dunes'() {
+        sky([[0, '#f6c9b8'], [0.35, '#f3a99a'], [0.6, '#e98c7f'], [1, '#6e3a4a']]);
+        glow(512, 470, 460, 'rgba(255,214,170,0.55)');
+        glow(512, 470, 150, 'rgba(255,240,210,0.85)');
+        ctx.fillStyle = '#FFF3DC'; ctx.beginPath(); ctx.arc(512, 470, 38, 0, Math.PI * 2); ctx.fill();
+        ridge(31, 610, 120, 320, '#e59a8a', '#b8616b', 'rgba(255,236,210,0.35)');
+        ridge(32, 720, 150, 260, '#c96f76', '#8f4658', 'rgba(255,220,200,0.3)');
+        ridge(33, 850, 170, 220, '#9a4d60', '#5a2a3c', 'rgba(255,210,190,0.22)');
+        bokeh(34, 18, ['255,240,220'], 4, 12, 380, 620);
+        vignette(0.35); grain(2, 8);
+    },
+    // Warm lantern bokeh drifting through deep plum
+    lanterns() {
+        sky([[0, '#1a0f24'], [0.5, '#3a1838'], [1, '#12081a']]);
+        glow(512, 560, 520, 'rgba(255,120,120,0.18)');
+        bokeh(42, 9, ['255,190,140', '255,160,130'], 110, 190);
+        bokeh(41, 26, ['255,196,120', '255,150,120', '255,220,170'], 30, 75, 120, 900);
+        bokeh(43, 60, ['255,230,190'], 2, 5, 100, 920);
+        glow(512, 512, 260, 'rgba(255,200,150,0.12)');
+        vignette(0.55); grain(3, 9);
+    },
+    // Still teal lake at dawn: soft sun, far hills, mirrored light
+    'still-water'() {
+        sky([[0, '#b9d6d8'], [0.4, '#f4d6c2'], [0.52, '#f7c9a8'], [0.53, '#6f9fa6'], [1, '#1e3f4a']]);
+        glow(512, 470, 420, 'rgba(255,222,190,0.55)');
+        glow(512, 470, 120, 'rgba(255,240,215,0.8)');
+        ctx.fillStyle = '#FFF6E6'; ctx.beginPath(); ctx.arc(512, 478, 32, 0, Math.PI * 2); ctx.fill();
+        ridge(51, 540, 90, 260, '#7fa6a6', '#5d8a8e');
+        reflection(512, 545, 300, 330, 'rgba(255,238,210,A)');
+        haze(545, 30, 'rgba(255,240,225,0.35)');
+        vignette(0.4); grain(4, 7);
+    },
+    // Night desert with a big star field and a faint band of the Milky Way
+    'desert-stars'() {
+        sky([[0, '#050814'], [0.55, '#12203d'], [0.75, '#2b3a63'], [1, '#0a0d1a']]);
+        ctx.save(); ctx.translate(512, 420); ctx.rotate(-0.45);
+        const g = ctx.createLinearGradient(0, -130, 0, 130); g.addColorStop(0, 'rgba(200,190,255,0)'); g.addColorStop(0.5, 'rgba(200,190,255,0.14)'); g.addColorStop(1, 'rgba(200,190,255,0)');
+        ctx.filter = 'blur(24px)';
+        ctx.fillStyle = g; ctx.fillRect(-900, -130, 1800, 260); ctx.filter = 'none'; ctx.restore();
+        stars(61, 900, 760);
+        glow(512, 780, 420, 'rgba(255,170,120,0.18)');
+        ridge(62, 820, 110, 300, '#2a2238', '#120e1c', 'rgba(255,190,150,0.2)');
+        ridge(63, 900, 90, 240, '#15111f', '#08060d');
+        vignette(0.5); grain(5, 10);
+    },
+};
+window.paint = (name) => { ctx.clearRect(0, 0, S, S); SCENES[name](); return true; };
+window.names = () => Object.keys(SCENES);
+</script>
+</body>
+</html>

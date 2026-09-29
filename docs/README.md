@@ -36,7 +36,7 @@ Limits: names 50, affirmation 280, note 500 characters. `view-card.html` decodes
 
 ## Premium
 
-$4.99 via a Stripe Payment Link. It unlocks writing your own affirmation, the Calm/Celebrate/Love/Healing collections, 14 premium backgrounds (6 animated) and 5 extra sounds, stored as `premium_unlocked` in localStorage (per browser). Unlocking is verified: the Stripe Payment Link returns to `send-card.html?premium=1&session_id=…` and `workers/premium-verify.js` (the `vibe-premium` worker) confirms the payment with Stripe first.
+$4.99 via a Stripe Payment Link. It unlocks writing your own affirmation, the Calm/Celebrate/Love/Healing collections, 17 premium backgrounds (6 animated) and 5 extra sounds, stored as `premium_unlocked` in localStorage (per browser). Unlocking is verified: the Stripe Payment Link returns to `send-card.html?premium=1&session_id=…` and `workers/premium-verify.js` (the `vibe-premium` worker) confirms the payment with Stripe first.
 
 ## Editing rules
 

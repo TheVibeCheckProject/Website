@@ -902,6 +902,25 @@
         drawer.setAttribute('aria-hidden', 'true');
         sendStage.classList.remove('is-armed');
         document.removeEventListener('keydown', drawerKeydown);
+        // The card they just made, as it will look: their card's art, their words
+        const bg = backgroundDefs[currentCardIdx];
+        const doneCard = $('doneCard');
+        doneCard.querySelectorAll('video').forEach(v => v.remove());
+        if (bg.isVideo) {
+            const v = document.createElement('video');
+            Object.assign(v, { src: bg.image, muted: true, loop: true, playsInline: true, autoplay: !reduced });
+            v.className = 'done-card-video';
+            doneCard.prepend(v);
+            doneCard.style.backgroundImage = '';
+        } else {
+            doneCard.style.backgroundImage = `url('${bg.image}')`;
+        }
+        $('doneCardWords').textContent = `“${selectedAffirmation}”`;
+        const to = (($('recipientName') || {}).value || '').trim();
+        $('doneCardTo').textContent = to ? `For ${to}` : 'For them';
+
+        // Only the success screen scrolls (the page behind it stops)
+        document.documentElement.classList.add('flow-lock');
         const success = $('flowSuccess');
         success.classList.add('is-open');
         success.setAttribute('aria-hidden', 'false');

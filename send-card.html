@@ -95,7 +95,7 @@
 
     <link rel="stylesheet" href="css/styles.css?v=af8e2c7f4d">
     <link rel="stylesheet" href="css/send-card.css?v=33c752f97c">
-    <link rel="stylesheet" href="css/card-flow.css?v=1c4e3cae60">
+    <link rel="stylesheet" href="css/card-flow.css?v=f86aff2f82">
 </head>
 
 <body data-design-concept="editorial" class="card-flow-body">
@@ -344,73 +344,52 @@
 
     <!-- After Sent! -->
     <div class="flow-success" id="flowSuccess" aria-hidden="true">
-        <div class="success-message" id="successMessage">
-            <!-- Animated checkmark -->
-            <div class="success-check-wrap">
-                <svg viewBox="0 0 24 24">
-                    <path d="M4 12l6 6L20 6" />
-                </svg>
+        <div class="done" id="successMessage">
+            <!-- The card they just made, as the recipient will see it -->
+            <div class="done-card" id="doneCard" aria-hidden="true">
+                <div class="done-card-shade"></div>
+                <p class="done-card-to" id="doneCardTo">For them</p>
+                <p class="done-card-words" id="doneCardWords"></p>
             </div>
 
-            <h2 class="success-title" id="successTitle">Card Created!</h2>
-            <p class="success-text" id="successSubtext">
-                Your personalized Vibe Check from The Vibe Check Project is ready to share.
-            </p>
+            <div class="done-body">
+                <small class="done-kicker">Card ready</small>
+                <h2 class="done-title" id="successTitle">Your card is ready</h2>
+                <p class="done-sub" id="successSubtext">Send them the link. It opens straight to your card.</p>
 
-            <!-- Email sent badge (shown conditionally via JS) -->
-            <div class="success-email-badge" id="emailSentBadge" style="display:none;">
-                ✅ Email sent to <span id="emailSentTo">them</span>
-            </div>
+                <p class="done-email" id="emailSentBadge" style="display:none;">Emailed to <span id="emailSentTo">them</span></p>
 
-            <!-- Saved to History Notice -->
-            <div class="success-history-notice" id="historySavedNotice" style="display:none;">
-                <span class="history-notice-icon">💾</span>
-                <div class="history-notice-text">
-                    <strong>Saved to My Vibes:</strong> Track and re-share this card anytime.
-                </div>
-                <a href="my-cards.html" class="history-notice-btn">
-                    My Sent Cards (<span id="historyCountBadge">1</span>) →
-                </a>
-            </div>
-
-            <!-- Share link -->
-            <div class="success-share-box">
-                <label for="cardLink">Share Link</label>
-                <div class="success-share-input-row">
+                <div class="done-link">
+                    <label class="flow-sr" for="cardLink">Card link</label>
                     <input type="text" id="cardLink" readonly>
-                    <button class="success-copy-btn" onclick="copyLink()">Copy</button>
+                    <button type="button" class="done-copy success-copy-btn" onclick="copyLink(event)">Copy link</button>
                 </div>
-                <div class="quick-share-row">
-                    <button class="quick-share-btn quick-share-btn-highlight" id="textShare" onclick="textFriend(event)">
-                        💬 Text a Friend
-                    </button>
-                    <a class="quick-share-btn" id="whatsappShare" href="https://api.whatsapp.com/send?text=I%20sent%20you%20a%20Vibe%20Check!%20%E2%9C%A8" target="_blank"
-                        rel="noopener noreferrer">WhatsApp</a>
-                    <a class="quick-share-btn" id="twitterShare" href="https://twitter.com/intent/tweet?text=I%20sent%20you%20a%20Vibe%20Check!%20%E2%9C%A8" target="_blank" rel="noopener noreferrer">𝕏
-                        Twitter</a>
-                    <button class="quick-share-btn" onclick="copyLink(event)">📋 Copy</button>
+                <div class="done-share" role="group" aria-label="Share the card">
+                    <button type="button" class="done-share-btn" id="textShare" onclick="textFriend(event)">Text it</button>
+                    <a class="done-share-btn" id="whatsappShare" href="https://api.whatsapp.com/send?text=I%20sent%20you%20a%20Vibe%20Check!%20%E2%9C%A8" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                    <a class="done-share-btn" id="twitterShare" href="https://twitter.com/intent/tweet?text=I%20sent%20you%20a%20Vibe%20Check!%20%E2%9C%A8" target="_blank" rel="noopener noreferrer">X</a>
                 </div>
-            </div>
 
-            <button class="success-send-another" onclick="location.href = location.pathname">
-                Send Another Card ✨
-            </button>
-
-            <div class="success-upsell">
-                <div class="upsell-badge">✨ Daily Morning Spark</div>
-                <h3 class="upsell-heading">Start your mornings with a moment of peace</h3>
-                <p class="upsell-sub">One gentle affirmation in your inbox every morning.</p>
-                <form class="inline-email-form" id="senderSignupForm" onsubmit="handleSenderSignup(event)">
-                    <input type="email" id="postSendEmail" placeholder="your.email@example.com" required aria-label="Email address">
-                    <button type="submit">Get Daily Vibes</button>
-                </form>
-                <p class="form-error" id="senderSignupError" role="alert" hidden></p>
-                <p class="upsell-links">
-                    ✨ <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" class="link-primary link-strong">Unlock Premium — $4.99</a>
-                    &nbsp;·&nbsp;
-                    ☕ <a href="https://ko-fi.com/thevibecheckproject?utm_source=website&utm_campaign=tip-jar"
-                        target="_blank" rel="noopener noreferrer">Buy me a coffee</a>
+                <p class="done-history" id="historySavedNotice" style="display:none;">
+                    Saved to <a href="my-cards.html">My Vibes</a> <span class="done-dot" aria-hidden="true">·</span> <span id="historyCountBadge">1 vibe saved</span>
                 </p>
+
+                <button type="button" class="done-again" onclick="location.href = location.pathname">Send another card</button>
+
+                <div class="done-spark">
+                    <p class="done-spark-title">A little calm in your inbox</p>
+                    <p class="done-spark-sub">One gentle affirmation every morning. Unsubscribe anytime.</p>
+                    <form class="done-spark-form" id="senderSignupForm" onsubmit="handleSenderSignup(event)">
+                        <input type="email" id="postSendEmail" placeholder="you@example.com" required aria-label="Email address">
+                        <button type="submit">Get daily vibes</button>
+                    </form>
+                    <p class="form-error" id="senderSignupError" role="alert" hidden></p>
+                    <p class="done-links">
+                        <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02">Unlock Premium — $4.99</a>
+                        <span aria-hidden="true">·</span>
+                        <a href="https://ko-fi.com/thevibecheckproject?utm_source=website&utm_campaign=tip-jar" target="_blank" rel="noopener noreferrer">Buy me a coffee</a>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -468,8 +447,8 @@
 
     <script src="js/core-utils.js?v=986d751688"></script>
     <script src="js/vibe-history.js?v=b1877229a4"></script>
-    <script src="js/send-card-logic.js?v=b44125d9a7"></script>
-    <script src="js/card-flow.js?v=6e1476b06c"></script>
+    <script src="js/send-card-logic.js?v=0c05cc93b4"></script>
+    <script src="js/card-flow.js?v=7b0ab1f222"></script>
 
     <!-- The saved Send button's flight: GSAP (allowed by the owner 2026-09-29) + js/send-plane.js.
          If these don't load, js/card-flow.js shows a plain Send button that still sends. -->

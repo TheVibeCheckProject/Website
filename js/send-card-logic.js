@@ -788,7 +788,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (successMsg) successMsg.classList.add('show');
             const historyNotice = document.getElementById('historySavedNotice');
             if (historyNotice) {
-                historyNotice.style.display = 'flex';
+                historyNotice.style.display = 'block';
                 const countBadge = document.getElementById('historyCountBadge');
                 if (countBadge && window.VibeHistory) {
                     const total = window.VibeHistory.getAll().length;
@@ -797,19 +797,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const cardLinkInput = document.getElementById('cardLink');
             if (cardLinkInput) cardLinkInput.value = cardUrl;
+            const readyTitle = document.getElementById('successTitle');
+            if (readyTitle) readyTitle.textContent = `Your card for ${recipientName} is ready`;
 
             if (emailSentOK) {
                 const sTitle = document.getElementById('successTitle');
-                if (sTitle) sTitle.textContent = 'Card Sent! 💚';
+                if (sTitle) sTitle.textContent = `On its way to ${recipientName}`;
                 const sSub = document.getElementById('successSubtext');
-                if (sSub) sSub.textContent = `Your Vibe Check is on its way.`;
+                if (sSub) sSub.textContent = 'We emailed them the card. You can share the link too.';
                 const eBadge = document.getElementById('emailSentBadge');
-                if (eBadge) eBadge.style.display = 'inline-flex';
+                if (eBadge) eBadge.style.display = 'block';
                 const eTo = document.getElementById('emailSentTo');
                 if (eTo) eTo.textContent = recipientName || recipientEmail;
             } else if (recipientEmail) {
                 const sSub = document.getElementById('successSubtext');
-                if (sSub) sSub.textContent = `Hmm — the email didn't go through, but your card is ready below. Copy the link to send it instead.`;
+                if (sSub) sSub.textContent = "The email didn't go through, but your card is ready. Copy the link to send it yourself.";
             }
 
             const shareText = encodeURIComponent('I sent you a Vibe Check! ✨ Open your card here:');

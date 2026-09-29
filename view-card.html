@@ -37,7 +37,7 @@
   <style id="vibe-loader-styles">
     /* Critical immediate styles */
     body {
-      background: #050505 !important;
+      background: #07050b !important;
       margin: 0;
       padding: 0;
     }
@@ -45,13 +45,12 @@
     #vibe-loader {
       position: fixed;
       inset: 0;
-      background: #050505;
+      background: #07050b;
       z-index: 10000;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
+      transition: opacity 0.6s ease, visibility 0.6s;
     }
 
     #vibe-loader.hidden {
@@ -59,54 +58,24 @@
       visibility: hidden;
     }
 
-    .loader-orb {
-      width: 140px;
-      height: 140px;
-      background: radial-gradient(circle, #cdff60 0%, transparent 70%);
-      border-radius: 50%;
-      filter: blur(25px);
-      animation: loaderPulse 2.5s ease-in-out infinite;
-      box-shadow: 0 0 50px rgba(205, 255, 96, 0.35);
+    /* Only shown once the card is opened / read (css/view-card.css animates them in) */
+    .card-message,
+    #postCardContent {
+      opacity: 0;
+      visibility: hidden;
     }
 
     .loader-text {
-      margin-top: 32px;
-      font-family: sans-serif;
-      color: #f0f0f0;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      opacity: 0.9;
-      animation: textPulse 2.5s ease-in-out infinite;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-size: 22px;
+      color: #EDE8F5;
+      animation: loaderBreathe 2.4s ease-in-out infinite;
     }
 
-    @keyframes loaderPulse {
-
-      0%,
-      100% {
-        transform: scale(1);
-        opacity: 0.4;
-        /* Removed filter:blur animation — animating blur triggers GPU repaint every frame */
-      }
-
-      50% {
-        transform: scale(1.4);
-        opacity: 1;
-      }
-    }
-
-    @keyframes textPulse {
-
-      0%,
-      100% {
-        opacity: 0.4;
-        /* Removed letter-spacing animation — letter-spacing causes layout reflow every frame */
-      }
-
-      50% {
-        opacity: 1;
-      }
+    @keyframes loaderBreathe {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.9; }
     }
   </style>
 
@@ -115,20 +84,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <link
-    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,400&family=Space+Grotesk:wght@600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Space+Grotesk:wght@600;700&display=swap"
     rel="stylesheet" media="print" onload="this.media='all'">
   <noscript>
     <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,400&family=Space+Grotesk:wght@600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Space+Grotesk:wght@600;700&display=swap"
       rel="stylesheet">
   </noscript>
 
   <!-- Async CSS to prevent blocking splash screen -->
   <link rel="stylesheet" href="css/styles.css?v=af8e2c7f4d" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="css/view-card.css?v=0cb4eff95a" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="css/view-card.css?v=d165982067" media="print" onload="this.media='all'">
   <noscript>
     <link rel="stylesheet" href="css/styles.css?v=af8e2c7f4d">
-    <link rel="stylesheet" href="css/view-card.css?v=0cb4eff95a">
+    <link rel="stylesheet" href="css/view-card.css?v=d165982067">
   </noscript>
 
   <!-- Instant Preloader (Runs before DOM is fully parsed) -->
@@ -184,93 +153,78 @@
 </head>
 
 <body data-design-concept="editorial">
-  <!-- Upper Right Sound / Volume Mute Toggle -->
-  <button class="sound-toggle-btn" id="soundToggleBtn" type="button" aria-label="Mute or unmute sound effects" title="Toggle Sound">
-    <span id="soundToggleIcon" aria-hidden="true">🔊</span>
-  </button>
-
-  <!-- Cinematic Splash Screen -->
+  <!-- Opening screen -->
   <div id="vibe-loader">
-    <div class="loader-orb"></div>
-    <div class="loader-text">Preparing your Vibe...</div>
+    <div class="loader-text">Opening your card…</div>
   </div>
 
-  <!-- Ambient background -->
-  <div class="bg-orbs"></div>
-  <div id="particles"></div>
+  <header class="rc-top">
+    <a href="index.html" class="rc-logo">✨ The Vibe Check Project</a>
+    <p class="rc-badge" id="headerBadge">Someone sent you a card</p>
+    <button class="sound-toggle-btn" id="soundToggleBtn" type="button" aria-label="Mute or unmute sound effects" title="Sound on or off">
+      <span id="soundToggleIcon" aria-hidden="true">🔊</span>
+    </button>
+  </header>
 
-  <div class="main-content">
-    <div class="content-spacer"></div>
-    <!-- Header -->
-    <div class="header-badge" id="headerBadge">✨ Someone sent you a vibe</div>
-
-    <!-- Flip Card -->
-    <div class="flip-card" id="flipCard" tabindex="0" role="button" aria-label="Open your card">
-      <div class="flip-card-inner" id="flipCardInner">
-        <div class="flip-card-face flip-card-front" id="cardFront">
-          <div class="shimmer-layer"></div>
-          <div class="front-emoji" id="frontEmoji" aria-hidden="true">💚</div>
-          <h1 class="front-label" id="frontLabel">You've got a Vibe Check!</h1>
-          <div class="front-hint">Tap to reveal your message</div>
-        </div>
-        <div class="flip-card-face flip-card-back" id="cardBack">
-          <video id="backVideo" class="card-bg-video" loop muted playsinline></video>
-          <div class="card-face-overlay"></div>
-          <div class="shimmer-layer"></div>
-          <div class="affirmation" id="cardAffirmation">You've got a vibe!</div>
-          <div class="card-message" id="cardMessage">Someone wanted to send you some good vibes ✨</div>
-          <a href="https://thevibecheckproject.com" target="_blank" rel="noopener noreferrer" class="card-powered-by">
-            Powered by ✨ The Vibe Check Project
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Post-card content (hidden until flip) -->
-    <div id="postCardContent">
-      <!-- Reciprocal Viral Bridge: Converts Recipient to Sender -->
-      <div class="viral-bridge" id="viralBridge">
-        <div class="viral-bridge-card">
-          <div class="viral-bridge-badge">💌 Reciprocal Vibe Check</div>
-          <h3 class="viral-bridge-title" id="viralBridgeTitle">Make their day right back! 💚</h3>
-          <p class="viral-bridge-subtitle" id="viralBridgeSubtitle">
-            Someone took a moment out of their day to send you good vibes. Send an instant reply card in 10 seconds:
-          </p>
-          <div class="viral-bridge-actions">
-            <a href="send-card.html" class="viral-reply-btn viral-reply-primary" id="btnReplyThankYou">
-              <span>💌</span> <span>Send a "Thank You" Vibe</span>
-            </a>
-            <a href="send-card.html" class="viral-reply-btn viral-reply-secondary" id="btnReplyEnergy">
-              <span>🫂</span> <span>Send Warm Energy Back</span>
-            </a>
+  <main class="main-content">
+    <div class="rc-card-col">
+      <!-- The card: sealed until they open it -->
+      <div class="flip-card" id="flipCard" tabindex="0" role="button" aria-label="Open your card">
+        <div class="flip-card-inner" id="flipCardInner">
+          <div class="flip-card-face flip-card-front" id="cardFront">
+            <div class="rc-front-art" aria-hidden="true"></div>
+            <div class="rc-front-shade" aria-hidden="true"></div>
+            <span class="rc-front-kicker">A Vibe Check</span>
+            <h1 class="front-label" id="frontLabel">For you</h1>
+            <p class="rc-front-from" id="frontFrom">from someone who cares</p>
+            <span class="rc-front-hint" aria-hidden="true">Tap to open</span>
+          </div>
+          <div class="flip-card-face flip-card-back" id="cardBack">
+            <video id="backVideo" class="card-bg-video" loop muted playsinline aria-hidden="true"></video>
+            <div class="rc-back-shade" aria-hidden="true"></div>
+            <p class="affirmation" id="cardAffirmation">You're doing better than you think you are.</p>
+            <p class="rc-back-sign" id="cardSign">With love</p>
           </div>
         </div>
       </div>
 
-      <p class="send-other-link"><a href="send-card.html">Or send a card to someone else →</a></p>
+      <!-- The sender's note -->
+      <div class="card-message" id="cardMessage" aria-live="polite"></div>
+    </div>
 
-      <!-- Email capture -->
+    <!-- After they've had time to read: a quiet way to send one back -->
+    <section id="postCardContent" aria-labelledby="viralBridgeTitle">
+      <div class="viral-bridge" id="viralBridge">
+        <small class="rc-kicker">Pass it on</small>
+        <h2 class="viral-bridge-title" id="viralBridgeTitle">Send one back</h2>
+        <p class="viral-bridge-subtitle" id="viralBridgeSubtitle">It takes less than a minute.</p>
+        <div class="viral-bridge-actions">
+          <a href="send-card.html" class="viral-reply-btn viral-reply-primary" id="btnReplyThankYou">Send a thank-you card</a>
+          <a href="send-card.html" class="viral-reply-btn viral-reply-secondary" id="btnReplyEnergy">Send warm energy back</a>
+        </div>
+      </div>
+
+      <p class="send-other-link"><a href="send-card.html">Send a card to someone else →</a></p>
+
       <div class="email-section">
-        <p class="eyebrow">Free Daily Vibes</p>
-        <h3>Get vibes like this in your inbox</h3>
-        <p class="subtext">A fresh affirmation delivered free every morning. No strings.</p>
+        <h3>A little calm in your inbox</h3>
+        <p class="subtext">One gentle affirmation every morning. Free, and you can unsubscribe anytime.</p>
         <form class="email-form" id="viewCardSignupForm" onsubmit="handleViewCardSignup(event)">
-          <input type="email" placeholder="your@email.com" required aria-label="Email address">
-          <button type="submit">Join Free</button>
+          <input type="email" placeholder="you@example.com" required aria-label="Email address">
+          <button type="submit">Get daily vibes</button>
         </form>
         <p class="form-error" id="viewCardEmailError" role="alert" hidden></p>
       </div>
-    </div>
+    </section>
+  </main>
 
-    <!-- Footer -->
-    <div class="page-footer">
-      Made with 💚 by <a href="index.html">The Vibe Check Project</a>
-    </div>
-  </div>
+  <footer class="page-footer">
+    Made with care by <a href="index.html">The Vibe Check Project</a>
+  </footer>
 
   <script src="js/core-utils.js?v=986d751688"></script>
   <script src="js/vibe-history.js?v=b1877229a4"></script>
-  <script src="js/view-card.js?v=d9edddb29f"></script>
+  <script src="js/view-card.js?v=ac6a838bcb"></script>
 
 </body>
 

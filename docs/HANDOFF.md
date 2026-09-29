@@ -168,7 +168,7 @@ Follows the Portal Integration Guide (Claude doc). What's in it:
 4. Only 10 free affirmations → free moods feel thin. The homepage has ~30 more to reuse.
 5. Background redesign + adding the neutral backgrounds (sage/sand/slate from
    `scripts/marketing/backgrounds/`) belong in this project. The owner will make premium backgrounds.
-6. Restyle `view-card.html` (still old lime-green) to match.
+6. ~~Restyle `view-card.html`~~ Done on the branch (2026-09-29): sealed card (its own art, blurred, "For Sam / from Alex") → one 3D flip with the sender's sound → the words + "— Alex", the note fades in under the card → after ~4 s the card glides left and a "Send Alex one back" panel appears (same style as the new success screen). No confetti/particles; older links without a background get a theme-matched gradient; reduced motion = crossfade. Same element ids as before (tests and read receipts unchanged).
 7. Build real: phones first, test on a mid-range Android, keep card links backward compatible.
 
 ## 7. Technical traps we already hit (save yourself the time)

@@ -178,6 +178,8 @@ const BLOCK = /googlesyndication|clarity\.ms|workers\.dev|jsdelivr|unsplash|font
             await page.click('#premLater');
             await enterPortal(page);
             t.check(await page.evaluate(() => selectedBackground.startsWith('assets/backgrounds/')), 'entering sets the card background path');
+            t.check(await page.evaluate(() => ['Grounding', 'Worth'].every(n => [...document.querySelectorAll('#portalTopicsDock .flow-chip')].some(c => c.textContent.includes(n)))), 'the Grounding and Worth sets are in the portal');
+            t.check(await page.evaluate(() => FREE_WORD_SETS.every(s => s.items.every(isFreeWords))), 'free users can send every Grounding and Worth phrase');
             await page.locator('#portalTopicsDock .flow-chip', { hasText: 'Calm' }).click();
             t.check((await page.textContent('#mainCta')).includes('Unlock Premium'), 'locked collection: main button offers Premium');
             await page.evaluate(() => { selectedAffirmation = 'Breathe. You are safe right now.'; });

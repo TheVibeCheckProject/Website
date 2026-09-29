@@ -125,7 +125,7 @@ with third-party CodePen code; `concept-1-portal.html`, `preview.html`, `send-de
    window showing the same art (clip-path), which grows past the screen edges while a crisp particle
    field in the card's `light` colours streaks past. "Change Card" plays it in reverse and lands
    exactly on the card. `PACE` in `js/card-flow.js` sets the speed.
-3. **Pick the words** — a vertical word wheel. Sets: General + 5 situations (free), Calm / Celebrate /
+3. **Pick the words** — a vertical word wheel. Sets: General, Grounding, Worth + 5 situations (free, 50 phrases), Calm / Celebrate /
    Love / Healing (Premium: free users can browse them, the button turns into "Unlock Premium"),
    and "Your own words" (Premium, typed in place, 200 characters). Main button: "Next →".
 4. **Names and note** (`#cardForm`, the note panel): To (required), From, note, their email, sound,
@@ -168,9 +168,11 @@ reduced motion → crossfades, no particles.
 1. **~2026-10-13: retire the old form** if nobody needed it: delete `send-card-classic.html`,
    `js/send-card-classic.js`, the `?classic=1` redirect in `send-card.html`, and its entry in
    `EXCLUDE_FILES` (`scripts/build/generate-sitemap.js`).
-2. **More free words:** free users have 30 phrases (General 10 + situations 20). The homepage has
-   ~30 more affirmations; read them for honesty, then add as a set or two (`send-card-logic.js`, and
-   they must be in `isFreeWords` so the send check lets them through).
+2. ~~More free words~~ Done 2026-09-29: **Grounding** and **Worth** sets (10 each, from the homepage's
+   affirmations; `FREE_WORD_SETS` in `send-card-logic.js`, included in `isFreeWords`). Free users now
+   have 50 phrases. Left out on purpose: "Today is proof that you're stronger than yesterday", "The hard
+   days make the good ones so much better", "You've survived 100% of your worst days so far"
+   (stat-like), and awkward/near-duplicate variants.
 3. **Premium backgrounds:** the owner plans to make more. Each needs its file in `assets/backgrounds/`
    and an entry in `backgroundDefs` with 3 `light` colours; never rename or delete existing files (old
    card links point at them). Keep the Premium sheet's "14 more backgrounds" count true.

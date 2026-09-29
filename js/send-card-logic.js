@@ -223,6 +223,41 @@ const freeAffirmations = [
     "You deserve the kindness you give to others."
 ];
 
+// More free sets (from the homepage's affirmations, read for honesty and for how they land on
+// someone having a hard time; near-duplicates of other sets left out)
+const FREE_WORD_SETS = [
+    {
+        id: 'grounding', name: 'Grounding',
+        items: [
+            "Breathe. You're exactly where you need to be.",
+            "It's okay to not have it all figured out.",
+            "You're not behind. You're on your own timeline.",
+            "Progress isn't always visible, but it's always happening.",
+            "Let today be today. You can carry tomorrow when it arrives.",
+            "You don't have to control everything; just breathe through this moment.",
+            "You are worthy of quiet moments that ask nothing of you.",
+            "Not every thought deserves your full energy today.",
+            "It's brave to ask for help.",
+            "It's okay to outgrow things that once fit you."
+        ]
+    },
+    {
+        id: 'worth', name: 'Worth',
+        items: [
+            "You are allowed to take up space.",
+            "You don't have to earn the right to be loved.",
+            "Your story isn't over. Keep going.",
+            "You are more resilient than you realize.",
+            "You bring something to this world that no one else can.",
+            "Your best is always enough.",
+            "The people who love you aren't keeping score.",
+            "Someone needs exactly the energy you bring.",
+            "You are worthy of good things happening to you.",
+            "You are capable of navigating hard things with grace."
+        ]
+    }
+];
+
 // Free "situations" (written for the portal flow): what's going on for the person you're writing to
 const SITUATIONS = [
     { id: 'went-quiet', name: 'Went Quiet' },
@@ -356,6 +391,7 @@ function isFreeWords(text) {
     const clean = cleanWords(text);
     return [
         ...freeAffirmations,
+        ...FREE_WORD_SETS.flatMap(s => s.items),
         ...situationAffirmations.map(a => a.text),
         ...occasionTemplates.map(t => t.affirmation),
         ...(window._externalMessage ? [window._externalMessage] : [])

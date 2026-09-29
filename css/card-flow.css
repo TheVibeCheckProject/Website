@@ -1426,3 +1426,19 @@ body.reduced-motion.is-leaving .portal-card:not(.is-active) { transition: opacit
     white-space: nowrap;
     border: 0;
 }
+
+/* Wider screens: the chips wrap onto a second line rather than hiding off the edge
+   (phones keep the single swipeable row) */
+@media (min-width: 769px) {
+    .portal-topics-dock {
+        flex-wrap: wrap;
+        justify-content: center;
+        row-gap: 8px;
+        max-width: 1000px;
+        overflow-x: visible;
+    }
+    .portal-topics-dock > :first-child,
+    .portal-topics-dock > :last-child { margin-left: 0; margin-right: 0; }
+    /* Free sets on the first line; the Premium collections and "Your own" on the second */
+    .portal-topics-dock > .chip-sep:first-of-type { flex-basis: 100%; height: 0; margin: 0; background: none; }
+}

@@ -32,6 +32,7 @@
     // ── Word sets: the free General set and situations, then the Premium collections ──
     const WORD_SETS = [
         { id: 'general', name: 'General', themeGroup: 'default', items: freeAffirmations.map(text => ({ text, vibe: 'General' })) },
+        ...FREE_WORD_SETS.map(s => ({ id: s.id, name: s.name, themeGroup: 'default', items: s.items.map(text => ({ text, vibe: s.name })) })),
         ...SITUATIONS.map(s => ({
             id: s.id, name: s.name, themeGroup: 'default',
             items: situationAffirmations.filter(a => a.sit === s.id).map(a => ({ text: a.text, vibe: a.vibe }))

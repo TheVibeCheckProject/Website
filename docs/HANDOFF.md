@@ -1,6 +1,6 @@
 # Handoff — current state of The Vibe Check Project
 
-Last updated: 2026-09-24. Read this first, then `CLAUDE.md` (project rules), `docs/README.md` (how the
+Last updated: 2026-09-29. Read this first, then `CLAUDE.md` (project rules), `docs/README.md` (how the
 site works) and `docs/scripts.md` (build scripts, newsletter jobs, workers).
 
 ---
@@ -17,8 +17,13 @@ site works) and `docs/scripts.md` (build scripts, newsletter jobs, workers).
 - **Show, don't just describe.** For visual work, build a preview the owner can open, and take
   screenshots at phone size (iPhone 13) and desktop to check it yourself before reporting.
 - **Browser automation uses Microsoft Edge** (Playwright `channel: 'msedge'`), never Chrome.
-- **Git:** work directly on `main` (the owner asked to stop using branches). **Pushing to `main`
-  deploys the live site** via GitHub Pages. Run `npm run build` and `npm test` before every push.
+- **Git:** work directly on `main` for normal changes (the owner asked to stop using branches).
+  **Pushing to `main` deploys the live site** via GitHub Pages. Run `npm run build` and `npm test`
+  before every push. For a big change the owner wants to test first, use a branch + draft PR (as for
+  the card flow, PR #3) and merge when they say go.
+- **The owner's laptop runs on one fan** (a failing fan was unplugged 2026-09-29; CPU turbo is capped
+  with Windows' "Maximum processor state" = 99%). Keep heavy work light: run the full browser suite
+  when it's needed, not after every small edit, and stop any local servers you start.
 - Windows machine, repo in OneDrive. Many files have CRLF line endings: when doing string
   replacements in scripts, normalise `\r\n` → `\n` first or the match silently fails.
 
@@ -82,121 +87,124 @@ daily list — with fields `name`, `recipient_checked`. Automation: joins group 
 - Sept 25 – Oct 31 were written by hand. If you generate content, keep it true and reader-focused.
 
 ### 4.4 EmailJS card email
-New dark design in `docs/email/emailjs-card-email.html` (variables `{{to_name}}`, `{{from_name}}`,
-`{{message}}`, `{{card_link}}`). Live in the EmailJS dashboard (done 2026-09-24); recipient name falls
-back to "there". Edit both copies together.
+`docs/email/emailjs-card-email.html` (variables `{{to_name}}`, `{{from_name}}`, `{{message}}`,
+`{{card_link}}`), pasted into the EmailJS dashboard; edit both copies together. **It never shows the
+card's words or note** (owner, 2026-09-29: that spoiled the card): the site sends a fixed `message`
+("It's waiting for you inside…") and the template presents the card as sealed ("FOR SAM"). Updated
+template pasted by the owner 2026-09-29.
 
-## 5. What was done in this round (Sept 2026), newest first
+## 5. What was done recently, newest first
 
-- Card page (`view-card.html`): panel under the card now waits ~4 s after the flip; only reply buttons,
-  a "send a card to someone else" link and the daily sign-up remain (share button, Premium ad removed).
-- Mobile fixes: sign-up popup fits small phones; round sound/mute buttons (a global 48px touch
-  min-height was stretching circles); contact page no longer duplicates the FAQ.
+- **2026-09-29 — the new card flow went live** (PR #3, see §6): carousel → portal → words → note →
+  paper-plane Send → success screen; recipient page redesigned to match. Same day, after launch:
+  phone keyboard no longer covers the note panel; send-time check also blocks Premium cards and
+  sounds for free users; the card email no longer reveals the words; the plane holds 3.5 s on
+  "Thanks for sending a vibe!" before the success screen.
+- Card page (`view-card.html`): panel under the card waits ~4 s after the flip (kept in the redesign).
+- Mobile fixes: sign-up popup fits small phones; round sound/mute buttons; contact page no longer
+  duplicates the FAQ.
 - 30-day check-in built end to end (own group, honest copy, email).
 - Removed the "3 free wallpapers" promise everywhere (nothing delivered them).
-- Daily email rebuilt (affirmations only, content check, new design); outage fixed (batch.json was
-  being overwritten); counter URL moved into the workflow.
+- Daily email rebuilt (affirmations only, content check, new design); outage fixed.
 - Welcome series rewritten (no invented origin story, honest Premium email).
 - Site overhaul merged (PR #1): fabricated claims, AdSense, Amazon links and the owner's name removed;
   Premium verified with Stripe; counters/read receipts; shared nav/footer; SEO; tests.
 
-## 6. In progress: the card-creation flow redesign (the big creative project)
+## 6. The card flow (live since 2026-09-29)
 
-The owner wants to reinvent `send-card.html` (the site's main flow) — "out of the box", ambitious,
-beautiful, especially on phones. Problems with today's flow: step 1 is ~4.5 phone screens tall;
-"Next" leaves you at the bottom of the next step; the sound grid overflows.
+`send-card.html` is the site's main flow. Full build notes: the **Portal Integration Guide** (a Claude
+doc); the approved prototypes are in `assets/testassetcode/` (**git-ignored on purpose**: experiments
+with third-party CodePen code; `concept-1-portal.html`, `preview.html`, `send-demo.html`).
 
-**Prototypes live in `assets/testassetcode/`. This folder is git-ignored on purpose**: `assets/` is
-published, and these are experiments (with third-party CodePen code). Don't commit it; move ideas into
-real files when building. Open the files directly in a browser.
+### 6.1 How it works
+1. **Choose a card** — 3D carousel of 21 cards: 7 free (incl. sage/sand/slate, generated by
+   `scripts/marketing/backgrounds/generate.js --site`), 14 Premium grouped at the end (6 are videos).
+   Free users see Premium cards frosted with a 🔒; arrows/swipes skip them, a tap opens the Premium
+   sheet. Quick-pick occasion chips under the title (`occasionTemplates`).
+2. **Fly into it (the portal)** — one continuous camera move: the card hands off to a full-screen
+   window showing the same art (clip-path), which grows past the screen edges while a crisp particle
+   field in the card's `light` colours streaks past. "Change Card" plays it in reverse and lands
+   exactly on the card. `PACE` in `js/card-flow.js` sets the speed.
+3. **Pick the words** — a vertical word wheel. Sets: General + 5 situations (free), Calm / Celebrate /
+   Love / Healing (Premium: free users can browse them, the button turns into "Unlock Premium"),
+   and "Your own words" (Premium, typed in place, 200 characters). Main button: "Next →".
+4. **Names and note** (`#cardForm`, the note panel): To (required), From, note, their email, sound,
+   30-day reminder. Fits above the phone keyboard (`visualViewport`).
+5. **Send** — the saved paper-plane button (`js/send-plane.js` + GSAP) flies, writes "Thanks for
+   sending a vibe!", lands as Sent!, holds 3.5 s (`SENT_HOLD_MS`), then the success screen: the card
+   they made, "Your card for Sam is ready", Copy link + share buttons, daily-email sign-up.
+6. **The recipient** (`view-card.html`) — sealed card ("For Sam / from Alex", its own art blurred)
+   → one flip with the sender's sound → the words and "— Alex", the note under the card → after ~4 s
+   a "Send Alex one back" panel. Old links without a background get a theme gradient.
 
-### 6.1 `preview.html` — the card flow (owner: "beautiful, looks amazing")
-Built on the owner's CodePen carousel (`1.html`, `2.css`, `3.js`, used unchanged; overrides in
-`preview.html`). What's in it:
-1. **3D parallax carousel of cards** (Vibe Check colours, portrait cards, side-card blur only 0.6px,
-   no auto-advance). Tap any card to bring it to the front. The background's **name** shows as a big
-   serif title under the carousel with tags (Animated / New / 🔒 Premium).
-2. **Premium vs free:** free users can never bring premium cards (animated backgrounds, Nebula) into
-   focus. Premium cards sit grouped at the end of the ring, behind frosted glass with a sweeping light
-   band and a 🔒 badge; tapping one opens a Premium sheet. A preview-only Free/Premium switch sits top-left.
-3. **Words: removed for now (2026-09-25); Portal Zoom chosen 2026-09-29, see §6.3.** The owner rejected every word picker so far: a docked
-   bottom panel with mood bubbles + 3D wheel ("don't like docked, don't like the look"), and a "sky of
-   words" with smoky floating phrases ("not fluid, laggy"). All word-picker code was taken out of
-   `preview.html`, and other experiments were moved to `assets/testassetcode/_archive/`. The owner's
-   direction: **keep only the carousel and the send button (the pieces worked on most)**. For the words,
-   wait for the owner to bring a reference effect they love (as with the carousel and send button).
-   Content to reuse later: the "situations" with quotes (e.g. "They went quiet") in the archived files.
-4. **"Choose this card"** → card lifts, flips open ("Write inside"): affirmation hero panel on the
-   chosen background, To / From / note / sound. A **mandatory glass help guide** shows on first open
-   (until "Got it"; "Don't show this again" is saved in localStorage `vc_skip_write_help`); a **?** next
-   to FROM reopens it. "Change card" flips back; "Send it" closes and floats the card away.
-5. Reduced-motion users get crossfades instead of flips/flights.
+### 6.2 Code map
+| File | Holds |
+| :--- | :--- |
+| `js/card-flow.js` | all the UI above (carousel, portal, starfield, word wheel, composer, note panel, send stage, success, Premium draft restore) |
+| `js/send-card-logic.js` | data (`backgroundDefs` + `light`, word sets, `SOUND_DEFS`, `occasionTemplates`), Premium state and sheet, `?message=` / preset / reply prefill, the send pipeline (card link, My Vibes, counter, EmailJS, reminder) |
+| `js/send-plane.js` | the approved flight (`send-wide.js`), only runs when GSAP loaded; exposes `window.SendPlane` |
+| `css/card-flow.css`, `css/view-card.css` | styles for the two pages |
+| `send-card-classic.html` + `js/send-card-classic.js` | frozen old form, reached by `send-card?classic=1` (rollback; noindex, not in the sitemap) |
 
-### 6.2 `send-demo.html` + `send-wide.js` — the Send button (owner: "Yes!!! looks amazing")
-Based on the owner's GSAP CodePen (`send.html`, `send.css`, `send.js` — originals untouched).
-Pink→gold "Send" button; press → it morphs to a circle; a paper plane flies a wide loop (up over the
-button, down the right side, back along the bottom, round the left, in from the left) with a short
-glowing ribbon and **stardust** (sparkles and hearts). Along its own path it **writes "Thanks for
-sending a vibe!"** in *Gochi Hand*, one warm-white colour (`#FFF6DC`): letters appear exactly where the
-plane is (quick fade, no bounce), **back-to-front** — the "!" comes out first on the right side where
-the plane dives straight down, so "vibe!" stands sideways (you tilt your head to read it) and the rest
-curves round the bottom. The plane levels upright on landing, becomes a ✓, "Sent!" slides out.
+**Premium rules in code:** the portal's locks are the experience; the **send-time check** in the
+submit handler is the rule: free users can't send custom words, a Premium collection's words, a
+Premium card or a Premium sound. Before Stripe the sender's place is saved
+(`localStorage.vc_flow_draft`, 24 h) and restored after the verified unlock.
 
-Owner feedback that shaped it (don't regress): wide wonky flight, trail must stay on the plane,
-✓ must land upright, letters must come OUT of the plane (not reveal/appear magically, not fly/bounce
-into place), one colour (no gradient, no rainbow letters), hard curve with the first letter near 90°.
+**Fallbacks:** no GSAP (offline/blocked) or reduced motion → plain Send button, card still sends;
+reduced motion → crossfades, no particles.
 
-### 6.3 Affirmation picker: Portal Zoom (in `assets/testassetcode/`)
-**Decision 2026-09-29: the owner chose Concept 1, Portal Zoom.** Concepts 2 (Kinetic Diptych), 3 (Camera Dolly), 4 (Orbital Halo) and 5 (Horizon Split) and the concepts hub were deleted.
-1. **Concept 1: The Portal Zoom** (`concept-1-portal.html`). **Transition rebuilt 2026-09-29** after the owner called the first slowed-down version (light burst, gold ripple, blur fades) "trash": now one continuous JS-driven camera move. The card hands off to a full-screen "window" (clip-path) showing the same artwork in the same spot (no visible swap), the window grows past the screen edges (geometric growth, gold rim carried along), a crisp canvas light field in the card's colours streaks past at mid-move and settles to a drift; then title, chips and words arrive from depth (no blur). "Change Card" plays the same move in reverse. Owner direction: comprehensive, seamless, high quality; no cheap glow/blur effects. `PACE` sets speed; particle colours are `light` in `CARDS`.
+### 6.3 Owner's design rules (don't regress)
+- **Quality bar:** one seamless, physically believable move. No glow blobs, expanding rings, blur-in
+  text or confetti (the first slowed-down portal with those was called "trash"). Take the time a move
+  needs; too fast "doesn't mean anything".
+- **Paper plane:** wide wonky flight, trail stays on the plane, letters come OUT of the plane where it
+  is (no reveal/bounce), one colour `#FFF6DC` in *Gochi Hand*, "!" first near 90°, ✓ lands upright.
+- **Carousel:** portrait cards, no auto-advance, one tap = one action (side card → front, front card → enter).
+- **Words:** rejected before: a docked bottom panel with a 3D wheel, and smoky floating "sky of words".
+- Recipient page: owner happy with it as it is (2026-09-29).
 
-**Premium + write your own in the Portal (2026-09-29, owner decisions):** word sets = both (the prototype "situations" free; Calm/Celebrate/Love/Healing from the live site as locked chips); free users tapping a locked collection **see its words** and the main button turns into "Unlock Premium — $4.99"; premium cards stay **locked in the carousel** (frosted veil + 🔒, arrows skip them, tap opens the Premium sheet; same as `preview.html`). Every word set ends with a **"Your own words"** stop: Premium users type right where the words float (same serif, 200-character limit like the live site, rotating fixed prompts, Enter/Done to finish); free users get the Premium sheet. Animated backgrounds: the card's playing video is moved into the portal, so it never jumps. A preview-only "Viewing as Free / Premium" switch is in the header; "Unlock" in the prototype just flips it. **For the real build:** before sending someone to Stripe, save their card + words (localStorage) and bring them back to that exact spot (today the payment link returns to the start of `send-card.html`); keep the send-time check that custom words need Premium.
-
-### 6.3b LIVE since 2026-09-29 (PR #3 merged, commit c80ffde)
-**Follow-up:** around 2026-10-13 (two weeks after launch), if nobody needed it, delete `send-card-classic.html`, `js/send-card-classic.js` and the `?classic=1` redirect in `send-card.html`, then remove it from `EXCLUDE_FILES` in `scripts/build/generate-sitemap.js`.
-Follows the Portal Integration Guide (Claude doc). What's in it:
-- `send-card.html` rewritten: carousel (21 cards: 7 free incl. new sage/sand/slate in `assets/backgrounds/`, 14 Premium incl. 6 videos), portal, words, note panel (`#cardForm`), Premium sheet (`#premOverlay`), the saved Send SVG, success overlay. `css/card-flow.css`, `js/card-flow.js` (UI), `js/send-plane.js` (the prototype's `send-wide.js`, unchanged inside, wrapped so it only runs when GSAP loaded; exposes `window.SendPlane`).
-- `js/send-card-logic.js` trimmed to data + Premium + sending: word sets (General + 5 situations free; Calm/Celebrate/Love/Healing Premium), `SOUND_DEFS`, `backgroundDefs` (+ `light` particle colours), paywall at send now also blocks Premium collection quotes for free users (`isFreeWords`), submit plays the plane while the card is created, success after landing (no confetti).
-- Premium return: before Stripe the place is saved in `localStorage.vc_flow_draft` (24 h), the Stripe link opens in the same tab, and after the verified unlock the page flies straight back into that card/words (`restoreDraft`). A purchase in another tab unlocks in place (`storage` event).
-- Fallbacks: no GSAP (offline/blocked) or reduced motion → plain Send button, card still sends; reduced motion → crossfades, no particles. Rollback: `send-card.html?classic=1` → `send-card-classic.html` (+ `js/send-card-classic.js`, frozen copies of the old form; noindex, excluded from the sitemap).
-- Tests: `tests/e2e.js` drives the new flow (+ section 7: taps, locks, paywall at send, own words 200-char cap, 9 card fields, saved place, no-GSAP send, classic redirect). `npm test` green (2815 static, 141 e2e). `tests/visual.js` states updated (baseline is local; re-save it).
-- Checked before launch: owner sent a real card by email (arrived fine). Still worth doing after launch: mid-range Android (fly-through measured 52 fps desktop / 72 fps phone at 4x CPU slowdown in headless Edge; real GPU should be better), a real Stripe purchase round trip, a real EmailJS send, open 3 pre-change card links, WhatsApp/iMessage link preview. Owner decisions taken as recommended: General kept, presets as chips under the title, sound row in the note panel, neutrals added, same-tab checkout, classic kept 2 weeks.
-
-**Parked idea (2026-09-29): delivery scenes.** The recipient's card arrives in a pre-rendered scene (e.g. the treasure chest from `C:\Projects\TiktokVideos`), the real card rising out of it; later the sender could pick the scene (new optional `scene` field in the card link, old links get the default). A Gemini/Veo test clip was promising but had a slow push-in, a doubled padlock and 720p; scrapped for now by the owner.
-
-### 6.4 Next steps / open decisions (ask the owner)
-1. How to pick the words: **Portal Zoom chosen** (§6.3); next is building it into the card flow.
-2. **Send animation in the flow: done in the Portal prototype (2026-09-29).** The note panel's send button is the saved `send-demo.html` SVG, lined up on a slot in the panel; `send-wide.js` is loaded unchanged and driven through its own `onBtnDown`/`onBtnUp`. On press the panel fades, the button glides to centre stage at the demo's size, then the plane flies, writes and lands as Sent!. The main button inside the portal now says **"Next →"** (owner: "Write Inside Card" was unclear).
-3. **GSAP: allowed (owner decision 2026-09-29)** for the send animation (GSAP + MorphSVG/DrawSVG/MotionPath from jsDelivr); CLAUDE.md updated.
-4. Only 10 free affirmations → free moods feel thin. The homepage has ~30 more to reuse.
-5. Background redesign + adding the neutral backgrounds (sage/sand/slate from
-   `scripts/marketing/backgrounds/`) belong in this project. The owner will make premium backgrounds.
-6. ~~Restyle `view-card.html`~~ Done on the branch (2026-09-29): sealed card (its own art, blurred, "For Sam / from Alex") → one 3D flip with the sender's sound → the words + "— Alex", the note fades in under the card → after ~4 s the card glides left and a "Send Alex one back" panel appears (same style as the new success screen). No confetti/particles; older links without a background get a theme-matched gradient; reduced motion = crossfade. Same element ids as before (tests and read receipts unchanged).
-7. Build real: phones first, test on a mid-range Android, keep card links backward compatible.
+### 6.4 Next steps
+1. **~2026-10-13: retire the old form** if nobody needed it: delete `send-card-classic.html`,
+   `js/send-card-classic.js`, the `?classic=1` redirect in `send-card.html`, and its entry in
+   `EXCLUDE_FILES` (`scripts/build/generate-sitemap.js`).
+2. **More free words:** free users have 30 phrases (General 10 + situations 20). The homepage has
+   ~30 more affirmations; read them for honesty, then add as a set or two (`send-card-logic.js`, and
+   they must be in `isFreeWords` so the send check lets them through).
+3. **Premium backgrounds:** the owner plans to make more. Each needs its file in `assets/backgrounds/`
+   and an entry in `backgroundDefs` with 3 `light` colours; never rename or delete existing files (old
+   card links point at them). Keep the Premium sheet's "14 more backgrounds" count true.
+4. **Still worth checking after launch:** a real Stripe purchase round trip (lands back on the same card
+   and words), the flow on a mid-range Android.
+5. **Parked idea — delivery scenes:** the recipient's card arrives in a pre-rendered scene (e.g. the
+   treasure chest from `C:\Projects\TiktokVideos`), the real card rising out of it; later the sender
+   could pick the scene (new optional `scene` field in the card link, old links get the default). A
+   Gemini/Veo test clip was promising but had a slow push-in, a doubled padlock and 720p.
 
 ## 7. Technical traps we already hit (save yourself the time)
 
-- **Hidden layers must be `visibility: hidden`, not just `opacity: 0`.** Concept 1 hid the word layer with opacity only; its phrases had `pointer-events: auto`, so invisible words sat on top of the cards and each click spun the hidden wheel ("takes 4 clicks"). Also: a `preserve-3d` rig's own box sits in front of cards pushed back in Z and eats their clicks, so give the rig `pointer-events: none` and the cards `auto`.
+- **Hidden layers must be `visibility: hidden`, not just `opacity: 0`.** Invisible words with `pointer-events: auto` sat on top of the cards and swallowed taps ("takes 4 clicks"). A `preserve-3d` rig's own box sits in front of cards pushed back in Z and eats their clicks: give the rig `pointer-events: none` and the cards `auto`.
 - `body { overflow-x: hidden }` is still scrollable by script (focus/scrollIntoView shifted the whole page 68px); use `overflow-x: clip`.
 - **Handing a shared element back** (portal window → card): turn the card's `transition` off for that frame before making it visible, and close the window a frame later. Otherwise it inherits the carousel's 0.75 s opacity fade and leaves an empty hole where the card should be.
-- **Full-screen effects: size them with `document.documentElement.clientWidth/Height`, not `window.innerWidth/Height`.** `innerWidth` includes a desktop scrollbar (15px on Windows), so the portal window came out 15px narrower than its gold frame (a dark strip down the right). Headless test browsers hide scrollbars; launch with `ignoreDefaultArgs: ['--hide-scrollbars']` to see it.
-- **send.js converts every `<rect>`/`<circle>` to a `<path>` at load** (`MorphSVGPlugin.convertToPath`).
-  Anything you add that must stay a rect (e.g. a clip rect you move) gets converted; use a `<path>`.
+- **Full-screen effects: size them with `document.documentElement.clientWidth/Height`, not `window.innerWidth/Height`.** `innerWidth` includes a desktop scrollbar (15px on Windows), so the portal window came out narrower than its gold frame. Headless test browsers hide scrollbars; launch with `ignoreDefaultArgs: ['--hide-scrollbars']` to see it.
+- **Phone keyboards shrink only the visual viewport,** not the page: a `position: fixed; inset: 0` panel stays full height and the keyboard covers its lower half. Size it from `window.visualViewport` (height + offsetTop) and scroll the focused field into view.
+- **A scrolling overlay over a scrolling page = two scrollbars:** lock the page (`html.flow-lock`) while the success screen is open.
+- **Test selectors:** "Calm" matches both the Calm & Safe quick pick and the Calm collection chip; scope chip lookups to `#portalTopicsDock`.
+- **send-plane.js converts every `<rect>`/`<circle>` on the page to a `<path>` at load** (`MorphSVGPlugin.convertToPath`). `send-card.html` has none elsewhere; if you add any, scope that line to `#sendStage`.
 - **MotionPathPlugin drifted** the plane ~70 units off the drawn route (rotation pivot off-centre). The
-  plane is now driven manually each frame from `route.getPointAtLength()`; set `svgOrigin` **once**
+  plane is driven manually each frame from `route.getPointAtLength()`; set `svgOrigin` **once**
   (setting it every frame makes GSAP compensate and the plane flies off-screen).
 - Element IDs become globals: a `window.vcWords` object clashed with `<div id="vcWords">`. Pick
-  global names that aren't element IDs.
+  global names that aren't element IDs. `card-flow.js` is wrapped in an IIFE and exposes only `window.CardFlow`.
 - A 3D word wheel magnifies the centre item unless the drum is pushed back by its radius (`translateZ(-R)`).
 - `styles.css` gives all touch-device buttons `min-height: 48px`; small round buttons need their own
   `min-height` or they become ovals.
-- `.vc-flip` studio overlay must be `visibility: hidden` when closed or it leaves a ghost card.
 - A tap that opens a sheet can also "click" the sheet's backdrop and close it instantly — ignore
   backdrop clicks for ~400 ms after opening.
-- Carousel captures pointers for dragging, so taps are detected manually (moved < 8px, < 500 ms)
-  and matched with `document.elementsFromPoint`.
-- Windows "Animation effects" off ⇒ browsers report `prefers-reduced-motion: reduce` ⇒ flips don't play.
+- Windows "Animation effects" off ⇒ browsers report `prefers-reduced-motion: reduce` ⇒ the flow uses crossfades.
 - Build: nav/footer partials may be CRLF; `sync-layout.js` normalises them (fixed a stray-CR bug).
+- Python edit scripts: `\b` inside a normal Python string is a backspace character, not a regex word
+  boundary (it silently broke the `?classic=1` redirect once). Use raw strings.
 
 ## 8. Commands
 
@@ -210,4 +218,4 @@ npm run test:visual  # computed-style fingerprint vs baseline (--update to accep
 
 See `docs/REFACTOR_PLAN.md` for the remaining cleanup list (split `js/script.js` by page, two odd
 articles onto `article.css`, self-host Unsplash images, review Gemini-written blog posts).
-Owner task that may still be outstanding: a real Premium test purchase + refund in Stripe.
+Owner task that may still be outstanding: a real Premium purchase round trip in Stripe (see §6.4).

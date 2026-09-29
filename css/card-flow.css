@@ -821,9 +821,14 @@ body.is-writing .portal-stepper-pill {
 /* ========================================================
    NOTE PANEL (#cardForm) + the saved Send button
    ======================================================== */
+/* Fits the part of the screen the keyboard leaves visible: js/card-flow.js sets --vv-top and
+   --vv-h from window.visualViewport (the keyboard shrinks only that, not the page) */
 .portal-drawer {
     position: fixed;
-    inset: 0;
+    left: 0;
+    right: 0;
+    top: var(--vv-top, 0px);
+    height: var(--vv-h, 100%);
     background: rgba(10, 7, 16, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -847,7 +852,7 @@ body.is-writing .portal-stepper-pill {
 .drawer-box {
     width: 100%;
     max-width: 460px;
-    max-height: calc(100svh - 32px);
+    max-height: calc(var(--vv-h, 100svh) - 24px);
     background: rgba(22, 17, 33, 0.96);
     border: 1px solid rgba(254, 200, 74, 0.3);
     border-radius: 26px;
@@ -1395,6 +1400,10 @@ body.reduced-motion.is-leaving .portal-card:not(.is-active) { transition: opacit
     .drawer-scroll { padding: 2px 18px 8px; }
     .drawer-foot { padding: 10px 18px 0; }
     .portal-drawer { padding: 12px; }
+    /* Keyboard open: use every pixel above it, fields scroll inside the panel */
+    .portal-drawer.is-typing { padding: 6px; align-items: stretch; }
+    .portal-drawer.is-typing .drawer-box { max-height: none; border-radius: 18px; }
+    .portal-drawer.is-typing .drawer-preview-pill { display: none; }
 }
 
 /* Shorter desktop windows: smaller cards so the name and arrows stay on screen */

@@ -1138,6 +1138,34 @@
         };
         window.addEventListener('resize', onResize);
         if (window.visualViewport) window.visualViewport.addEventListener('resize', onResize);
+
+        // Phone keyboards cover the page without resizing it: fit the note panel into the
+        // visible area above the keyboard, and keep the field being typed in on screen.
+        const vv = window.visualViewport;
+        const fitToKeyboard = () => {
+            if (!vv) return;
+            drawer.style.setProperty('--vv-top', `${vv.offsetTop}px`);
+            drawer.style.setProperty('--vv-h', `${vv.height}px`);
+            // More than ~150px hidden = a keyboard is up
+            drawer.classList.toggle('is-typing', window.innerHeight - vv.height > 150);
+            const f = document.activeElement;
+            if (f && drawer.contains(f) && f.matches('input, textarea')) {
+                f.scrollIntoView({ block: 'center', behavior: reduced ? 'auto' : 'smooth' });
+            }
+        };
+        if (vv) {
+            vv.addEventListener('resize', fitToKeyboard);
+            vv.addEventListener('scroll', fitToKeyboard);
+            fitToKeyboard();
+        }
+        drawer.addEventListener('focusin', (e) => {
+            if (!e.target.matches('input, textarea')) return;
+            // After the keyboard has finished opening
+            setTimeout(() => {
+                fitToKeyboard();
+                e.target.scrollIntoView({ block: 'center', behavior: reduced ? 'auto' : 'smooth' });
+            }, 350);
+        });
         drawer.querySelector('.drawer-scroll').addEventListener('scroll', () => {
             if (!isSending && sendStage.classList.contains('is-armed')) alignToSlot();
         }, { passive: true });

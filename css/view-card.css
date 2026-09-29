@@ -1,941 +1,414 @@
+/* ============================================================
+   RECIPIENT CARD (view-card.html)
+   The sealed card -> one flip -> the words, the note -> a quiet reply panel.
+   Same language as the card flow (css/card-flow.css): dark world, gold rim,
+   serif words, no confetti or glow effects.
+   ============================================================ */
+
 :root {
-    --font-display: 'Space Grotesk', sans-serif;
-    --font-body: 'Outfit', sans-serif;
-    --green: #cdff60;
-    --green-dim: rgba(205, 255, 96, 0.15);
-    --green-glow: rgba(205, 255, 96, 0.35);
-    --bg-deep: #0a0a0a;
-    --bg-card: #141414;
-    --bg-card-2: #1a1a1a;
-    --text-primary: #f0f0f0;
-    --text-secondary: #999;
-    --text-muted: #555;
-
-    /* Canonical Fluid Container Bounds */
-    --container-fluid: min(100% - 32px, 1440px);
-    --container-narrow: min(100% - 32px, 1100px);
-    --container-reader: min(100% - 32px, 760px);
+    --rc-pink: #FF6B9D;
+    --rc-gold: #FEC84A;
+    --rc-ink: #EDE8F5;
+    --rc-sub: #C9BFDA;
+    --rc-bg: #07050b;
+    --rc-card-w: 340px;
+    --rc-card-h: 500px;
 }
 
-* {
+html, body { overflow-x: clip; }
+
+body {
     margin: 0;
+    min-height: 100svh;
+    color: var(--rc-ink);
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: radial-gradient(1100px 700px at 20% -10%, #291535 0%, transparent 50%),
+                radial-gradient(900px 600px at 85% 25%, #1a1024 0%, transparent 50%),
+                var(--rc-bg) !important;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Top bar ── */
+.rc-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 24px;
+}
+.rc-logo {
+    color: var(--rc-ink);
+    text-decoration: none;
+    font: 600 14px 'Outfit', sans-serif;
+    opacity: 0.85;
+}
+.rc-logo:hover { opacity: 1; }
+.rc-badge {
+    margin: 0;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(254, 200, 74, 0.35);
+    background: rgba(12, 9, 20, 0.5);
+    font: 600 12px 'Outfit', sans-serif;
+    color: var(--rc-ink);
+    text-align: center;
+}
+.sound-toggle-btn {
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
     padding: 0;
-    box-sizing: border-box;
-}
-
-html,
-body {
-    width: 100%;
-    min-height: 100vh;
-    height: 100%;
-}
-
-body {
-    font-family: var(--font-body);
-    background: var(--bg-deep);
-    color: var(--text-primary);
-    overflow-x: hidden;
-    position: relative;
-}
-
-/* ── Ambient background orbs ── */
-.bg-orbs::before,
-.bg-orbs::after {
-    content: '';
-    position: absolute;
     border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.3;
-    animation: orbFloat 12s ease-in-out infinite alternate;
-    will-change: transform;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(12, 9, 20, 0.5);
+    color: var(--rc-ink);
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s ease, background 0.2s ease;
 }
+.sound-toggle-btn:hover { border-color: rgba(254, 200, 74, 0.5); background: rgba(255, 255, 255, 0.06); }
+.sound-toggle-btn.is-muted { opacity: 0.6; }
 
-@media (max-width: 768px) {
-    /* Disable orb animations on mobile — filter:blur(120px) + continuous transform = severe GPU drain */
-    .bg-orbs::before,
-    .bg-orbs::after {
-        animation: none;
-        display: none;
-    }
-}
-
-.bg-orbs::before {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, var(--green) 0%, transparent 70%);
-    top: -100px;
-    left: -100px;
-}
-
-.bg-orbs::after {
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, #22c55e 0%, transparent 70%);
-    bottom: -80px;
-    right: -80px;
-    animation-delay: 6s;
-}
-
-@keyframes orbFloat {
-    0% {
-        transform: translate(0, 0) scale(1);
-    }
-
-    100% {
-        transform: translate(40px, -30px) scale(1.15);
-    }
-}
-
-/* ── Floating particles ── */
-#particles {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.particle {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: var(--green);
-    border-radius: 50%;
-    opacity: 0.5;
-    animation: particleAnimation linear infinite;
-}
-
-@keyframes particleAnimation {
-    from {
-        transform: translateY(0);
-        opacity: 0;
-    }
-
-    10% {
-        opacity: 0.5;
-    }
-
-    90% {
-        opacity: 0.5;
-    }
-
-    to {
-        transform: translateY(-100vh);
-        opacity: 0;
-    }
-}
-
-/* ── Main content layout ── */
+/* ── Stage: card on the left, the reply panel on the right (desktop) ── */
 .main-content {
-    position: relative;
-    z-index: 10;
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 12px 24px 40px;
+    display: grid;
+    grid-template-columns: var(--rc-card-w) 1fr;
+    column-gap: 64px;
+    align-items: center;
+}
+.rc-card-col {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: min(100% - 32px, 1440px);
-    max-width: 1440px;
-    margin-inline: auto;
-    padding: 0 16px 60px;
-    min-height: 100vh;
+    gap: 22px;
 }
 
-.content-spacer {
-    height: min(15vh, 120px);
-}
-
-/* ── Header badge ── */
-.header-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--green-dim);
-    border: 1px solid rgba(163, 230, 53, 0.25);
-    border-radius: 50px;
-    padding: 8px 20px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--green);
-    font-family: var(--font-display);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 32px;
-    animation: fadeInDown 0.6s ease-out;
-}
-
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ── Flip card ── */
+/* ── The card ── */
 .flip-card {
-    width: 520px;
-    max-width: 90vw;
-    aspect-ratio: 3 / 2;
-    perspective: 2000px;
+    width: var(--rc-card-w);
+    height: var(--rc-card-h);
+    perspective: 1600px;
     cursor: pointer;
-    margin-bottom: 40px;
-    animation: fadeInUp 0.8s ease-out 0.2s both;
-    transform-style: preserve-3d;
+    outline: none;
+    border-radius: 26px;
 }
-
-/* Canonical Breakpoint: Desktop Grid (>=1024px) Side-by-Side Zero-CLS Reveal Stage */
-@media (min-width: 1024px) {
-    .main-content {
-        display: grid;
-        grid-template-columns: 1.15fr 0.85fr;
-        column-gap: 48px;
-        align-items: start;
-        padding-top: 100px;
-    }
-
-    .content-spacer {
-        display: none;
-    }
-
-    .header-badge {
-        grid-column: 1 / -1;
-        justify-self: center;
-        margin-bottom: 24px;
-    }
-
-    .flip-card {
-        width: 100%;
-        max-width: 640px;
-        justify-self: end;
-        position: sticky;
-        top: 100px;
-        margin-bottom: 0;
-    }
-
-    #postCardContent {
-        width: 100%;
-        max-width: 540px;
-        justify-self: start;
-    }
-
-    .page-footer {
-        grid-column: 1 / -1;
-        margin-top: 60px;
-    }
-}
-
-/* Canonical Breakpoint: Widescreen Studio (>=1440px) */
-@media (min-width: 1440px) {
-    .main-content {
-        width: min(100% - 48px, 1520px);
-        max-width: 1520px;
-        column-gap: 64px;
-    }
-
-    .flip-card {
-        max-width: 680px;
-    }
-
-    #postCardContent {
-        max-width: 580px;
-    }
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
+.flip-card:focus-visible { box-shadow: 0 0 0 2px var(--rc-bg), 0 0 0 4px var(--rc-gold); }
 .flip-card-inner {
     position: relative;
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
-    transition: transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
-    border-radius: 20px;
-    will-change: transform;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    transition: transform 1.15s cubic-bezier(0.65, 0, 0.35, 1);
 }
-
-.flip-card:hover .flip-card-inner {
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
-}
-
-.flip-card.flipped .flip-card-inner {
-    transform: rotateY(180deg);
-}
-
+.flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
 .flip-card-face {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    inset: 0;
+    border-radius: 26px;
+    overflow: hidden;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-    border-radius: 20px;
+    border: 1px solid rgba(254, 200, 74, 0.6);
+    box-shadow: 0 40px 90px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 0, 0, 0.2);
+    background: #120d1c center / cover no-repeat;
+}
+
+/* Front: the sealed card. Its own artwork, softened, with who it's for */
+.flip-card-front {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    transform: translateZ(0);
-}
-
-/* Front face */
-.flip-card-front {
-    background: var(--bg-card);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-/* Occasion themes (card.themeGroup). Applied to the front face, and to the back face
-   when the card has no background image. */
-.flip-card-face.theme-birthday {
-    background: radial-gradient(120% 90% at 50% 0%, rgba(251, 191, 36, 0.28), transparent 60%),
-        linear-gradient(145deg, #2a1608, #3b1230);
-}
-
-.flip-card-face.theme-anxiety {
-    background: radial-gradient(120% 90% at 50% 0%, rgba(96, 165, 250, 0.28), transparent 60%),
-        linear-gradient(145deg, #0b1a2e, #111a3a);
-}
-
-.flip-card-face.theme-celebrate {
-    background: radial-gradient(120% 90% at 50% 0%, rgba(250, 204, 21, 0.26), transparent 60%),
-        linear-gradient(145deg, #1f1a06, #2b1224);
-}
-
-.flip-card-face.theme-love {
-    background: radial-gradient(120% 90% at 50% 0%, rgba(244, 114, 182, 0.3), transparent 60%),
-        linear-gradient(145deg, #2a0c1c, #1e0f2a);
-}
-
-.flip-card-face.theme-healing {
-    background: radial-gradient(120% 90% at 50% 0%, rgba(167, 139, 250, 0.28), transparent 60%),
-        linear-gradient(145deg, #15122b, #0f1d24);
-}
-
-.front-emoji {
-    font-size: 80px;
-    margin-bottom: 20px;
-    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.4));
-}
-
-.front-label {
-    font-family: var(--font-display);
-    font-size: clamp(20px, 4vw, 24px);
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: 0.5px;
-}
-
-.front-hint {
-    margin-top: 16px;
-    font-size: 13px;
-    color: var(--text-secondary);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    opacity: 0.6;
-}
-
-/* Back face */
-.flip-card-back {
-    background: var(--bg-card-2);
-    transform: rotateY(180deg);
-    padding: 40px;
     text-align: center;
+    padding: 36px 28px;
 }
-
-/* Card content */
-.affirmation {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(28px, 6vw, 42px);
-    line-height: 1.25;
-    color: var(--text-primary);
-    margin-bottom: 24px;
-    max-width: 90%;
+.rc-front-art {
+    position: absolute;
+    inset: -30px;
+    background: inherit;
+    background-size: cover;
+    background-position: center;
+    filter: blur(18px) saturate(1.1);
+    transform: scale(1.1);
 }
-
-.card-message {
-    font-family: var(--font-body);
-    font-size: clamp(15px, 3.5vw, 17px);
-    line-height: 1.6;
-    color: var(--text-secondary);
-    max-width: 80%;
-}
-
-/* Shimmer overlay */
-.shimmer-layer {
+.rc-front-shade {
     position: absolute;
     inset: 0;
-    pointer-events: none;
-    z-index: 10;
-    overflow: hidden;
-    border-radius: 20px;
+    background: radial-gradient(ellipse at 50% 45%, rgba(10, 7, 16, 0.35), rgba(10, 7, 16, 0.78));
 }
-
-.shimmer-layer::after {
-    content: '';
+.rc-front-kicker,
+.front-label,
+.rc-front-from,
+.rc-front-hint { position: relative; }
+.rc-front-kicker {
+    font: 700 10px 'Space Grotesk', sans-serif;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rc-gold);
+}
+.front-label {
+    margin: 10px 0 6px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 44px;
+    line-height: 1.05;
+    color: #fff;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+    overflow-wrap: anywhere;
+}
+.rc-front-from {
+    margin: 0;
+    font-size: 15px;
+    color: var(--rc-sub);
+    overflow-wrap: anywhere;
+}
+.rc-front-hint {
     position: absolute;
-    top: -50%;
-    left: -150%;
-    width: 50%;
-    height: 200%;
-    background: linear-gradient(to right,
-            rgba(255, 255, 255, 0) 0%,
-            rgba(255, 255, 255, 0.8) 50%,
-            rgba(255, 255, 255, 0) 100%);
-    transform: rotate(25deg);
-    filter: blur(5px);
-}
-
-.flip-card-inner.flipping .shimmer-layer::after {
-    animation: glintSweep 0.9s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes glintSweep {
-    0% {
-        left: -150%;
-        opacity: 0;
-    }
-
-    20% {
-        opacity: 1;
-    }
-
-    100% {
-        left: 250%;
-        opacity: 0;
-    }
-}
-
-.flip-card-front::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
-    opacity: 0.5;
-}
-
-.has-bg {
-    background-size: cover !important;
-    background-position: center !important;
-}
-
-.has-bg::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 0;
-}
-
-.has-bg * {
-    position: relative;
-    z-index: 1;
-}
-
-/* Keep text legible over light pastel photo/video backgrounds */
-.has-bg .affirmation {
-    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
-}
-
-.has-bg .card-message {
-    color: rgba(255, 255, 255, 0.92);
-    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
-}
-
-video.card-bg-video {
-    position: absolute;
-    top: 50%;
     left: 50%;
+    bottom: 30px;
+    translate: -50% 0;
+    padding: 9px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(254, 200, 74, 0.55);
+    background: rgba(12, 9, 20, 0.45);
+    font: 600 13px 'Outfit', sans-serif;
+    color: #fff;
+    white-space: nowrap;
+    animation: rcHint 2.8s ease-in-out infinite;
+}
+@keyframes rcHint {
+    0%, 100% { opacity: 0.75; }
+    50% { opacity: 1; }
+}
+
+/* Back: the artwork, clear, and the words */
+.flip-card-back {
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 28px 26px 30px;
+}
+.card-bg-video {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transform: translate(-50%, -50%);
-    z-index: -1;
+    display: none;
 }
-
-/* ── Post-card CTAs ── */
-#postCardContent {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: opacity, transform;
-    width: 100%;
-    max-width: 520px;
-    pointer-events: none;
+.flip-card-back.has-video .card-bg-video { display: block; }
+.rc-back-shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(12, 8, 20, 0.1) 0%, rgba(12, 8, 20, 0.2) 40%, rgba(12, 8, 20, 0.82) 100%);
 }
-
-.is-revealed #postCardContent {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-/* Inline form error (mirrors homepage pattern) */
-.form-error {
-    margin: 12px auto 0;
-    max-width: 400px;
-    padding: 10px 14px;
-    background: #7f1d1d;
-    color: #fecaca;
-    border: 1px solid #ef4444;
-    border-radius: 10px;
-    font-size: 14px;
+.affirmation,
+.rc-back-sign { position: relative; margin: 0; }
+.affirmation {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
     font-weight: 600;
-    text-align: center;
+    font-size: 28px;
+    line-height: 1.28;
+    color: #fff;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.75);
+    overflow-wrap: anywhere;
 }
-
-/* ── Reciprocal Viral Bridge ── */
-.viral-bridge {
-    margin-top: 24px;
-    margin-bottom: 24px;
-    width: 100%;
-}
-
-.viral-bridge-card {
-    background: linear-gradient(135deg, rgba(20, 20, 25, 0.95), rgba(30, 25, 40, 0.95));
-    border: 1px solid rgba(163, 230, 53, 0.35);
-    border-radius: 20px;
-    padding: 24px 20px;
-    text-align: center;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(163, 230, 53, 0.08);
-}
-
-.viral-bridge-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 14px;
-    background: rgba(163, 230, 53, 0.15);
-    border: 1px solid rgba(163, 230, 53, 0.3);
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--green);
+.rc-back-sign {
+    margin-top: 12px;
+    font: 700 11px 'Space Grotesk', sans-serif;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 12px;
+    color: var(--rc-gold);
 }
 
-.viral-bridge-title {
-    font-family: var(--font-display);
-    font-size: 20px;
-    font-weight: 700;
-    color: #ffffff;
+/* Cards without a background (older links): a gradient matched to the words' theme */
+.flip-card-face.theme-default { background-image: linear-gradient(160deg, #3b2350 0%, #7a3b6b 55%, #c2607a 100%); }
+.flip-card-face.theme-birthday,
+.flip-card-face.theme-celebrate { background-image: linear-gradient(160deg, #4a2a1a 0%, #b3662a 55%, #f0b04a 100%); }
+.flip-card-face.theme-anxiety { background-image: linear-gradient(160deg, #13233f 0%, #2d5b8f 55%, #5fb3d6 100%); }
+.flip-card-face.theme-love { background-image: linear-gradient(160deg, #3d1430 0%, #a02f63 55%, #f07a9c 100%); }
+.flip-card-face.theme-healing { background-image: linear-gradient(160deg, #1d1a44 0%, #4b3f9a 55%, #9a8ce0 100%); }
+
+/* ── The sender's note, under the card ── */
+.card-message {
+    width: var(--rc-card-w);
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity 0.6s ease, transform 0.6s ease, visibility 0s linear 0.6s;
+}
+body.is-open .card-message {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity 0.9s ease 0.9s, transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.9s;
+}
+.rc-note-from {
+    display: block;
+    font: 700 10px 'Space Grotesk', sans-serif;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--rc-gold);
     margin-bottom: 6px;
 }
-
-.viral-bridge-subtitle {
-    font-size: 13.5px;
-    color: var(--text-secondary);
-    line-height: 1.5;
-    margin-bottom: 18px;
-    max-width: 420px;
-    margin-left: auto;
-    margin-right: auto;
+.rc-note-text {
+    margin: 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 21px;
+    line-height: 1.4;
+    color: var(--rc-ink);
+    overflow-wrap: anywhere;
 }
 
-.viral-bridge-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+/* ── Reply panel (after they've had time to read) ── */
+#postCardContent {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(14px);
+    transition: opacity 0.9s ease, transform 1s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 1s;
 }
-
+body.is-revealed #postCardContent {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity 0.9s ease 0.3s, transform 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+}
+.rc-kicker {
+    font: 700 11px 'Space Grotesk', sans-serif;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rc-gold);
+}
+.viral-bridge-title {
+    margin: 6px 0 8px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(32px, 4vw, 44px);
+    line-height: 1.05;
+    color: #fff;
+    overflow-wrap: anywhere;
+}
+.viral-bridge-subtitle { margin: 0 0 22px; font-size: 16px; line-height: 1.5; color: var(--rc-sub); max-width: 460px; }
+.viral-bridge-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .viral-reply-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 13px 20px;
-    border-radius: 12px;
-    font-family: var(--font-display);
-    font-size: 14.5px;
-    font-weight: 700;
-    text-decoration: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
-}
-
-.viral-reply-primary {
-    background: linear-gradient(135deg, var(--green), #a3e635);
-    color: #0a0a0a;
-    box-shadow: 0 4px 16px rgba(163, 230, 53, 0.25);
-}
-
-.viral-reply-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(163, 230, 53, 0.4);
-}
-
-.viral-reply-secondary {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #f0f0f0;
-}
-
-.viral-reply-secondary:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
-}
-
-.btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 14px 28px;
-    border-radius: 12px;
-    font-family: var(--font-display);
-    font-size: 15px;
+    gap: 6px;
+    min-height: 46px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font: 600 15px 'Outfit', sans-serif;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.viral-reply-primary {
+    background: linear-gradient(135deg, var(--rc-pink), var(--rc-gold));
+    color: #1A1625;
     font-weight: 700;
-    text-decoration: none;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(255, 107, 157, 0.35);
 }
-
-.btn-primary {
-    background: linear-gradient(135deg, var(--green), #b4eb34);
-    color: #0a0a0a;
-    box-shadow: 0 4px 20px rgba(163, 230, 53, 0.3);
+.viral-reply-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(255, 107, 157, 0.5); }
+.viral-reply-secondary {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: var(--rc-ink);
 }
-
-.btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(163, 230, 53, 0.5);
-}
-
-.btn-outline {
-    background: transparent;
-    color: var(--text-primary);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.btn-outline:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.3);
-}
-
-/* ── Navigation ── */
-nav {
-    position: absolute;
-    top: 30px;
-    left: 0;
-    width: 100%;
-    z-index: 100;
-}
-
-.nav-container {
-    width: min(100% - 32px, 1440px);
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 0 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nav-logo {
-    font-family: var(--font-display);
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text-primary);
-    text-decoration: none;
-    letter-spacing: -0.5px;
-}
-
-.nav-links {
-    display: flex;
-    gap: 24px;
-    list-style: none;
-}
-
-.nav-links a {
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    transition: color 0.2s;
-}
-
-.nav-links a:hover {
-    color: var(--green);
-}
-
-.nav-crisis-badge {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    background: rgba(255, 68, 68, 0.12);
-    border: 1px solid rgba(255, 68, 68, 0.2);
-    color: #ff6666 !important;
-    padding: 6px 14px;
-    border-radius: 50px;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-}
-
-/* ── Footer ── */
-
-.copyright {
-    color: var(--text-muted);
-    font-size: 12px;
-}
-
-/* Confetti */
-.confetti-piece {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    top: -10px;
-    z-index: 9999;
-    border-radius: 2px;
-    animation: confettiFall linear forwards;
-}
-
-@keyframes confettiFall {
-    0% {
-        transform: translateY(0) rotate(0);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(100vh) rotate(720deg) scale(0.3);
-        opacity: 0;
-    }
-}
-
-/* ── Email capture ── */
-/* Quiet link under the reply buttons (view-card.html) */
-.send-other-link {
-    margin: 20px 0 0;
-    text-align: center;
-    font-size: 14px;
-}
-
-.send-other-link a {
-    color: var(--text-secondary);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-}
-
-.send-other-link a:hover {
-    color: var(--text-primary);
-}
+.viral-reply-secondary:hover { border-color: rgba(254, 200, 74, 0.5); background: rgba(255, 255, 255, 0.05); color: #fff; }
+.send-other-link { margin: 16px 0 0; font-size: 14px; }
+.send-other-link a { color: var(--rc-gold); text-decoration: none; font-weight: 600; }
+.send-other-link a:hover { color: #fff; }
 
 .email-section {
-    margin-top: 40px;
-    padding: 32px 24px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    text-align: center;
-    width: 100%;
+    max-width: 480px;
+    margin-top: 34px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
-
-.email-section .eyebrow {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--green);
-    margin-bottom: 8px;
-    font-weight: 700;
-}
-
-.email-section h3 {
-    font-family: var(--font-display);
-    font-size: 20px;
-    margin-bottom: 12px;
-    color: var(--text-primary);
-}
-
-.email-section .subtext {
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin-bottom: 24px;
-}
-
-.email-form {
-    display: flex;
-    gap: 8px;
-    max-width: 400px;
-    margin: 0 auto;
-}
-
+.email-section h3 { margin: 0; font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600; font-size: 22px; color: #fff; }
+.email-section .subtext { margin: 4px 0 12px; font-size: 14px; color: var(--rc-sub); }
+.email-form { display: flex; gap: 8px; }
 .email-form input {
-    flex: 1;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(163, 230, 53, 0.2);
-    border-radius: 10px;
-    padding: 12px 16px;
-    color: white;
-    font-family: var(--font-body);
-    font-size: 14px;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 10px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font: 400 16px 'Outfit', sans-serif;
     outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
-
-.email-form input:focus {
-    border-color: var(--green);
-    box-shadow: 0 0 0 4px rgba(205, 255, 96, 0.1);
-    background: rgba(0, 0, 0, 0.5);
-}
-
+.email-form input:focus { border-color: var(--rc-gold); }
 .email-form button {
-    background: linear-gradient(135deg, var(--green), #b4eb34);
-    color: #0a0a0a;
-    border: none;
-    border-radius: 10px;
-    padding: 12px 20px;
-    font-size: 14px;
-    font-weight: 700;
+    flex-shrink: 0;
+    min-height: 42px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(254, 200, 74, 0.6);
+    background: rgba(254, 200, 74, 0.1);
+    color: #fff;
+    font: 600 14px 'Outfit', sans-serif;
     cursor: pointer;
-    font-family: var(--font-display);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 12px rgba(205, 255, 96, 0.2);
+}
+.email-form button:hover { background: rgba(254, 200, 74, 0.2); }
+.email-success { margin: 0; color: var(--rc-ink); font-size: 15px; }
+.form-error { margin: 8px 0 0; font-size: 13px; color: var(--rc-pink); }
+
+.page-footer {
+    background: none;
+    border: 0;
+    margin: 0;
+    padding: 20px 24px 28px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--rc-sub);
+}
+.page-footer a { color: var(--rc-sub); text-decoration: underline; text-underline-offset: 3px; }
+.page-footer a:hover { color: #fff; }
+
+/* ── Phones and narrow screens: one column ── */
+@media (max-width: 900px) {
+    :root { --rc-card-w: 290px; --rc-card-h: 427px; }
+    .rc-top { padding: 14px 16px; }
+    .rc-logo { display: none; }
+    .rc-badge { flex: 1 1 auto; font-size: 12px; }
+    .main-content {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        row-gap: 36px;
+        padding: 8px 16px 32px;
+    }
+    .front-label { font-size: 38px; }
+    .affirmation { font-size: 24px; }
+    #postCardContent { text-align: center; }
+    .viral-bridge-subtitle { margin-left: auto; margin-right: auto; }
+    .viral-bridge-actions { justify-content: center; }
+    .email-section { margin-left: auto; margin-right: auto; text-align: left; }
+    /* Nothing below the card until it's been read, so the page doesn't scroll early */
+    body:not(.is-revealed) #postCardContent { display: none; }
 }
 
-.email-form button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(205, 255, 96, 0.4);
-}
-
-@media (max-width: 480px) {
-    .email-form {
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .email-form button {
-        width: 100%;
-        padding: 14px;
-    }
-
-    .email-form input {
-        padding: 14px;
-    }
-}
-
-/* ========================================================
-   CANONICAL TOUCH VS. POINTER & SAFE-AREA STANDARDS
-   ======================================================== */
-
-/* ── Mobile Phone Sticky Docks Safe-Area Insets (<768px) ── */
-@media (max-width: 767px) {
-    .viral-bridge-actions,
-    .page-footer {
-        padding-bottom: calc(12px + env(safe-area-inset-bottom, 16px));
-    }
-}
-
-/* ── Touch Devices: Active State Compression & Stuck-Hover Elimination ── */
-@media (hover: none) {
-    .flip-card:hover .flip-card-inner {
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important;
-    }
-
-    .btn-primary:hover,
-    .btn-outline:hover,
-    .viral-reply-btn:hover,
-    .email-form button:hover {
-        transform: none !important;
-    }
-
-    button:active,
-    .btn:active,
-    .btn-primary:active,
-    .btn-outline:active,
-    .viral-reply-btn:active,
-    .flip-card:active {
-        transform: scale(0.97) !important;
-        transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    }
-}
-
-/* ── Precision Mouse Standards: 3D Tilts & Hover Elevations ── */
-@media (hover: hover) and (pointer: fine) {
-    .flip-card:hover .flip-card-inner {
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
-    }
-
-    .btn-primary:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(163, 230, 53, 0.5);
-    }
-
-    .viral-reply-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(163, 230, 53, 0.4);
-    }
-
-    .viral-reply-secondary:hover {
-        background: rgba(255, 255, 255, 0.12);
-        border-color: rgba(255, 255, 255, 0.3);
-        transform: translateY(-2px);
-    }
-}
-
-/* ── Floating Speaker Audio / Mute Toggle ── */
-.sound-toggle-btn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-    width: 44px;
-    height: 44px;
-    min-height: 44px; /* styles.css sets 48px on touch buttons, which made this circle an oval */
-    border-radius: 50%;
-    background: rgba(26, 22, 37, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    color: var(--text-primary, #fff);
-    font-size: 1.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease, border-color 0.2s ease;
-    touch-action: manipulation;
-}
-
-.sound-toggle-btn:hover {
-    transform: scale(1.08);
-    border-color: rgba(255, 107, 157, 0.5);
-    background: rgba(45, 36, 56, 0.95);
-    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.25);
-}
-
-.sound-toggle-btn:active {
-    transform: scale(0.94);
-}
-
-.sound-toggle-btn.is-muted {
-    border-color: rgba(239, 68, 68, 0.4);
-    background: rgba(45, 20, 30, 0.85);
-}
-/* ── Card footer link, premium upsell, signup confirmation (were inline styles) ── */
-.flip-card-back .card-powered-by {
-    position: absolute;
-    bottom: 10px;
-    font-size: 10px;
-    color: rgba(255, 255, 255, 0.3);
-    text-decoration: none;
-    letter-spacing: 0.5px;
-    font-family: var(--font-body);
-}
-
-.email-success {
-    color: var(--green);
-    font-size: 16px;
-    font-weight: 700;
+/* ── Reduced motion: a crossfade instead of the flip ── */
+@media (prefers-reduced-motion: reduce) {
+    .flip-card-inner { transition: none; }
+    .flip-card.flipped .flip-card-inner { transform: none; }
+    .flip-card-back { transform: none; opacity: 0; transition: opacity 0.4s ease; }
+    .flip-card.flipped .flip-card-back { opacity: 1; }
+    .flip-card.flipped .flip-card-front { opacity: 0; transition: opacity 0.4s ease; }
+    .rc-front-hint { animation: none; }
 }

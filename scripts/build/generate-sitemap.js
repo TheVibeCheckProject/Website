@@ -15,6 +15,7 @@ const EXCLUDE_FILES = [
     'readme.md',
     'CNAME',
     'view-card.html',
+    'send-card-classic.html',
     'my-cards.html'
 ];
 

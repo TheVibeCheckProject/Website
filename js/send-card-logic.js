@@ -1,3 +1,7 @@
+// Data, Premium state and sending for send-card.html. The card-making UI (carousel,
+// portal, words, note panel, Send flight) lives in js/card-flow.js and writes the
+// selected* variables below; the submit handler at the bottom builds and sends the card.
+
 // ── Safe storage (Safari private mode / blocked storage throws on access) ──
 function storageGet(key) {
     try { return window.localStorage.getItem(key); } catch (e) { return null; }
@@ -7,10 +11,12 @@ function storageSet(key, val) {
 }
 
 // ── Global State ──
-const isPremium = storageGet('premium_unlocked') === '1';
+// let, not const: an older tab unlocks in place when a purchase finishes in another tab
+let isPremium = storageGet('premium_unlocked') === '1';
 
 // Payload limits (also enforced by view-card.html; see docs/README.md "Card links")
 const LIMITS = { name: 50, affirmation: 280, note: 500 };
+const WRITE_OWN_MAX = 200;
 const CHECKIN_GROUP_ID = '199536380251997858'; // MailerLite group "30-Day Check-ins"
 
 let selectedAffirmation = '';
@@ -18,62 +24,12 @@ let selectedSound = 'chime';
 let selectedThemeGroup = 'default';
 let selectedBackground = '';
 
-// ── Motion Accessibility State (Reduced Motion) ──
-let isReducedMotion = (function () {
+// Reduced motion: the visitor's system setting, or the Motion toggle saved by the classic form
+const isReducedMotion = (function () {
     const stored = storageGet('vibe_reduced_motion');
     if (stored !== null) return stored === '1';
-    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 })();
-
-function applyMotionPreference(reduced, persist = true) {
-    isReducedMotion = reduced;
-    if (persist) {
-        storageSet('vibe_reduced_motion', reduced ? '1' : '0');
-    }
-    document.documentElement.classList.toggle('reduce-motion', reduced);
-
-    const icon = document.getElementById('motionToggleIcon');
-    const text = document.getElementById('motionToggleText');
-    const btn = document.getElementById('motionToggleBtn');
-
-    if (icon) icon.textContent = reduced ? '⏸' : '✨';
-    if (text) text.textContent = reduced ? 'Motion Off' : 'Motion On';
-    if (btn) {
-        btn.classList.toggle('motion-reduced', reduced);
-        btn.setAttribute('aria-pressed', reduced ? 'true' : 'false');
-        btn.title = reduced ? 'Reduced motion enabled (click for full animations)' : 'Full motion enabled (click to reduce motion)';
-    }
-
-    const videoEl = document.getElementById('previewVideo');
-    if (videoEl) {
-        if (reduced) videoEl.pause();
-        else if (videoEl.style.display !== 'none') videoEl.play().catch(() => { });
-    }
-
-    if (window.VibeTelemetry && persist) {
-        window.VibeTelemetry.track('motion_preference_toggled', { reduced_motion: reduced });
-    }
-}
-
-function initMotionControl() {
-    const btn = document.getElementById('motionToggleBtn');
-    if (btn) {
-        btn.addEventListener('click', () => {
-            applyMotionPreference(!isReducedMotion, true);
-        });
-    }
-
-    try {
-        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-        mediaQuery.addEventListener('change', (e) => {
-            if (storageGet('vibe_reduced_motion') === null) {
-                applyMotionPreference(e.matches, false);
-            }
-        });
-    } catch (e) { }
-
-    applyMotionPreference(isReducedMotion, false);
-}
 
 // ── Occasion Templates / Presets (1-Click Vibe, Look & Sound) ──
 const occasionTemplates = [
@@ -151,25 +107,6 @@ const occasionTemplates = [
     }
 ];
 
-let activeOccasionTemplate = null;
-
-function renderOccasionChips() {
-    const wrap = document.getElementById('occasionChips');
-    if (!wrap) return;
-    wrap.innerHTML = '';
-
-    occasionTemplates.forEach(t => {
-        const chip = document.createElement('button');
-        chip.type = 'button';
-        chip.className = 'occasion-chip' + (activeOccasionTemplate === t.id ? ' active' : '');
-        chip.setAttribute('aria-pressed', activeOccasionTemplate === t.id ? 'true' : 'false');
-        chip.dataset.occasionId = t.id;
-        chip.innerHTML = `<span class="occasion-chip-emoji">${t.emoji}</span> <span class="occasion-chip-title">${t.title}</span>`;
-        chip.onclick = () => applyOccasionTemplate(t.id);
-        wrap.appendChild(chip);
-    });
-}
-
 // ?preset= aliases
 const OCCASION_ALIASES = {
     hard_day: 'tough_day', bad_day: 'tough_day', breakup: 'tough_day',
@@ -179,68 +116,32 @@ const OCCASION_ALIASES = {
     grief: 'healing', loss: 'healing', illness: 'healing', sympathy: 'healing'
 };
 
-function applyOccasionTemplate(templateId, isAutoFromUrl = false) {
+function findOccasionTemplate(templateId) {
     let resolvedId = (templateId || '').toLowerCase().replace(/-/g, '_');
     resolvedId = OCCASION_ALIASES[resolvedId] || resolvedId;
+    return occasionTemplates.find(t => t.id === resolvedId) || null;
+}
 
-    const template = occasionTemplates.find(t => t.id === resolvedId);
+// A preset picks the card, the words and the sound; the portal flow shows them
+function applyOccasionTemplate(templateId, isAutoFromUrl = false) {
+    const template = findOccasionTemplate(templateId);
     if (!template) return;
-
-    activeOccasionTemplate = resolvedId;
-    renderOccasionChips();
-
-    // 1. Set Affirmation
-    selectedAffirmation = template.affirmation;
-    selectedThemeGroup = template.themeGroup || 'default';
-    const previewAff = document.getElementById('previewAffirmation');
-    if (previewAff) previewAff.textContent = `"${template.affirmation}"`;
-
-    const writeCard = document.getElementById('writeOwnCard');
-    const writeExpanded = document.getElementById('writeOwnExpanded');
-    if (writeCard) writeCard.style.display = '';
-    if (writeExpanded) writeExpanded.classList.remove('visible');
-
-    if (pickerEl) {
-        pickerEl.querySelectorAll('.aff-card').forEach(c => {
-            const clean = c.textContent.replace(/^"|"$/g, '').trim();
-            c.classList.toggle('selected', clean === template.affirmation);
-        });
-    }
-
-    // 2. Set Background
-    const targetBgId = (isPremium && template.premBgId) ? template.premBgId : template.bgId;
-    const matchedBgDef = backgroundDefs.find(b => b.id === targetBgId) || backgroundDefs.find(b => b.id === template.bgId);
-    if (matchedBgDef) {
-        const bgOptionEl = document.querySelector(`.bg-option[data-bg-id="${matchedBgDef.id}"]`);
-        selectBackground(matchedBgDef.image, bgOptionEl, !!matchedBgDef.isVideo);
-    }
-
-    // 3. Set Sound
-    const targetSound = (isPremium && template.premSound) ? template.premSound : template.sound;
-    const soundOptionEl = document.querySelector(`.sound-option[data-sound="${targetSound}"]`);
-    if (soundOptionEl) {
-        selectSound(targetSound, soundOptionEl);
-    }
-
-    // 4. Set suggested note placeholder if empty
     const personalMsg = document.getElementById('personalMessage');
     if (personalMsg && !personalMsg.value.trim() && template.notePlaceholder) {
         personalMsg.placeholder = template.notePlaceholder;
     }
-
-    triggerFoilSweep();
-
+    if (window.CardFlow) window.CardFlow.applyPreset(template, isAutoFromUrl);
     if (window.VibeTelemetry) {
-        window.VibeTelemetry.track('occasion_template_applied', { 
-            template: templateId, 
-            isAutoFromUrl: isAutoFromUrl 
+        window.VibeTelemetry.track('occasion_template_applied', {
+            template: templateId,
+            isAutoFromUrl: isAutoFromUrl
         });
     }
 }
 
 // Stripe premium return is handled centrally in core-utils.js (runs before this script).
 
-// --- NEW: Read message, recipient, and occasion from URL and pre-fill ---
+// --- Read message, recipient, and occasion from URL and pre-fill ---
 function handleExternalMessage() {
     const urlParams = new URLSearchParams(window.location.search);
     const messageParam = urlParams.get('message') || urlParams.get('msg');
@@ -248,20 +149,15 @@ function handleExternalMessage() {
     const recipientParam = urlParams.get('recipient') || urlParams.get('to');
     const occasionParam = urlParams.get('occasion') || urlParams.get('template') || urlParams.get('preset');
     const isViralReply = urlParams.get('viralReply') === '1' || urlParams.get('reply') === '1';
-    
+
     if (recipientParam) {
         let cleanRec = recipientParam;
         try { cleanRec = decodeURIComponent(recipientParam); } catch (e) { }
         cleanRec = cleanRec.trim().substring(0, LIMITS.name);
         const recInput = document.getElementById('recipientName');
         if (recInput) recInput.value = cleanRec;
-
-        const chip = document.getElementById('previewRecipientChip');
-        const chipName = document.getElementById('previewRecipientName');
-        if (chip && chipName) {
-            chipName.textContent = cleanRec;
-            chip.classList.remove('hidden');
-        }
+        const reminderName = document.getElementById('reminderRecipientName');
+        if (reminderName) reminderName.textContent = cleanRec || 'them';
 
         const banner = document.getElementById('viralReplyBanner');
         const bannerName = document.getElementById('viralReplyName');
@@ -287,13 +183,7 @@ function handleExternalMessage() {
         } catch (e) { }
         cleanNote = cleanNote.substring(0, LIMITS.note);
         const pInput = document.getElementById('personalMessage');
-        if (pInput) {
-            pInput.value = cleanNote;
-        }
-        const backNote = document.getElementById('previewBackNote');
-        if (backNote) {
-            backNote.textContent = `"${cleanNote.trim()}"`;
-        }
+        if (pInput) pInput.value = cleanNote;
     }
 
     // Handle Affirmation pre-fill (from blog posts or external message links)
@@ -312,9 +202,6 @@ function handleExternalMessage() {
 
         window._externalMessage = decodedMsg;
         selectedAffirmation = decodedMsg;
-        const previewAff = document.getElementById('previewAffirmation');
-        if (previewAff) previewAff.textContent = `"${decodedMsg}"`;
-        if (typeof updatePreview === 'function') updatePreview();
         if (window.VibeTelemetry) {
             window.VibeTelemetry.track('external_message_applied', { message_length: decodedMsg.length });
         }
@@ -336,32 +223,60 @@ const freeAffirmations = [
     "You deserve the kindness you give to others."
 ];
 
-function selectSound(soundId, element) {
+// Free "situations" (written for the portal flow): what's going on for the person you're writing to
+const SITUATIONS = [
+    { id: 'went-quiet', name: 'Went Quiet' },
+    { id: 'strong-friend', name: 'Strong Friend' },
+    { id: 'anxious', name: 'Anxious' },
+    { id: 'giving-up', name: 'Hopeless' },
+    { id: 'big-risk', name: 'Big Leap' }
+];
+const situationAffirmations = [
+    { text: "You don't have to carry the whole world today. Rest is productive.", vibe: "Permission to pause", sit: "strong-friend" },
+    { text: "This feeling is heavy, but it is temporary. Breathe through the next hour.", vibe: "Reassurance", sit: "anxious" },
+    { text: "It takes so much strength to show up anyway. I see all the effort you put in.", vibe: "Quiet validation", sit: "strong-friend" },
+    { text: "Small steps still move you forward. Give yourself credit for trying.", vibe: "Gentle progress", sit: "anxious" },
+    { text: "You are allowed to fall apart right now. I'll help pick up the pieces later.", vibe: "Safe harbor", sit: "giving-up" },
+    { text: "Walk in there like you already belong, because you do.", vibe: "Unapologetic hype", sit: "big-risk" },
+    { text: "Your presence makes a difference, even when you don't see it.", vibe: "Quiet impact", sit: "went-quiet" },
+    { text: "Breathe. You only have to handle this one single moment.", vibe: "Grounding", sit: "anxious" },
+    { text: "Healing isn't linear, and every quiet day still counts as healing.", vibe: "Patience", sit: "went-quiet" },
+    { text: "You are enough, exactly as you are right now in this exact second.", vibe: "Pure acceptance", sit: "went-quiet" },
+    { text: "Allow yourself to be proud of how far you've come in silence.", vibe: "Quiet strength", sit: "strong-friend" },
+    { text: "Even the darkest nights eventually give way to a gentle sunrise.", vibe: "Hope", sit: "giving-up" },
+    { text: "Your worth is not measured by your productivity or how much you get done.", vibe: "Zero guilt", sit: "strong-friend" },
+    { text: "Be gentle with yourself. You are doing the best you can with what you have.", vibe: "Self-compassion", sit: "went-quiet" },
+    { text: "It is okay to put down burdens that were never yours to carry in the first place.", vibe: "Release", sit: "strong-friend" },
+    { text: "A single heavy day does not erase all the light you carry inside.", vibe: "Steady warmth", sit: "giving-up" },
+    { text: "Trust the timing of your life. You are exactly where you need to be.", vibe: "Trust", sit: "big-risk" },
+    { text: "Your resilience is quiet, but it has brought you through every hard day so far.", vibe: "Resilience", sit: "giving-up" },
+    { text: "Take a deep breath and let your shoulders drop. You are safe here.", vibe: "Safe space", sit: "anxious" },
+    { text: "Someone is deeply grateful that you exist in this world.", vibe: "True gratitude", sit: "went-quiet" }
+];
+
+// ── Sounds (played on view-card when the card opens) ──
+const SOUND_DEFS = [
+    { id: 'chime', label: 'Chime', icon: '🔔', premium: false },
+    { id: 'bell', label: 'Soft Bell', icon: '🛎️', premium: false },
+    { id: 'sparkle', label: 'Sparkle', icon: '✨', premium: false },
+    { id: 'musicbox', label: 'Music Box', icon: '🎵', premium: true },
+    { id: 'harp', label: 'Harp', icon: '🎶', premium: true },
+    { id: 'piano', label: 'Warm Piano', icon: '🎹', premium: true },
+    { id: 'celebration', label: 'Celebration', icon: '🎉', premium: true },
+    { id: 'ocean', label: 'Ocean', icon: '🌊', premium: true }
+];
+
+function selectSound(soundId) {
+    const def = SOUND_DEFS.find(s => s.id === soundId);
+    if (!def) return false;
+    if (def.premium && !isPremium) {
+        if (window.VibeTelemetry) window.VibeTelemetry.track('premium_sound_attempt', { sound: soundId });
+        showPremModal('sound_' + soundId, `The ${def.label} sound`);
+        return false;
+    }
     selectedSound = soundId;
-    document.querySelectorAll('.sound-option').forEach(el => el.classList.remove('selected'));
-    element.classList.add('selected');
-    if (window.VibeTelemetry) {
-        window.VibeTelemetry.track('sound_selected', { sound: soundId });
-    }
-}
-
-if (isPremium) {
-    document.querySelectorAll('.premium-lock').forEach(el => el.style.display = 'none');
-    const hint = document.getElementById('premiumSoundHint');
-    if (hint) hint.style.display = 'none';
-    const bgHint = document.getElementById('premiumBgHint');
-    if (bgHint) bgHint.style.display = 'none';
-}
-
-function selectPremiumSound(soundId, element) {
-    if (isPremium) {
-        selectSound(soundId, element);
-    } else {
-        if (window.VibeTelemetry) {
-            window.VibeTelemetry.track('premium_sound_attempt', { sound: soundId });
-        }
-        showPremModal('sound_' + soundId, 'Premium Soundscape: ' + soundId);
-    }
+    if (window.VibeTelemetry) window.VibeTelemetry.track('sound_selected', { sound: soundId });
+    return true;
 }
 
 function previewSound(soundId) {
@@ -371,7 +286,7 @@ function previewSound(soundId) {
     }
 }
 
-// ── Affirmation Category Picker ──────────────────────────
+// ── Affirmation collections (General free; the rest Premium) ──
 const categoryDefs = [
     {
         id: 'general', label: 'General', emoji: '✨',
@@ -434,119 +349,26 @@ const categoryDefs = [
     }
 ];
 
-let activeCategory = categoryDefs[0];
-const tabsEl = document.getElementById('categoryTabs');
-const pickerEl = document.getElementById('affirmationPicker');
-const lockBannerEl = document.getElementById('categoryLockBanner');
-
-function renderCategoryTabs() {
-    if (!tabsEl) return;
-    tabsEl.innerHTML = '';
-    categoryDefs.forEach(cat => {
-        const tab = document.createElement('button');
-        tab.type = 'button';
-        tab.className = 'vibe-tab' + (cat.id === activeCategory.id ? ' active' : '');
-        tab.style.setProperty('--tab-color', cat.color);
-        tab.style.setProperty('--tab-glow', cat.glow);
-        tab.style.setProperty('--tab-gradient', cat.gradient);
-        tab.innerHTML = `<span>${cat.emoji} ${cat.label}</span>${(cat.premium && !isPremium) ? '<span class="tab-lock">🔒</span>' : ''}`;
-        tab.onclick = () => selectCategory(cat);
-        tabsEl.appendChild(tab);
-    });
+// Words a free user may send: the free sets, the presets and a ?message= from our own pages.
+// The Premium collections and anything typed are Premium.
+const cleanWords = (a) => (a || '').replace(/^["']|["']$/g, '').trim();
+function isFreeWords(text) {
+    const clean = cleanWords(text);
+    return [
+        ...freeAffirmations,
+        ...situationAffirmations.map(a => a.text),
+        ...occasionTemplates.map(t => t.affirmation),
+        ...(window._externalMessage ? [window._externalMessage] : [])
+    ].some(a => cleanWords(a) === clean);
+}
+function isCollectionWords(text) {
+    const clean = cleanWords(text);
+    return categoryDefs.some(c => c.premium && c.affirmations.some(a => cleanWords(a) === clean));
 }
 
-function renderAffirmationGrid(category, locked, skipAnimation) {
-    if (!pickerEl) return;
-    pickerEl.innerHTML = '';
-    if (lockBannerEl) lockBannerEl.style.display = locked ? 'flex' : 'none';
-    category.affirmations.forEach((aff, i) => {
-        const card = document.createElement('div');
-        card.className = 'aff-card' + (locked ? ' aff-locked' : '');
-        card.style.setProperty('--active-color', category.color);
-        card.style.setProperty('--active-glow', category.glow);
-        if (skipAnimation) {
-            card.style.animation = 'none';
-        } else {
-            card.style.animationDelay = `${i * 60}ms`;
-        }
-        card.textContent = `"${aff}"`;
-        if (!locked) {
-            card.onclick = () => selectAffirmation(aff, card, category.themeGroup);
-            card.tabIndex = 0;
-            card.setAttribute('role', 'button');
-            card.onkeydown = (ev) => {
-                if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); selectAffirmation(aff, card, category.themeGroup); }
-            };
-        }
-        pickerEl.appendChild(card);
-    });
-
-    // "Write your own" card — always appended last
-    const writeCard = document.createElement('div');
-    writeCard.className = 'write-own-card';
-    writeCard.id = 'writeOwnCard';
-    if (skipAnimation) { writeCard.style.animation = 'none'; }
-    writeCard.innerHTML = `<span>✍️</span><span>Write my own...</span>${isPremium ? '' : '<span class="write-own-badge">Premium</span>'}`;
-    writeCard.onclick = () => isPremium ? openWriteOwn() : showPremModal();
-    writeCard.tabIndex = 0;
-    writeCard.setAttribute('role', 'button');
-    writeCard.onkeydown = (ev) => {
-        if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); writeCard.click(); }
-    };
-    pickerEl.appendChild(writeCard);
-
-    // Textarea (hidden until writeCard clicked, for premium users)
-    const expanded = document.createElement('div');
-    expanded.className = 'write-own-expanded';
-    expanded.id = 'writeOwnExpanded';
-    expanded.innerHTML = `
-        <textarea class="write-own-textarea" id="writeOwnText" maxlength="200" placeholder="Write something from the heart... (max 200 characters)"></textarea>
-        <button class="write-own-back" type="button" onclick="closeWriteOwn()">← Choose from the library instead</button>`;
-    pickerEl.appendChild(expanded);
-
-    // Live update preview as user types their own affirmation
-    setTimeout(() => {
-        const ta = document.getElementById('writeOwnText');
-        if (ta) {
-            ta.addEventListener('input', () => {
-                selectedAffirmation = ta.value.trim();
-                document.getElementById('previewAffirmation').textContent =
-                    selectedAffirmation ? `"${selectedAffirmation}"` : '"Your affirmation will appear here"';
-                triggerFoilSweep();
-            });
-        }
-    }, 50);
-}
-
-function openWriteOwn() {
-    if (!isPremium) {
-        showPremModal('write_own', 'Custom Affirmation Composer');
-        return;
-    }
-    const card = document.getElementById('writeOwnCard');
-    const expanded = document.getElementById('writeOwnExpanded');
-    if (card) card.style.display = 'none';
-    if (expanded) expanded.classList.add('visible');
-    const ta = document.getElementById('writeOwnText');
-    if (ta) { ta.focus(); selectedAffirmation = ta.value.trim() || ''; }
-}
-
-function closeWriteOwn() {
-    const card = document.getElementById('writeOwnCard');
-    const expanded = document.getElementById('writeOwnExpanded');
-    if (card) card.style.display = '';
-    if (expanded) expanded.classList.remove('visible');
-    // Revert to previously selected library affirmation if any
-    const selected = pickerEl.querySelector('.aff-card.selected');
-    if (selected) {
-        selectedAffirmation = selected.textContent.replace(/^"|"$/g, '');
-    } else {
-        selectedAffirmation = '';
-        document.getElementById('previewAffirmation').textContent = '"Your affirmation will appear here"';
-    }
-}
-
+// ── Premium sheet (#premOverlay) ──
 let _prevFocusedBeforePrem = null;
+let _premOpenedAt = 0;
 
 function handlePremModalKeydown(e) {
     if (e.key === 'Escape') {
@@ -566,277 +388,75 @@ function handlePremModalKeydown(e) {
                 e.preventDefault();
                 last.focus();
             }
-        } else {
-            if (document.activeElement === last) {
-                e.preventDefault();
-                first.focus();
-            }
+        } else if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
         }
     }
 }
 
-function showPremModal(context = 'general', badgeText = '') {
+// what = the thing they tapped, e.g. "Nebula" or "Writing your own words"
+function showPremModal(context = 'general', what = '') {
     const overlay = document.getElementById('premOverlay');
-    if (overlay) {
-        overlay.classList.add('open');
-        overlay.setAttribute('aria-hidden', 'false');
-    }
-    document.body.style.overflow = 'hidden';
-
+    if (!overlay) return;
+    const text = document.getElementById('premSheetText');
+    if (text) text.textContent = what
+        ? `${what} is part of Premium, along with everything below.`
+        : 'One small purchase unlocks everything below.';
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    _premOpenedAt = performance.now();
     _prevFocusedBeforePrem = document.activeElement;
     document.addEventListener('keydown', handlePremModalKeydown);
-
-    const badge = document.getElementById('premContextBadge');
-    if (badge) {
-        if (badgeText) {
-            badge.textContent = badgeText;
-            badge.style.display = 'inline-block';
-        } else {
-            badge.style.display = 'none';
-        }
-    }
-
-    const cta = document.getElementById('premCtaBtn') || (overlay && overlay.querySelector('.prem-modal a, .prem-modal button'));
+    const cta = document.getElementById('premCtaBtn');
     if (cta) setTimeout(() => cta.focus(), 50);
-
     if (window.VibeTelemetry) {
         window.VibeTelemetry.track('premium_modal_opened', { trigger: context });
         window.VibeTelemetry.setTag('last_premium_trigger', context);
     }
 }
 
-function hidePremModal(e) {
+function hidePremModal() {
     const overlay = document.getElementById('premOverlay');
-    if (e && e.target) {
-        const modal = overlay && overlay.querySelector('.prem-modal');
-        const isDismissBtn = e.target.closest('.prem-dismiss');
-        // Allow closing from: overlay backdrop click, dismiss button, or direct call
-        if (modal && modal.contains(e.target) && !isDismissBtn) return;
-    }
     if (overlay) {
         overlay.classList.remove('open');
         overlay.setAttribute('aria-hidden', 'true');
     }
-    document.body.style.overflow = '';
     document.removeEventListener('keydown', handlePremModalKeydown);
-
     if (_prevFocusedBeforePrem && typeof _prevFocusedBeforePrem.focus === 'function') {
         _prevFocusedBeforePrem.focus();
         _prevFocusedBeforePrem = null;
     }
-
     if (window.VibeTelemetry) {
         window.VibeTelemetry.track('premium_modal_dismissed');
     }
 }
 
-function selectCategory(cat) {
-    activeCategory = cat;
-    const locked = cat.premium && !isPremium;
-    if (locked) {
-        selectedAffirmation = '';
-        if (window.VibeTelemetry) {
-            window.VibeTelemetry.track('premium_category_attempt', { category: cat.id });
-        }
-        showPremModal('category_' + cat.id, `${cat.emoji} ${cat.label} Vault`);
-    } else {
-        if (window.VibeTelemetry) {
-            window.VibeTelemetry.track('category_selected', { category: cat.id });
-        }
-    }
-    renderCategoryTabs();
-    if (pickerEl) {
-        pickerEl.style.opacity = '0';
-        pickerEl.style.transform = 'translateY(8px)';
-        setTimeout(() => {
-            renderAffirmationGrid(cat, locked);
-            requestAnimationFrame(() => {
-                pickerEl.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
-                pickerEl.style.opacity = '1';
-                pickerEl.style.transform = 'translateY(0)';
-            });
-        }, 160);
-    }
-}
-
-// Background picker
+// ── Backgrounds (the carousel's cards). `light` = colours of the portal's particles ──
 const backgroundDefs = [
-    { id: 'sunset', label: 'Sunset', image: 'assets/backgrounds/bg_free_sunset_1772750341964.webp', premium: false },
-    { id: 'dawn', label: 'Dawn', image: 'assets/backgrounds/bg_free_dawn_1772750358328.webp', premium: false },
-    { id: 'aurora', label: 'Aurora', image: 'assets/backgrounds/bg_free_aurora_1772750371136.webp', premium: false },
-    { id: 'rose', label: 'Rose Garden', image: 'assets/backgrounds/bg_free_rose_1772750381958.webp', premium: false },
-    { id: 'nebula', label: 'Nebula', image: 'assets/backgrounds/bg_prem_nebula_1772750433414.webp', premium: true },
-    { id: 'gold', label: 'Liquid Gold', image: 'assets/backgrounds/bg_prem_gold_1772750445716.webp', premium: true },
-    { id: 'emerald', label: 'Emerald', image: 'assets/backgrounds/bg_prem_emerald_1772750461402.webp', premium: true },
-    { id: 'electric', label: 'Electric', image: 'assets/backgrounds/bg_prem_electric_1772750473780.webp', premium: true },
-    { id: 'velvet', label: 'Velvet Night', image: 'assets/backgrounds/bg_prem_velvet_1772750498877.webp', premium: true },
-    { id: 'cherry', label: 'Cherry', image: 'assets/backgrounds/bg_prem_cherry_1772750510659.webp', premium: true },
-    { id: 'ocean', label: 'Ocean', image: 'assets/backgrounds/bg_prem_ocean_1772750521461.webp', premium: true },
-    { id: 'crystal', label: 'Crystal', image: 'assets/backgrounds/bg_prem_crystal_1772750533689.webp', premium: true },
-    { id: 'ethereal_anim', label: 'Ethereal Silk', image: 'assets/backgrounds/animated_ethereal.mp4', premium: true, isVideo: true },
-    { id: 'vibrant_anim', label: 'Golden Glow', image: 'assets/backgrounds/animated_vibrant.mp4', premium: true, isVideo: true },
-    { id: 'modern_anim', label: 'Glass Crystals', image: 'assets/backgrounds/animated_modern.mp4', premium: true, isVideo: true },
-    { id: 'prism_anim', label: 'Prism Flow', image: 'assets/backgrounds/Iridescent_Liquid_Glass_Video_Generation.mp4', premium: true, isVideo: true },
-    { id: 'biolume_anim', label: 'Biolume Bloom', image: 'assets/backgrounds/Futuristic_Flower_Video_Generation.mp4', premium: true, isVideo: true },
-    { id: 'plasma_anim', label: 'Sunstone Plasma', image: 'assets/backgrounds/Solar_Plasma_and_Flares_Visualization.mp4', premium: true, isVideo: true },
+    { id: 'sunset', label: 'Sunset', image: 'assets/backgrounds/bg_free_sunset_1772750341964.webp', premium: false, light: ['#FFB36B', '#FF6B9D', '#FFE9C7'] },
+    { id: 'dawn', label: 'Dawn', image: 'assets/backgrounds/bg_free_dawn_1772750358328.webp', premium: false, light: ['#FFD59E', '#F6A5C0', '#FFF6DC'] },
+    { id: 'aurora', label: 'Aurora', image: 'assets/backgrounds/bg_free_aurora_1772750371136.webp', premium: false, light: ['#7CF2C8', '#A78BFA', '#E8FFF7'] },
+    { id: 'rose', label: 'Rose Garden', image: 'assets/backgrounds/bg_free_rose_1772750381958.webp', premium: false, light: ['#FF8FB1', '#FFC2D4', '#FFF1F6'] },
+    { id: 'sage', label: 'Sage', image: 'assets/backgrounds/bg_free_sage.webp', premium: false, light: ['#C8D8C0', '#9AAE9F', '#FFF4DE'] },
+    { id: 'sand', label: 'Sand', image: 'assets/backgrounds/bg_free_sand.webp', premium: false, light: ['#E8D5B5', '#CDBBA0', '#FFF6E4'] },
+    { id: 'slate', label: 'Slate', image: 'assets/backgrounds/bg_free_slate.webp', premium: false, light: ['#B8C4D6', '#8FA3BF', '#F1F4FA'] },
+    { id: 'nebula', label: 'Nebula', image: 'assets/backgrounds/bg_prem_nebula_1772750433414.webp', premium: true, light: ['#8B5CF6', '#60A5FA', '#F0ABFC'] },
+    { id: 'gold', label: 'Liquid Gold', image: 'assets/backgrounds/bg_prem_gold_1772750445716.webp', premium: true, light: ['#FEC84A', '#FFE9A8', '#FFF6DC'] },
+    { id: 'emerald', label: 'Emerald', image: 'assets/backgrounds/bg_prem_emerald_1772750461402.webp', premium: true, light: ['#34D399', '#A7F3D0', '#ECFDF5'] },
+    { id: 'electric', label: 'Electric', image: 'assets/backgrounds/bg_prem_electric_1772750473780.webp', premium: true, light: ['#60A5FA', '#22D3EE', '#E0F2FE'] },
+    { id: 'velvet', label: 'Velvet Night', image: 'assets/backgrounds/bg_prem_velvet_1772750498877.webp', premium: true, light: ['#C084FC', '#FF6B9D', '#F6E6FF'] },
+    { id: 'cherry', label: 'Cherry', image: 'assets/backgrounds/bg_prem_cherry_1772750510659.webp', premium: true, light: ['#FB7185', '#FDA4AF', '#FFF1F2'] },
+    { id: 'ocean', label: 'Ocean', image: 'assets/backgrounds/bg_prem_ocean_1772750521461.webp', premium: true, light: ['#38BDF8', '#67E8F9', '#E0F7FF'] },
+    { id: 'crystal', label: 'Crystal', image: 'assets/backgrounds/bg_prem_crystal_1772750533689.webp', premium: true, light: ['#C4B5FD', '#A5F3FC', '#FFFFFF'] },
+    { id: 'ethereal_anim', label: 'Ethereal Silk', image: 'assets/backgrounds/animated_ethereal.mp4', premium: true, isVideo: true, light: ['#E9D5FF', '#FBCFE8', '#FFFFFF'] },
+    { id: 'vibrant_anim', label: 'Golden Glow', image: 'assets/backgrounds/animated_vibrant.mp4', premium: true, isVideo: true, light: ['#FEC84A', '#FB923C', '#FFF6DC'] },
+    { id: 'modern_anim', label: 'Glass Crystals', image: 'assets/backgrounds/animated_modern.mp4', premium: true, isVideo: true, light: ['#A5F3FC', '#C4B5FD', '#FFFFFF'] },
+    { id: 'prism_anim', label: 'Prism Flow', image: 'assets/backgrounds/Iridescent_Liquid_Glass_Video_Generation.mp4', premium: true, isVideo: true, light: ['#F0ABFC', '#67E8F9', '#FFFFFF'] },
+    { id: 'biolume_anim', label: 'Biolume Bloom', image: 'assets/backgrounds/Futuristic_Flower_Video_Generation.mp4', premium: true, isVideo: true, light: ['#34D399', '#F0ABFC', '#ECFDF5'] },
+    { id: 'plasma_anim', label: 'Sunstone Plasma', image: 'assets/backgrounds/Solar_Plasma_and_Flares_Visualization.mp4', premium: true, isVideo: true, light: ['#FB923C', '#FACC15', '#FFE4C7'] },
 ];
-
-// The six animated backgrounds weigh ~10 MB together and sit on step 2, which most visitors
-// never open. Fetch each thumbnail only while it is on screen, and pause it when it leaves.
-// Inactive steps are hidden with visibility/opacity, which IntersectionObserver ignores, so
-// "on screen" also requires the thumbnail's step to be the active one.
-const _onScreenThumbs = new Set();
-function refreshVideoThumbs() {
-    document.querySelectorAll('#bgPicker video[data-src]').forEach(v => {
-        const step = v.closest('.form-step');
-        const visible = _onScreenThumbs.has(v) && (!step || step.classList.contains('active'));
-        if (visible) {
-            if (!v.src) v.src = v.dataset.src;
-            if (!isReducedMotion) v.play().catch(() => { });
-        } else if (v.src) {
-            v.pause();
-        }
-    });
-}
-
-function lazyVideoThumbs(container) {
-    const videos = container.querySelectorAll('video[data-src]');
-    if (!('IntersectionObserver' in window)) {
-        videos.forEach(v => _onScreenThumbs.add(v));
-        refreshVideoThumbs();
-        return;
-    }
-    const io = new IntersectionObserver((entries) => {
-        entries.forEach(({ target, isIntersecting }) => {
-            if (isIntersecting) _onScreenThumbs.add(target); else _onScreenThumbs.delete(target);
-        });
-        refreshVideoThumbs();
-    }, { rootMargin: '100px' });
-    videos.forEach(v => io.observe(v));
-}
-
-function triggerFoilSweep() {
-    if (isReducedMotion) return;
-    const preview = document.querySelector('.card-preview');
-    if (preview) {
-        preview.classList.remove('play-foil');
-        void preview.offsetWidth; // Force a browser reflow
-        preview.classList.add('play-foil');
-    }
-}
-
-function selectBackground(imagePath, element, isVideo = false) {
-    selectedBackground = imagePath;
-    document.querySelectorAll('.bg-option').forEach(el => el.classList.remove('selected'));
-    if (element) element.classList.add('selected');
-
-    if (window.VibeTelemetry) {
-        window.VibeTelemetry.track('background_selected', { isVideo: isVideo, path: imagePath.split('/').pop() });
-    }
-
-    const preview = document.getElementById('cardPreview');
-    const videoEl = document.getElementById('previewVideo');
-
-    if (preview && videoEl) {
-        if (isVideo) {
-            preview.style.backgroundImage = 'none';
-            videoEl.src = imagePath;
-            videoEl.style.display = 'block';
-            if (!isReducedMotion) {
-                videoEl.play().catch(e => console.log("Video play blocked:", e));
-            }
-        } else {
-            videoEl.style.display = 'none';
-            videoEl.pause();
-            preview.style.backgroundImage = `url('${imagePath}')`;
-            preview.style.backgroundSize = 'cover';
-            preview.style.backgroundPosition = 'center';
-        }
-    }
-
-    triggerFoilSweep();
-}
-
-function selectAffirmation(affirmation, element, themeGroup = 'default') {
-    selectedAffirmation = affirmation;
-    selectedThemeGroup = themeGroup;
-
-    if (activeOccasionTemplate) {
-        const matched = occasionTemplates.find(t => t.id === activeOccasionTemplate);
-        if (!matched || matched.affirmation !== affirmation) {
-            activeOccasionTemplate = null;
-            renderOccasionChips();
-        }
-    }
-
-    document.querySelectorAll('.aff-card').forEach(el => el.classList.remove('selected'));
-    if (element) element.classList.add('selected');
-
-    if (window.VibeTelemetry) {
-        window.VibeTelemetry.track('affirmation_selected', { themeGroup: themeGroup, length: affirmation.length });
-    }
-
-    const previewAff = document.getElementById('previewAffirmation');
-    if (previewAff) previewAff.textContent = `"${affirmation}"`;
-    updatePreview();
-    triggerFoilSweep();
-}
-
-function updatePreview() {
-    const senderInput = document.getElementById('senderName');
-    const messageInput = document.getElementById('personalMessage');
-    const recipientInput = document.getElementById('recipientName');
-    
-    if (!senderInput || !messageInput || !recipientInput) return;
-
-    const senderName = senderInput.value || 'Someone special';
-    const personalMessage = messageInput.value;
-    const recipientName = recipientInput.value.trim();
-
-    const previewSender = document.getElementById('previewSender');
-    if (previewSender) previewSender.textContent = senderName;
-
-    // Recipient chip
-    const chip = document.getElementById('previewRecipientChip');
-    const chipName = document.getElementById('previewRecipientName');
-    if (chip && chipName) {
-        if (recipientName) {
-            chipName.textContent = recipientName;
-            chip.classList.remove('hidden');
-        } else {
-            chip.classList.add('hidden');
-        }
-    }
-
-    const previewMsg = document.getElementById('previewMessage');
-    if (previewMsg) {
-        previewMsg.textContent = '';
-        if (personalMessage && personalMessage.trim()) {
-            const strong = document.createElement('strong');
-            strong.textContent = senderName;
-            previewMsg.appendChild(strong);
-            previewMsg.append(' added a personal note:');
-
-            const noteDiv = document.createElement('div');
-            noteDiv.className = 'preview-note-quote';
-            noteDiv.textContent = `"${personalMessage.trim()}"`;
-            previewMsg.appendChild(noteDiv);
-        } else {
-            const strong = document.createElement('strong');
-            strong.textContent = senderName;
-            previewMsg.appendChild(strong);
-            previewMsg.append(' wanted to send you some good vibes ✨');
-        }
-    }
-}
-
-/**
- * Unified Card Preview (3D flip removed in favor of single-face responsive preview)
- */
-function toggleCardPreviewFlip() {
-    // 3D flip removed: personal note renders directly in card preview
-}
-window.toggleCardPreviewFlip = toggleCardPreviewFlip;
+selectedBackground = backgroundDefs[0].image;
 
 function copyLink(e) {
     const input = document.getElementById('cardLink');
@@ -932,151 +552,15 @@ function showSenderSignupError(msg) {
     err.hidden = false;
 }
 
-// Stepper Logic
-let currentStep = 1;
-const totalSteps = 3;
 
-function goToStep(step) {
-    if (step > currentStep) {
-        if (currentStep === 1 && !selectedAffirmation) {
-            showToast('Choose an affirmation to continue ✨', '💌');
-            const grid = document.querySelector('.affirmation-grid');
-            if (grid) { grid.classList.remove('grid-shake'); void grid.offsetWidth; grid.classList.add('grid-shake'); setTimeout(() => grid.classList.remove('grid-shake'), 500); }
-            return;
-        }
-    }
+// ── Wiring ──
+let isSending = false;
 
-    const prevStep = currentStep;
-    currentStep = step;
-
-    if (window.VibeTelemetry) {
-        window.VibeTelemetry.track('step_progressed', { from: prevStep, to: step });
-        window.VibeTelemetry.setTag('send_flow_step', `step_${step}`);
-    }
-
-    document.querySelectorAll('.form-step').forEach((el, index) => {
-        el.classList.toggle('active', index + 1 === currentStep);
-    });
-    refreshVideoThumbs();
-
-    [1, 2, 3].forEach(n => {
-        const wrap = document.getElementById('sn' + n);
-        if (!wrap) return;
-        wrap.classList.remove('sn-active', 'sn-done');
-        if (n < currentStep) wrap.classList.add('sn-done');
-        else if (n === currentStep) wrap.classList.add('sn-active');
-    });
-    [1, 2].forEach(n => {
-        const conn = document.getElementById('sc' + n);
-        if (conn) conn.classList.toggle('done', n < currentStep);
-    });
-}
-
-// Main Initialization
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Initial UI setup
-    renderCategoryTabs();
-    renderAffirmationGrid(categoryDefs[0], false, true);
-
-    const bgPickerEl = document.getElementById('bgPicker');
-    if (bgPickerEl) {
-        backgroundDefs.forEach((bg, index) => {
-            const el = document.createElement('div');
-            const isLocked = bg.premium && !isPremium;
-            el.className = 'bg-option' + (isLocked ? ' bg-locked' : '') + (index === 0 ? ' selected' : '');
-            el.dataset.bgId = bg.id;
-
-            if (bg.isVideo) {
-                // data-src: loaded only when the thumbnail scrolls into view (see lazyVideoThumbs)
-                el.innerHTML = `
-                    <div class="bg-thumb" style="background: #000; position: relative; overflow: hidden;">
-                        <video data-src="${bg.image}" loop muted playsinline preload="none"
-                            style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity: 0.8;"></video>
-                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:white; font-size:10px; font-weight:bold; background:rgba(0,0,0,0.2); z-index:2;">LIVE</div>
-                    </div>
-                    <span class="bg-label">${bg.label}</span>
-                    ${bg.premium && !isPremium ? '<span class="bg-premium-badge">Premium</span>' : ''}
-                `;
-            } else {
-                const thumbStyle = `background-image:url('${bg.image}'); background-size: cover; background-position: center;`;
-                el.innerHTML = `
-                    <div class="bg-thumb" style="${thumbStyle}"></div>
-                    <span class="bg-label">${bg.label}</span>
-                    ${bg.premium && !isPremium ? '<span class="bg-premium-badge">Premium</span>' : ''}
-                `;
-            }
-
-            if (isLocked) {
-                el.onclick = () => {
-                    if (window.VibeTelemetry) {
-                        window.VibeTelemetry.track('premium_bg_attempt', { bg: bg.id, isVideo: bg.isVideo });
-                    }
-                    showPremModal('bg_' + bg.id, bg.isVideo ? '🎥 Live Animated Canvas' : `🎨 ${bg.label} Canvas`);
-                };
-            } else {
-                el.onclick = () => selectBackground(bg.image, el, bg.isVideo);
-            }
-            bgPickerEl.appendChild(el);
-        });
-        lazyVideoThumbs(bgPickerEl);
-    }
-
-    // Initialize Occasion Presets & Motion Accessibility
-    renderOccasionChips();
-    initMotionControl();
-
-    // Initialize preview background
-    selectedBackground = backgroundDefs[0].image;
-    const preview = document.getElementById('cardPreview');
-    if (preview) {
-        preview.style.backgroundImage = `url('${selectedBackground}')`;
-        preview.style.backgroundSize = 'cover';
-        preview.style.backgroundPosition = 'center';
-        preview.style.borderColor = 'transparent';
-    }
-
-    // 2. Handle External Messages (CRITICAL: Runs after grid matches are built)
     handleExternalMessage();
 
-    // 3. Handle applied occasion preset or premium custom affirmations
-    if (window._appliedOccasion) {
-        applyOccasionTemplate(window._appliedOccasion, true);
-    } else if (window._externalMessage) {
-        if (isPremium) {
-            openWriteOwn();
-            const ta = document.getElementById('writeOwnText');
-            if (ta) ta.value = window._externalMessage;
-        }
-        updatePreview();
-    }
-
-    // 4. Default selection (Only if NO external message and NO occasion preset)
-    const firstCard = pickerEl ? pickerEl.querySelector('.aff-card') : null;
-    if (firstCard && !window._externalMessage && !window._appliedOccasion) {
-        firstCard.click();
-    } else if (window._externalMessage && pickerEl) {
-        const cleanExt = window._externalMessage.replace(/^["']|["']$/g, '').trim();
-        const matchingCard = [...pickerEl.querySelectorAll('.aff-card')].find(card => 
-            card.textContent.replace(/^["']|["']$/g, '').trim() === cleanExt
-        );
-        if (matchingCard) {
-            matchingCard.classList.add('selected');
-        }
-    }
-
-    // A/B Test for Send Button CTA
-    const sendBtn = document.getElementById('sendButton');
-    if (sendBtn && window.VibeAB) {
-        const ctaVariant = window.VibeAB.getVariant('send_btn_cta', ['Create Card ✨', 'Generate Free Vibe Check 💌']);
-        sendBtn.textContent = ctaVariant;
-    }
-
-    // Event listeners
-    const senderInput = document.getElementById('senderName');
-    const messageInput = document.getElementById('personalMessage');
-    const recipientInput = document.getElementById('recipientName');
-    
     // Mirror recipient name to check-in reminder label
+    const recipientInput = document.getElementById('recipientName');
     if (recipientInput) {
         recipientInput.addEventListener('input', (e) => {
             const label = document.getElementById('reminderRecipientName');
@@ -1097,46 +581,47 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const updateEvents = ['input', 'change', 'compositionend'];
-    [senderInput, messageInput, recipientInput].forEach(input => {
-        if (input) {
-            updateEvents.forEach(evt => input.addEventListener(evt, updatePreview));
-        }
-    });
+    const shake = (field) => {
+        if (!field) return;
+        field.classList.add('field-shake');
+        setTimeout(() => field.classList.remove('field-shake'), 500);
+        field.focus();
+    };
 
     const cardForm = document.getElementById('cardForm');
+    const sendBtn = document.getElementById('sendButton');
     if (cardForm) {
         cardForm.addEventListener('submit', async function (e) {
             e.preventDefault();
+            if (isSending) return;
 
             if (!selectedAffirmation) {
                 showToast('Pick an affirmation first — they need to hear something good!', '💌');
-                goToStep(1);
+                if (window.CardFlow) window.CardFlow.backToWords();
                 return;
             }
 
-            // Paywall check: typing your own front affirmation is Premium. Curated
-            // affirmations and messages handed over by our own pages (?message=) are free.
-            if (!isPremium) {
-                const cleanAff = (selectedAffirmation || '').replace(/^["']|["']$/g, '').trim();
-                const allCurated = [
-                    ...freeAffirmations,
-                    ...categoryDefs.flatMap(c => c.affirmations || []),
-                    ...occasionTemplates.map(t => t.affirmation),
-                    ...(window._externalMessage ? [window._externalMessage] : [])
-                ].map(a => a.replace(/^["']|["']$/g, '').trim());
+            // Paywall: free users send the free sets, presets and ?message= text from our own
+            // pages. The Premium collections and words they typed themselves are Premium.
+            if (!isPremium && !isFreeWords(selectedAffirmation)) {
+                const collection = isCollectionWords(selectedAffirmation);
+                showToast(collection ? 'That collection is part of Premium ✨' : 'Writing your own words is a Premium feature ✨', '🔒');
+                showPremModal(collection ? 'collection_at_send' : 'write_own', collection ? 'This collection' : 'Writing your own words');
+                return;
+            }
 
-                if (!allCurated.includes(cleanAff)) {
-                    showToast('Writing your own custom affirmation is a Premium feature ✨', '🔒');
-                    showPremModal('write_own', 'Custom Affirmation Composer');
-                    const sendBtn = document.getElementById('sendButton');
-                    if (sendBtn) {
-                        sendBtn.disabled = false;
-                        sendBtn.textContent = 'Create Card ✨';
-                    }
-                    goToStep(1);
-                    return;
-                }
+            const recipientCheck = document.getElementById('recipientName').value.trim();
+            if (!recipientCheck) {
+                showToast("Add their name so they know it's for them 💖", '👤');
+                shake(document.getElementById('recipientName'));
+                return;
+            }
+            const wantsReminderCheck = document.getElementById('senderReminderToggle')?.checked;
+            const reminderEmailCheck = document.getElementById('senderReminderEmail')?.value?.trim();
+            if (wantsReminderCheck && (!reminderEmailCheck || !reminderEmailCheck.includes('@'))) {
+                showToast("Please enter your email for the 30-day reminder 📬", '✉️');
+                shake(document.getElementById('senderReminderEmail'));
+                return;
             }
 
             const recipientName = document.getElementById('recipientName').value.trim().substring(0, LIMITS.name);
@@ -1164,10 +649,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            if (sendBtn) {
-                sendBtn.textContent = recipientEmail ? 'Sending... ✨' : 'Creating... ✨';
-                sendBtn.disabled = true;
-            }
+            if (sendBtn) sendBtn.disabled = true;
+            isSending = true;
+            // The paper plane flies while the card is built, saved and emailed
+            const flight = window.CardFlow ? window.CardFlow.playSend() : Promise.resolve();
 
             const cardId = (window.VibeHistory && typeof window.VibeHistory.generateId === 'function')
                 ? window.VibeHistory.generateId()
@@ -1297,14 +782,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            if (cardForm) cardForm.style.display = 'none';
-            const stepInd = document.getElementById('stepIndicator');
-            if (stepInd) stepInd.style.display = 'none';
+            await flight;
+            if (window.CardFlow) window.CardFlow.showSuccess();
             const successMsg = document.getElementById('successMessage');
             if (successMsg) successMsg.classList.add('show');
             const historyNotice = document.getElementById('historySavedNotice');
             if (historyNotice) {
-                historyNotice.style.display = 'flex';
+                historyNotice.style.display = 'block';
                 const countBadge = document.getElementById('historyCountBadge');
                 if (countBadge && window.VibeHistory) {
                     const total = window.VibeHistory.getAll().length;
@@ -1313,20 +797,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const cardLinkInput = document.getElementById('cardLink');
             if (cardLinkInput) cardLinkInput.value = cardUrl;
-            launchConfetti();
+            const readyTitle = document.getElementById('successTitle');
+            if (readyTitle) readyTitle.textContent = `Your card for ${recipientName} is ready`;
 
             if (emailSentOK) {
                 const sTitle = document.getElementById('successTitle');
-                if (sTitle) sTitle.textContent = 'Card Sent! 💚';
+                if (sTitle) sTitle.textContent = `On its way to ${recipientName}`;
                 const sSub = document.getElementById('successSubtext');
-                if (sSub) sSub.textContent = `Your Vibe Check is on its way.`;
+                if (sSub) sSub.textContent = 'We emailed them the card. You can share the link too.';
                 const eBadge = document.getElementById('emailSentBadge');
-                if (eBadge) eBadge.style.display = 'inline-flex';
+                if (eBadge) eBadge.style.display = 'block';
                 const eTo = document.getElementById('emailSentTo');
                 if (eTo) eTo.textContent = recipientName || recipientEmail;
             } else if (recipientEmail) {
                 const sSub = document.getElementById('successSubtext');
-                if (sSub) sSub.textContent = `Hmm — the email didn't go through, but your card is ready below. Copy the link to send it instead.`;
+                if (sSub) sSub.textContent = "The email didn't go through, but your card is ready. Copy the link to send it yourself.";
             }
 
             const shareText = encodeURIComponent('I sent you a Vibe Check! ✨ Open your card here:');
@@ -1346,24 +831,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Keyboard accessibility for sound options
-    document.querySelectorAll('.sound-option').forEach(opt => {
-        if (!opt.hasAttribute('tabindex')) opt.setAttribute('tabindex', '0');
-        if (!opt.hasAttribute('role')) opt.setAttribute('role', 'button');
-        opt.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                opt.click();
-            }
-        });
-    });
-
-    // Premium modal backdrop listener (accessible delegation)
+    // Premium sheet: backdrop closes it (not in the same moment it opened)
     const premOverlay = document.getElementById('premOverlay');
     if (premOverlay) {
         premOverlay.addEventListener('click', (e) => {
-            if (e.target === premOverlay) hidePremModal();
+            if (e.target === premOverlay && performance.now() - _premOpenedAt > 400) hidePremModal();
         });
     }
 });
-

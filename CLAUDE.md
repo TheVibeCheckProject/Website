@@ -7,7 +7,7 @@ Static site (plain HTML/CSS/JS, no framework) on GitHub Pages behind Cloudflare.
 - Never hand-edit generated regions (`site-nav` / `site-footer` markers) or `?v=` values.
 - Canonical URLs are on the bare domain `https://thevibecheckproject.com`, extensionless (`/about`, `/blog/<post>`; message pages and hubs end in `/`). `view-card.html` and `my-cards.html` are noindex and stay out of the sitemap.
 - Page titles: `Primary Keyword - Context | The Vibe Check Project`; one `<h1>` per page.
-- No client-side dependencies or frameworks.
+- No client-side dependencies or frameworks, except GSAP (plus its MorphSVG/DrawSVG/MotionPath plugins, from jsDelivr) for the send animation: approved by the owner 2026-09-29.
 - Card links (`view-card.html?data=`) must stay backward compatible: old cards live in people's messages forever.
 - Never invent testimonials, statistics or user counts. Premium copy must match what it actually unlocks.
 - Browser automation: use Microsoft Edge (`channel: 'msedge'`), never Chrome.

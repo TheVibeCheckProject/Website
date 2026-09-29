@@ -16,6 +16,12 @@ const BLOCK = /googlesyndication|clarity\.ms|workers\.dev|jsdelivr|unsplash|font
         await ctx.route(BLOCK, r => r.abort());
         return ctx;
     };
+    // Card flow: tap the front card and wait until the words are showing
+    const enterPortal = async (page) => {
+        await page.locator('.portal-card.is-active').click();
+        await page.waitForFunction(() => document.body.classList.contains('is-inside') && !CardFlow.busy, null, { timeout: 10000 });
+    };
+    const decodeLink = (url) => JSON.parse(decodeURIComponent(Buffer.from(url.split('data=')[1].replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('latin1')));
     const trackErrors = (page) => {
         const errors = [];
         page.on('pageerror', e => errors.push(e.message));
@@ -48,8 +54,10 @@ const BLOCK = /googlesyndication|clarity\.ms|workers\.dev|jsdelivr|unsplash|font
             const msg = "I'm right here. You don't have to reply.";
             await page.goto(`${server.base}/send-card.html?message=${encodeURIComponent(msg)}`);
             await page.waitForTimeout(500);
-            t.check((await page.textContent('#previewAffirmation')).includes("I'm right here"), 'studio preview shows the ?message= text');
-            await page.evaluate(() => goToStep(3));
+            await enterPortal(page);
+            t.check((await page.textContent('.portal-phrase.is-active')).includes("I'm right here"), 'portal opens on the ?message= text');
+            await page.click('#mainCta');
+            await page.waitForSelector('#cardForm.is-open');
             await page.fill('#recipientName', 'Sam');
             await page.fill('#senderName', 'Alex');
             await page.fill('#personalMessage', 'Thinking of you');
@@ -111,7 +119,9 @@ const BLOCK = /googlesyndication|clarity\.ms|workers\.dev|jsdelivr|unsplash|font
             const page = await ctx.newPage();
             await page.goto(`${server.base}/send-card.html`);
             await page.waitForTimeout(400);
-            await page.evaluate(() => goToStep(3));
+            await enterPortal(page);
+            await page.click('#mainCta');
+            await page.waitForSelector('#cardForm.is-open');
             await page.fill('#recipientName', '<b>Jo</b>');
             await page.evaluate(() => document.getElementById('cardForm').requestSubmit());
             await page.waitForTimeout(600);
@@ -147,6 +157,117 @@ const BLOCK = /googlesyndication|clarity\.ms|workers\.dev|jsdelivr|unsplash|font
             t.check(paid.search === '', 'premium params are stripped from the URL after unlocking');
             const unpaid = await premiumCase('?premium=1&session_id=cs_live_testSession1234567890', { valid: false, reason: 'not_paid' });
             t.check(!unpaid.unlocked, 'an unpaid session does not unlock');
+        }
+
+        // 7. Card flow: taps, Premium locks, paywall at send, own words, exit, saved place, fallbacks
+        {
+            const ctx = await newContext({ viewport: { width: 1280, height: 900 } });
+            const page = await ctx.newPage();
+            const errors = trackErrors(page);
+            await page.goto(`${server.base}/send-card.html`);
+            await page.waitForTimeout(500);
+            const side = await page.locator('.portal-card[data-index="1"]').boundingBox();
+            await page.mouse.click(side.x + side.width * 0.8, side.y + side.height / 2);
+            await page.waitForTimeout(300);
+            t.check(await page.evaluate(() => document.querySelector('.portal-card.is-active').dataset.index) === '1', 'one tap brings a side card to the front');
+            for (let i = 0; i < 6; i++) await page.click('#ringNext');
+            t.check(await page.evaluate(() => !backgroundDefs[document.querySelector('.portal-card.is-active').dataset.index].premium), 'free users: arrows skip Premium cards');
+            const locked = await page.evaluate(() => { const c = [...document.querySelectorAll('.portal-card.is-locked')].find(el => el.style.display !== 'none'); const r = c.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; });
+            await page.mouse.click(locked.x, locked.y);
+            t.check(!!(await page.$('#premOverlay.open')), 'tapping a Premium card opens the Premium sheet');
+            await page.click('#premLater');
+            await enterPortal(page);
+            t.check(await page.evaluate(() => selectedBackground.startsWith('assets/backgrounds/')), 'entering sets the card background path');
+            await page.locator('#portalTopicsDock .flow-chip', { hasText: 'Calm' }).click();
+            t.check((await page.textContent('#mainCta')).includes('Unlock Premium'), 'locked collection: main button offers Premium');
+            await page.evaluate(() => { selectedAffirmation = 'Breathe. You are safe right now.'; });
+            await page.evaluate(() => document.getElementById('cardForm').requestSubmit());
+            t.check(!!(await page.$('#premOverlay.open')) && !(await page.$('#successMessage.show')), 'free user sending a Premium collection quote is stopped at send');
+            await page.click('#premLater');
+            await page.locator('#portalTopicsDock .flow-chip', { hasText: 'Your own' }).click();
+            await page.waitForTimeout(700);
+            t.check(!!(await page.$('#premOverlay.open')), 'free user: "your own words" opens the Premium sheet');
+            await page.click('#premLater');
+            await page.locator('#portalTopicsDock .flow-chip', { hasText: 'General' }).click();
+            await page.click('#mainCta');
+            await page.waitForSelector('#cardForm.is-open');
+            await page.click('#sendButton');
+            await page.waitForTimeout(300);
+            t.check(!(await page.$('#successMessage.show')) && await page.evaluate(() => document.activeElement.id === 'recipientName'), 'send with no recipient name stops at the name field');
+            await page.click('#drawerClose');
+            await page.click('#btnBackToRing');
+            await page.waitForFunction(() => !CardFlow.inside && !CardFlow.busy, null, { timeout: 10000 });
+            t.check(await page.evaluate(() => getComputedStyle(document.querySelector('.portal-card.is-active')).opacity === '1' && !document.getElementById('portalSpace').classList.contains('is-open')), 'Change Card lands back on a visible card');
+            t.check(errors.length === 0, 'no JS errors in the card flow', errors.join(' | '));
+            await ctx.close();
+        }
+        {
+            // Premium: own words go on the card, capped at 200 characters
+            const ctx = await newContext({ viewport: { width: 1280, height: 900 } });
+            await ctx.addInitScript(() => localStorage.setItem('premium_unlocked', '1'));
+            const page = await ctx.newPage();
+            const errors = trackErrors(page);
+            await page.goto(`${server.base}/send-card.html`);
+            await page.waitForTimeout(400);
+            await enterPortal(page);
+            await page.locator('#portalTopicsDock .flow-chip', { hasText: 'Your own' }).click();
+            await page.waitForSelector('body.is-writing');
+            await page.waitForTimeout(100);
+            await page.focus('#composerInput');
+            await page.keyboard.type('x'.repeat(230));
+            t.check(await page.evaluate(() => document.getElementById('composerInput').value.length) === 200, 'own words stop at 200 characters');
+            await page.fill('#composerInput', 'Sam, you make every room feel lighter.');
+            await page.keyboard.press('Enter');
+            await page.click('#mainCta');
+            await page.waitForSelector('#cardForm.is-open');
+            await page.fill('#recipientName', 'Sam');
+            await page.evaluate(() => document.getElementById('cardForm').requestSubmit());
+            await page.waitForSelector('#successMessage.show', { timeout: 8000 });
+            const card = decodeLink(await page.inputValue('#cardLink'));
+            t.check(card.affirmation === 'Sam, you make every room feel lighter.' && card.themeGroup === 'default', 'Premium: own words are sent on the card', JSON.stringify(card).slice(0, 120));
+            t.check(['id', 'affirmation', 'recipientName', 'senderName', 'personalMessage', 'sound', 'themeGroup', 'background', 'createdAt'].every(k => k in card), 'card link keeps all nine fields');
+            t.check(errors.length === 0, 'no JS errors sending own words', errors.join(' | '));
+            await ctx.close();
+        }
+        {
+            // Back from Stripe: the saved place brings them into the same card and words
+            const ctx = await newContext({ viewport: { width: 1280, height: 900 } });
+            await ctx.addInitScript(() => {
+                if (sessionStorage.getItem('seeded')) return;
+                sessionStorage.setItem('seeded', '1');
+                localStorage.setItem('premium_unlocked', '1');
+                localStorage.setItem('vc_flow_draft', JSON.stringify({ background: 'nebula', setId: 'love', phrase: 'You are deeply, profoundly loved.', to: 'Ana', then: 'use-collection', savedAt: Date.now() }));
+            });
+            const page = await ctx.newPage();
+            await page.goto(`${server.base}/send-card.html`);
+            await page.waitForFunction(() => document.body.classList.contains('is-inside') && !CardFlow.busy, null, { timeout: 10000 });
+            await page.waitForTimeout(400);
+            const state = await page.evaluate(() => ({ bg: selectedBackground, words: selectedAffirmation, to: document.getElementById('recipientName').value, draft: localStorage.getItem('vc_flow_draft') }));
+            t.check(state.bg.includes('nebula') && state.words === 'You are deeply, profoundly loved.' && state.to === 'Ana', 'saved place is restored after Premium', JSON.stringify(state));
+            t.check(state.draft === null, 'saved place is cleared once used');
+            await ctx.close();
+        }
+        {
+            // Full motion with GSAP blocked: plain Send button, card still sends; ?classic=1 rollback
+            const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+            await ctx.route(BLOCK, r => r.abort());
+            const page = await ctx.newPage();
+            const errors = trackErrors(page);
+            await page.goto(`${server.base}/send-card.html`);
+            await page.waitForTimeout(400);
+            await enterPortal(page);
+            await page.click('#mainCta');
+            await page.waitForSelector('#cardForm.is-open');
+            t.check(await page.evaluate(() => document.getElementById('sendButton').classList.contains('is-plain')), 'without GSAP the Send button is a plain button');
+            await page.fill('#recipientName', 'Sam');
+            await page.click('#sendButton');
+            const sent = await page.waitForSelector('#successMessage.show', { timeout: 8000 }).then(() => true, () => false);
+            t.check(sent, 'without GSAP the card still sends');
+            t.check(errors.length === 0, 'no JS errors without GSAP', errors.join(' | '));
+            await page.goto(`${server.base}/send-card.html?classic=1&to=Sam`);
+            await page.waitForTimeout(600);
+            t.check(page.url().includes('send-card-classic.html?to=Sam'), '?classic=1 opens the classic form', page.url());
+            await ctx.close();
         }
 
         // 6. Blog index opens at the top; FAQ accordion toggles

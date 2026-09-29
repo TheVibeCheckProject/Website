@@ -64,6 +64,11 @@
     }
     </script>
 
+    <!-- Rollback: ?classic=1 opens the previous step-by-step form -->
+    <script>
+        if (/[?&]classic=1/.test(location.search)) location.replace('send-card-classic.html' + location.search.replace(/([?&])classic=1&?/, '$1').replace(/[?&]$/, '') + location.hash);
+    </script>
+
     <!-- Analytics (Microsoft Clarity) -->
     <script>
         (function (c, l, a, r, i, t, y) {
@@ -79,45 +84,36 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Fredoka:wght@300;400;500;600;700&family=Caveat:wght@400;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Fredoka:wght@300;400;500;600;700&family=Caveat:wght@400;700&family=Space+Grotesk:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Gochi+Hand&display=swap"
         rel="stylesheet" media="print" onload="this.media='all'">
     <noscript>
         <link
-            href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Fredoka:wght@300;400;500;600;700&family=Caveat:wght@400;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Fredoka:wght@300;400;500;600;700&family=Caveat:wght@400;700&family=Space+Grotesk:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Gochi+Hand&display=swap"
             rel="stylesheet">
     </noscript>
 
 
     <link rel="stylesheet" href="css/styles.css?v=af8e2c7f4d">
     <link rel="stylesheet" href="css/send-card.css?v=33c752f97c">
+    <link rel="stylesheet" href="css/card-flow.css?v=1c4e3cae60">
 </head>
 
-<body data-design-concept="editorial">
-    <!-- Animated background orbs -->
-    <div class="bg-orb bg-orb-1" aria-hidden="true"></div>
-    <div class="bg-orb bg-orb-2" aria-hidden="true"></div>
-    <div class="bg-orb bg-orb-3" aria-hidden="true"></div>
-
-    <!-- Premium Modal (Glassmorphism Bottom-Sheet / Centered Dialog) -->
-    <div class="prem-overlay" id="premOverlay" role="dialog" aria-modal="true" aria-labelledby="premModalTitle" aria-hidden="true">
-        <div class="prem-modal" id="premModal">
-            <button class="prem-close" onclick="hidePremModal(event)" aria-label="Close premium modal">✕</button>
-            <div class="prem-badge">✨ Premium</div>
-            <h2 class="prem-modal-title" id="premModalTitle">Unlock the Full Vibe Experience</h2>
-            <div class="prem-pricing-hero">
-                <span class="prem-anchor-pill">One-time: $4.99</span>
-            </div>
-            <p class="prem-modal-desc">One small purchase, no subscription. Unlocks everything below in this browser.</p>
-            <ul class="prem-modal-features">
-                <li><span class="fi">✍️</span><span><strong>Write Your Own Words:</strong> Custom authentic messages</span></li>
-                <li><span class="fi">🌌</span><span><strong>14 Premium Backgrounds:</strong> Including 6 animated ones</span></li>
-                <li><span class="fi">🎵</span><span><strong>All 8 Soundscapes:</strong> Music Box, Ocean, Harp &amp; Piano</span></li>
-                <li><span class="fi">💙</span><span><strong>4 Collections:</strong> Calm, Celebrate, Love &amp; Healing</span></li>
+<body data-design-concept="editorial" class="card-flow-body">
+    <!-- Premium sheet: what Premium unlocks (keep this list true to what it unlocks) -->
+    <div class="prem-sheet-overlay" id="premOverlay" role="dialog" aria-modal="true" aria-labelledby="premSheetTitle" aria-hidden="true">
+        <div class="prem-sheet">
+            <small>PREMIUM · ONE-TIME $4.99</small>
+            <h2 id="premSheetTitle">Unlock every card</h2>
+            <p id="premSheetText">One small purchase unlocks everything below.</p>
+            <ul>
+                <li>🌌 14 more backgrounds, 6 of them animated</li>
+                <li>✍️ Write your own words</li>
+                <li>🎵 All 8 sounds</li>
+                <li>💙 4 more collections: Calm, Celebrate, Love and Healing</li>
             </ul>
-            <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" class="prem-cta" id="premCtaBtn" target="_blank" rel="noopener noreferrer">Unlock Premium — $4.99</a>
-            <div class="prem-social-proof">One-time payment • No subscription • Unlocks on this device</div>
-            <p class="prem-ethical-note">🌱 Premium helps keep the free cards free for everyone.</p>
-            <button class="prem-dismiss" onclick="hidePremModal(event)">Maybe later</button>
+            <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" class="flow-cta" id="premCtaBtn">Unlock Premium — $4.99</a>
+            <button type="button" class="prem-sheet-later" id="premLater">Maybe later</button>
+            <p class="prem-sheet-note">One-time payment · no subscription · unlocks on this device</p>
         </div>
     </div>
 
@@ -152,348 +148,272 @@
 </nav>
 <!-- site-nav:end -->
 
-    <div class="send-card-page">
-        <div class="send-card-container">
-            <!-- Viral Reply Bridge Banner (Appears when arriving from view-card.html) -->
-            <div class="viral-reply-banner" id="viralReplyBanner" style="display: none;">
-                <span class="viral-reply-icon">💚</span>
-                <div class="viral-reply-text">
-                    <strong>Replying with love:</strong> You're sending a vibe check back to <span id="viralReplyName">a friend</span>!
+    <!-- STEP 1: choose a card -->
+    <main class="flow-page" id="flowPage">
+        <!-- Viral Reply Bridge Banner (Appears when arriving from view-card.html) -->
+        <div class="viral-reply-banner" id="viralReplyBanner" style="display: none;">
+            <span class="viral-reply-icon">💚</span>
+            <div class="viral-reply-text">
+                <strong>Replying with love:</strong> You're sending a vibe check back to <span id="viralReplyName">a friend</span>!
+            </div>
+        </div>
+
+        <div class="carousel-intro">
+            <small>Step 1 of 2 · Choose a card</small>
+            <h1>Send a Vibe Check</h1>
+            <div class="occasion-row" id="occasionRow" role="group" aria-label="Quick picks by occasion"></div>
+        </div>
+
+        <div class="camera-rig" id="cameraRig" role="group" aria-roledescription="carousel" aria-label="Card designs">
+            <!-- Cards rendered by js/card-flow.js -->
+        </div>
+
+        <div class="carousel-bottom-dock">
+            <div class="card-name-row">
+                <div class="card-name-title" id="cardNameTitle" aria-live="polite">Sunset</div>
+                <span class="card-name-tag" id="cardNameTag"></span>
+            </div>
+            <div class="carousel-steppers">
+                <button type="button" class="circle-nav-btn" id="ringPrev" aria-label="Previous card">←</button>
+                <span class="ring-progress" id="ringProgress">01 / 21</span>
+                <button type="button" class="circle-nav-btn" id="ringNext" aria-label="Next card">→</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- The portal: the card's world, seen through a window that grows around you -->
+    <div class="portal-space" id="portalSpace" aria-hidden="true">
+        <div class="space-art" id="spaceArt"></div>
+        <canvas class="space-canvas" id="spaceCanvas"></canvas>
+        <div class="space-dim" id="spaceDim"></div>
+    </div>
+    <div class="space-rim" id="spaceRim" aria-hidden="true"></div>
+
+    <!-- STEP 2: inside the portal, choose the words -->
+    <section class="portal-ui" id="portalUi" aria-labelledby="portalTitle">
+        <div class="portal-topbar">
+            <button type="button" class="flow-back-btn" id="btnBackToRing">← Change Card</button>
+        </div>
+        <div class="portal-header-dock">
+            <small id="portalPlaceName">Inside Sunset</small>
+            <h2 id="portalTitle">Choose the words that speak to them</h2>
+            <div class="portal-topics-dock" id="portalTopicsDock" role="group" aria-label="Word sets"></div>
+        </div>
+
+        <div class="portal-depth-viewport" id="portalViewport" tabindex="0" role="listbox"
+            aria-label="Words for the card. Use the up and down arrow keys to move, Enter to choose.">
+            <div class="portal-track" id="portalTrack"></div>
+
+            <!-- Premium: write your own words in the same place the words float -->
+            <div class="portal-composer" id="portalComposer">
+                <label class="composer-label" for="composerInput">✦ Your own words</label>
+                <div class="composer-field">
+                    <div class="composer-prompt" id="composerPrompt" aria-hidden="true">What do you admire about them?</div>
+                    <textarea class="composer-input" id="composerInput" rows="1" maxlength="200" spellcheck="true"></textarea>
+                </div>
+                <div class="composer-underline" aria-hidden="true"></div>
+                <div class="composer-meta">
+                    <span class="composer-count" id="composerCount" aria-live="polite">0 / 200</span>
+                    <button type="button" class="composer-done" id="composerDone">Done</button>
+                </div>
+            </div>
+        </div>
+        <p class="flow-sr" id="wordAnnounce" aria-live="polite"></p>
+
+        <div class="portal-bottom-bar">
+            <div class="portal-stepper-pill">
+                <button type="button" class="portal-btn" id="portalUp" aria-label="Previous words">↑</button>
+                <span class="portal-counter" id="portalCounter">01 / 10</span>
+                <button type="button" class="portal-btn" id="portalDown" aria-label="Next words">↓</button>
+                <button type="button" class="portal-btn is-wide" id="portalShuffle">✦ SHUFFLE</button>
+            </div>
+            <button type="button" class="flow-cta" id="mainCta">Next →</button>
+        </div>
+    </section>
+
+    <!-- Names, note, sound, then Send -->
+    <form class="portal-drawer" id="cardForm" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true" novalidate>
+        <div class="drawer-box">
+            <div class="drawer-head">
+                <h2 id="drawerTitle">Your card</h2>
+                <button type="button" class="drawer-close-btn" id="drawerClose" aria-label="Back to the words">✕</button>
+            </div>
+            <div class="drawer-scroll">
+            <div class="drawer-preview-pill">
+                <span class="preview-badge" id="drawerCardName">Sunset</span>
+                <span class="preview-quote-line" id="drawerQuoteText"></span>
+            </div>
+            <div class="drawer-field">
+                <label for="recipientName">Who's this for? <span class="required">*</span></label>
+                <input type="text" class="drawer-input" id="recipientName" placeholder="Sarah" autocomplete="off" maxlength="50">
+            </div>
+            <div class="drawer-field">
+                <label for="senderName">Your name</label>
+                <input type="text" class="drawer-input" id="senderName" placeholder="Leave blank to stay anonymous" autocomplete="off" maxlength="50">
+            </div>
+            <div class="drawer-field">
+                <label for="personalMessage">A little note (optional)</label>
+                <textarea class="drawer-textarea" id="personalMessage" maxlength="500"
+                    placeholder="I was thinking of you today and wanted to send some good vibes your way..."></textarea>
+            </div>
+            <div class="drawer-field">
+                <label for="recipientEmail">Their email (optional)</label>
+                <input type="email" class="drawer-input" id="recipientEmail" placeholder="sarah@example.com">
+                <small class="drawer-hint">Leave blank and you'll get a link to text or copy</small>
+            </div>
+            <div class="drawer-field">
+                <span class="drawer-label" id="soundLabel">Sound when they open it</span>
+                <div class="sound-row" id="soundRow" role="group" aria-labelledby="soundLabel"></div>
+            </div>
+            <div class="drawer-field">
+                <label class="flow-reminder" for="senderReminderToggle">
+                    <input type="checkbox" id="senderReminderToggle">
+                    <span><strong>Remind me to check back in on <span id="reminderRecipientName">them</span> in 30 days 💌</strong><br>
+                        One gentle email in 30 days. No newsletter, just the reminder.</span>
+                </label>
+                <div class="reminder-email-slide" id="reminderEmailSlide" style="display: none;">
+                    <label for="senderReminderEmail">Your email</label>
+                    <input type="email" class="drawer-input" id="senderReminderEmail" placeholder="your.email@example.com" autocomplete="email">
+                </div>
+            </div>
+            </div>
+            <div class="drawer-foot">
+                <button type="submit" class="send-slot" id="sendButton" aria-label="Send"></button>
+                <p class="flow-sr" id="sendAnnounce" aria-live="polite"></p>
+            </div>
+        </div>
+    </form>
+
+    <!-- The saved Send button (assets/testassetcode/send-demo.html), lined up on the send slot above -->
+    <div class="send-stage" id="sendStage" aria-hidden="true">
+        <svg viewBox="0 0 1400 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path id="paperPlaneRoute" d="M563.558,526.618 C520,300 900,80 1180,160 C1390,220 1390,560 1190,770 C970,990 420,1020 240,840 C120,720 220,600 420,610 C560,617 650,600 700,540" stroke="url(#vcTrail)" stroke-width="5" stroke-linecap="round" filter="url(#vcGlow)" style="stroke-dashoffset: 0.001px; stroke-dasharray: 0px, 999999px;"/>
+  <!-- The message: handwritten, on a wavy line rising to the right; revealed right-to-left as the plane passes -->
+  <!-- The letters the plane drops, one by one -->
+  <g id="skyLetters" font-family="Gochi Hand" font-size="64" fill="#FFF6DC" stroke="#FFF6DC" stroke-width="2.2" stroke-linejoin="round" paint-order="stroke"></g>
+  <g id="sparkles"></g>
+  <g id="rectSent" clip-path="url(#clipPath)">
+    <g id="rectSentItems">
+      <rect id="sentBase" x="460" y="468.5" width="480" height="143" rx="71" fill="#F6EEF7"/>
+      <text id="txtSent" fill="#E4577F" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="82" font-weight="bold" letter-spacing="0.025em"><tspan x="637.487" y="568.027">Sent!</tspan></text>
+    </g>
+  </g>
+  <g id="base">
+    <g filter="url(#flShadow)"><rect id="btnBase" x="418.117" y="460.55" width="563.765" height="158.899" rx="79" fill="url(#vcBtn)" /></g>
+      <text id="txtSend" fill="#1A1625" xml:space="preserve" style="white-space: pre" font-family="Roboto" font-size="82" font-weight="bold" letter-spacing="0.06em"><tspan x="679.379" y="568.027">Send</tspan></text>
+      <g id="paperPlane" style="transform-origin: 0px 0px 0px;" data-svg-origin="563.55859375 527.734375" transform="matrix(0.8396,0.5432,-0.5432,0.8396,377.09924,-222.6639)">
+      <path id="paperPlanePath" d="M560.611 481.384C562.003 479.263 565.113 479.263 566.505 481.384L607.063 543.177C615.657 556.272 607.507 573.375 592.766 575.676L566.422 557.462V510.018C566.422 508.436 565.14 507.154 563.558 507.154C561.976 507.154 560.693 508.436 560.693 510.018V557.462L534.349 575.676C519.609 573.375 511.459 556.272 520.053 543.177L560.611 481.384Z" fill="#1A1625"/>
+    </g>
+  </g>
+  <circle id="cBottom" cx="700" cy="540" r="97.516" fill="#C23F3F"  class="hidden"/>
+  <circle id="cTop" cx="700" cy="502.365" r="107.898" fill="#C23F3F" class="hidden"/>
+  <circle id="cCenter" cx="700" cy="540" r="123" fill="#A74C4C" class="hidden" />
+  <circle id="cEnd" cx="495" cy="540" r="98" fill="url(#vcBtn)" class="hidden"/>
+  <path id="tickMark" fill-rule="evenodd" clip-rule="evenodd" d="M597.3 489.026C595.179 487.257 592.026 487.541 590.257 489.662L550.954 536.768L534.647 522.965C532.539 521.181 529.384 521.444 527.6 523.551L519.096 533.598C517.312 535.706 517.575 538.861 519.682 540.645L538.606 556.662C538.893 557.162 539.272 557.621 539.74 558.012L549.847 566.445C551.967 568.214 555.12 567.929 556.889 565.809L608.042 504.501C609.811 502.38 609.527 499.227 607.406 497.458L597.3 489.026Z" fill="#1A1625" class="hidden"/>
+  <defs>
+    <path id="skyLine" d="M300.0,830.0 C301.7,830.9 306.7,833.8 310.0,835.6 C313.3,837.4 316.7,839.2 320.0,840.8 C323.3,842.5 326.7,844.0 330.0,845.4 C333.3,846.8 336.7,848.0 340.0,849.0 C343.3,850.0 346.7,850.9 350.0,851.4 C353.3,852.0 356.7,852.3 360.0,852.4 C363.3,852.5 366.7,852.3 370.0,851.9 C373.3,851.4 376.7,850.7 380.0,849.8 C383.3,848.8 386.7,847.5 390.0,846.1 C393.3,844.6 396.7,842.8 400.0,840.9 C403.3,839.0 406.7,836.8 410.0,834.4 C413.3,832.1 416.7,829.5 420.0,826.8 C423.3,824.2 426.7,821.3 430.0,818.4 C433.3,815.6 436.7,812.5 440.0,809.5 C443.3,806.5 446.7,803.5 450.0,800.5 C453.3,797.5 456.7,794.4 460.0,791.6 C463.3,788.7 466.7,785.8 470.0,783.2 C473.3,780.5 476.7,777.9 480.0,775.6 C483.3,773.2 486.7,771.0 490.0,769.1 C493.3,767.2 496.7,765.4 500.0,763.9 C503.3,762.5 506.7,761.2 510.0,760.2 C513.3,759.3 516.7,758.6 520.0,758.1 C523.3,757.7 526.7,757.5 530.0,757.6 C533.3,757.7 536.7,758.0 540.0,758.6 C543.3,759.1 546.7,760.0 550.0,761.0 C553.3,762.0 556.7,763.2 560.0,764.6 C563.3,766.0 566.7,767.5 570.0,769.2 C573.3,770.8 576.7,772.6 580.0,774.4 C583.3,776.2 586.7,778.1 590.0,780.0 C593.3,781.9 596.7,783.8 600.0,785.6 C603.3,787.4 606.7,789.2 610.0,790.8 C613.3,792.5 616.7,794.0 620.0,795.4 C623.3,796.8 626.7,798.0 630.0,799.0 C633.3,800.0 636.7,800.9 640.0,801.4 C643.3,802.0 646.7,802.3 650.0,802.4 C653.3,802.5 656.7,802.3 660.0,801.9 C663.3,801.4 666.7,800.7 670.0,799.8 C673.3,798.8 676.7,797.5 680.0,796.1 C683.3,794.6 686.7,792.8 690.0,790.9 C693.3,789.0 696.7,786.8 700.0,784.4 C703.3,782.1 706.7,779.5 710.0,776.8 C713.3,774.2 716.7,771.3 720.0,768.4 C723.3,765.6 726.7,762.5 730.0,759.5 C733.3,756.5 736.7,753.5 740.0,750.5 C743.3,747.5 746.7,744.4 750.0,741.6 C753.3,738.7 756.7,735.8 760.0,733.2 C763.3,730.5 766.7,727.9 770.0,725.6 C773.3,723.2 776.7,721.0 780.0,719.1 C783.3,717.2 786.7,715.4 790.0,713.9 C793.3,712.5 796.7,711.2 800.0,710.2 C803.3,709.3 806.7,708.6 810.0,708.1 C813.3,707.7 816.7,707.5 820.0,707.6 C823.3,707.7 826.7,708.0 830.0,708.6 C833.3,709.1 836.7,710.0 840.0,711.0 C843.3,712.0 846.7,713.2 850.0,714.6 C853.3,716.0 856.7,717.5 860.0,719.2 C863.3,720.8 866.7,722.6 870.0,724.4 C873.3,726.2 876.7,728.1 880.0,730.0 C883.3,731.9 886.7,733.8 890.0,735.6 C893.3,737.4 896.7,739.2 900.0,740.8 C903.3,742.5 906.7,744.0 910.0,745.4 C913.3,746.8 916.7,748.0 920.0,749.0 C923.3,750.0 926.7,750.9 930.0,751.4 C933.3,752.0 936.7,752.3 940.0,752.4 C943.3,752.5 946.7,752.3 950.0,751.9 C953.3,751.4 956.7,750.7 960.0,749.8 C963.3,748.8 966.7,747.5 970.0,746.1 C973.3,744.6 976.7,742.8 980.0,740.9 C983.3,739.0 986.7,736.8 990.0,734.4 C993.3,732.1 996.7,729.5 1000.0,726.8 C1003.3,724.2 1006.7,721.3 1010.0,718.4 C1013.3,715.6 1016.7,712.5 1020.0,709.5 C1023.3,706.5 1026.7,703.5 1030.0,700.5 C1033.3,697.5 1036.7,694.4 1040.0,691.6 C1043.3,688.7 1046.7,685.8 1050.0,683.2 C1053.3,680.5 1056.7,677.9 1060.0,675.6 C1063.3,673.2 1066.7,671.0 1070.0,669.1 C1073.3,667.2 1076.7,665.4 1080.0,663.9 C1083.3,662.5 1086.7,661.2 1090.0,660.2 C1093.3,659.3 1096.7,658.6 1100.0,658.1 C1103.3,657.7 1106.7,657.5 1110.0,657.6 C1113.3,657.7 1116.7,658.0 1120.0,658.6 C1123.3,659.1 1126.7,660.0 1130.0,661.0 C1133.3,662.0 1136.7,663.2 1140.0,664.6 C1143.3,666.0 1146.7,667.5 1150.0,669.2 C1153.3,670.8 1156.7,672.6 1160.0,674.4 C1163.3,676.2 1168.3,679.1 1170.0,680.0"/>
+    <clipPath id="skyClip"><path id="skyClipRect" d="M0,0 H1600 V1080 H0 Z" transform="translate(1400 0)"/><!-- a path, not a rect: send.js converts every rect to a path at load --></clipPath>
+    <linearGradient id="vcSky" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FF6B9D"/><stop offset="0.5" stop-color="#FFF6DC"/><stop offset="1" stop-color="#FEC84A"/>
+    </linearGradient>
+    <linearGradient id="vcBtn" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF6B9D"/><stop offset="1" stop-color="#FEC84A"/>
+    </linearGradient>
+    <linearGradient id="vcTrail" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF6B9D"/><stop offset="0.5" stop-color="#C9A7FF"/><stop offset="1" stop-color="#FEC84A"/>
+    </linearGradient>
+    <filter id="vcGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="clipPath">
+      <rect id="mask1" x="700" y="450" width="520" height="180" fill="white" id="clipRect"/>
+    </clipPath>
+    <filter id="flShadow" x="0" y="0" width="1000" height="1000" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+      <feOffset dx="0" dy="10"/>
+      <feGaussianBlur stdDeviation="16"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.42 0 0 0 0 0.62 0 0 0 0.35 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+  </defs>
+  </svg>
+    </div>
+
+    <!-- After Sent! -->
+    <div class="flow-success" id="flowSuccess" aria-hidden="true">
+        <div class="success-message" id="successMessage">
+            <!-- Animated checkmark -->
+            <div class="success-check-wrap">
+                <svg viewBox="0 0 24 24">
+                    <path d="M4 12l6 6L20 6" />
+                </svg>
+            </div>
+
+            <h2 class="success-title" id="successTitle">Card Created!</h2>
+            <p class="success-text" id="successSubtext">
+                Your personalized Vibe Check from The Vibe Check Project is ready to share.
+            </p>
+
+            <!-- Email sent badge (shown conditionally via JS) -->
+            <div class="success-email-badge" id="emailSentBadge" style="display:none;">
+                ✅ Email sent to <span id="emailSentTo">them</span>
+            </div>
+
+            <!-- Saved to History Notice -->
+            <div class="success-history-notice" id="historySavedNotice" style="display:none;">
+                <span class="history-notice-icon">💾</span>
+                <div class="history-notice-text">
+                    <strong>Saved to My Vibes:</strong> Track and re-share this card anytime.
+                </div>
+                <a href="my-cards.html" class="history-notice-btn">
+                    My Sent Cards (<span id="historyCountBadge">1</span>) →
+                </a>
+            </div>
+
+            <!-- Share link -->
+            <div class="success-share-box">
+                <label for="cardLink">Share Link</label>
+                <div class="success-share-input-row">
+                    <input type="text" id="cardLink" readonly>
+                    <button class="success-copy-btn" onclick="copyLink()">Copy</button>
+                </div>
+                <div class="quick-share-row">
+                    <button class="quick-share-btn quick-share-btn-highlight" id="textShare" onclick="textFriend(event)">
+                        💬 Text a Friend
+                    </button>
+                    <a class="quick-share-btn" id="whatsappShare" href="https://api.whatsapp.com/send?text=I%20sent%20you%20a%20Vibe%20Check!%20%E2%9C%A8" target="_blank"
+                        rel="noopener noreferrer">WhatsApp</a>
+                    <a class="quick-share-btn" id="twitterShare" href="https://twitter.com/intent/tweet?text=I%20sent%20you%20a%20Vibe%20Check!%20%E2%9C%A8" target="_blank" rel="noopener noreferrer">𝕏
+                        Twitter</a>
+                    <button class="quick-share-btn" onclick="copyLink(event)">📋 Copy</button>
                 </div>
             </div>
 
-            <div class="send-card-header">
-                <h1 class="send-card-title">✨ Send a Vibe Check</h1>
-                <p class="send-card-subtitle">Send someone you care about a personalized affirmation card</p>
+            <button class="success-send-another" onclick="location.href = location.pathname">
+                Send Another Card ✨
+            </button>
+
+            <div class="success-upsell">
+                <div class="upsell-badge">✨ Daily Morning Spark</div>
+                <h3 class="upsell-heading">Start your mornings with a moment of peace</h3>
+                <p class="upsell-sub">One gentle affirmation in your inbox every morning.</p>
+                <form class="inline-email-form" id="senderSignupForm" onsubmit="handleSenderSignup(event)">
+                    <input type="email" id="postSendEmail" placeholder="your.email@example.com" required aria-label="Email address">
+                    <button type="submit">Get Daily Vibes</button>
+                </form>
+                <p class="form-error" id="senderSignupError" role="alert" hidden></p>
+                <p class="upsell-links">
+                    ✨ <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" class="link-primary link-strong">Unlock Premium — $4.99</a>
+                    &nbsp;·&nbsp;
+                    ☕ <a href="https://ko-fi.com/thevibecheckproject?utm_source=website&utm_campaign=tip-jar"
+                        target="_blank" rel="noopener noreferrer">Buy me a coffee</a>
+                </p>
             </div>
-
-            <div class="step-indicator" id="stepIndicator" role="navigation" aria-label="Creation Steps">
-                <div class="step-num-wrap sn-active" id="sn1" role="button" tabindex="0" onclick="goToStep(1)" onkeydown="if(event.key==='Enter'||event.key===' ')goToStep(1)" aria-label="Step 1: Your Vibe">
-                    <div class="step-num">1</div>
-                    <span class="step-num-label">Your Vibe</span>
-                </div>
-                <div class="step-connector" id="sc1"></div>
-                <div class="step-num-wrap" id="sn2" role="button" tabindex="0" onclick="goToStep(2)" onkeydown="if(event.key==='Enter'||event.key===' ')goToStep(2)" aria-label="Step 2: The Look">
-                    <div class="step-num">2</div>
-                    <span class="step-num-label">The Look</span>
-                </div>
-                <div class="step-connector" id="sc2"></div>
-                <div class="step-num-wrap" id="sn3" role="button" tabindex="0" onclick="goToStep(3)" onkeydown="if(event.key==='Enter'||event.key===' ')goToStep(3)" aria-label="Step 3: Send It">
-                    <div class="step-num">3</div>
-                    <span class="step-num-label">Send It</span>
-                </div>
-            </div>
-
-            <!-- 2-Column Layout -->
-            <div class="send-card-layout" id="formLayout">
-                <!-- Left Column: Form -->
-                <div class="send-card-form-col">
-                    <form class="card-form" id="cardForm">
-                        <div class="form-slider-container">
-                            <div class="form-slider-track" id="sliderTrack">
-
-                                <!-- Step 1: Your Vibe -->
-                                <div class="form-step active" id="step1">
-                                    <!-- Occasion Presets / Quick Picks -->
-                                    <div class="form-section occasion-presets-section">
-                                        <div class="occasion-header">
-                                            <label class="form-label form-label-inline">⚡ Quick Presets / Occasions</label>
-                                            <span class="occasion-hint">1-click vibe, look &amp; sound</span>
-                                        </div>
-                                        <div class="occasion-chips-wrap" id="occasionChips" role="group" aria-label="Occasion Presets"></div>
-                                    </div>
-
-                                    <div class="form-section">
-                                        <div class="affirmation-section-header">
-                                            <label class="form-label form-label-inline">Choose an Affirmation <span class="required">*</span></label>
-                                            <span class="occasion-hint">or pick by mood</span>
-                                        </div>
-                                        <div class="vibe-category-tabs" id="categoryTabs"></div>
-                                        <div class="category-lock-banner" id="categoryLockBanner" style="display:none">
-                                            🔒 <strong>Premium vibes</strong> — <button onclick="showPremModal()" class="lock-banner-link">Unlock
-                                                for $4.99</button>
-                                        </div>
-                                        <div class="affirmation-grid" id="affirmationPicker"></div>
-                                    </div>
-
-                                    <div class="step-actions">
-                                        <button type="button" class="btn-next" onclick="goToStep(2)"
-                                            id="btnStep1Next">Next: The Look →</button>
-                                    </div>
-                                </div>
-
-                                <!-- Step 2: The Look -->
-                                <div class="form-step" id="step2">
-                                    <div class="form-section">
-                                        <label class="form-label">Card Background</label>
-                                        <small class="form-hint form-hint-above">
-                                            Choose the visual vibe for the card
-                                        </small>
-                                        <div class="bg-picker" id="bgPicker"></div>
-                                        <small id="premiumBgHint"
-                                            class="form-hint form-hint-premium">
-                                            🔓 <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener noreferrer" class="link-primary">Unlock
-                                                Premium — $4.99</a> for animated &amp; premium backgrounds
-                                        </small>
-                                    </div>
-
-                                    <div class="form-section form-section-spaced">
-                                        <label class="form-label">Card Sound</label>
-                                        <small class="form-hint form-hint-above">
-                                            Plays when they open the card
-                                        </small>
-                                        <div class="sound-picker" id="soundPicker">
-                                            <div class="sound-option selected" data-sound="chime" role="button" tabindex="0"
-                                                onclick="selectSound('chime', this)">
-                                                <span class="sound-icon">🔔</span>
-                                                <span class="sound-name">Chime</span>
-                                                <button type="button" class="sound-preview-btn"
-                                                    onclick="event.stopPropagation(); previewSound('chime')"
-                                                    title="Preview">▶</button>
-                                            </div>
-                                            <div class="sound-option" data-sound="bell" role="button" tabindex="0"
-                                                onclick="selectSound('bell', this)">
-                                                <span class="sound-icon">🛎️</span>
-                                                <span class="sound-name">Soft Bell</span>
-                                                <button type="button" class="sound-preview-btn"
-                                                    onclick="event.stopPropagation(); previewSound('bell')"
-                                                    title="Preview">▶</button>
-                                            </div>
-                                            <div class="sound-option" data-sound="sparkle" role="button" tabindex="0"
-                                                onclick="selectSound('sparkle', this)">
-                                                <span class="sound-icon">✨</span>
-                                                <span class="sound-name">Sparkle</span>
-                                                <button type="button" class="sound-preview-btn"
-                                                    onclick="event.stopPropagation(); previewSound('sparkle')"
-                                                    title="Preview">▶</button>
-                                            </div>
-                                            <div class="sound-option premium-sound" data-sound="musicbox" role="button" tabindex="0"
-                                                onclick="selectPremiumSound('musicbox', this)">
-                                                <span class="sound-icon">🎵</span>
-                                                <span class="sound-name">Music Box</span>
-                                                <span class="premium-lock">Premium</span>
-                                                <button type="button" class="sound-preview-btn"
-                                                    onclick="event.stopPropagation(); previewSound('musicbox')"
-                                                    title="Preview">▶</button>
-                                            </div>
-                                            <div class="sound-option premium-sound" data-sound="harp" role="button" tabindex="0"
-                                                onclick="selectPremiumSound('harp', this)">
-                                                <span class="sound-icon">🎶</span>
-                                                <span class="sound-name">Harp</span>
-                                                <span class="premium-lock">Premium</span>
-                                                <button type="button" class="sound-preview-btn"
-                                                    onclick="event.stopPropagation(); previewSound('harp')"
-                                                    title="Preview">▶</button>
-                                            </div>
-                                            <div class="sound-option premium-sound" data-sound="piano" role="button" tabindex="0"
-                                                onclick="selectPremiumSound('piano', this)">
-                                                <span class="sound-icon">🎹</span>
-                                                <span class="sound-name">Warm Piano</span>
-                                                <span class="premium-lock">Premium</span>
-                                                <button type="button" class="sound-preview-btn"
-                                                    onclick="event.stopPropagation(); previewSound('piano')"
-                                                    title="Preview">▶</button>
-                                            </div>
-                                            <div class="sound-option premium-sound" data-sound="celebration" role="button" tabindex="0"
-                                                onclick="selectPremiumSound('celebration', this)">
-                                                <span class="sound-icon">🎉</span>
-                                                <span class="sound-name">Celebration</span>
-                                                <span class="premium-lock">Premium</span>
-                                                <button type="button" class="sound-preview-btn"
-                                                    onclick="event.stopPropagation(); previewSound('celebration')"
-                                                    title="Preview">▶</button>
-                                            </div>
-                                            <div class="sound-option premium-sound" data-sound="ocean" role="button" tabindex="0"
-                                                onclick="selectPremiumSound('ocean', this)">
-                                                <span class="sound-icon">🌊</span>
-                                                <span class="sound-name">Ocean</span>
-                                                <span class="premium-lock">Premium</span>
-                                                <button type="button" class="sound-preview-btn"
-                                                    onclick="event.stopPropagation(); previewSound('ocean')"
-                                                    title="Preview">▶</button>
-                                            </div>
-                                        </div>
-                                        <small id="premiumSoundHint"
-                                            class="form-hint form-hint-premium">
-                                            🔓 <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener noreferrer" class="link-primary">Unlock
-                                                Premium — $4.99</a> to use all sounds
-                                        </small>
-                                    </div>
-
-                                    <div class="step-actions">
-                                        <button type="button" class="btn-prev" onclick="goToStep(1)">← Back</button>
-                                        <button type="button" class="btn-next" onclick="goToStep(3)"
-                                            id="btnStep2Next">Next: Send It →</button>
-                                    </div>
-                                </div>
-
-                                <!-- Step 3: Send It -->
-                                <div class="form-step" id="step3">
-                                    <div class="form-section">
-                                        <label class="form-label" for="recipientName">Who's this for? <span class="required">*</span></label>
-                                        <input type="text" class="form-input" id="recipientName" placeholder="Sarah"
-                                            autocomplete="off" maxlength="50">
-                                    </div>
-
-                                    <div class="form-section">
-                                        <label class="form-label" for="senderName">Your Name</label>
-                                        <input type="text" class="form-input" id="senderName"
-                                            placeholder="Alex (or leave blank to stay anonymous)" autocomplete="off" maxlength="50">
-                                        <small class="form-hint">
-                                            Leave blank to send as "Someone special" ✨
-                                        </small>
-                                    </div>
-
-                                    <div class="form-section">
-                                        <label class="form-label" for="personalMessage">Personal Note (Optional)</label>
-                                        <textarea class="form-textarea" id="personalMessage" maxlength="500"
-                                            placeholder="I was thinking of you today and wanted to send some good vibes your way..."></textarea>
-                                    </div>
-
-                                    <div class="form-section">
-                                        <label class="form-label" for="recipientEmail">Send to Their Email (Optional)</label>
-                                        <input type="email" class="form-input" id="recipientEmail"
-                                            placeholder="sarah@example.com">
-                                        <small class="form-hint">
-                                            Leave blank and you'll get a shareable link to text or copy
-                                        </small>
-                                    </div>
-
-                                    <!-- Behavioral Retention: 30-Day Check-in Reminder -->
-                                    <div class="form-section reminder-optin-section">
-                                        <label class="reminder-checkbox-label" for="senderReminderToggle">
-                                            <input type="checkbox" id="senderReminderToggle" class="reminder-checkbox">
-                                            <span class="reminder-custom-check" aria-hidden="true"></span>
-                                            <span class="reminder-text-wrap">
-                                                <strong class="reminder-title">Remind me to check back in on <span id="reminderRecipientName">them</span> in 30 days 💌</strong>
-                                                <span class="reminder-desc">Life moves fast. We'll send you one gentle email in 30 days so you don't lose touch. No newsletter, just the reminder.</span>
-                                            </span>
-                                        </label>
-                                        <div class="reminder-email-slide" id="reminderEmailSlide" style="display: none;">
-                                            <label class="form-label form-label-small" for="senderReminderEmail">Your Email Address</label>
-                                            <input type="email" class="form-input" id="senderReminderEmail" placeholder="your.email@example.com" autocomplete="email">
-                                            <small class="reminder-privacy-hint">🔒 We respect your inbox. 1-click unsubscribe anytime.</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="step-actions">
-                                        <button type="button" class="btn-prev" onclick="goToStep(2)">← Back</button>
-                                        <button type="submit" class="send-button" id="sendButton">
-                                            Create Card ✨
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
-                    <div class="success-message" id="successMessage">
-                        <!-- Animated checkmark -->
-                        <div class="success-check-wrap">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M4 12l6 6L20 6" />
-                            </svg>
-                        </div>
-
-                        <h2 class="success-title" id="successTitle">Card Created!</h2>
-                        <p class="success-text" id="successSubtext">
-                            Your personalized Vibe Check from The Vibe Check Project is ready to share.
-                        </p>
-
-                        <!-- Email sent badge (shown conditionally via JS) -->
-                        <div class="success-email-badge" id="emailSentBadge" style="display:none;">
-                            ✅ Email sent to <span id="emailSentTo">them</span>
-                        </div>
-
-                        <!-- Saved to History Notice -->
-                        <div class="success-history-notice" id="historySavedNotice" style="display:none;">
-                            <span class="history-notice-icon">💾</span>
-                            <div class="history-notice-text">
-                                <strong>Saved to My Vibes:</strong> Track and re-share this card anytime.
-                            </div>
-                            <a href="my-cards.html" class="history-notice-btn">
-                                My Sent Cards (<span id="historyCountBadge">1</span>) →
-                            </a>
-                        </div>
-
-                        <!-- Share link -->
-                        <div class="success-share-box">
-                            <label>Share Link</label>
-                            <div class="success-share-input-row">
-                                <input type="text" id="cardLink" readonly>
-                                <button class="success-copy-btn" onclick="copyLink()">Copy</button>
-                            </div>
-                            <div class="quick-share-row">
-                                <button class="quick-share-btn quick-share-btn-highlight" id="textShare" onclick="textFriend(event)">
-                                    💬 Text a Friend
-                                </button>
-                                <a class="quick-share-btn" id="whatsappShare" href="https://api.whatsapp.com/send?text=I%20sent%20you%20a%20Vibe%20Check!%20%E2%9C%A8" target="_blank"
-                                    rel="noopener noreferrer">WhatsApp</a>
-                                <a class="quick-share-btn" id="twitterShare" href="https://twitter.com/intent/tweet?text=I%20sent%20you%20a%20Vibe%20Check!%20%E2%9C%A8" target="_blank" rel="noopener noreferrer">𝕏
-                                    Twitter</a>
-                                <button class="quick-share-btn" onclick="copyLink(event)">📋 Copy</button>
-                            </div>
-                        </div>
-
-                        <button class="success-send-another" onclick="location.reload()">
-                            Send Another Card ✨
-                        </button>
-
-                        <div class="success-upsell">
-                            <div class="upsell-badge">✨ Daily Morning Spark</div>
-                            <h3 class="upsell-heading">Start your mornings with a moment of peace</h3>
-                            <p class="upsell-sub">One gentle affirmation in your inbox every morning.</p>
-                            <form class="inline-email-form" id="senderSignupForm" onsubmit="handleSenderSignup(event)">
-                                <input type="email" id="postSendEmail" placeholder="your.email@example.com" required aria-label="Email address">
-                                <button type="submit">Get Daily Vibes</button>
-                            </form>
-                            <p class="form-error" id="senderSignupError" role="alert" hidden></p>
-                            <p class="upsell-links">
-                                ✨ <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener noreferrer" class="link-primary link-strong">Unlock Premium — $4.99</a>
-                                &nbsp;·&nbsp;
-                                ☕ <a href="https://ko-fi.com/thevibecheckproject?utm_source=website&utm_campaign=tip-jar"
-                                    target="_blank" rel="noopener noreferrer">Buy me a coffee</a>
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="back-link">
-                        <a href="index.html">← Back to The Vibe Check Project</a>
-                    </div>
-                </div>
-
-                <!-- Right Column: Live Preview -->
-                <div class="send-card-preview-col">
-                    <div class="sticky-preview">
-                        <div class="preview-header-row">
-                            <div class="preview-label">Card Preview</div>
-                            <div class="preview-controls-row">
-                                <button type="button" class="motion-toggle-btn" id="motionToggleBtn" aria-label="Toggle motion effects" title="Toggle reduced motion">
-                                    <span id="motionToggleIcon" aria-hidden="true">✨</span>
-                                    <span id="motionToggleText">Motion On</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-preview" id="cardPreview" role="region" aria-label="Card Preview">
-                            <!-- Animated Background Layer -->
-                            <video id="previewVideo" autoplay loop muted playsinline
-                                class="preview-video" style="display: none;"></video>
-
-                            <div class="preview-content-wrapper">
-                                <div class="preview-recipient-chip hidden" id="previewRecipientChip">
-                                    <span>💌</span>
-                                    <span id="previewRecipientName">Sarah</span>
-                                </div>
-                                <div class="preview-affirmation" id="previewAffirmation">"Your affirmation will appear here"</div>
-                                <div class="preview-message" id="previewMessage"><strong>Someone special</strong> wanted to send you some good vibes ✨</div>
-                            </div>
-                            <span id="previewSender" style="display: none;">Someone special</span>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- End send-card-layout -->
-        </div> <!-- End send-card-container -->
-    </div> <!-- End send-card-page -->
+        </div>
+    </div>
 
 <!-- site-footer:start (generated from templates/partials/footer.html) -->
 <footer class="footer">
@@ -548,7 +468,17 @@
 
     <script src="js/core-utils.js?v=986d751688"></script>
     <script src="js/vibe-history.js?v=b1877229a4"></script>
-    <script src="js/send-card-logic.js?v=2d36520d97"></script>
+    <script src="js/send-card-logic.js?v=b44125d9a7"></script>
+    <script src="js/card-flow.js?v=6ac705983b"></script>
+
+    <!-- The saved Send button's flight: GSAP (allowed by the owner 2026-09-29) + js/send-plane.js.
+         If these don't load, js/card-flow.js shows a plain Send button that still sends. -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MotionPathPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MorphSVGPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
+    <script>if (window.gsap) gsap.registerPlugin(MotionPathPlugin, MorphSVGPlugin, DrawSVGPlugin);</script>
+    <script src="js/send-plane.js?v=426400e99b"></script>
 
     <!-- EmailJS SDK — loaded at end of body so it never blocks rendering -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>

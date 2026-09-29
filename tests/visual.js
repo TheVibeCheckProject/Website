@@ -26,10 +26,10 @@ const card = encodeCard({ id: 'vibe_visual', recipientName: 'Sam', senderName: '
 const STATES = {
     '/': [['nav-open', p => p.click('#nav-hamburger')]],
     '/send-card.html': [
-        ['premium-modal', p => p.evaluate(() => showPremModal())],
-        ['step-2', p => p.evaluate(() => { hidePremModal(); goToStep(2); })],
-        ['step-3', p => p.evaluate(() => goToStep(3))],
-        ['success', async p => { await p.fill('#recipientName', 'Sam'); await p.evaluate(() => document.getElementById('cardForm').requestSubmit()); }],
+        ['premium-sheet', p => p.evaluate(() => showPremModal())],
+        ['inside-portal', async p => { await p.evaluate(() => hidePremModal()); await p.locator('.portal-card.is-active').click(); await p.waitForFunction(() => document.body.classList.contains('is-inside') && !CardFlow.busy); }],
+        ['note-panel', async p => { await p.click('#mainCta'); await p.waitForSelector('#cardForm.is-open'); }],
+        ['success', async p => { await p.fill('#recipientName', 'Sam'); await p.evaluate(() => document.getElementById('cardForm').requestSubmit()); await p.waitForSelector('#successMessage.show'); }],
     ],
     '/faq.html': [['faq-open', p => p.click('#faq-recipient-app .faq-question')]],
     [`/view-card.html?data=${card}`]: [['flipped', p => p.click('#flipCard')]],

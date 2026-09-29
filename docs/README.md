@@ -13,7 +13,7 @@
 | Page | Role |
 | :--- | :--- |
 | `index.html` | Homepage: Daily Spark, interactive demo card, newsletter signup |
-| `send-card.html` + `js/send-card-logic.js` | Card studio: 3 steps (affirmation → look & sound → names, note, send) |
+| `send-card.html` + `js/card-flow.js` + `js/send-card-logic.js` | Card flow: choose a card in a 3D carousel → fly into it (the portal) → choose or write the words → names, note, sound → Send (paper-plane flight, `js/send-plane.js` + GSAP). `card-flow.js` is the UI; `send-card-logic.js` owns the data, Premium and sending. `?classic=1` opens the previous 3-step form (`send-card-classic.html`, noindex) |
 | `view-card.html` | What the recipient opens (no nav, not indexed) |
 | `my-cards.html` + `js/vibe-history.js` | Sender's history, stored in the browser only (not indexed) |
 | `situations.html`, `faq.html`, `about.html`, `contact.html`, legal pages | Static pages |

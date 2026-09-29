@@ -15,6 +15,7 @@
     const T_PUSH = 2300 * PACE;     // the fly-through
     const T_WORDS = 1300 * PACE;    // each phrase arriving from the depth
     const OVERSHOOT = 60;           // the window ends this far past each screen edge
+    const SENT_HOLD_MS = 3500;      // after the plane lands: time to read "Thanks for sending a vibe!"
     const DRAFT_KEY = 'vc_flow_draft';
     const DRAFT_MAX_AGE = 24 * 60 * 60 * 1000;
 
@@ -893,7 +894,8 @@
         await wait(750 * PACE);
         sendStage.classList.remove('is-flying');
         window.SendPlane.release();                    // the plane flies, writes, lands: Sent!
-        await wait((window.SendPlane.FLIGHT + 0.6) * 1000 + 1300);
+        // Hold on "Thanks for sending a vibe!" long enough to read it before the success screen
+        await wait((window.SendPlane.FLIGHT + 0.6) * 1000 + SENT_HOLD_MS);
         $('sendAnnounce').textContent = 'Sent';
     }
 

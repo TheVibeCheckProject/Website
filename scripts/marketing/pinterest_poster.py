@@ -59,9 +59,9 @@ PINS_DIR = ROOT_DIR / "assets" / "pinterest-pins"
 MESSAGES_FILE = DATA_DIR / "messages.json"
 TRACKER_FILE = DATA_DIR / "posted_pins.json"
 
-# Pinterest credentials
-PINTEREST_EMAIL = os.environ.get("PINTEREST_EMAIL", "wecare@thevibecheckproject.com")
-PINTEREST_PASSWORD = os.environ.get("PINTEREST_PASSWORD", "Splinter12345@!")
+# Pinterest login: from the environment only, never in code (a default here was public until 2026-09-29)
+PINTEREST_EMAIL = os.environ.get("PINTEREST_EMAIL", "")
+PINTEREST_PASSWORD = os.environ.get("PINTEREST_PASSWORD", "")
 
 # Board URLs for each category
 BOARD_URLS = {

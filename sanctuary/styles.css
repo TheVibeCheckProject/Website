@@ -7,20 +7,48 @@ body, html {
 }
 
 #gateway {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
+    background: radial-gradient(circle at center, #141324 0%, #07070f 100%);
     color: white;
     text-align: center;
+    z-index: 100;
 }
 
 #gateway input, #gateway button {
     margin: 10px 0;
-    padding: 10px;
+    padding: 12px 18px;
     font-size: 16px;
+    border-radius: 8px;
+}
+
+#passphrase {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    outline: none;
+    text-align: center;
+}
+
+#enter {
+    background: #00ff88;
+    color: #07070f;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+#enter:hover {
+    background: #00e577;
+    transform: scale(1.02);
 }
 
 #enter {

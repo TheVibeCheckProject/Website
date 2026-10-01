@@ -1,89 +1,70 @@
-import * as THREE from 'three';
+const THREE = window.THREE;
 
-// Background and Fog
+// Set background and fog
 window.scene.background = new THREE.Color(0x060512);
 window.scene.fog = new THREE.FogExp2(0x060512, 0.018);
 
-// Ethereal Lighting
-const ambientLight = new THREE.AmbientLight(0x1a1233, 0.8);
+// Add ethereal dynamic lighting
+const ambientLight = new THREE.AmbientLight(0x1a1233, 0.7);
 window.scene.add(ambientLight);
 
-const centralPointLight = new THREE.PointLight(0x00e5ff, 2.5, 30, 2);
-centralPointLight.position.set(0, 6, 0);
-window.scene.add(centralPointLight);
+const shrineCyanLight = new THREE.PointLight(0x00f0ff, 2.5, 35, 2);
+shrineCyanLight.position.set(0, 6, 0);
+window.scene.add(shrineCyanLight);
 
-const secondaryPointLight = new THREE.PointLight(0x9b51e0, 2.0, 35, 2);
-secondaryPointLight.position.set(0, 12, 0);
-window.scene.add(secondaryPointLight);
+const twilightVioletLight = new THREE.PointLight(0x9b51e0, 2.0, 40, 2);
+twilightVioletLight.position.set(0, 12, 0);
+window.scene.add(twilightVioletLight);
 
-// Multi-Layered Particle Stardust System
-const particleCount = 2500;
-const particlesGeometry = new THREE.BufferGeometry();
+const starlightDirectionalLight = new THREE.DirectionalLight(0xffecd2, 0.4);
+starlightDirectionalLight.position.set(10, 20, 10);
+window.scene.add(starlightDirectionalLight);
+
+// Create reflective obsidian ground mirror
+const groundGeo = new THREE.CircleGeometry(60, 64);
+const groundMat = new THREE.MeshStandardMaterial({ color: 0x0a0814, roughness: 0.1, metalness: 0.95, side: THREE.DoubleSide });
+const ground = new THREE.Mesh(groundGeo, groundMat);
+ground.rotation.x = -Math.PI / 2;
+window.scene.add(ground);
+
+// Create living stardust particle field
+const stardustCount = 3000;
+const stardustGeometry = new THREE.BufferGeometry();
 const positions = [];
 const colors = [];
 
-for (let i = 0; i < particleCount; i++) {
+for (let i = 0; i < stardustCount; i++) {
     const theta = Math.random() * Math.PI * 2;
     const phi = Math.acos(Math.random() * 2 - 1);
-    const radius = 10 + Math.random() * 20;
-
+    const radius = 8 + Math.random() * 32;
     const x = radius * Math.sin(phi) * Math.cos(theta);
     const y = radius * Math.sin(phi) * Math.sin(theta);
     const z = radius * Math.cos(phi);
 
     positions.push(x, y, z);
 
-    // Blend between bioluminescent cyan, lavender, and warm starlight
-    const color = new THREE.Color().setHSL(
-        Math.random() * 0.5, // Hue between 0 and 0.5 for desired colors
-        0.8, // Saturation
-        0.5 // Lightness
-    );
-    colors.push(color.r, color.g, color.b);
+    // Blend between bioluminescent cyan, sacred lavender, and warm starlight
+    const r = (Math.random() * 0.5 + 0.5) * (0x00f0ff >> 16 & 0xff) + (Math.random() * 0.5 + 0.5) * (0xa855f7 >> 16 & 0xff) + (Math.random() * 0.5 + 0.5) * (0xffecd2 >> 16 & 0xff);
+    const g = (Math.random() * 0.5 + 0.5) * (0x00f0ff >> 8 & 0xff) + (Math.random() * 0.5 + 0.5) * (0xa855f7 >> 8 & 0xff) + (Math.random() * 0.5 + 0.5) * (0xffecd2 >> 8 & 0xff);
+    const b = (Math.random() * 0.5 + 0.5) * (0x00f0ff & 0xff) + (Math.random() * 0.5 + 0.5) * (0xa855f7 & 0xff) + (Math.random() * 0.5 + 0.5) * (0xffecd2 & 0xff);
+    colors.push(r / 3, g / 3, b / 3);
 }
 
-particlesGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-particlesGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+stardustGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+stardustGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
-const particlesMaterial = new THREE.PointsMaterial({
-    size: 0.1,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.8
-});
+const stardustMaterial = new THREE.PointsMaterial({ size: 0.12, vertexColors: true, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending });
+const stardust = new THREE.Points(stardustGeometry, stardustMaterial);
+window.scene.add(stardust);
 
-const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-window.scene.add(particles);
-
-// Animation Update Callback
-function animateParticles(time) {
-    const positions = particlesGeometry.attributes.position.array;
-    for (let i = 0; i < positions.length; i += 3) {
-        const x = positions[i];
-        const y = positions[i + 1];
-        const z = positions[i + 2];
-
-        // Sine wave breathing motion
-        positions[i + 1] = y + Math.sin(x * 0.1 + time * 0.1) * Math.sin(z * 0.1 + time * 0.1) * 0.5;
+// Animation callback for stardust
+window.sanctuaryUpdateCallbacks = window.sanctuaryUpdateCallbacks || [];
+window.sanctuaryUpdateCallbacks.push((delta, elapsedTime) => {
+    const positions = stardust.geometry.attributes.position.array;
+    for (let i = 1; i < positions.length; i += 3) {
+        positions[i] = 2 * Math.sin(elapsedTime * 0.1 + positions[i]) + Math.sin(elapsedTime * 0.05 + positions[i]);
     }
-    particlesGeometry.attributes.position.needsUpdate = true;
-}
+    stardust.geometry.attributes.position.needsUpdate = true;
 
-// Twilight Obsidian Ground
-const groundGeometry = new THREE.CircleGeometry(50, 64);
-const groundMaterial = new THREE.MeshStandardMaterial({
-    color: 0x1c1c24,
-    roughness: 0.1,
-    metalness: 0.9,
-    side: THREE.DoubleSide
+    stardust.rotation.y += 0.001 * delta;
 });
-const ground = new THREE.Mesh(groundGeometry, groundMaterial);
-ground.rotation.x = -Math.PI / 2;
-window.scene.add(ground);
-
-// Add animation loop
-function animate(time) {
-    requestAnimationFrame(animate);
-    animateParticles(time);
-}
-animate(0);

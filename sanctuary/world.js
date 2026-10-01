@@ -1,41 +1,51 @@
-document.addEventListener('DOMContentLoaded', () => {
-    window.scene = new THREE.Scene();
-    const scene = window.scene;
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    document.body.appendChild(renderer.domElement);
+window.scene = new THREE.Scene();
 
-    // Ambient and directional lighting for monuments
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-    scene.add(ambientLight);
-    const dirLight = new THREE.DirectionalLight(0x00e5ff, 1.2);
-    dirLight.position.set(5, 12, 7);
-    scene.add(dirLight);
+window.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+window.camera.position.set(0, 8, 22);
+window.camera.lookAt(0, 5, 0);
 
-    const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
-    const material = new THREE.MeshStandardMaterial({ color: 0x00ff88, roughness: 0.3, metalness: 0.4 });
-    const cube = new THREE.Mesh(geometry, material);
-    cube.position.set(-3.5, 2.5, 0);
-    scene.add(cube);
+window.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+window.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+window.renderer.toneMappingExposure = 1.1;
+window.renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(window.renderer.domElement);
 
-    camera.position.set(0, 4, 12);
-    camera.lookAt(0, 3, 0);
+window.controls = new THREE.OrbitControls(window.camera, window.renderer.domElement);
+window.controls.enableDamping = true;
+window.controls.dampingFactor = 0.05;
+window.controls.minPolarAngle = Math.PI / 4;
+window.controls.maxPolarAngle = Math.PI / 2 - 0.05;
+window.controls.minDistance = 10;
+window.controls.maxDistance = 45;
 
-    function animate() {
-        requestAnimationFrame(animate);
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
-        renderer.render(scene, camera);
-    }
+const composer = new EffectComposer(window.renderer);
+composer.addPass(new RenderPass(window.scene, window.camera));
 
-    animate();
+const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.4, 0.4, 0.25);
+composer.addPass(bloomPass);
 
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+window.sanctuaryUpdateCallbacks = [];
+
+function animate() {
+    requestAnimationFrame(animate);
+    window.controls.update();
+    composer.render();
+    window.sanctuaryUpdateCallbacks.forEach(callback => callback());
+}
+
+animate();
+
+window.addEventListener('resize', () => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    window.camera.aspect = width / height;
+    window.camera.updateProjectionMatrix();
+    window.renderer.setSize(width, height);
+    composer.setSize(width, height);
 });

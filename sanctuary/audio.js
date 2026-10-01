@@ -1,75 +1,92 @@
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('sanctuary-unlocked', function() {
     let audioContext;
+    let masterGain;
     let isMuted = false;
 
-    window.addEventListener('sanctuary-unlocked', () => {
-        if (!audioContext) {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            initBackgroundDrone();
-        }
-    });
+    const initAudio = () => {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        masterGain = audioContext.createGain();
+        masterGain.gain.value = 0.06;
+        masterGain.connect(audioContext.destination);
 
-    function initBackgroundDrone() {
-        const rootFrequency = 432; // A=432Hz
-        const lowOsc1Frequency = 108;
-        const lowOsc2Frequency = 216;
+        createAmbientDrone();
+        setupAudioToggleButton();
+    };
 
-        const oscillatorRoot = audioContext.createOscillator();
-        const oscillatorLow1 = audioContext.createOscillator();
-        const oscillatorLow2 = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-        const lowpassFilter = audioContext.createBiquadFilter();
+    const createAmbientDrone = () => {
+        const oscillatorSub = audioContext.createOscillator();
+        const oscillatorBody = audioContext.createOscillator();
+        const oscillatorHarmonic = audioContext.createOscillator();
+        const filter = audioContext.createBiquadFilter();
 
-        oscillatorRoot.type = 'sine';
-        oscillatorLow1.type = 'sine';
-        oscillatorLow2.type = 'sine';
+        oscillatorSub.type = 'sine';
+        oscillatorSub.frequency.setValueAtTime(108, audioContext.currentTime);
+        oscillatorSub.connect(filter);
 
-        oscillatorRoot.frequency.setValueAtTime(rootFrequency, audioContext.currentTime);
-        oscillatorLow1.frequency.setValueAtTime(lowOsc1Frequency, audioContext.currentTime);
-        oscillatorLow2.frequency.setValueAtTime(lowOsc2Frequency, audioContext.currentTime);
+        oscillatorBody.type = 'sine';
+        oscillatorBody.frequency.setValueAtTime(216, audioContext.currentTime);
+        oscillatorBody.connect(filter);
 
-        lowpassFilter.type = 'lowpass';
-        lowpassFilter.frequency.setValueAtTime(800, audioContext.currentTime);
-        lowpassFilter.frequency.exponentialRampToValueAtTime(2000, audioContext.currentTime + 60); // Slow sweep
+        oscillatorHarmonic.type = 'sine';
+        oscillatorHarmonic.frequency.setValueAtTime(432, audioContext.currentTime);
+        oscillatorHarmonic.connect(filter);
 
-        gainNode.gain.setValueAtTime(0.08, audioContext.currentTime);
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(600, audioContext.currentTime);
 
-        oscillatorRoot.connect(gainNode);
-        oscillatorLow1.connect(gainNode);
-        oscillatorLow2.connect(gainNode);
-        gainNode.connect(lowpassFilter);
-        lowpassFilter.connect(audioContext.destination);
+        filter.connect(masterGain);
 
-        oscillatorRoot.start();
-        oscillatorLow1.start();
-        oscillatorLow2.start();
-    }
+        oscillatorSub.start();
+        oscillatorBody.start();
+        oscillatorHarmonic.start();
 
-    window.playCrystalChime = (frequency, duration) => {
-        if (isMuted) return;
+        // LFO for filter frequency
+        const lfo = audioContext.createOscillator();
+        lfo.type = 'sine';
+        lfo.frequency.setValueAtTime(0.1, audioContext.currentTime);
+        const lfoGain = audioContext.createGain();
+        lfoGain.gain.setValueAtTime(250, audioContext.currentTime);
+
+        lfo.connect(lfoGain);
+        lfoGain.connect(filter.frequency);
+
+        lfo.start();
+    };
+
+    const setupAudioToggleButton = () => {
+        const toggleButton = document.getElementById('audio-toggle');
+        toggleButton.addEventListener('click', () => {
+            isMuted = !isMuted;
+            masterGain.gain.setValueAtTime(isMuted ? 0 : 0.06, audioContext.currentTime);
+            toggleButton.textContent = isMuted ? '🔇' : '🔊';
+        });
+    };
+
+    window.playCrystalChime = function(frequency = 432, duration = 2.5) {
+        if (!audioContext || isMuted) return;
 
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
 
         oscillator.type = 'sine';
         oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-
-        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
-
         oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
+        gainNode.connect(masterGain);
+
+        // Exponential decay for bell-like sound
+        gainNode.gain.setValueAtTime(1, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
 
         oscillator.start();
         oscillator.stop(audioContext.currentTime + duration);
     };
 
-    window.toggleSanctuaryAudio = () => {
-        isMuted = !isMuted;
-        if (isMuted) {
-            audioContext.suspend();
-        } else {
-            audioContext.resume();
+    // Resume context on first user gesture
+    window.addEventListener('click', () => {
+        if (audioContext && audioContext.state === 'suspended') {
+            audioContext.resume().then(() => {
+                initAudio();
+            });
         }
-    };
+    }, { once: true });
 });

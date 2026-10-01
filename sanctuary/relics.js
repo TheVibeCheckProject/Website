@@ -1,209 +1,106 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+const THREE = window.THREE;
 
-// Scene setup
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 20;
-
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-
-// Bloom setup
-const composer = new EffectComposer(renderer);
-composer.addPass(new RenderPass(scene, camera));
-
-const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-composer.addPass(bloomPass);
-
-// Lighting
-const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
-scene.add(ambientLight);
-
-const pointLight = new THREE.PointLight(0xffffff, 1);
-pointLight.position.set(5, 5, 5);
-scene.add(pointLight);
-
-// Controls
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-controls.dampingFactor = 0.25;
-controls.enableZoom = true;
-
-// Relic Orbs
+// Define the relics
 const relics = [
-    {
-        name: "The Anchor of Stillness",
-        position: [8, 4, 4],
-        color: 0x00FFFF,
-        reflection: "Peace is not the absence of the storm, but the quiet center inside it."
-    },
-    {
-        name: "The Beacon of Courage",
-        position: [-8, 5, 4],
-        color: 0xFFA500,
-        reflection: "You don't need to see the entire staircase. Just take the first step with an open heart."
-    },
-    {
-        name: "The Mirror of Self-Forgiveness",
-        position: [0, 6, -9],
-        color: 0xFFC0CB,
-        reflection: "You did the best you could with what you knew. Let yourself rest now."
-    },
-    {
-        name: "The Horizon of Possibility",
-        position: [5, 4, -7],
-        color: 0x9400D3,
-        reflection: "What is meant for you will not pass you by. Keep breathing, keep moving."
-    }
+    { name: "The Anchor of Stillness", pos: [8, 4.5, 4], color: 0x00f0ff, freq: 432, quote: "Peace is not the absence of the storm, but the quiet center inside it." },
+    { name: "The Beacon of Courage", pos: [-8, 5.0, 4], color: 0xffaa00, freq: 486, quote: "You don't need to see the entire staircase. Just take the first step with an open heart." },
+    { name: "The Mirror of Self-Forgiveness", pos: [0, 6.0, -9], color: 0xff70a6, freq: 540, quote: "You did the best you could with what you knew. Let yourself rest now." },
+    { name: "The Horizon of Possibility", pos: [5, 4.5, -7], color: 0xa855f7, freq: 648, quote: "What is meant for you will not pass you by. Keep breathing, keep moving." }
 ];
 
-const geometry = new THREE.SphereGeometry(1, 32, 32);
-const particleGeometry = new THREE.SphereGeometry(0.1, 8, 8);
+// Create relic meshes
+window.sanctuaryRelicMeshes = [];
+const sphereGeometry = new THREE.SphereGeometry(0.85, 32, 32);
+const particleGeometry = new THREE.SphereGeometry(1.2, 32, 32);
 
-const createOrb = (name, position, color, reflection) => {
+relics.forEach((relic, i) => {
     const material = new THREE.MeshStandardMaterial({
-        emissive: color,
-        emissiveIntensity: 1.5,
-        transparent: true,
-        opacity: 0.9
+        color: relic.color,
+        emissive: relic.color,
+        emissiveIntensity: 0.5,
+        roughness: 0.8
     });
 
-    const orb = new THREE.Mesh(geometry, material);
-    orb.position.set(...position);
-    orb.name = name;
-    orb.reflection = reflection;
-    scene.add(orb);
+    const mesh = new THREE.Mesh(sphereGeometry, material);
+    mesh.position.set(...relic.pos);
+    mesh.userData = { ...relic, originalScale: 1.0, basePos: relic.pos };
 
-    // Particle Halo
-    const particles = new THREE.Points(particleGeometry, new THREE.PointsMaterial({ color: color, size: 0.2 }));
-    particles.scale.set(2, 2, 2);
-    orb.add(particles);
+    // Create particle halo
+    const particleMaterial = new THREE.PointsMaterial({ size: 0.05, color: relic.color, transparent: true, opacity: 0.8 });
+    const particles = new THREE.Points(particleGeometry, particleMaterial);
+    particles.position.copy(mesh.position);
 
-    return orb;
-};
+    window.scene.add(mesh);
+    window.scene.add(particles);
 
-relics.forEach(relic => createOrb(relic.name, relic.position, relic.color, relic.reflection));
-
-// Central Spire
-const spireGeometry = new THREE.CylinderGeometry(0.5, 0.5, 15, 32);
-const spireMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
-const spire = new THREE.Mesh(spireGeometry, spireMaterial);
-spire.position.set(0, 7.5, 0);
-scene.add(spire);
+    window.sanctuaryRelicMeshes.push({ mesh, particles });
+});
 
 // Raycaster setup
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
-window.addEventListener('mousemove', onMouseMove, false);
-window.addEventListener('click', onClick, false);
-window.addEventListener('touchstart', onTouchStart, false);
+window.addEventListener('pointermove', onPointerMove);
+window.addEventListener('pointerdown', onPointerDown);
 
-function onMouseMove(event) {
+function onPointerMove(event) {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-}
 
-function onTouchStart(event) {
-    mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
-    onClick(event);
-}
+    raycaster.setFromCamera(mouse, window.camera);
+    const intersects = raycaster.intersectObjects(window.sanctuaryRelicMeshes.map(relic => relic.mesh));
 
-function onClick(event) {
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(scene.children);
-
-    if (intersects.length > 0 && intersects[0].object.isMesh) {
-        const orb = intersects[0].object;
-        if (orb.name) {
-            showModal(orb.name, orb.reflection);
-            smoothFocusCamera(orb.position);
-            playAudioChime(); // Assuming this function exists
-        }
+    if (intersects.length > 0) {
+        const intersected = intersects[0].object;
+        intersected.scale.set(1.25, 1.25, 1.25);
+        intersected.material.emissiveIntensity = 1.0;
+        document.body.style.cursor = 'pointer';
+    } else {
+        window.sanctuaryRelicMeshes.forEach(relic => {
+            relic.mesh.scale.set(1.0, 1.0, 1.0);
+            relic.mesh.material.emissiveIntensity = 0.5;
+        });
+        document.body.style.cursor = 'default';
     }
 }
 
-// Modal setup
-const modal = document.getElementById('relic-modal');
-const modalContent = document.getElementById('modal-content');
-const closeModalButton = document.getElementById('close-modal');
+function onPointerDown(event) {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-function showModal(name, reflection) {
-    modalContent.innerHTML = `<h2>${name}</h2><p>${reflection}</p>`;
-    modal.style.display = 'block';
+    raycaster.setFromCamera(mouse, window.camera);
+    const intersects = raycaster.intersectObjects(window.sanctuaryRelicMeshes.map(relic => relic.mesh));
+
+    if (intersects.length > 0) {
+        const intersected = intersects[0].object;
+        const userData = intersected.userData;
+
+        if (window.playCrystalChime) {
+            window.playCrystalChime(userData.freq, 2.5);
+        }
+
+        document.getElementById('relic-title').textContent = userData.name;
+        document.getElementById('relic-quote').textContent = userData.quote;
+        document.getElementById('relic-modal').classList.add('active');
+    }
 }
 
-function hideModal() {
-    modal.style.display = 'none';
-    smoothFocusCamera(new THREE.Vector3(0, 0, 0));
-}
+// Modal close
+document.getElementById('relic-close').addEventListener('click', () => {
+    document.getElementById('relic-modal').classList.remove('active');
+});
 
-closeModalButton.addEventListener('click', hideModal);
 window.addEventListener('click', (event) => {
-    if (event.target === modal) {
-        hideModal();
+    if (event.target.id === 'relic-modal') {
+        document.getElementById('relic-modal').classList.remove('active');
     }
 });
 
-// Camera Focus
-let targetPosition = new THREE.Vector3(0, 0, 0);
-const focusSpeed = 0.05;
-
-function smoothFocusCamera(position) {
-    targetPosition.copy(position);
-}
-
-// Animation loop
-const animate = () => {
-    requestAnimationFrame(animate);
-
-    // Orbiting animation
-    relics.forEach((relic, index) => {
-        const orb = scene.getObjectByName(relic.name);
-        const angle = Date.now() * 0.0005 + index * Math.PI / 2;
-        const radius = 10;
-        orb.position.x = Math.cos(angle) * radius;
-        orb.position.z = Math.sin(angle) * radius;
-        orb.position.y = 4 + Math.abs(Math.sin(angle)) * 2; // Vary height slightly
+// Animation callback
+window.sanctuaryUpdateCallbacks = window.sanctuaryUpdateCallbacks || [];
+window.sanctuaryUpdateCallbacks.push((time) => {
+    window.sanctuaryRelicMeshes.forEach((relic, i) => {
+        relic.mesh.position.y = relic.mesh.userData.basePos[1] + Math.sin(time * 1.5 + i) * 0.4;
+        relic.particles.rotation.y += 0.005;
     });
-
-    // Raycasting
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(scene.children);
-
-    scene.traverse((child) => {
-        if (child.isMesh && child.name) {
-            if (intersects.length > 0 && intersects[0].object === child) {
-                child.scale.set(1.25, 1.25, 1.25);
-                child.material.emissiveIntensity = 2.5;
-            } else {
-                child.scale.set(1, 1, 1);
-                child.material.emissiveIntensity = 1.5;
-            }
-        }
-    });
-
-    // Smooth camera movement
-    camera.position.lerp(targetPosition, focusSpeed);
-
-    controls.update();
-    composer.render();
-};
-
-animate();
-
-// Resize handler
-window.addEventListener('resize', () => {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    renderer.setSize(width, height);
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-    composer.setSize(width, height);
 });

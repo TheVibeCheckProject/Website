@@ -1,33 +1,42 @@
 var THREE = window.THREE;
 
-// Initialize Scene
+// Initialize Master Scene
 window.scene = new THREE.Scene();
 
 // Initialize Camera
-window.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-window.camera.position.set(0, 6, 14);
-window.camera.lookAt(0, 2, 0);
+window.camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+window.camera.position.set(0, 5, 12);
+window.camera.lookAt(0, 1.5, 0);
 
-// Initialize Renderer
+// Initialize High-Performance WebGL Renderer
 window.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
 window.renderer.shadowMap.enabled = true;
 window.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 window.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-window.renderer.toneMappingExposure = 1.1;
+window.renderer.toneMappingExposure = 1.05;
 window.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 window.renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(window.renderer.domElement);
 
-// Initialize OrbitControls
+// Initialize Orbit Controls (Free Cam mode)
 window.controls = new THREE.OrbitControls(window.camera, window.renderer.domElement);
 window.controls.enableDamping = true;
 window.controls.dampingFactor = 0.05;
-window.controls.maxPolarAngle = Math.PI / 2 - 0.05;
+window.controls.maxPolarAngle = Math.PI / 2 - 0.02;
+window.controls.minDistance = 3;
+window.controls.maxDistance = 60;
 
-// Initialize UnrealBloomPass
+// Initialize Postprocessing with Calibrated Ethereal Bloom
+// Strength is strictly tuned to 0.45 to prevent blown-out neon lightbulbs
 const composer = new THREE.EffectComposer(window.renderer);
 composer.addPass(new THREE.RenderPass(window.scene, window.camera));
-const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.2, 0.4, 0.25);
+
+const bloomPass = new THREE.UnrealBloomPass(
+    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    0.45,  // Calibrated bloom strength (cinematic ethereal glow)
+    0.4,   // Radius
+    0.7    // Threshold (only intense emissives glow)
+);
 composer.addPass(bloomPass);
 composer.setSize(window.innerWidth, window.innerHeight);
 window.composer = composer;
@@ -40,18 +49,23 @@ function animate(now) {
     requestAnimationFrame(animate);
     const delta = Math.min((now - prevTime) * 0.001, 0.1);
     prevTime = now;
-    for (const cb of window.sanctuaryUpdateCallbacks) cb(delta, now * 0.001);
+    
+    for (const cb of window.sanctuaryUpdateCallbacks) {
+        try { cb(delta, now * 0.001); } catch (e) { console.error('Sanctuary update error:', e); }
+    }
+    
     if (window.playerFollowCamera) {
-        // Player follow takes precedence
+        // Player camera follow takes precedence
     } else {
         window.controls.update();
     }
+    
     composer.render();
 }
 
-animate();
+animate(performance.now());
 
-// Window Resize Handler
+// Responsive Resize Listener
 window.addEventListener('resize', function() {
     window.camera.aspect = window.innerWidth / window.innerHeight;
     window.camera.updateProjectionMatrix();

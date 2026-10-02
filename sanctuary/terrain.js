@@ -1,101 +1,78 @@
 var THREE = window.THREE;
 
-// Function to generate a simple Perlin noise value
-function perlinNoise(x, y) {
-    var X = Math.floor(x), Y = Math.floor(y);
-    x -= X; y -= Y;
-    var u = fade(x), v = fade(y);
+// Organic Undulating Forest Ground
+var terrainSize = 110;
+var terrainSegments = 80;
+var terrainGeometry = new THREE.PlaneGeometry(terrainSize, terrainSize, terrainSegments, terrainSegments);
+terrainGeometry.rotateX(-Math.PI / 2);
 
-    var n00 = grad(P[X & 255] + P[Y & 255], x, y);
-    var n01 = grad(P[X & 255] + P[Y+1 & 255], x, y-1);
-    var n10 = grad(P[X+1 & 255] + P[Y & 255], x-1, y);
-    var n11 = grad(P[X+1 & 255] + P[Y+1 & 255], x-1, y-1);
-
-    return lerp(lerp(n00, n01, u), lerp(n10, n11, u), v);
+var pos = terrainGeometry.attributes.position;
+for (var i = 0; i < pos.count; i++) {
+    var vx = pos.getX(i);
+    var vz = pos.getZ(i);
+    
+    // Perimeter elevation (secluded sanctuary glade in the center)
+    var distFromCenter = Math.sqrt(vx * vx + vz * vz);
+    var elevation = 0;
+    
+    if (distFromCenter > 12) {
+        var edgeFactor = Math.min((distFromCenter - 12) / 35, 1.0);
+        elevation = Math.sin(vx * 0.1) * Math.cos(vz * 0.1) * 2.5 * edgeFactor + (edgeFactor * edgeFactor * 4.0);
+    } else {
+        // Flat, gentle walkable glade
+        elevation = Math.sin(vx * 0.2) * Math.cos(vz * 0.2) * 0.2;
+    }
+    
+    pos.setY(i, elevation);
 }
 
-function fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
-function lerp(t, a, b) { return a + t * (b - a); }
-function grad(hash, x, y) {
-    var h = hash & 7;
-    var u = h < 4 ? x : y;
-    var v = h < 4 ? y : h == 12 || h == 14 ? x : 0;
-    return ((h&1) == 0 ? u : -u) + ((h&2) == 0 ? v : -v);
-}
+terrainGeometry.computeVertexNormals();
 
-var P = [];
-for (var i = 0; i < 256; i++) { P[i] = Math.floor(Math.random()*256); }
-for (var i = 0; i < 256; i++) { P[256 + i] = P[i]; }
-
-// Create the terrain geometry
-var terrainGeometry = new THREE.PlaneGeometry(100, 100, 64, 64);
-var vertices = terrainGeometry.attributes.position.array;
-
-for (var i = 0; i < vertices.length; i += 3) {
-    var x = vertices[i];
-    var z = vertices[i + 2];
-    var noiseValue = perlinNoise(x / 10, z / 10) * 5 + Math.sin(x / 10) * Math.cos(z / 10) * 2;
-    vertices[i + 1] = noiseValue;
-}
-
-// Create the terrain material
 var terrainMaterial = new THREE.MeshStandardMaterial({
-    color: 0x0a1c12,
-    roughness: 0.85,
-    metalness: 0.1
+    color: 0x0c2116,       // Deep enchanted forest moss green
+    roughness: 0.9,
+    metalness: 0.05,
+    flatShading: false
 });
 
-// Create the terrain mesh
-var terrain = new THREE.Mesh(terrainGeometry, terrainMaterial);
-terrain.rotation.x = -Math.PI / 2;
-terrain.receiveShadow = true;
-window.scene.add(terrain);
+var terrainMesh = new THREE.Mesh(terrainGeometry, terrainMaterial);
+terrainMesh.receiveShadow = true;
+window.scene.add(terrainMesh);
+window.terrainMesh = terrainMesh;
 
-// Store the terrain height helper function
+// Ground Height Query Function for perfect ground clamping
+var raycaster = new THREE.Raycaster();
+var downVector = new THREE.Vector3(0, -1, 0);
+
 window.getTerrainHeight = function(x, z) {
-    if (!terrain) return 0;
-    var raycaster = new THREE.Raycaster(new THREE.Vector3(x, 50, z), new THREE.Vector3(0, -1, 0));
-    var intersects = raycaster.intersectObject(terrain);
+    var origin = new THREE.Vector3(x, 40, z);
+    raycaster.set(origin, downVector);
+    var intersects = raycaster.intersectObject(terrainMesh);
     if (intersects.length > 0) {
         return intersects[0].point.y;
     }
     return 0;
 };
 
-// Create the sacred stone pathway
+// Weathered Sacred Stepping Stone Pathway
+var stoneGroup = new THREE.Group();
 var stoneMaterial = new THREE.MeshStandardMaterial({
-    color: 0x4b4b4b,
-    roughness: 0.9,
-    metalness: 0.05
+    color: 0x22332a,
+    roughness: 0.8,
+    metalness: 0.1
 });
 
-var pathPoints = [
-    new THREE.Vector3(-50, 0, 0),
-    new THREE.Vector3(-40, 0, 5),
-    new THREE.Vector3(-30, 0, 15),
-    new THREE.Vector3(-20, 0, 25),
-    new THREE.Vector3(-10, 0, 35),
-    new THREE.Vector3(0, 0, 45),
-    new THREE.Vector3(10, 0, 55),
-    new THREE.Vector3(20, 0, 65),
-    new THREE.Vector3(30, 0, 75)
-];
-
-for (var i = 0; i < pathPoints.length - 1; i++) {
-    var start = pathPoints[i];
-    var end = pathPoints[i + 1];
-    var direction = new THREE.Vector3().subVectors(end, start).normalize();
-    var distance = start.distanceTo(end);
-    var steps = Math.ceil(distance / 2);
-
-    for (var j = 0; j < steps; j++) {
-        var stepPosition = new THREE.Vector3().copy(start).add(direction.clone().multiplyScalar(j * 2));
-        var stepHeight = window.getTerrainHeight(stepPosition.x, stepPosition.z);
-        var step = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 0.2, 8), stoneMaterial);
-        step.position.set(stepPosition.x, stepHeight + 0.1, stepPosition.z);
-        step.rotation.y = Math.random() * Math.PI * 2;
-        step.castShadow = true;
-        step.receiveShadow = true;
-        window.scene.add(step);
-    }
+for (var s = -18; s <= 18; s += 2.2) {
+    var sx = Math.sin(s * 0.15) * 3.5;
+    var sz = s;
+    var sy = window.getTerrainHeight(sx, sz) + 0.04;
+    
+    var stoneRadius = 0.65 + Math.random() * 0.35;
+    var stoneGeo = new THREE.CylinderGeometry(stoneRadius, stoneRadius * 1.1, 0.12, 12);
+    var stone = new THREE.Mesh(stoneGeo, stoneMaterial);
+    stone.position.set(sx, sy, sz);
+    stone.rotation.y = Math.random() * Math.PI;
+    stone.receiveShadow = true;
+    stoneGroup.add(stone);
 }
+window.scene.add(stoneGroup);

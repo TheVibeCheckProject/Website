@@ -1,4 +1,98 @@
-var THREE = window.THREE;
+"""
+3D Engine Architect Agent
+=========================
+Assembles the complete Three.js scene utilizing real PBR GLTF models (KayKit forest pack,
+PBR shrine lantern, animated spirit wildlife, and rigged controllable actor).
+Purges all toddler-tier primitive proxies in favor of professionally modeled assets.
+"""
+
+from pathlib import Path
+
+def generate_terrain_module() -> str:
+    """Generates organic undulating terrain with height query and stone path."""
+    return """var THREE = window.THREE;
+
+// Organic Undulating Forest Ground
+var terrainSize = 110;
+var terrainSegments = 80;
+var terrainGeometry = new THREE.PlaneGeometry(terrainSize, terrainSize, terrainSegments, terrainSegments);
+terrainGeometry.rotateX(-Math.PI / 2);
+
+var pos = terrainGeometry.attributes.position;
+for (var i = 0; i < pos.count; i++) {
+    var vx = pos.getX(i);
+    var vz = pos.getZ(i);
+    
+    // Perimeter elevation (secluded sanctuary glade in the center)
+    var distFromCenter = Math.sqrt(vx * vx + vz * vz);
+    var elevation = 0;
+    
+    if (distFromCenter > 12) {
+        var edgeFactor = Math.min((distFromCenter - 12) / 35, 1.0);
+        elevation = Math.sin(vx * 0.1) * Math.cos(vz * 0.1) * 2.5 * edgeFactor + (edgeFactor * edgeFactor * 4.0);
+    } else {
+        // Flat, gentle walkable glade
+        elevation = Math.sin(vx * 0.2) * Math.cos(vz * 0.2) * 0.2;
+    }
+    
+    pos.setY(i, elevation);
+}
+
+terrainGeometry.computeVertexNormals();
+
+var terrainMaterial = new THREE.MeshStandardMaterial({
+    color: 0x0c2116,       // Deep enchanted forest moss green
+    roughness: 0.9,
+    metalness: 0.05,
+    flatShading: false
+});
+
+var terrainMesh = new THREE.Mesh(terrainGeometry, terrainMaterial);
+terrainMesh.receiveShadow = true;
+window.scene.add(terrainMesh);
+window.terrainMesh = terrainMesh;
+
+// Ground Height Query Function for perfect ground clamping
+var raycaster = new THREE.Raycaster();
+var downVector = new THREE.Vector3(0, -1, 0);
+
+window.getTerrainHeight = function(x, z) {
+    var origin = new THREE.Vector3(x, 40, z);
+    raycaster.set(origin, downVector);
+    var intersects = raycaster.intersectObject(terrainMesh);
+    if (intersects.length > 0) {
+        return intersects[0].point.y;
+    }
+    return 0;
+};
+
+// Weathered Sacred Stepping Stone Pathway
+var stoneGroup = new THREE.Group();
+var stoneMaterial = new THREE.MeshStandardMaterial({
+    color: 0x22332a,
+    roughness: 0.8,
+    metalness: 0.1
+});
+
+for (var s = -18; s <= 18; s += 2.2) {
+    var sx = Math.sin(s * 0.15) * 3.5;
+    var sz = s;
+    var sy = window.getTerrainHeight(sx, sz) + 0.04;
+    
+    var stoneRadius = 0.65 + Math.random() * 0.35;
+    var stoneGeo = new THREE.CylinderGeometry(stoneRadius, stoneRadius * 1.1, 0.12, 12);
+    var stone = new THREE.Mesh(stoneGeo, stoneMaterial);
+    stone.position.set(sx, sy, sz);
+    stone.rotation.y = Math.random() * Math.PI;
+    stone.receiveShadow = true;
+    stoneGroup.add(stone);
+}
+window.scene.add(stoneGroup);
+"""
+
+def generate_forest_module() -> str:
+    """Generates forest.js utilizing real GLTF models from forest.glb and lantern.glb."""
+    return """var THREE = window.THREE;
 
 var gltfLoader = new THREE.GLTFLoader();
 
@@ -214,3 +308,131 @@ window.addEventListener('pointerdown', function(e) {
         }
     }
 });
+"""
+
+def generate_player_module() -> str:
+    """Generates player.js utilizing actor.glb (rigged Fox spirit wanderer)."""
+    return """var THREE = window.THREE;
+
+var playerPosition = new THREE.Vector3(0, 0, 8);
+var playerVelocity = new THREE.Vector3();
+var playerSpeed = 8.0;
+var playerRotation = 0;
+var targetRotation = 0;
+var isMoving = false;
+
+var keys = { w: false, a: false, s: false, d: false, ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false };
+
+window.addEventListener('keydown', function(e) {
+    if (keys.hasOwnProperty(e.key)) { keys[e.key] = true; }
+});
+window.addEventListener('keyup', function(e) {
+    if (keys.hasOwnProperty(e.key)) { keys[e.key] = false; }
+});
+
+var playerContainer = new THREE.Group();
+playerContainer.position.copy(playerPosition);
+window.scene.add(playerContainer);
+
+var playerMixer = null;
+var walkAction = null;
+var idleAction = null;
+
+// Load Rigged Spirit Wanderer (Fox)
+var gltfLoader = new THREE.GLTFLoader();
+gltfLoader.load('assets/actor.glb', function(gltf) {
+    var actorModel = gltf.scene;
+    actorModel.scale.set(0.02, 0.02, 0.02);
+    actorModel.traverse(function(child) {
+        if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+        }
+    });
+    playerContainer.add(actorModel);
+
+    // Setup animations
+    if (gltf.animations && gltf.animations.length > 0) {
+        playerMixer = new THREE.AnimationMixer(actorModel);
+        // Common clip names: Survey, Walk, Run
+        idleAction = playerMixer.clipAction(gltf.animations[0]);
+        idleAction.play();
+        if (gltf.animations.length > 1) {
+            walkAction = playerMixer.clipAction(gltf.animations[1] || gltf.animations[2]);
+        }
+    }
+    console.log('[Player] Controllable 3D Spirit Wanderer loaded.');
+}, undefined, function(err) {
+    console.error('[Player] Failed to load actor.glb:', err);
+});
+
+// Camera Follow System
+var cameraOffset = new THREE.Vector3(0, 3.5, 6.5);
+window.playerFollowCamera = true;
+
+// Player Movement & Frame Loop
+if (window.sanctuaryUpdateCallbacks) {
+    window.sanctuaryUpdateCallbacks.push(function(delta, time) {
+        var forward = (keys.w || keys.ArrowUp ? 1 : 0) - (keys.s || keys.ArrowDown ? 1 : 0);
+        var strafe = (keys.d || keys.ArrowRight ? 1 : 0) - (keys.a || keys.ArrowLeft ? 1 : 0);
+        
+        isMoving = (forward !== 0 || strafe !== 0);
+
+        if (isMoving) {
+            var moveAngle = Math.atan2(strafe, forward);
+            targetRotation = moveAngle;
+            
+            var moveDir = new THREE.Vector3(strafe, 0, -forward).normalize();
+            playerPosition.x += moveDir.x * playerSpeed * delta;
+            playerPosition.z += moveDir.z * playerSpeed * delta;
+
+            // Clamping inside the sanctuary bounds
+            var dist = Math.sqrt(playerPosition.x * playerPosition.x + playerPosition.z * playerPosition.z);
+            if (dist > 38) {
+                playerPosition.x = (playerPosition.x / dist) * 38;
+                playerPosition.z = (playerPosition.z / dist) * 38;
+            }
+        }
+
+        // Smooth rotation interpolation
+        playerRotation += (targetRotation - playerRotation) * 0.15;
+        playerContainer.rotation.y = playerRotation;
+
+        // Ground Height Tracking
+        var groundY = window.getTerrainHeight ? window.getTerrainHeight(playerPosition.x, playerPosition.z) : 0;
+        playerPosition.y = groundY;
+        playerContainer.position.copy(playerPosition);
+
+        // Update animation mixer
+        if (playerMixer) {
+            playerMixer.update(delta * (isMoving ? 1.4 : 0.8));
+        }
+
+        // Camera Follow
+        if (window.camera) {
+            var desiredCameraPos = new THREE.Vector3(
+                playerPosition.x - Math.sin(playerRotation * 0.3) * 2,
+                playerPosition.y + cameraOffset.y,
+                playerPosition.z + cameraOffset.z
+            );
+            window.camera.position.lerp(desiredCameraPos, 0.08);
+            var lookAtTarget = playerPosition.clone().add(new THREE.Vector3(0, 1.2, 0));
+            window.camera.lookAt(lookAtTarget);
+        }
+    });
+}
+"""
+
+def apply_architecture(sanctuary_dir: Path):
+    """Writes terrain.js, forest.js, and player.js to the sanctuary."""
+    print("[ARCHITECT] Generating clean 3D scene modules with sourced PBR assets...")
+    (sanctuary_dir / "terrain.js").write_text(generate_terrain_module(), encoding="utf-8")
+    (sanctuary_dir / "forest.js").write_text(generate_forest_module(), encoding="utf-8")
+    (sanctuary_dir / "player.js").write_text(generate_player_module(), encoding="utf-8")
+    print("   [OK] terrain.js (organic undulating heightmap + stone path) written.")
+    print("   [OK] forest.js (real KayKit trees, rocks, flora, PBR lantern, wildlife) written.")
+    print("   [OK] player.js (controllable 3D Fox spirit wanderer + follow cam) written.")
+
+if __name__ == "__main__":
+    base = Path(__file__).resolve().parent.parent.parent
+    apply_architecture(base / "sanctuary")

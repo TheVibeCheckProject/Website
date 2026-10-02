@@ -68,7 +68,6 @@ function createGlowingMushroom(x, z, scale, capColor, lightColor) {
     if (lightColor) {
         var pointLight = new THREE.PointLight(lightColor, 0.8, 5);
         pointLight.position.set(x, 1.5, z);
-        pointLight.castShadow = true;
         mushroomGroup.add(pointLight);
     }
 

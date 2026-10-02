@@ -77,7 +77,7 @@ for (var i = 0; i < wispCount; i++) {
         time: Math.random() * Math.PI * 2
     });
 
-    window.scene.add(wisp.mesh);
+    window.scene.add(wisp);
 }
 
 // Animation Callback

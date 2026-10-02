@@ -1,4 +1,4 @@
-const THREE = window.THREE;
+var THREE = window.THREE;
 
 window.scene = new THREE.Scene();
 window.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);

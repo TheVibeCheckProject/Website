@@ -1,4 +1,4 @@
-const THREE = window.THREE;
+// THREE is already available on window
 
 // Set background and fog
 window.scene.background = new THREE.Color(0x060512);
@@ -59,12 +59,6 @@ window.scene.add(stardust);
 
 // Animation callback for stardust
 window.sanctuaryUpdateCallbacks = window.sanctuaryUpdateCallbacks || [];
-window.sanctuaryUpdateCallbacks.push((delta, elapsedTime) => {
-    const positions = stardust.geometry.attributes.position.array;
-    for (let i = 1; i < positions.length; i += 3) {
-        positions[i] = 2 * Math.sin(elapsedTime * 0.1 + positions[i]) + Math.sin(elapsedTime * 0.05 + positions[i]);
-    }
-    stardust.geometry.attributes.position.needsUpdate = true;
-
-    stardust.rotation.y += 0.001 * delta;
+window.sanctuaryUpdateCallbacks.push((time) => {
+    stardust.rotation.y = time * 0.03;
 });

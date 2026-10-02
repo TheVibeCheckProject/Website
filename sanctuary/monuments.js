@@ -1,4 +1,4 @@
-const THREE = window.THREE;
+// THREE is already available on window
 
 // Central Crystalline Obelisk / Spire
 const spireGeometry = new THREE.CylinderGeometry(0.2, 1.8, 14, 6);

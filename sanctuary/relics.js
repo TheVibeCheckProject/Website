@@ -1,4 +1,4 @@
-const THREE = window.THREE;
+// THREE is already available on window
 
 // Define the relics
 const relics = [

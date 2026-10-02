@@ -203,19 +203,36 @@ relics.forEach(function (relic) {
     window.scene.add(relic);
 });
 
-// Add raycasting interaction for relics
-window.sanctuaryUpdateCallbacks.push(function (raycaster, mouse) {
-    relics.forEach(function (relic) {
-        if (relic.interactive) {
-            var intersects = raycaster.intersectObject(relic);
-            if (intersects.length > 0) {
-                relic.onPointerOver();
-                if (mouse.clickDetected) {
-                    relic.onClick();
-                }
-            } else {
-                relic.onPointerOut();
-            }
+// Raycasting interaction for relics
+var relicRaycaster = new THREE.Raycaster();
+var relicMouse = new THREE.Vector2();
+
+window.addEventListener('pointermove', function(event) {
+    relicMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    relicMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    if (!window.camera) return;
+    relicRaycaster.setFromCamera(relicMouse, window.camera);
+    relics.forEach(function(relic) {
+        if (!relic || !relic.interactive) return;
+        var intersects = relicRaycaster.intersectObject(relic, true);
+        if (intersects.length > 0) {
+            if (relic.onPointerOver) relic.onPointerOver();
+            document.body.style.cursor = 'pointer';
+        } else {
+            if (relic.onPointerOut) relic.onPointerOut();
+            document.body.style.cursor = 'default';
+        }
+    });
+});
+
+window.addEventListener('pointerdown', function(event) {
+    if (!window.camera) return;
+    relicRaycaster.setFromCamera(relicMouse, window.camera);
+    relics.forEach(function(relic) {
+        if (!relic || !relic.interactive) return;
+        var intersects = relicRaycaster.intersectObject(relic, true);
+        if (intersects.length > 0 && relic.onClick) {
+            relic.onClick();
         }
     });
 });

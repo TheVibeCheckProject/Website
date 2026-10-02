@@ -1,92 +1,113 @@
-window.addEventListener('sanctuary-unlocked', function() {
-    let audioContext;
-    let masterGain;
-    let isMuted = false;
+document.addEventListener('sanctuary-unlocked', function() {
+    var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-    const initAudio = () => {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        masterGain = audioContext.createGain();
-        masterGain.gain.value = 0.06;
-        masterGain.connect(audioContext.destination);
+    // Mystical Forest Ambient Soundscape
 
-        createAmbientDrone();
-        setupAudioToggleButton();
-    };
+    // Gentle Rustling Wind
+    var windNoise = audioContext.createWhiteNoise();
+    var windFilter = audioContext.createBiquadFilter();
+    var windLFO = audioContext.createOscillator();
 
-    const createAmbientDrone = () => {
-        const oscillatorSub = audioContext.createOscillator();
-        const oscillatorBody = audioContext.createOscillator();
-        const oscillatorHarmonic = audioContext.createOscillator();
-        const filter = audioContext.createBiquadFilter();
+    windNoise.start(0);
+    windNoise.connect(windFilter);
+    windFilter.type = 'bandpass';
+    windFilter.frequency.setValueAtTime(200, audioContext.currentTime);
+    windFilter.Q.value = 1;
+    windFilter.connect(audioContext.destination);
 
-        oscillatorSub.type = 'sine';
-        oscillatorSub.frequency.setValueAtTime(108, audioContext.currentTime);
-        oscillatorSub.connect(filter);
+    windLFO.type = 'sine';
+    windLFO.frequency.setValueAtTime(0.1, audioContext.currentTime);
+    windLFO.connect(windFilter.frequency);
+    windLFO.start(0);
 
-        oscillatorBody.type = 'sine';
-        oscillatorBody.frequency.setValueAtTime(216, audioContext.currentTime);
-        oscillatorBody.connect(filter);
+    function WhiteNoise(context) {
+        var bufferSize = 4 * context.sampleRate,
+            buffer = context.createBuffer(1, bufferSize, context.sampleRate),
+            output = buffer.getChannelData(0);
 
-        oscillatorHarmonic.type = 'sine';
-        oscillatorHarmonic.frequency.setValueAtTime(432, audioContext.currentTime);
-        oscillatorHarmonic.connect(filter);
-
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(600, audioContext.currentTime);
-
-        filter.connect(masterGain);
-
-        oscillatorSub.start();
-        oscillatorBody.start();
-        oscillatorHarmonic.start();
-
-        // LFO for filter frequency
-        const lfo = audioContext.createOscillator();
-        lfo.type = 'sine';
-        lfo.frequency.setValueAtTime(0.1, audioContext.currentTime);
-        const lfoGain = audioContext.createGain();
-        lfoGain.gain.setValueAtTime(250, audioContext.currentTime);
-
-        lfo.connect(lfoGain);
-        lfoGain.connect(filter.frequency);
-
-        lfo.start();
-    };
-
-    const setupAudioToggleButton = () => {
-        const toggleButton = document.getElementById('audio-toggle');
-        toggleButton.addEventListener('click', () => {
-            isMuted = !isMuted;
-            masterGain.gain.setValueAtTime(isMuted ? 0 : 0.06, audioContext.currentTime);
-            toggleButton.textContent = isMuted ? '🔇' : '🔊';
-        });
-    };
-
-    window.playCrystalChime = function(frequency = 432, duration = 2.5) {
-        if (!audioContext || isMuted) return;
-
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-
-        oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-        oscillator.connect(gainNode);
-        gainNode.connect(masterGain);
-
-        // Exponential decay for bell-like sound
-        gainNode.gain.setValueAtTime(1, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
-
-        oscillator.start();
-        oscillator.stop(audioContext.currentTime + duration);
-    };
-
-    // Resume context on first user gesture
-    window.addEventListener('click', () => {
-        if (audioContext && audioContext.state === 'suspended') {
-            audioContext.resume().then(() => {
-                initAudio();
-            });
+        for (var i = 0; i < bufferSize; i++) {
+            output[i] = Math.random() * 2 - 1;
         }
-    }, { once: true });
+
+        var whiteNoise = context.createBufferSource();
+        whiteNoise.buffer = buffer;
+        whiteNoise.loop = true;
+        return whiteNoise;
+    }
+
+    audioContext.createWhiteNoise = function() {
+        return WhiteNoise(this);
+    };
+
+    // Subterranean Earth Drone
+    var droneOsc1 = audioContext.createOscillator();
+    var droneOsc2 = audioContext.createOscillator();
+    var droneGain = audioContext.createGain();
+
+    droneOsc1.type = 'sine';
+    droneOsc1.frequency.setValueAtTime(54, audioContext.currentTime);
+    droneOsc1.connect(droneGain);
+
+    droneOsc2.type = 'sine';
+    droneOsc2.frequency.setValueAtTime(108, audioContext.currentTime);
+    droneOsc2.connect(droneGain);
+
+    droneGain.gain.setValueAtTime(0.05, audioContext.currentTime);
+    droneGain.connect(audioContext.destination);
+
+    droneOsc1.start(0);
+    droneOsc2.start(0);
+
+    // Night Forest Chirps
+    function createChirp() {
+        var chirpOsc = audioContext.createOscillator();
+        var chirpGain = audioContext.createGain();
+        var now = audioContext.currentTime;
+
+        chirpOsc.type = 'sine';
+        chirpOsc.frequency.setValueAtTime(800, now);
+        chirpOsc.frequency.exponentialRampToValueAtTime(2000, now + 0.5);
+
+        chirpGain.gain.setValueAtTime(0.1, now);
+        chirpGain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+
+        chirpOsc.connect(chirpGain);
+        chirpGain.connect(audioContext.destination);
+
+        chirpOsc.start(now);
+        chirpOsc.stop(now + 0.5);
+    }
+
+    setInterval(createChirp, Math.random() * 3000 + 2000);
+
+    // Resonant Crystal Singing Bowl Chime
+    window.playCrystalChime = function(frequency, duration) {
+        var chimeOsc = audioContext.createOscillator();
+        var chimeGain = audioContext.createGain();
+        var now = audioContext.currentTime;
+
+        chimeOsc.type = 'sine';
+        chimeOsc.frequency.setValueAtTime(frequency, now);
+        chimeOsc.connect(chimeGain);
+
+        chimeGain.gain.setValueAtTime(0.5, now);
+        chimeGain.gain.exponentialRampToValueAtTime(0.01, now + duration);
+
+        chimeGain.connect(audioContext.destination);
+
+        chimeOsc.start(now);
+        chimeOsc.stop(now + duration);
+    };
+
+    // Audio Toggle Button
+    var audioToggle = document.getElementById('audio-toggle');
+    var isMuted = false;
+
+    audioToggle.addEventListener('click', function() {
+        isMuted = !isMuted;
+        audioContext.resume().then(() => {
+            audioContext[isMuted ? 'suspend' : 'resume']();
+            audioToggle.textContent = isMuted ? 'Unmute' : 'Mute';
+        });
+    });
 });

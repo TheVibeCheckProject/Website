@@ -3,42 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Vibe Check Project - Sanctuary</title>
+    <meta name="description" content="Explore the Mystical Forest Sanctuary, a living forest of presence and reflection.">
+    <title>The Vibe Check Project - Mystical Forest Sanctuary</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" href="favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="gateway">
         <div class="card-login">
-            <h1 class="sacred-title">THE SANCTUARY</h1>
-            <p>A living sanctuary of presence and reflection.</p>
+            <h1>THE SANCTUARY</h1>
+            <p>A living mystical forest of presence and reflection.</p>
             <input type="password" id="passphrase" placeholder="Speak the passphrase...">
             <button id="enter">Enter</button>
-            <div id="error-msg"></div>
+            <p id="error-msg" style="color: red;"></p>
         </div>
     </div>
-
+    <div id="hud-controls">
+        <div class="hud-badge">
+            ⌨️ WASD / Arrow Keys: Move Actor | 🖱️ Mouse: Orbit Camera | 🌿 Explore the Forest
+        </div>
+    </div>
     <div id="relic-modal" style="display: none;">
-        <button id="relic-close">&times;</button>
+        <button id="close-relic-modal">Close</button>
         <h2 id="relic-title"></h2>
         <p id="relic-quote"></p>
     </div>
-
-    <button id="audio-toggle" title="Mute/Unmute"></button>
-
+    <button id="audio-toggle">Toggle Audio</button>
     <script src="gatekeeper.js"></script>
     <script src="world.js"></script>
     <script src="atmosphere.js"></script>
-    <script src="monuments.js"></script>
-    <script src="relics.js"></script>
+    <script src="terrain.js"></script>
+    <script src="forest.js"></script>
+    <script src="player.js"></script>
     <script src="audio.js"></script>
 </body>
 </html>

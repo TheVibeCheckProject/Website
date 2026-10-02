@@ -1,16 +1,17 @@
 /* Global Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 html, body {
     width: 100vw;
     height: 100vh;
+    margin: 0;
     overflow: hidden;
-    background-color: #060512;
+    background-color: #050907;
     font-family: 'Arial', sans-serif;
+}
+
+canvas {
+    position: fixed;
+    width: 100%;
+    height: 100%;
 }
 
 /* Gateway Overlay */
@@ -20,11 +21,11 @@ html, body {
     left: 0;
     width: 100%;
     height: 100%;
+    background: radial-gradient(ellipse at center, rgba(14, 25, 20, 0.95) 0%, rgba(4, 8, 6, 0.98) 100%);
     z-index: 100;
-    background: radial-gradient(ellipse at center, rgba(20, 16, 38, 0.95) 0%, rgba(6, 5, 14, 0.98) 100%);
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.8s ease, visibility 0.8s ease;
+    transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
 }
 
 #gateway.fading {
@@ -33,88 +34,89 @@ html, body {
     pointer-events: none;
 }
 
+/* Card Login */
 .card-login {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px;
-    padding: 30px;
-    background: rgba(12, 11, 21, 0.8);
-    backdrop-filter: blur(24px);
-    border: 1px solid rgba(0, 240, 255, 0.25);
-    box-shadow: 0 0 20px rgba(0, 240, 255, 0.25), 0 0 40px rgba(255, 0, 255, 0.2);
-    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 240, 160, 0.3);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgba(0, 240, 160, 0.5);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
 }
 
 .card-login input {
     width: calc(100% - 22px);
     padding: 10px;
-    margin-bottom: 15px;
-    background: rgba(12, 11, 21, 0.8);
-    border: 1px solid transparent;
-    color: #00f0ff;
+    margin: 10px 0;
+    background: transparent;
+    border: 1px solid rgba(0, 240, 160, 0.3);
+    color: #fff;
     border-radius: 5px;
     outline: none;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease-in-out;
 }
 
 .card-login input:focus {
-    border-color: rgba(0, 240, 255, 0.5);
-}
-
-.card-login input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    border-color: rgba(0, 240, 160, 0.8);
+    box-shadow: 0 0 10px rgba(0, 240, 160, 0.5);
 }
 
 .card-login button {
     width: 100%;
     padding: 10px;
-    background: linear-gradient(to right, violet, cyan);
+    background: linear-gradient(to right, #00f0a0, #00ffff);
     border: none;
-    color: white;
+    color: #000;
     border-radius: 5px;
     cursor: pointer;
-    box-shadow: 0 0 15px rgba(0, 240, 255, 0.5), 0 0 30px rgba(255, 0, 255, 0.3);
-    transition: transform 0.3s ease;
+    transition: background 0.3s ease-in-out;
 }
 
 .card-login button:hover {
-    transform: translateY(-5px);
+    background: linear-gradient(to right, #00e090, #00e0ff);
 }
 
-#error-msg {
-    color: #ff6b6b;
-    text-align: center;
-    margin-top: 10px;
-    animation: shake 0.8s ease;
+/* HUD Controls */
+#hud-controls {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 240, 160, 0.3);
+    padding: 10px;
+    border-radius: 20px;
+    color: #fff;
+    pointer-events: none;
+    box-shadow: 0 0 10px rgba(0, 240, 160, 0.5);
 }
 
-@keyframes shake {
-    0% { transform: translateX(0); }
-    20% { transform: translateX(-10px); }
-    40% { transform: translateX(10px); }
-    60% { transform: translateX(-10px); }
-    80% { transform: translateX(10px); }
-    100% { transform: translateX(0); }
-}
-
+/* Relic Modal */
 #relic-modal {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.95);
-    width: 80%;
-    max-width: 500px;
-    padding: 30px;
-    background: rgba(12, 11, 21, 0.8);
-    backdrop-filter: blur(24px);
-    border: 1px solid rgba(0, 240, 255, 0.25);
-    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 240, 160, 0.3);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgba(0, 240, 160, 0.5);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    z-index: 90;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    z-index: 90;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
 }
 
 #relic-modal.active {
@@ -123,38 +125,17 @@ html, body {
     transform: translate(-50%, -50%) scale(1);
 }
 
-#relic-modal .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(12, 11, 21, 0.8);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 240, 255, 0.25);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: box-shadow 0.3s ease;
-}
-
-#relic-modal .close-btn:hover {
-    box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
-}
-
+/* Audio Toggle */
 #audio-toggle {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(12, 11, 21, 0.8);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 240, 255, 0.25);
-    color: white;
-    padding: 8px 16px;
-    border-radius: 20px;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 240, 160, 0.3);
+    padding: 10px;
+    border-radius: 50%;
+    color: #fff;
     cursor: pointer;
-    transition: box-shadow 0.3s ease;
-}
-
-#audio-toggle:hover {
-    box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    box-shadow: 0 0 10px rgba(0, 240, 160, 0.5);
 }

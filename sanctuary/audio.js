@@ -3,24 +3,7 @@ document.addEventListener('sanctuary-unlocked', function() {
 
     // Mystical Forest Ambient Soundscape
 
-    // Gentle Rustling Wind
-    var windNoise = audioContext.createWhiteNoise();
-    var windFilter = audioContext.createBiquadFilter();
-    var windLFO = audioContext.createOscillator();
-
-    windNoise.start(0);
-    windNoise.connect(windFilter);
-    windFilter.type = 'bandpass';
-    windFilter.frequency.setValueAtTime(200, audioContext.currentTime);
-    windFilter.Q.value = 1;
-    windFilter.connect(audioContext.destination);
-
-    windLFO.type = 'sine';
-    windLFO.frequency.setValueAtTime(0.1, audioContext.currentTime);
-    windLFO.connect(windFilter.frequency);
-    windLFO.start(0);
-
-    function WhiteNoise(context) {
+    function createWhiteNoise(context) {
         var bufferSize = 4 * context.sampleRate,
             buffer = context.createBuffer(1, bufferSize, context.sampleRate),
             output = buffer.getChannelData(0);
@@ -35,9 +18,22 @@ document.addEventListener('sanctuary-unlocked', function() {
         return whiteNoise;
     }
 
-    audioContext.createWhiteNoise = function() {
-        return WhiteNoise(this);
-    };
+    // Gentle Rustling Wind
+    var windNoise = createWhiteNoise(audioContext);
+    var windFilter = audioContext.createBiquadFilter();
+    var windLFO = audioContext.createOscillator();
+
+    windNoise.start(0);
+    windNoise.connect(windFilter);
+    windFilter.type = 'bandpass';
+    windFilter.frequency.setValueAtTime(200, audioContext.currentTime);
+    windFilter.Q.value = 1;
+    windFilter.connect(audioContext.destination);
+
+    windLFO.type = 'sine';
+    windLFO.frequency.setValueAtTime(0.1, audioContext.currentTime);
+    windLFO.connect(windFilter.frequency);
+    windLFO.start(0);
 
     // Subterranean Earth Drone
     var droneOsc1 = audioContext.createOscillator();

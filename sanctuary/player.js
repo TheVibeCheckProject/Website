@@ -130,6 +130,7 @@ document.addEventListener('keyup', function(event) {
 
 // Physics & Movement Update
 function updatePlayerMovement(deltaTime) {
+    if (!playerMesh) return;
     var speed = isRunning ? playerRunSpeed : playerSpeed;
     var direction = new THREE.Vector3();
 
@@ -175,7 +176,8 @@ function updatePlayerMovement(deltaTime) {
 
 // Third-Person Follow Camera
 function updateCamera() {
-    var desiredCameraPos = playerPosition.clone().add(cameraOffset.applyAxisAngle(new THREE.Vector3(0, 1, 0), playerCurrentRotation));
+    if (!playerMesh) return;
+    var desiredCameraPos = playerPosition.clone().add(cameraOffset.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), playerCurrentRotation));
     window.camera.position.lerp(desiredCameraPos, 0.08);
 
     var lookTarget = playerPosition.clone().add(cameraLookAtOffset);

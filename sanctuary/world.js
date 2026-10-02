@@ -15,6 +15,7 @@ window.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 window.renderer.toneMapping = THREE.ACESFilmicToneMapping;
 window.renderer.toneMappingExposure = 1.1;
 window.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+window.renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(window.renderer.domElement);
 
 // Initialize OrbitControls
@@ -28,6 +29,7 @@ const composer = new THREE.EffectComposer(window.renderer);
 composer.addPass(new THREE.RenderPass(window.scene, window.camera));
 const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.2, 0.4, 0.25);
 composer.addPass(bloomPass);
+composer.setSize(window.innerWidth, window.innerHeight);
 window.composer = composer;
 
 // Master Animation Loop

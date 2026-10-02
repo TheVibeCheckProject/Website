@@ -53,8 +53,8 @@ window.scene.add(terrain);
 
 // Store the terrain height helper function
 window.getTerrainHeight = function(x, z) {
-    var terrainPosition = terrain.localToWorld(new THREE.Vector3(x, 0, z));
-    var raycaster = new THREE.Raycaster(terrainPosition, new THREE.Vector3(0, -1, 0));
+    if (!terrain) return 0;
+    var raycaster = new THREE.Raycaster(new THREE.Vector3(x, 50, z), new THREE.Vector3(0, -1, 0));
     var intersects = raycaster.intersectObject(terrain);
     if (intersects.length > 0) {
         return intersects[0].point.y;

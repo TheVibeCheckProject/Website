@@ -2,20 +2,25 @@ var THREE = window.THREE;
 
 document.addEventListener('DOMContentLoaded', function() {
     var gateway = document.getElementById('gateway');
-    var passphraseInput = document.getElementById('passphrase-input');
+    var passphraseInput = document.getElementById('passphrase') || document.getElementById('passphrase-input');
+    var enterButton = document.getElementById('enter') || document.getElementById('verify-button');
     var errorMsg = document.getElementById('error-msg');
 
-    passphraseInput.addEventListener('input', function() {
-        errorMsg.textContent = ''; // Clear previous error message
-    });
+    if (passphraseInput) {
+        passphraseInput.addEventListener('input', function() {
+            if (errorMsg) errorMsg.textContent = '';
+        });
 
-    passphraseInput.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            verifyPassphrase();
-        }
-    });
+        passphraseInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                verifyPassphrase();
+            }
+        });
+    }
 
-    document.getElementById('verify-button').addEventListener('click', verifyPassphrase);
+    if (enterButton) {
+        enterButton.addEventListener('click', verifyPassphrase);
+    }
 
     function verifyPassphrase() {
         var passphrase = passphraseInput.value;

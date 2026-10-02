@@ -1,64 +1,104 @@
-// THREE is already available on window
+var THREE = window.THREE;
 
 // Set background and fog
-window.scene.background = new THREE.Color(0x060512);
-window.scene.fog = new THREE.FogExp2(0x060512, 0.018);
+window.scene.background = new THREE.Color(0x040907);
+window.scene.fog = new THREE.FogExp2(0x050c09, 0.022);
 
-// Add ethereal dynamic lighting
-const ambientLight = new THREE.AmbientLight(0x1a1233, 0.7);
+// Ambient light
+var ambientLight = new THREE.AmbientLight(0x0e241e, 0.8);
 window.scene.add(ambientLight);
 
-const shrineCyanLight = new THREE.PointLight(0x00f0ff, 2.5, 35, 2);
-shrineCyanLight.position.set(0, 6, 0);
-window.scene.add(shrineCyanLight);
+// Directional moonlight
+var moonlight = new THREE.DirectionalLight(0xa8e6cf, 1.8);
+moonlight.position.set(-20, 35, 15);
+moonlight.castShadow = true;
+moonlight.shadow.mapSize.width = 2048;
+moonlight.shadow.mapSize.height = 2048;
+moonlight.shadow.camera.near = 1;
+moonlight.shadow.camera.far = 100;
+moonlight.shadow.camera.left = -40;
+moonlight.shadow.camera.right = 40;
+moonlight.shadow.camera.top = 40;
+moonlight.shadow.camera.bottom = -40;
+window.scene.add(moonlight);
 
-const twilightVioletLight = new THREE.PointLight(0x9b51e0, 2.0, 40, 2);
-twilightVioletLight.position.set(0, 12, 0);
-window.scene.add(twilightVioletLight);
+// Bioluminescent Wisps & Fireflies
+var fireflyCount = 1500;
+var fireflyGeometry = new THREE.BufferGeometry();
+var fireflyPositions = [];
+var fireflyColors = [];
 
-const starlightDirectionalLight = new THREE.DirectionalLight(0xffecd2, 0.4);
-starlightDirectionalLight.position.set(10, 20, 10);
-window.scene.add(starlightDirectionalLight);
+for (var i = 0; i < fireflyCount; i++) {
+    var x = Math.random() * 80 - 40;
+    var y = Math.random() * 7.5 + 0.5;
+    var z = Math.random() * 80 - 40;
+    fireflyPositions.push(x, y, z);
 
-// Create reflective obsidian ground mirror
-const groundGeo = new THREE.CircleGeometry(60, 64);
-const groundMat = new THREE.MeshStandardMaterial({ color: 0x0a0814, roughness: 0.1, metalness: 0.95, side: THREE.DoubleSide });
-const ground = new THREE.Mesh(groundGeo, groundMat);
-ground.rotation.x = -Math.PI / 2;
-window.scene.add(ground);
-
-// Create living stardust particle field
-const stardustCount = 3000;
-const stardustGeometry = new THREE.BufferGeometry();
-const positions = [];
-const colors = [];
-
-for (let i = 0; i < stardustCount; i++) {
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.acos(Math.random() * 2 - 1);
-    const radius = 8 + Math.random() * 32;
-    const x = radius * Math.sin(phi) * Math.cos(theta);
-    const y = radius * Math.sin(phi) * Math.sin(theta);
-    const z = radius * Math.cos(phi);
-
-    positions.push(x, y, z);
-
-    // Blend between bioluminescent cyan, sacred lavender, and warm starlight
-    const r = (Math.random() * 0.5 + 0.5) * (0x00f0ff >> 16 & 0xff) + (Math.random() * 0.5 + 0.5) * (0xa855f7 >> 16 & 0xff) + (Math.random() * 0.5 + 0.5) * (0xffecd2 >> 16 & 0xff);
-    const g = (Math.random() * 0.5 + 0.5) * (0x00f0ff >> 8 & 0xff) + (Math.random() * 0.5 + 0.5) * (0xa855f7 >> 8 & 0xff) + (Math.random() * 0.5 + 0.5) * (0xffecd2 >> 8 & 0xff);
-    const b = (Math.random() * 0.5 + 0.5) * (0x00f0ff & 0xff) + (Math.random() * 0.5 + 0.5) * (0xa855f7 & 0xff) + (Math.random() * 0.5 + 0.5) * (0xffecd2 & 0xff);
-    colors.push(r / 3, g / 3, b / 3);
+    // Random color blending
+    var color = new THREE.Color();
+    color.setRGB(
+        Math.random() * 0.2 + 0.2, // Green component
+        Math.random() * 0.8 + 0.2, // Blue component
+        Math.random() * 0.4 + 0.6  // Red component
+    );
+    fireflyColors.push(color.r, color.g, color.b);
 }
 
-stardustGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-stardustGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+fireflyGeometry.setAttribute('position', new THREE.Float32BufferAttribute(fireflyPositions, 3));
+fireflyGeometry.setAttribute('color', new THREE.Float32BufferAttribute(fireflyColors, 3));
 
-const stardustMaterial = new THREE.PointsMaterial({ size: 0.12, vertexColors: true, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending });
-const stardust = new THREE.Points(stardustGeometry, stardustMaterial);
-window.scene.add(stardust);
-
-// Animation callback for stardust
-window.sanctuaryUpdateCallbacks = window.sanctuaryUpdateCallbacks || [];
-window.sanctuaryUpdateCallbacks.push((time) => {
-    stardust.rotation.y = time * 0.03;
+var fireflyMaterial = new THREE.PointsMaterial({
+    size: 0.18,
+    transparent: true,
+    opacity: 0.9,
+    vertexColors: true,
+    blending: THREE.AdditiveBlending
 });
+
+var fireflies = new THREE.Points(fireflyGeometry, fireflyMaterial);
+window.scene.add(fireflies);
+
+// Magical Wisps
+var wispCount = 3;
+var wisps = [];
+var wispColors = [0x00f0ff, 0x8e44ad, 0x2ecc71]; // Cyan, Violet, Emerald
+
+for (var i = 0; i < wispCount; i++) {
+    var wispGeometry = new THREE.SphereGeometry(0.2, 16, 16);
+    var wispMaterial = new THREE.MeshBasicMaterial({ color: wispColors[i] });
+    var wisp = new THREE.Mesh(wispGeometry, wispMaterial);
+    wisp.position.set(Math.random() * 80 - 40, Math.random() * 7.5 + 0.5, Math.random() * 80 - 40);
+
+    var wispLight = new THREE.PointLight(wispColors[i], 1, 10);
+    wisp.add(wispLight);
+
+    wisps.push({
+        mesh: wisp,
+        time: Math.random() * Math.PI * 2
+    });
+
+    window.scene.add(wisp.mesh);
+}
+
+// Animation Callback
+function animateAtmosphere(delta) {
+    // Fireflies oscillation
+    var positions = fireflyGeometry.attributes.position.array;
+    for (var i = 0; i < fireflyCount; i++) {
+        var y = 0.5 + Math.sin((i + delta * 50) * 0.05) * 3;
+        positions[i * 3 + 1] = y;
+    }
+    fireflyGeometry.attributes.position.needsUpdate = true;
+
+    // Wisps drifting
+    for (var i = 0; i < wisps.length; i++) {
+        var wisp = wisps[i];
+        wisp.time += delta * 0.2;
+        var x = 20 * Math.sin(wisp.time);
+        var z = 20 * Math.cos(wisp.time);
+        var y = 5 + 2 * Math.sin(wisp.time * 0.5);
+        wisp.mesh.position.set(x, y, z);
+    }
+}
+
+window.sanctuaryUpdateCallbacks.push(animateAtmosphere);

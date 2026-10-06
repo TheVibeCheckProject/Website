@@ -7,7 +7,7 @@ One new guide a week, to bring in people from Google searches. Part of the growt
 
 Tick a topic only after the owner says "looks good, publish" and it is live.
 
-- [ ] 1. What to text someone whose pet died
+- [x] 1. What to text someone whose pet died
 - [ ] 2. What to say on the anniversary of someone's death
 - [ ] 3. Encouraging texts for someone in recovery
 - [ ] 4. Messages for a friend going through a divorce

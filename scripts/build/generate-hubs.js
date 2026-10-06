@@ -56,6 +56,7 @@ const categories = [
         desc: 'Find thoughtful words, sympathy texts, and caring advice when someone you love is grieving. Genuine comfort, kindness, and support that truly helps.',
         files: [
             'how-to-comfort-someone-who-lost-a-loved-one.html',
+            'what-to-text-someone-whose-pet-died.html',
             'how-to-support-a-friend-going-through-a-breakup.html',
             'what-to-say-to-someone-who-feels-like-giving-up.html'
         ]

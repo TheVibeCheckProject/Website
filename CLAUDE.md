@@ -11,3 +11,9 @@ Static site (plain HTML/CSS/JS, no framework) on GitHub Pages behind Cloudflare.
 - Card links (`view-card.html?data=`) must stay backward compatible: old cards live in people's messages forever.
 - Never invent testimonials, statistics or user counts. Premium copy must match what it actually unlocks.
 - Browser automation: use Microsoft Edge (`channel: 'msedge'`), never Chrome.
+
+## Weekly guide
+Every Monday the owner's assistant reminds them to say **"write the next guide"**. When they do, read
+`docs/marketing/guide-plan.md` and follow its "When the owner says 'write the next guide'" steps: the next
+unchecked topic, written like the existing guides, then show the preview. Publish only when they say
+"looks good, publish", and only then tick the topic.

@@ -2,9 +2,10 @@ name: Generate Newsletter Batch
 
 on:
   schedule:
-    # 10:00 AM UTC on the 25th of every month
-    # Backup only: the vibe-newsletter-trigger Cloudflare worker starts this on time on the 25th.
-    - cron: '43 13 25 * *'
+    # Daily, ~1 AM Central (before the 9 AM send): fills any missing or broken day from today to the
+    # end of next month. Most days nothing is missing and it exits without calling Gemini.
+    # The vibe-newsletter-trigger Cloudflare worker also starts it on the 25th.
+    - cron: '17 6 * * *'
   workflow_dispatch:
     inputs:
       target_month:

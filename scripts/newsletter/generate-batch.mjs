@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-// Auto-generates daily emails for the next calendar month into newsletter-content/batch.json.
+// Auto-generates daily emails into newsletter-content/batch.json: any missing or broken day from
+// today through the end of next month.
 // Uses Google Gemini API (free tier). Every email is checked by email.js (checkEmail) before
 // it is saved; days that fail are regenerated, and the run fails if any day is still missing.
-// Run via GitHub Actions on the 25th of each month, or manually:
+// Run via GitHub Actions daily (and on the 25th by the Cloudflare trigger), or manually:
 //   TARGET_MONTH=2026-05 node scripts/newsletter/generate-batch.mjs
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -31,6 +32,7 @@ function getTargetMonth() {
   const override = process.env.TARGET_MONTH;
   if (override && /^\d{4}-\d{2}$/.test(override)) return override;
   const d = new Date();
+  d.setDate(1); // on Jan 29-31, setMonth(+1) would land in March and skip February
   d.setMonth(d.getMonth() + 1);
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
 }
@@ -99,9 +101,12 @@ async function generate(dates, monthName, year, avoid) {
 }
 
 async function main() {
+  // Covers every day from today to the end of the target month: the rest of this month as well
+  // as all of next month, so a day that went missing or broke after the last run is refilled
+  // too. Runs daily (see the workflow); when nothing is missing it exits without calling Gemini.
   const targetMonth = getTargetMonth();
-  const [year, month] = targetMonth.split('-').map(Number);
-  const monthName = new Date(year, month - 1, 1).toLocaleString('en-US', { month: 'long' });
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago' }).format(new Date());
+  const months = [...new Set([today.slice(0, 7), targetMonth])].sort();
 
   // Merge, never replace: this runs on the 25th, and overwriting batch.json with only next
   // month deleted the unsent last days of the current month. Dates that already have an
@@ -113,34 +118,43 @@ async function main() {
   const invalid = existing.filter(e => !isValid(e)).map(e => e.date);
   if (invalid.length) console.warn(`⚠️  Replacing ${invalid.length} email(s) that fail the content check: ${invalid.join(', ')}`);
   const have = new Set(existing.filter(isValid).map(e => e.date));
-  let missing = getDatesForMonth(targetMonth).filter(d => !have.has(d));
-  if (missing.length === 0) {
-    console.log(`✅ ${monthName} ${year} is already fully covered in batch.json — nothing to generate.`);
-    return;
-  }
-  console.log(`Generating ${missing.length} day(s) for ${monthName} ${year}...`);
-
   const accepted = [];
+  let missing = [];
   const avoid = existing.map(e => e.affirmation).filter(Boolean).slice(-40);
-  for (let attempt = 1; attempt <= ATTEMPTS && missing.length; attempt++) {
-    const wanted = new Set(missing);
-    for (const e of await generate(missing, monthName, year, avoid.concat(accepted.map(a => a.affirmation)))) {
-      if (!e || !wanted.has(e.date)) continue;
-      const email = {
-        date: e.date, type: e.type, subject: e.subject, preview_text: e.preview_text,
-        intro: e.intro || '', affirmation: e.affirmation, reflection: e.reflection,
-      };
-      if (e.occasion) email.occasion = e.occasion;
-      const problems = checkEmail(email);
-      if (problems.length) {
-        console.warn(`⚠️  ${e.date} rejected: ${problems.join('; ')}`);
-        continue;
-      }
-      accepted.push(email);
-      wanted.delete(e.date);
+  for (const ym of months) {
+    const [year, month] = ym.split('-').map(Number);
+    const monthName = new Date(year, month - 1, 1).toLocaleString('en-US', { month: 'long' });
+    let todo = getDatesForMonth(ym).filter(d => d >= today && !have.has(d));
+    if (todo.length === 0) {
+      console.log(`✅ ${monthName} ${year} is already fully covered in batch.json.`);
+      continue;
     }
-    missing = [...wanted].sort();
-    if (missing.length) console.log(`Attempt ${attempt}: ${missing.length} day(s) still missing.`);
+    console.log(`Generating ${todo.length} day(s) for ${monthName} ${year}...`);
+    for (let attempt = 1; attempt <= ATTEMPTS && todo.length; attempt++) {
+      const wanted = new Set(todo);
+      for (const e of await generate(todo, monthName, year, avoid.concat(accepted.map(a => a.affirmation)))) {
+        if (!e || !wanted.has(e.date)) continue;
+        const email = {
+          date: e.date, type: e.type, subject: e.subject, preview_text: e.preview_text,
+          intro: e.intro || '', affirmation: e.affirmation, reflection: e.reflection,
+        };
+        if (e.occasion) email.occasion = e.occasion;
+        const problems = checkEmail(email);
+        if (problems.length) {
+          console.warn(`⚠️  ${e.date} rejected: ${problems.join('; ')}`);
+          continue;
+        }
+        accepted.push(email);
+        wanted.delete(e.date);
+      }
+      todo = [...wanted].sort();
+      if (todo.length) console.log(`Attempt ${attempt}: ${todo.length} day(s) still missing.`);
+    }
+    missing = missing.concat(todo);
+  }
+  if (accepted.length === 0 && missing.length === 0) {
+    console.log('✅ Every day through the end of the target month has an email — nothing to generate.');
+    return;
   }
 
   const cutoff = new Date(Date.now() - KEEP_PAST_DAYS * 86400000).toISOString().slice(0, 10);

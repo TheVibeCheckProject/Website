@@ -17,7 +17,7 @@
 | Script | Workflow | When |
 | :--- | :--- | :--- |
 | `send-newsletter.js` | `daily-newsletter.yml` | Daily 14:00 UTC. Sends today's entry from `newsletter-content/batch.json` via MailerLite. Fails the run if today has no entry or it fails the content check. |
-| `generate-batch.mjs` | `generate-newsletter-batch.yml` | 25th of each month. Generates next month's missing days with Gemini, keeps only those that pass the content check, and merges them into `batch.json` (never overwrites existing days). Fails the run if a day is still missing. |
+| `generate-batch.mjs` | `generate-newsletter-batch.yml` | Daily ~1 AM Central (plus the Cloudflare trigger on the 25th). Fills every missing or broken day from today to the end of next month with Gemini (a day whose email fails the content check counts as missing), keeps only those that pass the check, and merges them into `batch.json` (valid days are never overwritten). Most days there's nothing to do. Fails the run if a day is still missing. |
 | `email.js` | (shared) | The daily email design (`renderEmail`) and content check (`checkEmail`). |
 
 Every daily email is an affirmation for the reader (`type` AFFIRMATION, or OCCASION for a real date such as World Mental Health Day), with a "Send this to someone" button that opens a card with that affirmation. `checkEmail` rejects invented stories and claims: third-person people (he/she, a coworker, a friend of mine…), anecdotes, statistics. In Sept 2026 AI-written stories were sent as if true; `npm run test:static` checks every queued day so it can't happen again. To edit a day, change its fields in `batch.json` (the HTML is built at send time).

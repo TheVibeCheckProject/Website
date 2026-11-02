@@ -76,9 +76,11 @@ daily list — with fields `name`, `recipient_checked`. Automation: joins group 
   from `newsletter-content/batch.json`, **checks it** with `checkEmail`, renders it with `renderEmail`
   (`scripts/newsletter/email.js`), sends a MailerLite campaign. Fails loudly if today is missing or
   fails the check.
-- `generate-newsletter-batch.yml` (25th monthly) runs `generate-batch.mjs`: Gemini writes next month's
-  missing days, **only emails passing `checkEmail` are kept**, days are merged (never overwritten),
-  the run fails if a day is still missing.
+- `generate-newsletter-batch.yml` (daily ~1 AM Central, plus the Cloudflare trigger on the 25th) runs
+  `generate-batch.mjs`: Gemini fills every missing or broken day from today to the end of next month,
+  **only emails passing `checkEmail` are kept**, valid days are merged (never overwritten), the run
+  fails if a day is still missing. (Nov 2026: an outside tool overwrote `batch.json` on Oct 20 with
+  November in the old `body_html` format, and the old 25th-only, next-month-only job couldn't repair it.)
 - Every daily email is an **affirmation for the reader** (type `AFFIRMATION`, or `OCCASION` for real
   dates like World Mental Health Day). Fields: `date, type, occasion?, subject, preview_text, intro,
   affirmation, reflection`. A "Send this to someone" button prefills a card with the affirmation.

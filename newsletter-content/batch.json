@@ -1,255 +1,280 @@
 {
-  "generated": "2026-10-20",
+  "generated": "2026-11-02",
   "start_date": "2026-11-01",
   "end_date": "2026-11-30",
   "emails": [
     {
       "date": "2026-11-01",
-      "type": "OCCASION",
-      "subject": "you just got an extra hour",
-      "preview_text": "Use it on someone who matters. You know who.",
-      "body_text": "Tonight the clocks fall back, and just like that — a free hour. Nobody expects it, nobody planned for it.\n\nSpend it on someone, not a screen. A call to the person you keep meaning to call. An extra hour feels ordinary, but an hour given to someone feels like everything.\n\nSo — who gets yours?",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>you just got an extra hour</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>Tonight the clocks fall back, and just like that — a free hour. Nobody expects it, nobody planned for it.</p>\n<p>Spend it on someone, not a screen. A call to the person you keep meaning to call. An extra hour feels ordinary, but an hour given to someone feels like everything.</p>\n<p>So — who gets yours?</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>",
-      "occasion": "Daylight Saving Time ends"
+      "type": "AFFIRMATION",
+      "subject": "a slow start to november",
+      "preview_text": "You can enter this new month at your own pace.",
+      "intro": "Welcome to November.",
+      "affirmation": "You are allowed to move gently into this new month. There is no rush to prove anything today.",
+      "reflection": "Let yourself arrive softly. The days ahead will unfold one by one."
     },
     {
       "date": "2026-11-02",
       "type": "AFFIRMATION",
-      "subject": "monday doesn’t have to be the villain",
-      "preview_text": "Start slow. The week will keep.",
-      "body_text": "Mondays get a bad name, but honestly? It’s just a day. You don’t have to have it all figured out by lunch.\n\nYou’re starting the week already enough. Same heart, same people who love you, same you.\n\nTell someone else they’re enough too. Mondays are easier when everyone hears it.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>monday doesn’t have to be the villain</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>Mondays get a bad name, but honestly? It’s just a day. You don’t have to have it all figured out by lunch.</p>\n<p>You’re starting the week already enough. Same heart, same people who love you, same you.</p>\n<p>Tell someone else they’re enough too. Mondays are easier when everyone hears it.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "subject": "meeting this monday with ease",
+      "preview_text": "Take this morning one small step at a time.",
+      "intro": "Good morning.",
+      "affirmation": "You do not have to carry the whole week at once. Just focus on what is right in front of you.",
+      "reflection": "Notice what feels heavy and set down whatever can wait. One simple breath is enough."
     },
     {
       "date": "2026-11-03",
-      "type": "OCCASION",
-      "subject": "no matter what, check on your people",
-      "preview_text": "Whatever the news says tonight, somebody needs you.",
-      "body_text": "Election Day. Everyone’s holding their breath a little, no matter which way they lean.\n\nPolitics come and go, but your people are right there. Text someone you disagree with about everything and love anyway. That’s the whole trick.\n\nKindness doesn’t take election night off. Neither should you.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>no matter what, check on your people</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>Election Day. Everyone’s holding their breath a little, no matter which way they lean.</p>\n<p>Politics come and go, but your people are right there. Text someone you disagree with about everything and love anyway. That’s the whole trick.</p>\n<p>Kindness doesn’t take election night off. Neither should you.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>",
-      "occasion": "Election Day"
+      "type": "AFFIRMATION",
+      "subject": "honoring what you need today",
+      "preview_text": "Your energy levels are valid, exactly as they are.",
+      "intro": "A gentle check-in for your Tuesday.",
+      "affirmation": "You are allowed to listen to your body and adjust your pace whenever you need to.",
+      "reflection": "Resting is not something you must earn. It is a necessary part of being human."
     },
     {
       "date": "2026-11-04",
-      "type": "NUDGE",
-      "subject": "someone’s name keeps popping up, huh",
-      "preview_text": "That’s not random. Send the text.",
-      "body_text": "You know the feeling — a name keeps drifting through your head all day for no reason.\n\nThat’s not nothing. That’s your heart doing the thinking before your brain catches up.\n\nSo follow it. Send the “hey, you crossed my mind today” text. Worst case: you made someone’s Wednesday.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>someone’s name keeps popping up, huh</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>You know the feeling — a name keeps drifting through your head all day for no reason.</p>\n<p>That’s not nothing. That’s your heart doing the thinking before your brain catches up.</p>\n<p>So follow it. Send the “hey, you crossed my mind today” text. Worst case: you made someone’s Wednesday.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "type": "AFFIRMATION",
+      "subject": "quiet confidence in who you are",
+      "preview_text": "You do not need to be loud to be strong.",
+      "intro": "",
+      "affirmation": "Your quiet efforts matter just as much as the visible ones. You are doing meaningful work.",
+      "reflection": "Trust the progress you cannot yet see. Growth happens quietly beneath the surface."
     },
     {
       "date": "2026-11-05",
-      "type": "STORY",
-      "subject": "the voicemail he saved for eleven years",
-      "preview_text": "Eleven years later, he still plays it when it rains.",
-      "body_text": "A guy at work told me he still has a voicemail from his grandpa. Eleven years old. “Just checking on my boy.”\n\nHe plays it when it rains. Says it still works — every single time.\n\nYour voice has that kind of shelf life for somebody. Leave the message. Send the card. Be the voicemail.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>the voicemail he saved for eleven years</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>A guy at work told me he still has a voicemail from his grandpa. Eleven years old. “Just checking on my boy.”</p>\n<p>He plays it when it rains. Says it still works — every single time.</p>\n<p>Your voice has that kind of shelf life for somebody. Leave the message. Send the card. Be the voicemail.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "type": "AFFIRMATION",
+      "subject": "letting go of what is finished",
+      "preview_text": "You can release what is no longer yours to carry.",
+      "intro": "A gentle reminder for today.",
+      "affirmation": "You have permission to put down old expectations and make room for peace.",
+      "reflection": "Notice where you are holding tension. Let your shoulders soften as you read this."
     },
     {
       "date": "2026-11-06",
       "type": "AFFIRMATION",
-      "subject": "you made it here, that’s the win",
-      "preview_text": "Friday. You showed up all week. That counts.",
-      "body_text": "Look at you — Friday, standing. Whatever this week was, you handled it the way you handle everything: one day at a time.\n\nYou don’t need a perfect week to deserve a good weekend. You just need to be here.\n\nNow go tell someone else they did great too. Fridays hit better shared.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>you made it here, that’s the win</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>Look at you — Friday, standing. Whatever this week was, you handled it the way you handle everything: one day at a time.</p>\n<p>You don’t need a perfect week to deserve a good weekend. You just need to be here.</p>\n<p>Now go tell someone else they did great too. Fridays hit better shared.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "subject": "celebrating how far you have come",
+      "preview_text": "You made it through another week.",
+      "intro": "Happy Friday.",
+      "affirmation": "You handled difficult moments this week with grace, even when it felt messy.",
+      "reflection": "Acknowledge your own resilience today. You are stronger and kinder than you realize."
     },
     {
       "date": "2026-11-07",
-      "type": "NUDGE",
-      "subject": "saturday mornings were made for calling",
-      "preview_text": "Coffee’s hot. The call takes five minutes. Go.",
-      "body_text": "Saturday morning. Slow coffee, nowhere to be. This is the window when a call feels easy instead of scheduled.\n\nCall the person whose voice you miss. Not a text — a voice. Five minutes is a whole gift.\n\nDo it before the day fills up. Future-you says thanks.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>saturday mornings were made for calling</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>Saturday morning. Slow coffee, nowhere to be. This is the window when a call feels easy instead of scheduled.</p>\n<p>Call the person whose voice you miss. Not a text — a voice. Five minutes is a whole gift.</p>\n<p>Do it before the day fills up. Future-you says thanks.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "type": "AFFIRMATION",
+      "subject": "space just for yourself",
+      "preview_text": "Today belongs to you and your own rhythm.",
+      "intro": "",
+      "affirmation": "You deserve uninterrupted time to recharge without guilt or explanation.",
+      "reflection": "Do something purely for your own joy today, however small it may be."
     },
     {
       "date": "2026-11-08",
-      "type": "OCCASION",
-      "subject": "light one little lamp today",
-      "preview_text": "Diwali’s lesson: light beats dark. Every time.",
-      "body_text": "Today millions of people light lamps for Diwali — the festival of lights, celebrating light winning over darkness.\n\nYou don’t need a lamp. A kind word does the same thing: small light, big dark.\n\nSo be someone’s lamp today. One message, one card, one “I’m thinking of you” — that’s a whole festival.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>light one little lamp today</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>Today millions of people light lamps for Diwali — the festival of lights, celebrating light winning over darkness.</p>\n<p>You don’t need a lamp. A kind word does the same thing: small light, big dark.</p>\n<p>So be someone’s lamp today. One message, one card, one “I’m thinking of you” — that’s a whole festival.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>",
-      "occasion": "Diwali"
+      "type": "AFFIRMATION",
+      "subject": "the warmth of simple things",
+      "preview_text": "Find comfort in the ordinary moments today.",
+      "intro": "A calm Sunday note.",
+      "affirmation": "You can find genuine peace in simple comforts: a warm drink, quiet air, a still room.",
+      "reflection": "Let the small, grounding details anchor you. You are safe in this present moment."
     },
     {
       "date": "2026-11-09",
       "type": "AFFIRMATION",
-      "subject": "quiet wins count the most",
-      "preview_text": "Nobody saw it. It still mattered.",
-      "body_text": "The quiet wins don’t get applause. Drinking water. Getting up. Being kind when you didn’t feel like it.\n\nNobody clapped, but you know. And it counts — honestly, those are the ones that build a life.\n\nText someone and notice their quiet win. They’ll never forget you saw it.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>quiet wins count the most</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>The quiet wins don’t get applause. Drinking water. Getting up. Being kind when you didn’t feel like it.</p>\n<p>Nobody clapped, but you know. And it counts — honestly, those are the ones that build a life.</p>\n<p>Text someone and notice their quiet win. They’ll never forget you saw it.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "subject": "trusting your own inner timing",
+      "preview_text": "You are not behind where you need to be.",
+      "intro": "",
+      "affirmation": "Your path is entirely your own. You do not need to match anyone else's speed.",
+      "reflection": "Comparison only steals your present peace. Keep walking forward at your natural pace."
     },
     {
       "date": "2026-11-10",
-      "type": "STORY",
-      "subject": "she reads the card before every shift",
-      "preview_text": "One card. Two years. Every single shift.",
-      "body_text": "A nurse told me she keeps one card taped inside her locker. A friend sent it two years ago: “you’re braver than the hard days.”\n\nShe reads it before every shift. Two years of bad days, softened by one good sentence.\n\nOne card. That’s all it takes to be someone’s locker-door light. Go send one.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>she reads the card before every shift</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>A nurse told me she keeps one card taped inside her locker. A friend sent it two years ago: “you’re braver than the hard days.”</p>\n<p>She reads it before every shift. Two years of bad days, softened by one good sentence.</p>\n<p>One card. That’s all it takes to be someone’s locker-door light. Go send one.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "type": "AFFIRMATION",
+      "subject": "giving yourself grace today",
+      "preview_text": "Perfection is never required of you.",
+      "intro": "Here is your morning reminder.",
+      "affirmation": "You are allowed to make mistakes and still be deeply worthy of love and respect.",
+      "reflection": "Treat yourself with the same gentle patience you would offer a loved one."
     },
     {
       "date": "2026-11-11",
       "type": "OCCASION",
-      "subject": "if you know a veteran, call them",
-      "preview_text": "Two words — thank you — still land. Say them today.",
-      "body_text": "Today’s Veterans Day. A whole country pausing to say: we see what you gave.\n\nIf there’s a veteran in your life, don’t just think the thanks — say it. A call, a card, two sentences.\n\n“Thank you” is small. Being remembered isn’t. Make the call.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>if you know a veteran, call them</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>Today’s Veterans Day. A whole country pausing to say: we see what you gave.</p>\n<p>If there’s a veteran in your life, don’t just think the thanks — say it. A call, a card, two sentences.</p>\n<p>“Thank you” is small. Being remembered isn’t. Make the call.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>",
+      "subject": "honoring courage and quiet service",
+      "preview_text": "Taking a moment today for reflection and gratitude.",
+      "intro": "On this Veterans Day.",
+      "affirmation": "You can honor courage by standing firm in your own integrity and kindness.",
+      "reflection": "Take a quiet moment of stillness today. Peace is something we nurture together.",
       "occasion": "Veterans Day"
     },
     {
       "date": "2026-11-12",
-      "type": "NUDGE",
-      "subject": "that group chat went quiet again",
-      "preview_text": "You know the one. Be the first to break the silence.",
-      "body_text": "Every friend group has that chat. Used to blow up daily. Now it’s birthday memes and tumbleweeds.\n\nSomeone has to go first. Might as well be you. Send the dumb photo, the “miss you idiots,” the plan for nothing in particular.\n\nFriendships don’t die. They just go quiet waiting for someone brave.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>that group chat went quiet again</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>Every friend group has that chat. Used to blow up daily. Now it’s birthday memes and tumbleweeds.</p>\n<p>Someone has to go first. Might as well be you. Send the dumb photo, the “miss you idiots,” the plan for nothing in particular.</p>\n<p>Friendships don’t die. They just go quiet waiting for someone brave.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "type": "AFFIRMATION",
+      "subject": "your voice matters here",
+      "preview_text": "What you have to say holds real value.",
+      "intro": "",
+      "affirmation": "Your thoughts and feelings deserve to take up space. Speak your truth with kindness.",
+      "reflection": "You do not need to shrink to make others comfortable. Stand tall in your own truth."
     },
     {
       "date": "2026-11-13",
       "type": "OCCASION",
-      "subject": "today’s literally kindness day, no excuses",
-      "preview_text": "The one day a year kindness is the whole assignment.",
-      "body_text": "It’s World Kindness Day. The one day on the calendar that says: be nice on purpose, out loud.\n\nHold the door. Compliment the cashier. But the real move? Reach someone who’d never expect it.\n\nSend the card. Make the call. Today of all days — no excuses.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>today’s literally kindness day, no excuses</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>It’s World Kindness Day. The one day on the calendar that says: be nice on purpose, out loud.</p>\n<p>Hold the door. Compliment the cashier. But the real move? Reach someone who’d never expect it.</p>\n<p>Send the card. Make the call. Today of all days — no excuses.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>",
+      "subject": "kindness starting with yourself",
+      "preview_text": "On World Kindness Day, begin from within.",
+      "intro": "Happy World Kindness Day.",
+      "affirmation": "You deserve the very same tenderness and compassion that you so freely give away.",
+      "reflection": "Let your self-talk be soft and forgiving today. Kindness always starts at home.",
       "occasion": "World Kindness Day"
     },
     {
       "date": "2026-11-14",
       "type": "AFFIRMATION",
-      "subject": "rest is not quitting, it’s refueling",
-      "preview_text": "The to-do list can wait. You can’t.",
-      "body_text": "Saturday permission slip: rest is allowed. Not earned. Allowed.\n\nYou don’t have to produce something to deserve a slow day. The couch, the nap, the long walk — that’s maintenance, not laziness.\n\nAnd hey — tell a tired friend the same thing. Rest spreads.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>rest is not quitting, it’s refueling</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>Saturday permission slip: rest is allowed. Not earned. Allowed.</p>\n<p>You don’t have to produce something to deserve a slow day. The couch, the nap, the long walk — that’s maintenance, not laziness.</p>\n<p>And hey — tell a tired friend the same thing. Rest spreads.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "subject": "embracing the quiet margins",
+      "preview_text": "You do not have to fill every empty hour.",
+      "intro": "",
+      "affirmation": "Unscheduled time is not wasted time; it is space for your spirit to breathe.",
+      "reflection": "Enjoy the stillness of an open afternoon. There is nowhere else you need to be."
     },
     {
       "date": "2026-11-15",
-      "type": "STORY",
-      "subject": "the barista who remembered his name",
-      "preview_text": "One remembered name. A man’s whole month changed.",
-      "body_text": "There’s a regular at a coffee shop downtown. Lonely guy, comes in every morning, barely talks.\n\nOne day the new barista said his name — just his name, like they were old friends. He told the manager it was the first time in months someone said it like they meant it.\n\nNames matter. Remembering matters. Say someone’s name like you mean it today.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>the barista who remembered his name</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>There’s a regular at a coffee shop downtown. Lonely guy, comes in every morning, barely talks.</p>\n<p>One day the new barista said his name — just his name, like they were old friends. He told the manager it was the first time in months someone said it like they meant it.</p>\n<p>Names matter. Remembering matters. Say someone’s name like you mean it today.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "type": "AFFIRMATION",
+      "subject": "midway through the month",
+      "preview_text": "Take a gentle pause to see how you are feeling.",
+      "intro": "A quiet Sunday check-in.",
+      "affirmation": "You have navigated this month with patience, and you are doing better than you know.",
+      "reflection": "Breathe in deeply and exhale slowly. You are steady, grounded, and whole."
     },
     {
       "date": "2026-11-16",
-      "type": "NUDGE",
-      "subject": "monday check-in, who needs one",
-      "preview_text": "Mondays are heavy. Lighten one for someone.",
-      "body_text": "Monday. Everybody’s bracing. Meanwhile somebody you know is dreading this week for real reasons.\n\nA two-line check-in won’t fix their week, but it’ll change their morning. That’s not nothing.\n\nPick a name. Send the text. “Thinking of you this Monday” is a whole hug.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>monday check-in, who needs one</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>Monday. Everybody’s bracing. Meanwhile somebody you know is dreading this week for real reasons.</p>\n<p>A two-line check-in won’t fix their week, but it’ll change their morning. That’s not nothing.</p>\n<p>Pick a name. Send the text. “Thinking of you this Monday” is a whole hug.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "type": "AFFIRMATION",
+      "subject": "clarity over endless hustle",
+      "preview_text": "Choose what truly matters to you today.",
+      "intro": "Starting your week with clarity.",
+      "affirmation": "You do not need to do everything today. Doing one thing with intention is enough.",
+      "reflection": "Focus your energy where it feels meaningful. The rest can wait for its turn."
     },
     {
       "date": "2026-11-17",
-      "type": "OCCASION",
-      "subject": "go touch some grass today, seriously",
-      "preview_text": "Fresh air plus a friend. That’s the whole recipe.",
-      "body_text": "It’s Take a Hike Day, and the trees are showing off before winter. Perfect excuse to get outside.\n\nBetter idea: don’t go alone. Invite the friend you’ve been “meaning to catch up with” for six months. Walking makes talking easy.\n\nFresh air, old friend, no agenda. Send the invite.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>go touch some grass today, seriously</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>It’s Take a Hike Day, and the trees are showing off before winter. Perfect excuse to get outside.</p>\n<p>Better idea: don’t go alone. Invite the friend you’ve been “meaning to catch up with” for six months. Walking makes talking easy.</p>\n<p>Fresh air, old friend, no agenda. Send the invite.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>",
-      "occasion": "Take a Hike Day"
+      "type": "AFFIRMATION",
+      "subject": "softening your inner dialogue",
+      "preview_text": "Notice the tone you use with yourself.",
+      "intro": "",
+      "affirmation": "You are allowed to speak to yourself with gentleness, even when things feel challenging.",
+      "reflection": "When frustration arises, pause and choose words of patience. You are still learning."
     },
     {
       "date": "2026-11-18",
       "type": "AFFIRMATION",
-      "subject": "you’re allowed to change your mind",
-      "preview_text": "Growth is just changing your mind out loud.",
-      "body_text": "Changing your mind isn’t flaky. It’s proof you’re still learning, still listening, still growing.\n\nYou’re not the same person you were five years ago, and that’s the point. Give yourself credit for the updates.\n\nKnow someone mid-rethink? Tell them you’re proud of their new version.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>you’re allowed to change your mind</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>Changing your mind isn’t flaky. It’s proof you’re still learning, still listening, still growing.</p>\n<p>You’re not the same person you were five years ago, and that’s the point. Give yourself credit for the updates.</p>\n<p>Know someone mid-rethink? Tell them you’re proud of their new version.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "subject": "steady ground beneath you",
+      "preview_text": "You can find your footing even in uncertain times.",
+      "intro": "A midweek reminder for you.",
+      "affirmation": "You possess an inner stillness that external chaos cannot take from you.",
+      "reflection": "Feel your feet firmly on the ground right now. You are centered and safe."
     },
     {
       "date": "2026-11-19",
-      "type": "STORY",
-      "subject": "two strangers, one umbrella, one friendship",
-      "preview_text": "It rained. She shared. They’re friends now. Really.",
-      "body_text": "It was pouring outside a grocery store. A woman with one umbrella spotted a stranger sprinting for the door and just… held it out.\n\nThey walked together. Talked the whole way. That was three years ago — they’re real friends now.\n\nKindness is a door that swings both ways. Hold out your umbrella.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>two strangers, one umbrella, one friendship</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>It was pouring outside a grocery store. A woman with one umbrella spotted a stranger sprinting for the door and just… held it out.</p>\n<p>They walked together. Talked the whole way. That was three years ago — they’re real friends now.</p>\n<p>Kindness is a door that swings both ways. Hold out your umbrella.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "type": "AFFIRMATION",
+      "subject": "boundaries that protect your peace",
+      "preview_text": "It is okay to say no to what drains you.",
+      "intro": "",
+      "affirmation": "Your boundaries are an act of self-respect. Protecting your energy is always valid.",
+      "reflection": "You never need to apologize for needing quiet. Guard your peace with loving resolve."
     },
     {
       "date": "2026-11-20",
       "type": "AFFIRMATION",
-      "subject": "friday reminder: you’re doing fine",
-      "preview_text": "Not perfect. Not behind. Just fine — and fine is good.",
-      "body_text": "Quick Friday audit: are you breathing? Showing up? Trying? Then you’re doing fine.\n\nFine isn’t a consolation prize. Fine is most of life, and most of life is pretty good.\n\nPass it on — tell someone they’re doing fine. Watch their shoulders drop.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>friday reminder: you’re doing fine</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>Quick Friday audit: are you breathing? Showing up? Trying? Then you’re doing fine.</p>\n<p>Fine isn’t a consolation prize. Fine is most of life, and most of life is pretty good.</p>\n<p>Pass it on — tell someone they’re doing fine. Watch their shoulders drop.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "subject": "letting the dust settle",
+      "preview_text": "Give yourself permission to unwind fully tonight.",
+      "intro": "Here comes the weekend.",
+      "affirmation": "You have carried enough responsibility this week. Now is the time to let your mind rest.",
+      "reflection": "Close the day with a soft sigh. Everything you did today was more than enough."
     },
     {
       "date": "2026-11-21",
-      "type": "NUDGE",
-      "subject": "send the photo, they’ll love it",
-      "preview_text": "That old photo in your camera roll? Send it now.",
-      "body_text": "You’ve got that photo. The one that makes you grin every time you scroll past it.\n\nStop scrolling past it. Send it to the person in it with a “remember this?” That’s a whole Saturday made.\n\nOld photos are time machines. Share the ride.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>send the photo, they’ll love it</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>You’ve got that photo. The one that makes you grin every time you scroll past it.</p>\n<p>Stop scrolling past it. Send it to the person in it with a “remember this?” That’s a whole Saturday made.</p>\n<p>Old photos are time machines. Share the ride.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "type": "AFFIRMATION",
+      "subject": "reconnecting with what you love",
+      "preview_text": "Make room for something that brings pure joy.",
+      "intro": "",
+      "affirmation": "Your creativity and curiosity are valuable. Give yourself time to simply play.",
+      "reflection": "Follow whatever sparks lightness in you today. There is no right or wrong way to rest."
     },
     {
       "date": "2026-11-22",
-      "type": "STORY",
-      "subject": "grandma’s soup fixed more than colds",
-      "preview_text": "It was never about the soup. You know that.",
-      "body_text": "Every sick day, my grandma showed up with soup. Didn’t ask. Just appeared at the door, pot in hand.\n\nYears later I realized: the soup was average. The showing up was the medicine.\n\nYou don’t need a recipe to heal someone’s week. Just show up — call, card, knock.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>grandma’s soup fixed more than colds</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>Every sick day, my grandma showed up with soup. Didn’t ask. Just appeared at the door, pot in hand.</p>\n<p>Years later I realized: the soup was average. The showing up was the medicine.</p>\n<p>You don’t need a recipe to heal someone’s week. Just show up — call, card, knock.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "type": "AFFIRMATION",
+      "subject": "the beauty of a slow morning",
+      "preview_text": "Savor the quiet before the week begins.",
+      "intro": "A Sunday breath.",
+      "affirmation": "You do not need to rush forward into tomorrow. Be fully present in this morning.",
+      "reflection": "Linger with your thoughts and your morning tea. Today is meant for restoration."
     },
     {
       "date": "2026-11-23",
       "type": "AFFIRMATION",
-      "subject": "gratitude week starts with you",
-      "preview_text": "Before the turkey: you’re someone’s reason to smile.",
-      "body_text": "It’s Thanksgiving week. Before the cooking chaos starts, pause for one fact: somebody out there is grateful for you. Specifically you.\n\nNot a generic “people.” You. Your laugh, your check-ins, the way you show up.\n\nNow return the favor. Tell one person they’re your reason this week.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>gratitude week starts with you</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>It’s Thanksgiving week. Before the cooking chaos starts, pause for one fact: somebody out there is grateful for you. Specifically you.</p>\n<p>Not a generic “people.” You. Your laugh, your check-ins, the way you show up.</p>\n<p>Now return the favor. Tell one person they’re your reason this week.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "subject": "starting with self-compassion",
+      "preview_text": "Be gentle with your expectations this week.",
+      "intro": "Good morning.",
+      "affirmation": "You can approach this week with an open heart and realistic expectations for yourself.",
+      "reflection": "Pressure fades when you decide to prioritize your well-being. Take things step by step."
     },
     {
       "date": "2026-11-24",
-      "type": "NUDGE",
-      "subject": "text your person before the holiday rush",
-      "preview_text": "Tomorrow’s chaos. Today’s the moment. Text them.",
-      "body_text": "Tomorrow the holiday sprint starts — travel, cooking, chaos. Today is the calm before, and the perfect window.\n\nText your person now. The one you’re thankful for but never say it to. Beat the rush.\n\n“I’m grateful for you” hits different before everyone else says it.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>text your person before the holiday rush</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>Tomorrow the holiday sprint starts — travel, cooking, chaos. Today is the calm before, and the perfect window.</p>\n<p>Text your person now. The one you’re thankful for but never say it to. Beat the rush.</p>\n<p>“I’m grateful for you” hits different before everyone else says it.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "type": "AFFIRMATION",
+      "subject": "holding space for all your emotions",
+      "preview_text": "Whatever you feel right now is allowed to be here.",
+      "intro": "",
+      "affirmation": "You do not have to force a cheerful mood. All of your feelings deserve honest space.",
+      "reflection": "Sit with yourself without judgment. Acceptance brings a quiet kind of comfort."
     },
     {
       "date": "2026-11-25",
-      "type": "STORY",
-      "subject": "the airport hug that said everything",
-      "preview_text": "No words. Just a hug that lasted a whole terminal.",
-      "body_text": "Day before Thanksgiving, airport. A college kid spotted his dad across the terminal and just… ran.\n\nThe hug lasted forever. Nobody around them minded. A few people teared up.\n\nThat’s the whole holiday in one hug: showing up for your people. Who’s waiting for yours?",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>the airport hug that said everything</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>Day before Thanksgiving, airport. A college kid spotted his dad across the terminal and just… ran.</p>\n<p>The hug lasted forever. Nobody around them minded. A few people teared up.</p>\n<p>That’s the whole holiday in one hug: showing up for your people. Who’s waiting for yours?</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "type": "AFFIRMATION",
+      "subject": "anchoring in the present moment",
+      "preview_text": "Come back to the breath you are taking right now.",
+      "intro": "A grounding note for your day.",
+      "affirmation": "You are right here, in this moment, and this moment is all you need to handle.",
+      "reflection": "Notice three things you can see around you. Ground yourself in the present."
     },
     {
       "date": "2026-11-26",
       "type": "OCCASION",
-      "subject": "happy thanksgiving, now go say it",
-      "preview_text": "Don’t just feel grateful. Tell somebody. Out loud.",
-      "body_text": "Happy Thanksgiving. The turkey’s great, but the real dish is the people around the table — and the ones who couldn’t make it.\n\nGratitude you keep to yourself is a gift never opened. So open it: tell someone what they mean to you. Today.\n\nCall the one who’s missing. They’re thinking of you too.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>happy thanksgiving, now go say it</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>Happy Thanksgiving. The turkey’s great, but the real dish is the people around the table — and the ones who couldn’t make it.</p>\n<p>Gratitude you keep to yourself is a gift never opened. So open it: tell someone what they mean to you. Today.</p>\n<p>Call the one who’s missing. They’re thinking of you too.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>",
+      "subject": "gratitude for your own heart",
+      "preview_text": "On Thanksgiving, remember to be thankful for you.",
+      "intro": "Wishing you a peaceful Thanksgiving.",
+      "affirmation": "You can be deeply grateful for your own resilience, your kindness, and your journey.",
+      "reflection": "Among all the things you appreciate today, save a quiet thank you for yourself.",
       "occasion": "Thanksgiving"
     },
     {
       "date": "2026-11-27",
       "type": "AFFIRMATION",
-      "subject": "leftovers and lingering, you earned it",
-      "preview_text": "Slow Friday. Cold pie. Zero guilt.",
-      "body_text": "The day after Thanksgiving is sacred: leftovers, naps, zero plans. You cooked, you hosted, you traveled — you earned the slow.\n\nRest isn’t the absence of gratitude. It’s gratitude with your feet up.\n\nText someone a leftover love note. “Yesterday was great because of you.”",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>leftovers and lingering, you earned it</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>The day after Thanksgiving is sacred: leftovers, naps, zero plans. You cooked, you hosted, you traveled — you earned the slow.</p>\n<p>Rest isn’t the absence of gratitude. It’s gratitude with your feet up.</p>\n<p>Text someone a leftover love note. “Yesterday was great because of you.”</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "subject": "protecting your quiet today",
+      "preview_text": "Step away from the noise and rest your senses.",
+      "intro": "",
+      "affirmation": "You do not have to join the rush around you. You are allowed to choose stillness.",
+      "reflection": "The world can be loud, but your inner world can remain serene. Stay close to quiet."
     },
     {
       "date": "2026-11-28",
-      "type": "STORY",
-      "subject": "she saved him a seat every sunday",
-      "preview_text": "Twenty years of saved seats. That’s devotion.",
-      "body_text": "For twenty years, an old woman saved the seat next to her at church. “For whoever needs it,” she’d say.\n\nStrangers sat there. Lonely people. Newcomers. Every one of them got a smile and a bulletin like they belonged.\n\nSave someone a seat this week — metaphorically or literally. Everybody needs one.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>she saved him a seat every sunday</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>For twenty years, an old woman saved the seat next to her at church. “For whoever needs it,” she’d say.</p>\n<p>Strangers sat there. Lonely people. Newcomers. Every one of them got a smile and a bulletin like they belonged.</p>\n<p>Save someone a seat this week — metaphorically or literally. Everybody needs one.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "type": "AFFIRMATION",
+      "subject": "trusting your capacity to heal",
+      "preview_text": "Every quiet breath helps restore your spirit.",
+      "intro": "A gentle Saturday reminder.",
+      "affirmation": "You have an innate ability to recover, restore, and grow stronger with time.",
+      "reflection": "Give yourself the patience you would give a slow-growing garden. Healing takes time."
     },
     {
       "date": "2026-11-29",
-      "type": "NUDGE",
-      "subject": "december’s coming, don’t go quiet",
-      "preview_text": "The year’s almost done. Your people still need you.",
-      "body_text": "December’s knocking. The year winds down, and people get weirdly quiet — busy, tired, reflective.\n\nThat’s exactly when a check-in matters most. Don’t let the year end without telling your people they mattered in it.\n\nOne text. Thirty seconds. Do it before December steals the month.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>december’s coming, don’t go quiet</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>December’s knocking. The year winds down, and people get weirdly quiet — busy, tired, reflective.</p>\n<p>That’s exactly when a check-in matters most. Don’t let the year end without telling your people they mattered in it.</p>\n<p>One text. Thirty seconds. Do it before December steals the month.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>"
+      "type": "AFFIRMATION",
+      "subject": "preparing for closing a chapter",
+      "preview_text": "Reflect on how much you have weathered.",
+      "intro": "",
+      "affirmation": "You are allowed to look back on this month with pride in simply showing up each day.",
+      "reflection": "No matter how messy some days felt, you met them with sincerity. That is worth honoring."
     },
     {
       "date": "2026-11-30",
-      "type": "OCCASION",
-      "subject": "november’s last call, make it count",
-      "preview_text": "One month left in the year. Start it with kindness.",
-      "body_text": "Last day of November. The year’s almost a book — but you still get to write the ending.\n\nEnd this chapter well: reach out to one person who made your November better and tell them.\n\nDecember’s a fresh page. Walk into it having told your people you love them.",
-      "body_html": "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>november’s last call, make it count</title></head><body style=\"margin:0;padding:0;background:#f9f4ff;font-family:Georgia,serif;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"><tr><td align=\"center\" style=\"padding:24px 16px;\"><table width=\"560\" style=\"background:#fff;border-radius:12px;overflow:hidden;max-width:100%;\"><tr><td style=\"background:#7c3aed;padding:20px 32px;text-align:center;\"><span style=\"color:#fff;font-size:22px;font-weight:bold;letter-spacing:1px;\">✨ The Vibe Check Project</span></td></tr><tr><td style=\"padding:32px;color:#1a1a1a;font-size:16px;line-height:1.7;\"><p>Last day of November. The year’s almost a book — but you still get to write the ending.</p>\n<p>End this chapter well: reach out to one person who made your November better and tell them.</p>\n<p>December’s a fresh page. Walk into it having told your people you love them.</p></td></tr><tr><td style=\"padding:0 32px 32px;text-align:center;\"><a href=\"https://thevibecheckproject.com/send-card.html\" style=\"display:inline-block;background:#7c3aed;color:#fff;text-decoration:none;padding:14px 32px;border-radius:50px;font-size:16px;font-weight:bold;\">Send a Vibe Check →</a></td></tr><tr><td style=\"background:#f3f0ff;padding:16px 32px;text-align:center;font-size:12px;color:#888;\">You're receiving this because you signed up at thevibecheckproject.com<br><a href=\"{$unsubscribe}\" style=\"color:#7c3aed;\">Unsubscribe</a></td></tr></table></td></tr></table></body></html>",
-      "occasion": "Last day of November"
+      "type": "AFFIRMATION",
+      "subject": "stepping forward with quiet hope",
+      "preview_text": "You are carrying wisdom into the next season.",
+      "intro": "A closing thought for November.",
+      "affirmation": "You enter whatever comes next with greater strength, deeper wisdom, and a steady heart.",
+      "reflection": "Take a deep breath and close this month with kindness. You are ready for what is ahead."
     }
   ]
 }

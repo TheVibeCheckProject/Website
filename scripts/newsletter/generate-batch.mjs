@@ -105,9 +105,14 @@ async function main() {
 
   // Merge, never replace: this runs on the 25th, and overwriting batch.json with only next
   // month deleted the unsent last days of the current month. Dates that already have an
-  // email (including hand-written ones) are kept and not regenerated.
+  // email (including hand-written ones) are kept and not regenerated — but only if that email
+  // passes checkEmail. A date whose email would fail at send time (e.g. the old body_html
+  // format, Oct 2026) counts as missing and is replaced, instead of "fully covered".
   const existing = readExistingBatch();
-  const have = new Set(existing.map(e => e.date));
+  const isValid = (e) => checkEmail(e).length === 0;
+  const invalid = existing.filter(e => !isValid(e)).map(e => e.date);
+  if (invalid.length) console.warn(`⚠️  Replacing ${invalid.length} email(s) that fail the content check: ${invalid.join(', ')}`);
+  const have = new Set(existing.filter(isValid).map(e => e.date));
   let missing = getDatesForMonth(targetMonth).filter(d => !have.has(d));
   if (missing.length === 0) {
     console.log(`✅ ${monthName} ${year} is already fully covered in batch.json — nothing to generate.`);
@@ -141,7 +146,7 @@ async function main() {
   const cutoff = new Date(Date.now() - KEEP_PAST_DAYS * 86400000).toISOString().slice(0, 10);
   const byDate = new Map();
   for (const e of existing) if (e.date >= cutoff) byDate.set(e.date, e);
-  for (const e of accepted) if (!byDate.has(e.date)) byDate.set(e.date, e);
+  for (const e of accepted) if (!byDate.has(e.date) || !isValid(byDate.get(e.date))) byDate.set(e.date, e);
   const merged = [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date));
 
   const batch = {

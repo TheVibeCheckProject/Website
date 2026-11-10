@@ -188,6 +188,11 @@ const BLOCK = /googlesyndication|clarity\.ms|workers\.dev|jsdelivr|unsplash|font
             t.check(await page.evaluate(() => document.querySelector('.portal-card.is-active').dataset.index) === '1', 'one tap brings a side card to the front');
             for (let i = 0; i < 6; i++) await page.click('#ringNext');
             t.check(await page.evaluate(() => !backgroundDefs[document.querySelector('.portal-card.is-active').dataset.index].premium), 'free users: arrows skip Premium cards');
+            // With 17 free cards the Premium ones are further round: keep stepping until one is in view
+            const lockedInView = () => page.evaluate(() => [...document.querySelectorAll('.portal-card.is-locked')].some(el => el.style.display !== 'none'));
+            for (let i = 0; i < 40 && !(await lockedInView()); i++) await page.click('#ringNext');
+            t.check(await page.evaluate(() => !backgroundDefs[document.querySelector('.portal-card.is-active').dataset.index].premium), 'free users: the arrows stop on the last free card, beside the Premium ones');
+            await page.waitForTimeout(300);
             const locked = await page.evaluate(() => { const c = [...document.querySelectorAll('.portal-card.is-locked')].find(el => el.style.display !== 'none'); const r = c.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; });
             await page.mouse.click(locked.x, locked.y);
             t.check(!!(await page.$('#premOverlay.open')), 'tapping a Premium card opens the Premium sheet');
@@ -449,7 +454,7 @@ const BLOCK = /googlesyndication|clarity\.ms|workers\.dev|jsdelivr|unsplash|font
             t.check((await page.textContent('#saveImageMaker .save-image-status')).includes('Saved'), 'a saved confirmation shows after the download');
             const s1 = await saveImage(page, '#saveImageMaker', 'square');
             t.check(isSquare(s1), 'maker, before sending: the square downloads at 1080x1080', JSON.stringify(s1));
-            t.check(!(await page.$('#successMessage.show')) && await page.evaluate(() => !localStorage.getItem('vibe_history') || !localStorage.getItem('vibe_history').includes('Sam')), 'downloading does not send the card');
+            t.check(!(await page.$('#successMessage.show')) && await page.evaluate(() => !(localStorage.getItem('vibe_sent_cards_v1') || '').includes('Sam')), 'downloading does not send the card');
             // The Premium rule applies to downloading too
             await page.evaluate(() => { window.__bg = selectedBackground; selectedBackground = backgroundDefs.find(b => b.premium).image; });
             const blockedBg = await saveImage(page, '#saveImageMaker', 'square');
@@ -536,7 +541,7 @@ const BLOCK = /googlesyndication|clarity\.ms|workers\.dev|jsdelivr|unsplash|font
             t.check(await page.evaluate(() => document.getElementById('composerInput').value.length) === 200, 'switch on: own words still stop at 200 characters');
             await page.fill('#composerInput', 'Sam, I am glad you are in my life.');
             await page.keyboard.press('Enter');
-            t.check(!(await page.textContent('#portalUi')).toUpperCase().includes('PREMIUM') || await page.evaluate(() => ![...document.querySelectorAll('.portal-phrase.is-write, #mainCta')].some(el => /premium/i.test(el.textContent))), 'switch on: the own-words stop and the main button do not mention Premium');
+            t.check(await page.evaluate(() => ![...document.querySelectorAll('.portal-phrase.is-write, #mainCta')].some(el => /premium/i.test(el.textContent))), 'switch on: the own-words stop and the main button do not mention Premium');
             t.check(await page.evaluate(() => document.getElementById('premOwnWordsItem').hidden), 'switch on: the Premium sheet no longer lists "Write your own words"');
             await page.click('#mainCta');
             await page.waitForSelector('#cardForm.is-open');

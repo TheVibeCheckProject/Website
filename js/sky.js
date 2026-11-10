@@ -127,7 +127,7 @@
     function drawStars(ctx, w, h, stars, strength, t, unit) {
         if (strength <= 0.01) return;
         for (const s of stars) {
-            const tw = 0.62 + 0.38 * Math.sin(s.p + t * s.f);
+            const tw = 0.45 + 0.55 * Math.sin(s.p + t * s.f * 2.2);
             ctx.globalAlpha = clamp(strength * tw * (0.35 + s.s * 0.5));
             ctx.fillStyle = s.warm ? '#FFE3B8' : '#FFFFFF';
             ctx.beginPath();
@@ -148,9 +148,9 @@
         return { x, y, t };
     }
 
-    function drawSun(ctx, x, y, r, pal) {
-        const glow = ctx.createRadialGradient(x, y, r * 0.6, x, y, r * 7);
-        glow.addColorStop(0, 'rgba(255,236,196,0.55)');
+    function drawSun(ctx, x, y, r, pal, pulse) {
+        const glow = ctx.createRadialGradient(x, y, r * 0.6, x, y, r * (7 + pulse * 0.8));
+        glow.addColorStop(0, `rgba(255,236,196,${0.5 + pulse * 0.1})`);
         glow.addColorStop(0.35, 'rgba(255,214,160,0.16)');
         glow.addColorStop(1, 'rgba(255,214,160,0)');
         ctx.fillStyle = glow;
@@ -159,16 +159,16 @@
         ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.fill();
     }
 
-    function drawMoon(ctx, x, y, r, phase, sky) {
+    function drawMoon(ctx, x, y, r, phase, sky, pulse) {
         const lit = (1 - Math.cos(phase * 6.283)) / 2; // 0 new → 1 full
-        const glow = ctx.createRadialGradient(x, y, r * 0.8, x, y, r * 5.5);
-        glow.addColorStop(0, `rgba(255,244,222,${0.08 + 0.26 * lit})`);
+        const glow = ctx.createRadialGradient(x, y, r * 0.8, x, y, r * (5.5 + pulse * 0.9));
+        glow.addColorStop(0, `rgba(255,244,222,${(0.1 + 0.26 * lit) * (1 + pulse * 0.35)})`);
         glow.addColorStop(1, 'rgba(255,244,222,0)');
         ctx.fillStyle = glow;
         ctx.fillRect(x - r * 6, y - r * 6, r * 12, r * 12);
 
         // The dark side, faintly lighter than the sky (earthshine)
-        ctx.fillStyle = rgb(mix(sky, [170, 164, 210], 0.07 + 0.1 * lit));
+        ctx.fillStyle = rgb(mix(sky, [170, 164, 210], 0.015 + 0.14 * lit));
         ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.fill();
 
         // The lit side: a half disc plus/minus the terminator ellipse
@@ -198,14 +198,14 @@
         return clouds;
     }
 
-    function drawClouds(ctx, w, h, clouds, weather, colours, t) {
+    function drawClouds(ctx, w, h, clouds, weather, colours, t, px) {
         const cover = weather.cloud;
         if (cover <= 0.01) return;
         const tone = mix(colours.low, [255, 255, 255], 0.35);
         for (const c of clouds) {
             if (c.rank > cover * 1.25 + 0.12) continue;
             const span = 1 + c.w;
-            const x = ((((c.x + t * 0.0016 * c.v * weather.drift) % span) + span) % span - c.w / 2) * w;
+            const x = ((((c.x + t * 0.011 * c.v * weather.drift + (px || 0) * 0.012) % span) + span) % span - c.w / 2) * w;
             const y = c.y * h;
             const rw = c.w * w * 0.5, rh = Math.max(c.h * h * (1 + cover), 6);
             ctx.save();
@@ -234,7 +234,7 @@
         return layers;
     }
 
-    function drawHills(ctx, w, h, hills, colours, horizonY, fadeToInk) {
+    function drawHills(ctx, w, h, hills, colours, horizonY, fadeToInk, px) {
         const n = hills.length;
         for (let i = 0; i < n; i++) {
             const depth = i / (n - 1); // 0 far … 1 near
@@ -248,8 +248,9 @@
             const steps = Math.max(48, Math.round(w / 14));
             for (let s = 0; s <= steps; s++) {
                 const u = s / steps;
+                const uu = u + (px || 0) * 0.006 * (1 + depth * 3.5); // nearer hills slide further
                 let y = 0;
-                for (const wv of layer.waves) y += Math.sin(u * 6.283 * wv.f + wv.p) * wv.a;
+                for (const wv of layer.waves) y += Math.sin(uu * 6.283 * wv.f + wv.p) * wv.a;
                 ctx.lineTo(u * w, yBase - (y * 0.5 + 0.35) * amp);
             }
             ctx.lineTo(w, h);
@@ -281,23 +282,31 @@
         const unit = Math.sqrt(w * h) / 860;
         const horizonY = h * (o.horizon || 0.7);
 
+        // Pointer parallax (-1…1): far things barely move, near hills slide the most
+        const px = o.px || 0, py = o.py || 0;
+        const pulse = Math.sin(t * 1.4); // the sun and moon breathe a little
+
         const pal = palette(hour);
         const colours = drawGradient(ctx, w, h, pal, weather);
+        ctx.save();
+        ctx.translate(-px * 5 * unit, -py * 3 * unit);
         drawStars(ctx, w, horizonY / 0.78, m.stars, pal.stars * (1 - weather.cloud * 0.75), t, unit);
+        ctx.restore();
 
         const body = bodyPosition(hour, w, h, horizonY);
+        body.x -= px * 10 * unit; body.y -= py * 5 * unit;
         const veil = 1 - weather.cloud * 0.55;
         ctx.globalAlpha = veil;
-        if (isDay(hour)) drawSun(ctx, body.x, body.y, unit * 20, colours);
+        if (isDay(hour)) drawSun(ctx, body.x, body.y, unit * 20, colours, pulse);
         else {
             const f = clamp(body.y / h);
             const local = f < 0.48 ? mix(colours.top, colours.mid, f / 0.48) : mix(colours.mid, colours.low, clamp((f - 0.48) / 0.32));
-            drawMoon(ctx, body.x, body.y, unit * 22, moonPhase(date), local);
+            drawMoon(ctx, body.x, body.y, unit * 22, moonPhase(date), local, pulse);
         }
         ctx.globalAlpha = 1;
 
-        drawClouds(ctx, w, horizonY, m.clouds, weather, colours, t);
-        drawHills(ctx, w, h, m.hills, colours, horizonY, o.fadeToInk);
+        drawClouds(ctx, w, horizonY, m.clouds, weather, colours, t, px);
+        drawHills(ctx, w, h, m.hills, colours, horizonY, o.fadeToInk, px);
         return { hour, body, colours };
     }
 

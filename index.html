@@ -151,12 +151,18 @@
             <section class="today" id="today" aria-labelledby="todayTitle">
                 <div class="today-copy">
                     <p class="eyebrow" id="todayEyebrow">Today</p>
-                    <h1 class="today-title" id="todayTitle">Today has a <em>kind word</em> for you.</h1>
+                    <h1 class="today-title" id="todayTitle"><span class="hw" style="--i:0">Today</span> <span class="hw" style="--i:1">has</span> <span class="hw" style="--i:2">a</span> <em><span class="hw" style="--i:3">kind</span> <span class="hw" style="--i:4">word</span></em> <span class="hw" style="--i:5">for</span> <span class="hw" style="--i:6">you.</span></h1>
                     <p class="today-lede">Open it. Keep it, make it your wallpaper, or send it to someone who needs it more. Free, with no account and nothing to install.</p>
+
+                    <div class="today-cta">
+                        <button class="btn btn-primary" id="heroOpen" type="button">Open today's card</button>
+                        <a class="btn btn-secondary" href="send-card.html">Make a card for someone</a>
+                    </div>
 
                     <div class="streak" id="streak" hidden>
                         <ol class="streak-days" id="streakDays" aria-hidden="true"></ol>
                         <p class="streak-label" id="streakLabel"></p>
+                        <a class="streak-kept" id="streakKept" href="my-cards.html" hidden></a>
                     </div>
                     <p class="sky-note" id="skyNote"></p>
                 </div>
@@ -168,12 +174,10 @@
                                 <button class="daycard-open" id="dayCardOpen" type="button" aria-describedby="dayCardHint">
                                     <span class="daycard-for" id="dayCardFor">For today</span>
                                     <span class="daycard-seal" aria-hidden="true">
-                                        <svg viewBox="0 0 64 64" width="64" height="64">
-                                            <circle cx="32" cy="32" r="30" class="seal-wax"/>
-                                            <circle cx="32" cy="32" r="22.5" class="seal-ring"/>
-                                            <circle cx="32" cy="29" r="7" class="seal-mark"/>
-                                            <path d="M17 41c4.5-3.4 8-3.4 12.5-.6S39.5 43.8 47 39.5" class="seal-line"/>
-                                        </svg>
+                                        <span class="seal-half seal-half-l"><svg viewBox="0 0 64 64" width="64" height="64"><circle cx="32" cy="32" r="30" class="seal-wax"/><circle cx="32" cy="32" r="22.5" class="seal-ring"/><circle cx="32" cy="29" r="7" class="seal-mark"/><path d="M17 41c4.5-3.4 8-3.4 12.5-.6S39.5 43.8 47 39.5" class="seal-line"/></svg></span>
+                                        <span class="seal-half seal-half-r"><svg viewBox="0 0 64 64" width="64" height="64"><circle cx="32" cy="32" r="30" class="seal-wax"/><circle cx="32" cy="32" r="22.5" class="seal-ring"/><circle cx="32" cy="29" r="7" class="seal-mark"/><path d="M17 41c4.5-3.4 8-3.4 12.5-.6S39.5 43.8 47 39.5" class="seal-line"/></svg></span>
+                                        <svg class="seal-crack" viewBox="0 0 64 64"><path d="M33 2l-5 12 8 12-7 11 6 13-4 12" pathLength="1"/></svg>
+                                        <i class="seal-crumb" style="--x:-46px;--y:-22px;--s:6px;--t:0ms"></i><i class="seal-crumb" style="--x:40px;--y:-34px;--s:5px;--t:20ms"></i><i class="seal-crumb" style="--x:-30px;--y:38px;--s:7px;--t:10ms"></i><i class="seal-crumb" style="--x:52px;--y:14px;--s:4px;--t:30ms"></i><i class="seal-crumb" style="--x:8px;--y:-50px;--s:5px;--t:0ms"></i><i class="seal-crumb" style="--x:-58px;--y:10px;--s:4px;--t:40ms"></i><i class="seal-crumb" style="--x:24px;--y:46px;--s:6px;--t:15ms"></i><i class="seal-crumb" style="--x:-12px;--y:54px;--s:4px;--t:25ms"></i>
                                     </span>
                                     <span class="daycard-hint" id="dayCardHint">Tap to open</span>
                                 </button>
@@ -185,6 +189,7 @@
                                 <span class="daycard-breath" id="dayBreath" aria-hidden="true"></span>
                             </div>
                         </div>
+                        <span class="daycard-glare" aria-hidden="true"></span>
                     </div>
 
                     <p class="day-reflection" id="dayReflection" hidden></p>
@@ -208,6 +213,7 @@
                             <button class="tool" id="dayBreatheBtn" type="button"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/></svg><span>Breathe</span></button>
                         </div>
                         <p class="day-count" id="dayCount" hidden></p>
+                        <p class="day-count" id="dayNext" hidden></p>
                     </div>
                 </div>
             </section>
@@ -215,16 +221,16 @@
             <!-- The vibe check -->
             <section class="check band" id="vibe-check" aria-labelledby="checkTitle">
                 <div class="band-inner">
-                    <p class="eyebrow">The vibe check</p>
-                    <h2 class="band-title" id="checkTitle">How's the weather in you?</h2>
-                    <p class="band-lede">Pick the closest one. The sky will answer, and so will we.</p>
+                    <p class="eyebrow" data-reveal>The vibe check</p>
+                    <h2 class="band-title" data-reveal style="--d:50ms" id="checkTitle">How's the weather in you?</h2>
+                    <p class="band-lede" data-reveal style="--d:100ms">Pick the closest one. The sky will answer, and so will we.</p>
 
                     <div class="moods" id="moods" role="group" aria-label="How you feel right now">
-                        <button class="mood" type="button" data-mood="heavy" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 16.5a4 4 0 0 1 .6-7.96 5.5 5.5 0 0 1 10.5 1.5A3.3 3.3 0 0 1 17.5 16.5z"/><path d="M9 20v.5M12.5 19.5v1.5M16 20v.5"/></svg><span>Heavy</span></button>
-                        <button class="mood" type="button" data-mood="restless" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h10.5a2.5 2.5 0 1 0-2.5-2.5"/><path d="M3 13h15a2.5 2.5 0 1 1-2.5 2.5"/><path d="M3 17h7"/></svg><span>Restless</span></button>
-                        <button class="mood" type="button" data-mood="tired" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z"/></svg><span>Worn out</span></button>
-                        <button class="mood" type="button" data-mood="steady" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="3"/><path d="M9 3.5v1M3.5 9h1M5.1 5.1l.7.7M12.9 5.1l-.7.7"/><path d="M10 19a3.5 3.5 0 0 1 .5-6.96A4.5 4.5 0 0 1 19 13.5 2.8 2.8 0 0 1 18.5 19z"/></svg><span>Steady</span></button>
-                        <button class="mood" type="button" data-mood="bright" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/></svg><span>Bright</span></button>
+                        <button class="mood" type="button" data-mood="heavy" aria-pressed="false" data-reveal="scale" style="--d:165ms"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 16.5a4 4 0 0 1 .6-7.96 5.5 5.5 0 0 1 10.5 1.5A3.3 3.3 0 0 1 17.5 16.5z"/><path d="M9 20v.5M12.5 19.5v1.5M16 20v.5"/></svg><span>Heavy</span></button>
+                        <button class="mood" type="button" data-mood="restless" aria-pressed="false" data-reveal="scale" style="--d:210ms"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h10.5a2.5 2.5 0 1 0-2.5-2.5"/><path d="M3 13h15a2.5 2.5 0 1 1-2.5 2.5"/><path d="M3 17h7"/></svg><span>Restless</span></button>
+                        <button class="mood" type="button" data-mood="tired" aria-pressed="false" data-reveal="scale" style="--d:255ms"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z"/></svg><span>Worn out</span></button>
+                        <button class="mood" type="button" data-mood="steady" aria-pressed="false" data-reveal="scale" style="--d:300ms"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="3"/><path d="M9 3.5v1M3.5 9h1M5.1 5.1l.7.7M12.9 5.1l-.7.7"/><path d="M10 19a3.5 3.5 0 0 1 .5-6.96A4.5 4.5 0 0 1 19 13.5 2.8 2.8 0 0 1 18.5 19z"/></svg><span>Steady</span></button>
+                        <button class="mood" type="button" data-mood="bright" aria-pressed="false" data-reveal="scale" style="--d:345ms"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/></svg><span>Bright</span></button>
                     </div>
 
                     <div class="answer" id="checkAnswer" hidden>
@@ -236,7 +242,7 @@
                         </div>
                         <a class="answer-guide" id="checkGuide" href="blog/index.html"></a>
                     </div>
-                    <p class="check-private">Your answer stays in this browser. It is never sent to us.</p>
+                    <p class="check-private" data-reveal>Your answer stays in this browser. It is never sent to us.</p>
                 </div>
             </section>
 
@@ -244,17 +250,17 @@
             <section class="send band" id="send-card" aria-labelledby="sendTitle">
                 <div class="band-inner send-grid">
                     <div class="send-copy">
-                        <p class="eyebrow">Send a card</p>
-                        <h2 class="band-title" id="sendTitle">Then pass one on.</h2>
-                        <p class="band-lede">Choose a card, choose the words, add their name. You get a link to text them. The whole card travels inside that link, so there is no account to make and nothing for them to install.</p>
+                        <p class="eyebrow" data-reveal>Send a card</p>
+                        <h2 class="band-title" data-reveal style="--d:50ms" id="sendTitle">Then pass one on.</h2>
+                        <p class="band-lede" data-reveal style="--d:100ms">Choose a card, choose the words, add their name. You get a link to text them. The whole card travels inside that link, so there is no account to make and nothing for them to install.</p>
 
                         <ul class="send-points">
-                            <li><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg><div><strong>A link, not an app</strong><span>Text it, email it, drop it in a group chat. It opens in any browser.</span></div></li>
-                            <li><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="7"/><path d="M12 9.5V13l2.5 1.5"/><path d="M9 3h6"/></svg><div><strong>Seal it until the day <em class="new-tag">New</em></strong><span>Pick a date and the card stays closed until then. For a birthday, an exam morning, a first day.</span></div></li>
-                            <li><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4.5 9.5 9 5"/><path d="M4.5 9.5H14a5.5 5.5 0 0 1 0 11h-3"/></svg><div><strong>They can send one back</strong><span>Every card ends with a quiet way to reply in kind.</span></div></li>
+                            <li data-reveal style="--d:70ms"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg><div><strong>A link, not an app</strong><span>Text it, email it, drop it in a group chat. It opens in any browser.</span></div></li>
+                            <li data-reveal style="--d:140ms"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="7"/><path d="M12 9.5V13l2.5 1.5"/><path d="M9 3h6"/></svg><div><strong>Seal it until the day <em class="new-tag">New</em></strong><span>Pick a date and the card stays closed until then. For a birthday, an exam morning, a first day.</span></div></li>
+                            <li data-reveal style="--d:210ms"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4.5 9.5 9 5"/><path d="M4.5 9.5H14a5.5 5.5 0 0 1 0 11h-3"/></svg><div><strong>They can send one back</strong><span>Every card ends with a quiet way to reply in kind.</span></div></li>
                         </ul>
 
-                        <div class="send-cta">
+                        <div class="send-cta" data-reveal style="--d:260ms">
                             <a class="btn btn-primary" href="send-card.html">Make a card</a>
                             <a class="btn btn-secondary" href="situations.html">Find words for a situation</a>
                         </div>
@@ -274,17 +280,17 @@
             <section class="facts band" aria-label="How it works here">
                 <div class="band-inner">
                     <ul class="facts-list">
-                        <li><strong>No account</strong><span>Nothing to sign up for, ever.</span></li>
-                        <li><strong>No app</strong><span>It all runs in your browser.</span></li>
-                        <li><strong>Free to send</strong><span>Every free card and all 50 free phrases.</span></li>
-                        <li><strong>$4.99, once</strong><span>Premium is a single payment, not a subscription.</span></li>
+                        <li data-reveal style="--d:70ms"><strong>No account</strong><span>Nothing to sign up for, ever.</span></li>
+                        <li data-reveal style="--d:140ms"><strong>No app</strong><span>It all runs in your browser.</span></li>
+                        <li data-reveal style="--d:210ms"><strong>Free to send</strong><span>Every free card and all 50 free phrases.</span></li>
+                        <li data-reveal style="--d:280ms"><strong>$4.99, once</strong><span>Premium is a single payment, not a subscription.</span></li>
                         <li id="liveCardCountCard" hidden><strong id="liveCardCount"></strong><span>cards sent so far</span></li>
                         <li id="liveNewsletterCountCard" hidden><strong id="liveNewsletterCount"></strong><span>morning emails sent</span></li>
                     </ul>
 
-                    <div class="premium-note">
+                    <div class="premium-note lift" data-reveal>
                         <div>
-                            <p class="eyebrow">Premium</p>
+                            <p class="eyebrow" data-reveal>Premium</p>
                             <h2 class="premium-title">Want more to say it with?</h2>
                         </div>
                         <p>One payment of $4.99 unlocks writing your own words, the Calm, Celebrate, Love and Healing collections, 17 more backgrounds (6 of them animated) and 5 extra sounds. It is saved in this browser.</p>
@@ -296,7 +302,7 @@
             <!-- Daily email -->
             <section id="join" class="join band" aria-labelledby="joinTitle">
                 <div class="band-inner join-inner">
-                    <div class="letter">
+                    <div class="letter" data-reveal="scale">
                         <p class="eyebrow">The morning email</p>
                         <h2 class="band-title" id="joinTitle">Tomorrow's word, waiting when you wake up.</h2>
                         <p class="band-lede">One short affirmation in your inbox each morning. The same one you'll find here, with a button to send it on.</p>
@@ -317,15 +323,15 @@
             <!-- Guides -->
             <section class="guides band" aria-labelledby="guidesTitle">
                 <div class="band-inner">
-                    <p class="eyebrow">When you don't know what to say</p>
-                    <h2 class="band-title" id="guidesTitle">Words for the hard ones.</h2>
+                    <p class="eyebrow" data-reveal>When you don't know what to say</p>
+                    <h2 class="band-title" data-reveal style="--d:50ms" id="guidesTitle">Words for the hard ones.</h2>
                     <ul class="guide-list">
-                        <li><a href="blog/how-to-check-on-a-friend-who-went-quiet.html"><span>How to check on a friend who went quiet</span></a></li>
-                        <li><a href="blog/what-to-say-when-someone-is-depressed.html"><span>What to say when someone is depressed</span></a></li>
-                        <li><a href="blog/how-to-comfort-someone-who-lost-a-loved-one.html"><span>How to comfort someone who lost a loved one</span></a></li>
-                        <li><a href="blog/what-to-text-someone-having-a-panic-attack.html"><span>What to text someone having a panic attack</span></a></li>
+                        <li data-reveal="left" style="--d:60ms"><a href="blog/how-to-check-on-a-friend-who-went-quiet.html"><span>How to check on a friend who went quiet</span></a></li>
+                        <li data-reveal="left" style="--d:120ms"><a href="blog/what-to-say-when-someone-is-depressed.html"><span>What to say when someone is depressed</span></a></li>
+                        <li data-reveal="left" style="--d:180ms"><a href="blog/how-to-comfort-someone-who-lost-a-loved-one.html"><span>How to comfort someone who lost a loved one</span></a></li>
+                        <li data-reveal="left" style="--d:240ms"><a href="blog/what-to-text-someone-having-a-panic-attack.html"><span>What to text someone having a panic attack</span></a></li>
                     </ul>
-                    <a class="guides-all" href="blog/index.html">All guides and message ideas</a>
+                    <a class="guides-all" data-reveal href="blog/index.html">All guides and message ideas</a>
                 </div>
             </section>
         </main>

@@ -4821,3 +4821,6 @@ nav#nav { view-transition-name: site-nav; }
     ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
     @view-transition { navigation: none; }
 }
+
+/* The nav mark is a sun by day and a pale moon after dark (class set in js/core-utils.js) */
+html.is-night .nav-mark { color: #EDE6FF; }

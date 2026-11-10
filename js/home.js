@@ -41,7 +41,10 @@
         const ctx = canvas.getContext('2d');
         const model = Sky.model(todayKey);
         let w = 0, h = 0, mood = '', moodFrom = '', moodAt = 0, meteor = null, nextMeteor = 0, lastPaint = 0, running = false;
-        const MOOD_MS = 2600;
+        const MOOD_MS = 900;
+        const INTRO_MS = 1300;      // on arrival the sky runs through the last few hours to now
+        const introAt = reducedMotion || hourOverride !== null ? 0 : performance.now();
+        let px = 0, py = 0, tx = 0, ty = 0; // pointer parallax (eased)
 
         function resize() {
             // documentElement sizes exclude a desktop scrollbar (innerWidth doesn't)
@@ -56,8 +59,14 @@
         function draw(now) {
             const k = moodAt ? Math.min(1, (now - moodAt) / MOOD_MS) : 1;
             const eased = k * k * (3 - 2 * k);
+            let hour = currentHour();
+            if (introAt && now - introAt < INTRO_MS) {
+                const p = 1 - Math.pow(1 - (now - introAt) / INTRO_MS, 3);
+                hour = (hour - 5 * (1 - p) + 24) % 24;
+            }
+            px += (tx - px) * 0.12; py += (ty - py) * 0.12;
             const frame = Sky.paint(ctx, w, h, {
-                hour: currentHour(), date: new Date(), model, mood, moodMix: { from: moodFrom, k: reducedMotion ? 1 : eased },
+                hour, date: new Date(), model, mood, px, py, moodMix: { from: moodFrom, k: reducedMotion ? 1 : eased },
                 t: reducedMotion ? 0 : now / 1000, fadeToInk: true, horizon: 0.78,
             });
             if (meteor) drawMeteor(now);
@@ -87,8 +96,9 @@
             if (!meteor && now > nextMeteor && Sky.palette(currentHour()).stars > 0.6 && mood !== 'heavy' && window.scrollY < h * 0.5) {
                 meteor = { at: now, x: w * (0.15 + Math.random() * 0.6), y: h * (0.06 + Math.random() * 0.22), dx: w * (0.18 + Math.random() * 0.14) * (Math.random() > 0.5 ? 1 : -1), dy: h * (0.1 + Math.random() * 0.08) };
             }
-            // 15 frames a second is plenty for drifting cloud and twinkle; full rate only while something moves fast
-            if (meteor || moodMoving || now - lastPaint > 66) draw(now);
+            // 30 frames a second for cloud and twinkle; full rate while something moves fast
+            const fast = meteor || moodMoving || (introAt && now - introAt < INTRO_MS) || Math.abs(tx - px) + Math.abs(ty - py) > 0.004;
+            if (fast || now - lastPaint > 32) draw(now);
             requestAnimationFrame(loop);
         }
 
@@ -122,11 +132,28 @@
         }
         if (reducedMotion) setInterval(() => draw(performance.now()), 60000);
 
+        // The sky leans a little with the pointer
+        if (!reducedMotion && window.matchMedia('(pointer: fine)').matches) {
+            window.addEventListener('pointermove', (e) => {
+                tx = (e.clientX / window.innerWidth) * 2 - 1;
+                ty = (e.clientY / window.innerHeight) * 2 - 1;
+            }, { passive: true });
+        }
+
+        // Tap the night sky (not a button or the card) and a shooting star crosses from there
+        function wish(clientX, clientY) {
+            if (reducedMotion || meteor || Sky.palette(currentHour()).stars < 0.4) return false;
+            const sx = canvas.width / canvas.clientWidth, sy = canvas.height / canvas.clientHeight;
+            const dir = clientX > window.innerWidth / 2 ? -1 : 1;
+            meteor = { at: performance.now(), x: clientX * sx, y: clientY * sy, dx: w * 0.22 * dir, dy: h * 0.12 };
+            return true;
+        }
+
         scheduleMeteor(performance.now() - 14000);
         resize();
         onScroll();
         setRunning(true);
-        return { setMood };
+        return { setMood, wish };
     })();
 
     // ── The line under the headline: what this sky is ──
@@ -157,13 +184,17 @@
 
     const wordsReady = Daily.wordsFor(todayKey).then(w => { words = w; return w; });
 
-    function renderStreak() {
+    function renderStreak(earned) {
         const days = Daily.week(7, todayKey);
         const list = $('streakDays');
-        list.replaceChildren(...days.map(d => {
+        list.replaceChildren(...days.map((d, i) => {
             const li = document.createElement('li');
+            li.style.setProperty('--i', i);
             if (d.opened) li.classList.add('is-opened');
             if (d.today) li.classList.add('is-today');
+            // A day just earned pops in; the days already in the row ripple towards it
+            if (earned && d.today) li.classList.add('is-earned');
+            else if (earned && d.opened) li.classList.add('is-in-row');
             return li;
         }));
         const n = Daily.streak(todayKey);
@@ -174,7 +205,25 @@
         else if (openedToday) label = 'Day one. A new one arrives tomorrow.';
         else if (n === 1) label = "You opened yesterday's. Today's is waiting.";
         $('streakLabel').textContent = label;
+        $('streakLabel').classList.toggle('is-new', !!earned);
         $('streak').hidden = !label;
+        const kept = Daily.kept().length;
+        $('streakKept').hidden = !kept;
+        $('streakKept').textContent = kept === 1 ? '1 kept day →' : `${kept} kept days →`;
+    }
+
+    // Someone who has been here before is greeted as such
+    const returning = Daily.week(30, todayKey).some(d => d.opened && !d.today);
+    if (returning) $('todayEyebrow').textContent = `Welcome back · ${Daily.longDate(today)}`;
+
+    // Once today's is open: when the next one arrives
+    function writeNext() {
+        const now = new Date();
+        const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+        const mins = Math.max(1, Math.round((midnight - now) / 60000));
+        const h = Math.floor(mins / 60), m = mins % 60;
+        $('dayNext').textContent = `Tomorrow's card arrives in ${h ? `${h} h ` : ''}${m} min.`;
+        $('dayNext').hidden = false;
     }
 
     function fillBack() {
@@ -202,7 +251,10 @@
         $('dayActions').hidden = false;
         $('dayKeepBtn').setAttribute('aria-pressed', String(Daily.isKept(todayKey)));
         $('dayKeepBtn').querySelector('span').textContent = Daily.isKept(todayKey) ? 'Kept' : 'Keep';
-        renderStreak();
+        renderStreak(!instant);
+        writeNext();
+        setInterval(writeNext, 60000);
+        $('heroOpen').hidden = true;
     }
 
     // How many times today's card has been opened (a real number from our counter, or nothing)
@@ -222,18 +274,53 @@
         req.then(showCount).catch(() => { });
     }
 
-    openBtn.addEventListener('click', async () => {
-        if (isOpen || card.classList.contains('is-opening')) return;
-        card.classList.add('is-opening');
+    const wait = (ms) => new Promise(r => setTimeout(r, reducedMotion ? 0 : ms));
+    async function openToday() {
+        if (isOpen || card.classList.contains('is-cracking')) return;
+        resetTilt();
+        // 1. the crack runs down the wax  2. the halves fall away  3. the card turns over
+        card.classList.add('is-cracking');
         openedHour = currentHour();
-        await Promise.all([wordsReady, new Promise(r => setTimeout(r, reducedMotion ? 0 : 340))]);
+        const hint = $('dayCardHint');
+        const slow = setTimeout(() => { hint.textContent = 'Opening'; hint.classList.add('is-waiting'); }, 400);
+        await Promise.all([wordsReady, wait(150)]);
+        clearTimeout(slow);
+        card.classList.add('is-opening');
+        await wait(250);
         let muted = false;
         try { muted = localStorage.getItem('vibe_sound_muted') === 'true'; } catch (e) { }
-        if (!muted && window.soundEngine) setTimeout(() => window.soundEngine.play('chime'), reducedMotion ? 0 : 420);
+        if (!muted && window.soundEngine) setTimeout(() => window.soundEngine.play('chime'), reducedMotion ? 0 : 200);
         const first = Daily.markOpened(todayKey, words.text, openedHour, words.reflection);
         showOpen(false);
         countOpen(first);
         track('daily_opened', { streak: Daily.streak(todayKey) });
+    }
+    openBtn.addEventListener('click', openToday);
+    $('heroOpen').addEventListener('click', openToday);
+
+    // The card leans towards the pointer, with a highlight that follows it
+    function resetTilt() {
+        card.classList.remove('is-tilting');
+        card.style.removeProperty('--rx'); card.style.removeProperty('--ry');
+    }
+    if (!reducedMotion && window.matchMedia('(pointer: fine)').matches) {
+        card.addEventListener('pointermove', (e) => {
+            if (card.classList.contains('is-cracking') && !isOpen) return;
+            const r = card.getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+            card.classList.add('is-tilting');
+            card.style.setProperty('--ry', `${((x - 0.5) * 14).toFixed(2)}deg`);
+            card.style.setProperty('--rx', `${((0.5 - y) * 10 * (isOpen ? -1 : 1)).toFixed(2)}deg`);
+            card.style.setProperty('--gx', `${(x * 100).toFixed(1)}%`);
+            card.style.setProperty('--gy', `${(y * 100).toFixed(1)}%`);
+        });
+        card.addEventListener('pointerleave', resetTilt);
+    }
+
+    // A tap on the open sky at night
+    $('today').addEventListener('click', (e) => {
+        if (e.target.closest('a, button, input, .daycard, .day-actions, .streak')) return;
+        if (sky.wish(e.clientX, e.clientY)) track('sky_wish');
     });
 
     // Already opened today: show it open, under the sky it was opened in
@@ -270,6 +357,7 @@
         const kind = e.target.closest('[data-save]')?.dataset.save;
         if (!kind || !words) return;
         closeMenu();
+        saveBtn.classList.add('is-busy');
         try { if (document.fonts && document.fonts.load) await Promise.all([document.fonts.load('500 40px "Cormorant Garamond"'), document.fonts.load('600 14px Outfit')]); } catch (err) { }
         const size = kind === 'wallpaper' ? { width: 1179, height: 2556 } : { width: 1080, height: 1080 };
         const image = Sky.renderImage({ ...size, layout: kind, text: words.text, hour: openedHour, date: today, seed: todayKey, label: Daily.longDate(today) });
@@ -282,25 +370,31 @@
             const blob = await new Promise(r => image.toBlob(r, 'image/png'));
             const file = blob && new File([blob], filename, { type: 'image/png' });
             if (file && navigator.canShare({ files: [file] })) {
-                try { await navigator.share({ files: [file] }); return; } catch (err) { if (err && err.name === 'AbortError') return; }
+                try { await navigator.share({ files: [file] }); saveBtn.classList.remove('is-busy'); return; } catch (err) { if (err && err.name === 'AbortError') { saveBtn.classList.remove('is-busy'); return; } }
             }
         }
         const ok = await Daily.downloadImage(image, filename);
+        saveBtn.classList.remove('is-busy');
+        pulse(saveBtn);
         toast(ok ? 'Saved to your downloads.' : "That didn't save. Try again?");
     });
+
+    const pulse = (btn) => { btn.classList.remove('is-done'); void btn.offsetWidth; btn.classList.add('is-done'); };
 
     // ── Keep / copy ──
     $('dayKeepBtn').addEventListener('click', () => {
         const kept = Daily.toggleKept(todayKey);
         $('dayKeepBtn').setAttribute('aria-pressed', String(kept));
         $('dayKeepBtn').querySelector('span').textContent = kept ? 'Kept' : 'Keep';
+        pulse($('dayKeepBtn'));
+        renderStreak(false);
         toast(kept ? 'Kept. You’ll find it in My Vibes.' : 'Removed from your kept days.');
         track('daily_kept', { kept });
     });
 
     $('dayCopyBtn').addEventListener('click', async () => {
         if (!words) return;
-        try { await navigator.clipboard.writeText(words.text); toast('Copied.'); }
+        try { await navigator.clipboard.writeText(words.text); pulse($('dayCopyBtn')); toast('Copied.'); }
         catch (e) { toast('Copy didn’t work here. Press and hold the words to copy them.'); }
     });
 
@@ -350,7 +444,7 @@
             $('checkSend').href = `send-card.html?message=${encodeURIComponent(text)}`;
             el.classList.remove('is-swapping');
         };
-        if (swap && !reducedMotion) { el.classList.add('is-swapping'); setTimeout(apply, 320); } else apply();
+        if (swap && !reducedMotion) { el.classList.add('is-swapping'); setTimeout(apply, 140); } else apply();
     }
 
     function chooseMood(id, quiet) {
@@ -380,14 +474,12 @@
     const savedMood = Daily.week(1, todayKey)[0].mood;
     if (savedMood) chooseMood(savedMood, true);
 
-    // ── Sections ease in as they arrive ──
-    const bands = document.querySelectorAll('.band, .fan');
+    // ── The fan of cards deals itself out when it comes into view ──
+    const fan = $('fan');
     if ('IntersectionObserver' in window && !reducedMotion) {
-        const io = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-seen'); io.unobserve(e.target); } });
-        }, { threshold: 0.12 });
-        bands.forEach(b => io.observe(b));
+        const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { fan.classList.add('is-seen'); io.disconnect(); } }, { threshold: 0.35 });
+        io.observe(fan);
     } else {
-        bands.forEach(b => b.classList.add('is-seen'));
+        fan.classList.add('is-seen');
     }
 })();

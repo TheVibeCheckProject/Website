@@ -34,9 +34,11 @@
         grid.replaceChildren(...days.map(day => {
             const item = document.createElement('article');
             item.className = 'kept-day';
+            item.setAttribute('data-reveal', '');
+            item.style.setProperty('--d', `${Math.min(days.indexOf(day), 8) * 50}ms`);
 
             const art = document.createElement('div');
-            art.className = 'kept-art';
+            art.className = 'kept-art lift';
             const canvas = document.createElement('canvas');
             canvas.setAttribute('aria-hidden', 'true');
             const date = document.createElement('span');
@@ -61,6 +63,7 @@
             requestAnimationFrame(() => Sky.paintInto(canvas, { seed: day.key, hour: typeof day.hour === 'number' ? day.hour : 20, date: day.date, horizon: 0.74 }));
             return item;
         }));
+        if (window.VibeMotion) window.VibeMotion.scan(grid);
     }
 
     render();

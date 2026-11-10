@@ -531,6 +531,8 @@ const VibeMotion = (function () {
     }
     function init() {
         scan(document);
+        const hr = new Date().getHours();
+        document.documentElement.classList.toggle('is-night', hr < 6 || hr >= 19); // the nav mark turns from sun to moon
         // A thin line across the top while the next page loads
         document.addEventListener('click', (e) => {
             const a = e.target.closest && e.target.closest('a[href]');

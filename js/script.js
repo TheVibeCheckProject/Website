@@ -372,6 +372,7 @@ function initJoinForm() {
         const originalText = submitBtn.textContent;
         submitBtn.textContent = 'Joining...';
         submitBtn.disabled = true;
+        submitBtn.classList.add('is-loading');
 
         if (window.VibeTelemetry) {
             window.VibeTelemetry.track('newsletter_signup_started', { source: 'homepage_join' });
@@ -400,11 +401,13 @@ function initJoinForm() {
                 showFormError('join-error', 'Something went wrong. Please try again!');
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
+                submitBtn.classList.remove('is-loading');
             }
         } catch (err) {
             showFormError('join-error', 'Connection error. Please check your connection and try again!');
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
+                submitBtn.classList.remove('is-loading');
         }
     });
 }

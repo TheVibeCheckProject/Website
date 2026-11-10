@@ -370,7 +370,7 @@ body { overflow-x: clip; }
 
 .sx-empty h2 { font-size: clamp(32px, 4vw, 48px); line-height: 1.05; margin: 0 0 12px; color: var(--color-text-primary); overflow-wrap: anywhere; }
 .sx-empty h2 em { font-style: italic; font-weight: 500; color: #FFE2A6; }
-.sx-empty p { color: var(--color-text-secondary); font-size: 17px; line-height: 1.6; margin: 0 0 22px; }
+.sx-empty p:not([class]) { color: var(--color-text-secondary); font-size: 17px; line-height: 1.6; margin: 0 0 22px; }
 .sx-empty-acts { display: flex; flex-wrap: wrap; gap: 12px; }
 
 /* ── The letter at the end ── */
@@ -400,7 +400,7 @@ body { overflow-x: clip; }
 .sx-letter .sx-eyebrow { color: #8A5A12; }
 .sx-letter h2 { font-size: clamp(36px, 4.6vw, 60px); line-height: 1; color: var(--color-ink); margin: 0 0 16px; text-wrap: balance; }
 .sx-letter h2 em { font-style: italic; font-weight: 500; }
-.sx-letter p { font-size: 17px; line-height: 1.6; color: rgba(20, 17, 31, 0.78); margin: 0; max-width: 32em; }
+.sx-letter p:not([class]) { font-size: 17px; line-height: 1.6; color: rgba(20, 17, 31, 0.78); margin: 0; max-width: 32em; }
 .sx-letter-acts { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; position: relative; }
 .sx-letter .sx-hand { color: rgba(20, 17, 31, 0.62); }
 

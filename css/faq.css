@@ -328,7 +328,8 @@ body { overflow-x: clip; }
 .fq-empty { padding: 8px 0 0; max-width: 34em; animation: fq-rise 280ms var(--ease-out) both; }
 .fq-empty h2 { font-size: clamp(32px, 4vw, 48px); line-height: 1.05; margin: 0 0 12px; color: var(--color-text-primary); overflow-wrap: anywhere; }
 .fq-empty h2 em { font-style: italic; font-weight: 500; color: #FFE2A6; }
-.fq-empty p { color: var(--color-text-secondary); font-size: 17px; line-height: 1.6; margin: 0 0 22px; }
+.fq-empty p:not([class]) { color: var(--color-text-secondary); font-size: 17px; line-height: 1.6; margin: 0 0 22px; }
+.fq-empty a:not([class]) { color: var(--color-secondary); font-weight: 600; overflow-wrap: anywhere; }
 .fq-empty-acts { display: flex; flex-wrap: wrap; gap: 12px; }
 
 /* ── Still stuck? ── */
@@ -359,7 +360,7 @@ body { overflow-x: clip; }
 .fq-letter .fq-eyebrow { color: #8A5A12; }
 .fq-letter h2 { font-size: clamp(36px, 4.6vw, 60px); line-height: 1; color: var(--color-ink); margin: 0 0 16px; text-wrap: balance; }
 .fq-letter h2 em { font-style: italic; font-weight: 500; }
-.fq-letter p { font-size: 17px; line-height: 1.6; color: rgba(20, 17, 31, 0.78); margin: 0; max-width: 32em; }
+.fq-letter p:not([class]) { font-size: 17px; line-height: 1.6; color: rgba(20, 17, 31, 0.78); margin: 0; max-width: 32em; }
 .fq-letter .fq-hand { color: rgba(20, 17, 31, 0.62); }
 .fq-letter-acts { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
 

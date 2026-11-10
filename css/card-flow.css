@@ -1448,3 +1448,190 @@ body.reduced-motion.is-leaving .portal-card:not(.is-active) { transition: opacit
 .drawer-input[type="date"] { color-scheme: dark; min-height: 48px; }
 .done-sealed { margin: 14px 0 0; font-size: 15px; color: #FEC84A; }
 .done-sealed[hidden] { display: none; }
+
+/* ========================================================
+   SAVE IMAGE (js/card-image.js): a small button that opens two choices,
+   "Phone wallpaper" and "Square". Same component on send-card and view-card.
+   ======================================================== */
+.save-image { position: relative; display: inline-flex; flex-direction: column; align-items: center; }
+.save-image-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 38px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(254, 200, 74, 0.5);
+    background: rgba(12, 9, 20, 0.45);
+    color: #fff;
+    font: 600 14px 'Outfit', sans-serif;
+    cursor: pointer;
+    transition: scale 0.14s ease, background-color 0.16s ease, border-color 0.16s ease;
+}
+.save-image-btn:hover,
+.save-image.is-open .save-image-btn { background: rgba(254, 200, 74, 0.14); border-color: #FEC84A; }
+.save-image-btn svg { flex-shrink: 0; transition: translate 0.16s ease; }
+.save-image-btn:hover svg,
+.save-image.is-open .save-image-btn svg { translate: 0 2px; }
+.save-image-btn.is-loading::after { border-color: #FEC84A; border-right-color: transparent; }
+.save-image-menu {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 8px);
+    z-index: 30;
+    translate: -50% 0;
+    min-width: 208px;
+    padding: 6px;
+    border-radius: 16px;
+    border: 1px solid rgba(254, 200, 74, 0.35);
+    background: #1d1729;
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
+    display: grid;
+    gap: 2px;
+    transform-origin: 50% 0;
+    animation: saveMenuIn 0.15s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+.save-image[data-menu="up"] .save-image-menu { top: auto; bottom: calc(100% + 8px); transform-origin: 50% 100%; }
+.save-image-menu[hidden] { display: none; }
+.save-image-menu button {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+    width: 100%;
+    min-height: 44px;
+    padding: 9px 12px;
+    border: 0;
+    border-radius: 11px;
+    background: transparent;
+    color: #fff;
+    font: 600 14px 'Outfit', sans-serif;
+    text-align: left;
+    cursor: pointer;
+    transition: scale 0.12s ease, background-color 0.12s ease;
+    animation: saveItemIn 0.16s ease both;
+}
+.save-image-menu button:nth-child(2) { animation-delay: 0.035s; }
+.save-image-menu button:hover,
+.save-image-menu button:focus-visible { background: rgba(254, 200, 74, 0.14); }
+.save-image-menu small { font: 500 11px 'Space Grotesk', sans-serif; letter-spacing: 0.5px; color: #C9BFDA; white-space: nowrap; }
+.save-image-status {
+    display: none;
+    margin-top: 6px;
+    font: 500 13px 'Outfit', sans-serif;
+    color: #C9BFDA;
+    white-space: nowrap;
+}
+.save-image-status.is-shown { display: block; animation: saveStatusIn 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.4) both; }
+.save-image-status.is-ok { color: #FEC84A; }
+.save-image-status.is-ok::before { content: '✓ '; font-weight: 700; }
+@keyframes saveMenuIn { from { opacity: 0; transform: scale(0.92) translateY(4px); } }
+@keyframes saveItemIn { from { opacity: 0; transform: translateY(5px); } }
+@keyframes saveStatusIn { from { opacity: 0; transform: scale(0.9); } }
+@media (prefers-reduced-motion: reduce) {
+    .save-image-menu, .save-image-menu button, .save-image-status.is-shown { animation: none; }
+}
+body.reduced-motion .save-image-menu,
+body.reduced-motion .save-image-menu button,
+body.reduced-motion .save-image-status.is-shown { animation: none; }
+
+/* In the note panel, under Send: "or  [Save image]" */
+.drawer-save { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 8px; }
+.drawer-save-or { font: 500 13px 'Outfit', sans-serif; color: var(--flow-sub); opacity: 0.8; }
+.drawer-save .save-image-btn { min-height: 34px; padding: 6px 14px; font-size: 13px; }
+/* The confirmation hangs under the button without growing the panel (the Send button's
+   SVG is lined up on the slot and must not be pushed out of place) */
+.drawer-save .save-image-status { position: absolute; left: 50%; top: calc(100% - 1px); margin: 0; translate: -50% 0; font-size: 12px; }
+.portal-drawer.is-sending .drawer-save { visibility: hidden; }
+/* On the success screen, under the share buttons */
+.done-save { margin-top: 12px; align-items: flex-start; }
+.done-save .save-image-menu { left: 0; translate: 0 0; transform-origin: 0 0; }
+
+/* ========================================================
+   MICRO-INTERACTIONS: quick feedback (120–220 ms) on the controls around the
+   approved moves. The carousel, portal, word wheel and paper plane are untouched.
+   ======================================================== */
+/* The shared press feedback (css/styles.css: `scale` on :active) must not shrink these:
+   the carousel card hands its exact rectangle to the portal, and the saved Send button's
+   SVG is lined up on the send slot. */
+.card-flow-body .portal-card:active,
+.card-flow-body .send-slot:not(.is-plain):active { scale: 1; }
+
+/* Chips: an eased press (their own transition lists had no `scale`), and a small pop when chosen */
+.flow-chip, .sound-chip { transition: scale 0.14s ease, background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease; }
+body.is-inside .portal-topics-dock .flow-chip {
+    transition: opacity calc(var(--pace) * 0.9s) ease var(--in-delay),
+                transform calc(var(--pace) * 1.1s) cubic-bezier(0.22, 1, 0.36, 1) var(--in-delay),
+                scale 0.14s ease,
+                background 0.22s ease, border-color 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
+}
+.flow-chip.is-active,
+.flow-chip[aria-pressed="true"],
+.sound-chip[aria-pressed="true"] { animation: chipPop 0.22s cubic-bezier(0.3, 0.7, 0.3, 1.5); }
+@keyframes chipPop { 0% { scale: 0.92; } 60% { scale: 1.05; } 100% { scale: 1; } }
+.flow-chip .chip-dot { transition: background-color 0.18s ease, scale 0.18s ease; }
+.flow-chip.is-active .chip-dot { scale: 1.4; }
+
+/* Round steppers, Shuffle, Change Card, Done: eased press */
+.circle-nav-btn, .flow-back-btn, .composer-done, .drawer-close-btn, .done-share-btn, .done-again, .done-spark-form button, .prem-sheet-later {
+    transition: scale 0.14s ease, transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.portal-btn { transition: scale 0.14s ease, background-color 0.2s ease, border-color 0.2s ease; }
+.flow-cta, .done-copy { transition: scale 0.14s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+.flow-back-btn:hover { transform: translateX(-2px); }
+.drawer-close-btn:hover { color: #fff; transform: rotate(90deg); }
+.done-again::after { display: inline-block; transition: translate 0.16s ease; }
+.done-again:hover::after { translate: 3px 0; }
+/* The main button, when it starts saying something else (Next / Start Writing / Unlock) */
+.flow-cta.is-changed { animation: ctaChange 0.2s ease; }
+@keyframes ctaChange { 0% { scale: 0.96; opacity: 0.7; } 100% { scale: 1; opacity: 1; } }
+/* "Copied! ✓" and the email-sent line */
+.done-copy.is-done { animation: chipPop 0.22s cubic-bezier(0.3, 0.7, 0.3, 1.5); }
+
+/* The note panel: opens quicker, its fields settle in one after another */
+.portal-drawer { transition: opacity 0.24s ease, visibility 0s linear 0.24s; }
+.portal-drawer.is-open { transition: opacity 0.24s ease; }
+.drawer-box { transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease; }
+.portal-drawer.is-open .drawer-scroll > * { animation: drawerFieldIn 0.24s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.portal-drawer.is-open .drawer-scroll > :nth-child(2) { animation-delay: 0.03s; }
+.portal-drawer.is-open .drawer-scroll > :nth-child(3) { animation-delay: 0.06s; }
+.portal-drawer.is-open .drawer-scroll > :nth-child(4) { animation-delay: 0.09s; }
+.portal-drawer.is-open .drawer-scroll > :nth-child(5) { animation-delay: 0.12s; }
+.portal-drawer.is-open .drawer-scroll > :nth-child(n+6) { animation-delay: 0.15s; }
+@keyframes drawerFieldIn { from { opacity: 0; translate: 0 8px; } }
+/* Fields: the label lights up and the field lifts a shade when you're in it */
+.drawer-field label, .drawer-label { transition: color 0.16s ease; }
+.drawer-field:focus-within > label:not(.flow-reminder) { color: #fff; }
+.drawer-input, .drawer-textarea, .done-spark-form input, .done-link {
+    transition: border-color 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease;
+}
+.drawer-input:focus, .drawer-textarea:focus, .done-spark-form input:focus {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(255, 246, 228, 0.08);
+}
+.reminder-email-slide { animation: drawerFieldIn 0.2s ease both; }
+.composer-underline { transition: width 0.25s ease; }
+body.is-writing .composer-underline { width: 82%; }
+
+@media (prefers-reduced-motion: reduce) {
+    .flow-chip, .sound-chip, .flow-cta.is-changed, .done-copy.is-done,
+    .portal-drawer.is-open .drawer-scroll > *, .reminder-email-slide { animation: none !important; }
+}
+body.reduced-motion .flow-chip, body.reduced-motion .sound-chip, body.reduced-motion .flow-cta.is-changed,
+body.reduced-motion .done-copy.is-done, body.reduced-motion .portal-drawer.is-open .drawer-scroll > *,
+body.reduced-motion .reminder-email-slide { animation: none !important; }
+
+/* Premium sheet: an item that no longer applies (see OWN_WORDS_FREE) */
+.prem-sheet li[hidden] { display: none; }
+
+/* Quick picks: 14 occasions. Desktop wraps onto two centred lines; phones keep one
+   swipeable line that fades at the edge to show there is more. */
+.occasion-row { max-width: 860px; }
+@media (max-width: 768px) {
+    .occasion-row {
+        padding: 2px 22px 2px 4px;
+        -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 34px), transparent 100%);
+                mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 34px), transparent 100%);
+        overscroll-behavior-x: contain;
+    }
+}

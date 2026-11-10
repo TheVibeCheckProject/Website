@@ -1,0 +1,304 @@
+/* ==========================================================================
+   About (about.html only). Loaded after css/styles.css.
+   An editorial page: one large statement, then plain blocks separated by hairlines.
+   ========================================================================== */
+
+html { overflow-x: clip; }
+
+body.about-page {
+    background: var(--color-bg-dark);
+    overflow-x: clip;
+}
+
+.ab-main {
+    --ab-pad: clamp(20px, 4vw, 48px);
+    --ab-ink: #201A2E;
+    --ab-ink-soft: #4F4560;
+    padding: 0 var(--ab-pad);
+}
+
+.ab-wrap { max-width: 1180px; margin-left: auto; margin-right: auto; }
+
+.eyebrow {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-secondary);
+    margin: 0 0 18px;
+}
+
+.ab-arrow { width: 18px; height: 18px; flex: none; transition: translate var(--dur-2, 220ms) var(--ease-out); }
+
+.ab-textlink {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-secondary);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.ab-textlink:hover { color: #FFD98A; }
+.ab-textlink:hover .ab-arrow, .btn:hover .ab-arrow { translate: 4px 0; }
+
+/* ── The statement ── */
+.ab-hero { padding-top: clamp(120px, 14vw, 184px); }
+
+.ab-title {
+    font-size: clamp(42px, 7vw, 98px);
+    line-height: 0.99;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+    max-width: 13.5em;
+    text-wrap: balance;
+}
+
+.ab-title em { font-style: italic; font-weight: 500; color: #FFE2A6; }
+
+.ab-hero-foot {
+    display: grid;
+    grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+    column-gap: clamp(32px, 6vw, 96px);
+    align-items: start;
+    margin-top: clamp(36px, 5vw, 64px);
+    padding-top: clamp(28px, 3.4vw, 40px);
+    border-top: 1px solid var(--color-line);
+}
+
+.ab-aside {
+    font-family: var(--font-hand);
+    font-size: clamp(26px, 2.6vw, 34px);
+    line-height: 1.15;
+    color: var(--color-secondary);
+    margin: 0;
+    rotate: -2deg;
+    transform-origin: 0 50%;
+}
+
+.ab-lede p { font-size: clamp(17px, 1.5vw, 19px); line-height: 1.7; color: var(--color-text-secondary); margin: 0 0 18px; max-width: 34em; }
+.ab-lede p:last-child { margin-bottom: 0; }
+
+/* ── Sections ── */
+.ab-section { padding: clamp(80px, 10vw, 136px) 0 0; }
+.ab-section-head { max-width: 46em; }
+
+.ab-h2 {
+    font-size: clamp(34px, 4.8vw, 62px);
+    line-height: 1.02;
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+}
+
+/* How it works: three numbered columns */
+.ab-steps {
+    list-style: none;
+    margin: clamp(32px, 4vw, 52px) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(24px, 3.4vw, 48px);
+}
+
+.ab-step { border-top: 1px solid var(--color-line-strong); padding-top: 18px; transition: border-color var(--dur-2, 220ms) ease; }
+
+.ab-step-n {
+    display: block;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(76px, 9vw, 128px);
+    line-height: 0.9;
+    color: var(--color-secondary);
+    margin: 0 0 18px;
+    transform-origin: 0 100%;
+    transition: translate var(--dur-3, 380ms) var(--ease-out), rotate var(--dur-3, 380ms) var(--ease-out);
+}
+
+.ab-step h3 { font-size: clamp(26px, 2.4vw, 32px); line-height: 1.1; color: var(--color-text-primary); margin: 0 0 10px; }
+.ab-step p { font-size: 16px; line-height: 1.65; color: var(--color-text-secondary); margin: 0; max-width: 24em; }
+
+@media (hover: hover) {
+    .ab-step:hover { border-top-color: var(--color-secondary); }
+    .ab-step:hover .ab-step-n { translate: 0 -4px; rotate: -4deg; }
+}
+
+/* What we're about: a ledger of rows */
+.ab-values { margin: clamp(32px, 4vw, 52px) 0 0; border-top: 1px solid var(--color-line); }
+
+.ab-value {
+    display: grid;
+    grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+    column-gap: clamp(32px, 6vw, 96px);
+    align-items: baseline;
+    padding: clamp(22px, 2.6vw, 32px) 0;
+    border-bottom: 1px solid var(--color-line);
+}
+
+.ab-value dt { font-family: var(--font-display); font-size: clamp(26px, 2.6vw, 34px); font-weight: 600; line-height: 1.1; color: var(--color-text-primary); transition: color var(--dur-2, 220ms) ease, translate var(--dur-2, 220ms) var(--ease-out); }
+.ab-value dd { margin: 0; font-size: 16.5px; line-height: 1.7; color: var(--color-text-secondary); max-width: 36em; }
+.ab-value dd a, .ab-support a, .ab-contact a { color: var(--color-secondary); text-decoration: underline; text-decoration-color: rgba(246, 199, 107, 0.45); }
+.ab-value dd a:hover, .ab-support a:hover, .ab-contact a:hover { color: #FFD98A; text-decoration-color: currentColor; }
+
+@media (hover: hover) {
+    .ab-value:hover dt { color: #FFE2A6; translate: 6px 0; }
+}
+
+/* Free and Premium */
+.ab-plans {
+    margin: clamp(32px, 4vw, 52px) 0 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(20px, 2.6vw, 32px);
+    align-items: stretch;
+}
+
+.ab-plan {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: clamp(26px, 3.4vw, 44px);
+    border: 1px solid var(--color-line-strong);
+    border-radius: 24px;
+    background: rgba(255, 246, 228, 0.025);
+}
+
+.ab-plan--premium { border-color: rgba(246, 199, 107, 0.55); background: var(--color-bg-medium); }
+
+.ab-plan-label { font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-text-muted); margin: 0 0 12px; }
+.ab-plan--premium .ab-plan-label { color: var(--color-secondary); }
+
+.ab-price { font-family: var(--font-display); font-size: clamp(54px, 6vw, 80px); font-weight: 600; line-height: 1; color: var(--color-text-primary); margin: 0 0 8px; }
+.ab-price small { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 0.4em; color: var(--color-text-secondary); margin-left: 6px; }
+.ab-plan-sub { font-size: 16px; color: var(--color-text-secondary); margin: 0; }
+
+.ab-list { list-style: none; margin: 26px 0 28px; padding: 22px 0 0; border-top: 1px solid var(--color-line); display: grid; gap: 14px; width: 100%; }
+.ab-list li { display: flex; gap: 12px; align-items: flex-start; font-size: 16.5px; line-height: 1.5; color: var(--color-text-primary); }
+.ab-check { width: 20px; height: 20px; flex: none; margin-top: 3px; color: var(--color-secondary); }
+
+.ab-plan > .btn { margin-top: auto; }
+.ab-plan-note { font-size: 14.5px; line-height: 1.55; color: var(--color-text-muted); margin: 0 0 24px; }
+.ab-plan-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; margin-top: auto; }
+
+.ab-support { margin: 28px 0 0; font-size: 16px; line-height: 1.65; color: var(--color-text-secondary); max-width: 44em; }
+
+/* Privacy: four plain statements */
+.ab-privacy {
+    list-style: none;
+    margin: clamp(32px, 4vw, 52px) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(32px, 6vw, 96px);
+    border-top: 1px solid var(--color-line);
+}
+
+.ab-privacy li { position: relative; padding: clamp(24px, 3vw, 36px) 0 clamp(24px, 3vw, 36px) 44px; border-bottom: 1px solid var(--color-line); }
+.ab-ico { position: absolute; left: 0; top: clamp(27px, 3.2vw, 40px); width: 26px; height: 26px; color: var(--color-secondary); transition: scale var(--dur-2, 220ms) var(--ease-spring, ease), rotate var(--dur-2, 220ms) var(--ease-out); }
+.ab-privacy h3 { font-size: clamp(25px, 2.3vw, 30px); line-height: 1.1; color: var(--color-text-primary); margin: 0 0 10px; }
+.ab-privacy p { font-size: 16px; line-height: 1.7; color: var(--color-text-secondary); margin: 0; max-width: 32em; }
+
+@media (hover: hover) {
+    .ab-privacy li:hover .ab-ico { scale: 1.15; rotate: -6deg; }
+}
+
+.ab-privacy-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 28px;
+    margin: 28px 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.2vw, 28px);
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--color-text-primary);
+}
+
+.ab-privacy-foot .ab-textlink { font-family: var(--font-body); }
+
+/* ── The letter ── */
+.ab-cta { padding: clamp(88px, 11vw, 144px) 0 0; display: flex; justify-content: center; }
+
+.ab-letter {
+    position: relative;
+    width: min(820px, 100%);
+    padding: clamp(32px, 5vw, 68px);
+    border-radius: 6px;
+    color: var(--ab-ink);
+    background:
+        linear-gradient(115deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 40%),
+        linear-gradient(180deg, #FFF8EA, #F6E9D2);
+    box-shadow: 0 30px 80px rgba(6, 4, 16, 0.5);
+    rotate: -0.6deg;
+}
+
+/* A postage stamp, like the homepage letter */
+.ab-letter::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    width: 54px;
+    height: 64px;
+    border: 1.5px dashed rgba(184, 64, 95, 0.55);
+    border-radius: 3px;
+    background:
+        radial-gradient(circle at 50% 42%, #F6C76B 0 11px, transparent 12px),
+        linear-gradient(180deg, #2A2458 0 62%, #B8405F 62% 100%);
+    background-clip: content-box;
+    padding: 4px;
+    rotate: 4deg;
+}
+
+.ab-letter .eyebrow { color: #B8405F; }
+.ab-letter .ab-h2 { color: var(--ab-ink); max-width: 11em; margin-bottom: 16px; }
+.ab-letter p { font-size: clamp(16px, 1.4vw, 18px); line-height: 1.65; color: var(--ab-ink-soft); max-width: 30em; margin: 0 0 28px; }
+.ab-letter-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.ab-letter .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
+.ab-letter .btn-primary { background: var(--ab-ink); color: var(--color-paper); }
+.ab-letter .btn-primary:hover { background: #3A2F52; color: #fff; }
+.ab-btn-line { background: none; color: var(--ab-ink); border: 1.5px solid rgba(32, 26, 46, 0.75); }
+.ab-btn-line:hover { background: rgba(32, 26, 46, 0.08); color: var(--ab-ink); transform: translateY(-2px); }
+.ab-letter-note { display: block; margin-top: 20px; font-family: var(--font-hand); font-size: 23px; color: #6E6380; }
+
+.ab-contact {
+    padding: clamp(56px, 7vw, 88px) 0 clamp(72px, 9vw, 112px);
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+}
+
+/* ── Smaller screens ── */
+@media (max-width: 860px) {
+    .ab-hero-foot { grid-template-columns: minmax(0, 1fr); row-gap: 22px; }
+    .ab-steps { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+    .ab-step { display: grid; grid-template-columns: 72px minmax(0, 1fr); column-gap: 16px; }
+    .ab-step-n { grid-row: 1 / span 2; font-size: 84px; margin: 0; }
+    .ab-step h3 { align-self: end; }
+    .ab-value { grid-template-columns: minmax(0, 1fr); row-gap: 10px; }
+    .ab-plans { grid-template-columns: minmax(0, 1fr); }
+    .ab-privacy { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 520px) {
+    .ab-hero { padding-top: 108px; }
+    .ab-title { font-size: clamp(38px, 11.4vw, 50px); }
+    .ab-plan { border-radius: 18px; }
+    .ab-plan .btn, .ab-letter .btn { width: 100%; text-align: center; }
+    .ab-plan-actions { width: 100%; }
+    .ab-letter { rotate: 0deg; }
+    .ab-letter::before { display: none; }
+    .ab-contact a { overflow-wrap: anywhere; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ab-arrow, .ab-step-n, .ab-ico, .ab-value dt { transition: none; }
+    .ab-step:hover .ab-step-n, .ab-privacy li:hover .ab-ico, .ab-value:hover dt { translate: 0 0; rotate: 0deg; scale: 1; }
+}

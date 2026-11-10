@@ -444,3 +444,118 @@ body.is-sealed .rc-front-hint { animation: none; }
     85% { translate: -3px 0; }
 }
 @media (prefers-reduced-motion: reduce) { .flip-card.is-nudged { animation: none; } }
+
+/* ========================================================
+   SAVE IMAGE (js/card-image.js): a small button that opens two choices,
+   "Phone wallpaper" and "Square". Same component on send-card and view-card.
+   ======================================================== */
+.save-image { position: relative; display: inline-flex; flex-direction: column; align-items: center; }
+.save-image-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 38px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(254, 200, 74, 0.5);
+    background: rgba(12, 9, 20, 0.45);
+    color: #fff;
+    font: 600 14px 'Outfit', sans-serif;
+    cursor: pointer;
+    transition: scale 0.14s ease, background-color 0.16s ease, border-color 0.16s ease;
+}
+.save-image-btn:hover,
+.save-image.is-open .save-image-btn { background: rgba(254, 200, 74, 0.14); border-color: #FEC84A; }
+.save-image-btn svg { flex-shrink: 0; transition: translate 0.16s ease; }
+.save-image-btn:hover svg,
+.save-image.is-open .save-image-btn svg { translate: 0 2px; }
+.save-image-btn.is-loading::after { border-color: #FEC84A; border-right-color: transparent; }
+.save-image-menu {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 8px);
+    z-index: 30;
+    translate: -50% 0;
+    min-width: 208px;
+    padding: 6px;
+    border-radius: 16px;
+    border: 1px solid rgba(254, 200, 74, 0.35);
+    background: #1d1729;
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
+    display: grid;
+    gap: 2px;
+    transform-origin: 50% 0;
+    animation: saveMenuIn 0.15s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+.save-image[data-menu="up"] .save-image-menu { top: auto; bottom: calc(100% + 8px); transform-origin: 50% 100%; }
+.save-image-menu[hidden] { display: none; }
+.save-image-menu button {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+    width: 100%;
+    min-height: 44px;
+    padding: 9px 12px;
+    border: 0;
+    border-radius: 11px;
+    background: transparent;
+    color: #fff;
+    font: 600 14px 'Outfit', sans-serif;
+    text-align: left;
+    cursor: pointer;
+    transition: scale 0.12s ease, background-color 0.12s ease;
+    animation: saveItemIn 0.16s ease both;
+}
+.save-image-menu button:nth-child(2) { animation-delay: 0.035s; }
+.save-image-menu button:hover,
+.save-image-menu button:focus-visible { background: rgba(254, 200, 74, 0.14); }
+.save-image-menu small { font: 500 11px 'Space Grotesk', sans-serif; letter-spacing: 0.5px; color: #C9BFDA; white-space: nowrap; }
+.save-image-status {
+    display: none;
+    margin-top: 6px;
+    font: 500 13px 'Outfit', sans-serif;
+    color: #C9BFDA;
+    white-space: nowrap;
+}
+.save-image-status.is-shown { display: block; animation: saveStatusIn 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.4) both; }
+.save-image-status.is-ok { color: #FEC84A; }
+.save-image-status.is-ok::before { content: '✓ '; font-weight: 700; }
+@keyframes saveMenuIn { from { opacity: 0; transform: scale(0.92) translateY(4px); } }
+@keyframes saveItemIn { from { opacity: 0; transform: translateY(5px); } }
+@keyframes saveStatusIn { from { opacity: 0; transform: scale(0.9); } }
+@media (prefers-reduced-motion: reduce) {
+    .save-image-menu, .save-image-menu button, .save-image-status.is-shown { animation: none; }
+}
+
+/* Under the card, once it has been opened (body.has-opened is set at the first flip) */
+.rc-save {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
+}
+body.has-opened .rc-save {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity 0.35s ease 1.2s, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1) 1.2s;
+}
+
+/* ── Micro-interactions: quick press and focus feedback (the flip itself is unchanged) ── */
+/* The shared press feedback (css/styles.css) must not shrink the card as it's tapped to turn */
+.flip-card:active { scale: 1; }
+.viral-reply-btn { transition: scale 0.14s ease, transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease; }
+.viral-reply-btn:active { scale: 0.96; }
+.send-other-link a { display: inline-block; transition: translate 0.16s ease, color 0.16s ease; }
+.send-other-link a:hover { translate: 3px 0; }
+.email-form input { transition: border-color 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease; }
+.email-form input:focus { background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 3px rgba(255, 246, 228, 0.08); }
+.email-form button, .rc-sealed-btn { transition: scale 0.14s ease, background-color 0.18s ease, border-color 0.18s ease; }
+.sound-toggle-btn { transition: scale 0.14s ease, border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease; }
+.sound-toggle-btn.is-toggled { animation: rcPop 0.22s cubic-bezier(0.3, 0.7, 0.3, 1.5); }
+@keyframes rcPop { 0% { scale: 0.88; } 60% { scale: 1.08; } 100% { scale: 1; } }
+@media (prefers-reduced-motion: reduce) {
+    .sound-toggle-btn.is-toggled { animation: none; }
+    .rc-save, body.has-opened .rc-save { transition: opacity 0.2s ease; transform: none; }
+}

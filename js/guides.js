@@ -6,7 +6,8 @@
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // Arriving at #crisis (the nav's "Emergency Support" badge): web fonts load late and can
-    // move the section after the browser's own jump, so line it up once more when they settle.
+    // move the section after the browser's own jump, so line it up again when they settle
+    // (92px = the section's scroll-margin-top in css/guides.css, clear of the fixed nav).
     function settleHash() {
         if (location.hash !== '#crisis') return;
         var el = document.getElementById('crisis');
@@ -15,9 +16,21 @@
         ['wheel', 'touchstart', 'keydown'].forEach(function (t) {
             window.addEventListener(t, function () { touched = true; }, { passive: true, once: true });
         });
-        var align = function () { if (!touched) el.scrollIntoView({ behavior: 'auto', block: 'start' }); };
+        var align = function () {
+            if (touched) return;
+            if (Math.abs(el.getBoundingClientRect().top - 92) > 4) el.scrollIntoView({ behavior: 'auto', block: 'start' });
+        };
         window.addEventListener('load', align);
-        if (document.fonts && document.fonts.ready) document.fonts.ready.then(align);
+        if (document.fonts) {
+            if (document.fonts.ready) document.fonts.ready.then(align);
+            if (document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', align);
+        }
+        // Anything else above that changes height in the first few seconds (late fonts, images)
+        if ('ResizeObserver' in window) {
+            var ro = new ResizeObserver(align);
+            ro.observe(document.body);
+            setTimeout(function () { ro.disconnect(); }, 5000);
+        }
     }
     settleHash();
 

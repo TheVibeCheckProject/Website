@@ -476,7 +476,7 @@ body.is-sealed .rc-front-hint { animation: none; }
     top: calc(100% + 8px);
     z-index: 30;
     translate: -50% 0;
-    min-width: 208px;
+    min-width: 236px;
     padding: 6px;
     border-radius: 16px;
     border: 1px solid rgba(254, 200, 74, 0.35);
@@ -510,6 +510,7 @@ body.is-sealed .rc-front-hint { animation: none; }
 .save-image-menu button:nth-child(2) { animation-delay: 0.035s; }
 .save-image-menu button:hover,
 .save-image-menu button:focus-visible { background: rgba(254, 200, 74, 0.14); }
+.save-image-menu span { white-space: nowrap; }
 .save-image-menu small { font: 500 11px 'Space Grotesk', sans-serif; letter-spacing: 0.5px; color: #C9BFDA; white-space: nowrap; }
 .save-image-status {
     display: none;

@@ -22,6 +22,22 @@ const BLOCK = /googlesyndication|clarity\.ms|workers\.dev|jsdelivr|unsplash|font
         await page.waitForFunction(() => document.body.classList.contains('is-inside') && !CardFlow.busy, null, { timeout: 10000 });
     };
     const decodeLink = (url) => JSON.parse(decodeURIComponent(Buffer.from(url.split('data=')[1].replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('latin1')));
+    // "Save image": open the control inside `scope`, choose a layout, return the real download's PNG size
+    const saveImage = async (page, scope, layout) => {
+        await page.click(`${scope} .save-image-btn`);
+        const [download] = await Promise.all([page.waitForEvent('download', { timeout: 15000 }).catch(() => null), page.click(`${scope} [data-save="${layout}"]`)]);
+        if (!download) return null;
+        const png = require('fs').readFileSync(await download.path());
+        return { name: download.suggestedFilename(), isPng: png.slice(1, 4).toString() === 'PNG', width: png.readUInt32BE(16), height: png.readUInt32BE(20), bytes: png.length };
+    };
+    const isWallpaper = (d) => !!d && d.isPng && d.width === 1179 && d.height === 2556 && d.bytes > 20000 && /wallpaper\.png$/.test(d.name);
+    const isSquare = (d) => !!d && d.isPng && d.width === 1080 && d.height === 1080 && d.bytes > 20000 && /square\.png$/.test(d.name);
+    // The same site with the one switch in js/send-card-logic.js turned on
+    const withOwnWordsFree = (ctx) => ctx.route(/\/js\/send-card-logic\.js/, async (route) => {
+        const res = await route.fetch();
+        const body = (await res.text()).replace('const OWN_WORDS_FREE = false;', 'const OWN_WORDS_FREE = true;');
+        await route.fulfill({ response: res, body });
+    });
     const trackErrors = (page) => {
         const errors = [];
         page.on('pageerror', e => errors.push(e.message));
@@ -360,6 +376,182 @@ const BLOCK = /googlesyndication|clarity\.ms|workers\.dev|jsdelivr|unsplash|font
             t.check(await rpage.isHidden('#sealedPanel'), 'a malformed sealed-until value is ignored');
             t.check(rerrors.length === 0, 'no JS errors on sealed cards', rerrors.join(' | '));
             await rctx.close();
+        }
+
+        // 10. More to create: new designs, occasions and free sets
+        {
+            const ctx = await newContext({ viewport: { width: 1280, height: 900 } });
+            const page = await ctx.newPage();
+            const errors = trackErrors(page);
+            await page.goto(`${server.base}/send-card.html?preset=exam`);
+            await page.waitForTimeout(500);
+            const counts = await page.evaluate(() => ({
+                free: backgroundDefs.filter(b => !b.premium).length, premium: backgroundDefs.filter(b => b.premium).length,
+                grouped: backgroundDefs.findIndex(b => b.premium) === backgroundDefs.filter(b => !b.premium).length,
+                lights: backgroundDefs.every(b => Array.isArray(b.light) && b.light.length === 3),
+                chips: document.querySelectorAll('#occasionRow .flow-chip').length, templates: occasionTemplates.length,
+                presetBgs: occasionTemplates.every(t => backgroundDefs.some(b => b.id === t.bgId && !b.premium) && backgroundDefs.some(b => b.id === t.premBgId)),
+                freeWords: occasionTemplates.every(t => isFreeWords(t.affirmation)),
+                active: backgroundDefs[document.querySelector('.portal-card.is-active').dataset.index].id
+            }));
+            t.check(counts.free >= 17 && counts.premium === 17 && counts.grouped && counts.lights, 'new card designs are free, Premium stays at 17 and grouped at the end', JSON.stringify(counts));
+            t.check(counts.templates >= 12 && counts.chips === counts.templates && counts.presetBgs && counts.freeWords, 'every occasion has a chip, a free card and words a free user can send', JSON.stringify(counts));
+            t.check(counts.active === 'lighthouse', '?preset=exam (an alias) opens on the Exam Day card', counts.active);
+            const missing = await page.evaluate(async () => (await Promise.all(backgroundDefs.map(b => fetch(b.image, { method: 'HEAD' }).then(r => r.ok ? '' : b.id)))).filter(Boolean));
+            t.check(missing.length === 0, 'every card background file exists', missing.join(', '));
+            await enterPortal(page);
+            t.check((await page.textContent('.portal-phrase.is-active')).includes("You've done the work"), 'a preset opens on its own words');
+            const sets = await page.evaluate(() => ({
+                names: FREE_WORD_SETS.map(s => s.name), sizes: FREE_WORD_SETS.map(s => s.items.length),
+                inDock: FREE_WORD_SETS.every(s => !!document.querySelector(`#portalTopicsDock .flow-chip[data-set="${s.id}"]`)),
+                locked: FREE_WORD_SETS.some(s => document.querySelector(`#portalTopicsDock .flow-chip[data-set="${s.id}"] .chip-lock`)),
+                sendable: FREE_WORD_SETS.every(s => s.items.every(isFreeWords)),
+                premium: categoryDefs.filter(c => c.premium).map(c => `${c.label}:${c.affirmations.length}`).join(',')
+            }));
+            t.check(sets.names.length >= 7 && sets.sizes.every(n => n >= 8) && sets.inDock && !sets.locked && sets.sendable, 'the new free sets are in the portal, unlocked and sendable', JSON.stringify(sets));
+            t.check(sets.premium === 'Calm:5,Celebrate:5,Love:5,Healing:5', 'the four Premium collections are unchanged', sets.premium);
+            await page.locator('#portalTopicsDock .flow-chip', { hasText: 'Grief' }).click();
+            await page.click('#mainCta');
+            await page.waitForSelector('#cardForm.is-open');
+            await page.fill('#recipientName', 'Sam');
+            await page.evaluate(() => document.getElementById('cardForm').requestSubmit());
+            await page.waitForSelector('#successMessage.show', { timeout: 8000 });
+            const card = decodeLink(await page.inputValue('#cardLink'));
+            t.check(card.affirmation.startsWith("I'm so sorry") && card.background === 'assets/backgrounds/bg_scene_lighthouse.webp' && Object.keys(card).length === 9, 'a free user sends a new set on a new design (still nine fields)', JSON.stringify(card).slice(0, 160));
+            await page.setViewportSize({ width: 390, height: 844 });
+            await page.goto(`${server.base}/send-card.html`);
+            await page.waitForTimeout(400);
+            const row = await page.evaluate(() => { const r = document.getElementById('occasionRow'); return { scrolls: r.scrollWidth > r.clientWidth, page: document.documentElement.scrollWidth - document.documentElement.clientWidth }; });
+            t.check(row.scrolls && row.page <= 0, 'phones: the occasion chips scroll in their row, the page does not', JSON.stringify(row));
+            t.check(errors.length === 0, 'no JS errors with the new designs, occasions and sets', errors.join(' | '));
+            await ctx.close();
+        }
+
+        // 11. Save image: the card really downloads as a phone wallpaper and a square, in the three places
+        {
+            const ctx = await newContext({ viewport: { width: 1280, height: 900 }, acceptDownloads: true });
+            const page = await ctx.newPage();
+            const errors = trackErrors(page);
+            await page.goto(`${server.base}/send-card.html`);
+            await page.waitForTimeout(400);
+            await enterPortal(page);
+            await page.click('#mainCta');
+            await page.waitForSelector('#cardForm.is-open');
+            await page.fill('#recipientName', 'Sam');
+            await page.fill('#senderName', 'Alex');
+            // (b) before sending, in the note panel
+            await page.click('#saveImageMaker .save-image-btn');
+            t.check(await page.isVisible('#saveImageMaker [data-save="wallpaper"]') && await page.isVisible('#saveImageMaker [data-save="square"]'), 'Save image offers Phone wallpaper and Square');
+            await page.keyboard.press('Escape');
+            t.check(await page.isHidden('#saveImageMaker .save-image-menu') && !!(await page.$('#cardForm.is-open')), 'Escape closes the Save image menu, not the note panel');
+            const w1 = await saveImage(page, '#saveImageMaker', 'wallpaper');
+            t.check(isWallpaper(w1) && w1.name.includes('for-sam'), 'maker, before sending: the wallpaper downloads at 1179x2556', JSON.stringify(w1));
+            t.check((await page.textContent('#saveImageMaker .save-image-status')).includes('Saved'), 'a saved confirmation shows after the download');
+            const s1 = await saveImage(page, '#saveImageMaker', 'square');
+            t.check(isSquare(s1), 'maker, before sending: the square downloads at 1080x1080', JSON.stringify(s1));
+            t.check(!(await page.$('#successMessage.show')) && await page.evaluate(() => !localStorage.getItem('vibe_history') || !localStorage.getItem('vibe_history').includes('Sam')), 'downloading does not send the card');
+            // The Premium rule applies to downloading too
+            await page.evaluate(() => { window.__bg = selectedBackground; selectedBackground = backgroundDefs.find(b => b.premium).image; });
+            const blockedBg = await saveImage(page, '#saveImageMaker', 'square');
+            t.check(!blockedBg && !!(await page.$('#premOverlay.open')), 'free user: a Premium card cannot be downloaded (Premium sheet instead)');
+            await page.click('#premLater');
+            await page.evaluate(() => { selectedBackground = window.__bg; window.__words = selectedAffirmation; selectedAffirmation = 'Breathe. You are safe right now.'; });
+            const blockedSet = await saveImage(page, '#saveImageMaker', 'square');
+            t.check(!blockedSet && !!(await page.$('#premOverlay.open')), 'free user: Premium collection words cannot be downloaded');
+            await page.click('#premLater');
+            await page.evaluate(() => { selectedAffirmation = 'Words I typed myself.'; });
+            const blockedOwn = await saveImage(page, '#saveImageMaker', 'square');
+            t.check(!blockedOwn && !!(await page.$('#premOverlay.open')), 'free user: own words cannot be downloaded while they are Premium');
+            t.check(await page.isVisible('#premOwnWordsItem'), 'the Premium sheet lists "Write your own words" while it is Premium');
+            await page.click('#premLater');
+            await page.evaluate(() => { selectedAffirmation = window.__words; });
+            // (a) after sending, on the success screen
+            await page.evaluate(() => document.getElementById('cardForm').requestSubmit());
+            await page.waitForSelector('#successMessage.show', { timeout: 8000 });
+            const link = await page.inputValue('#cardLink');
+            const w2 = await saveImage(page, '#saveImageDone', 'wallpaper');
+            const s2 = await saveImage(page, '#saveImageDone', 'square');
+            t.check(isWallpaper(w2) && isSquare(s2), 'success screen: both images download at the right sizes', JSON.stringify([w2, s2]));
+            t.check(errors.length === 0, 'no JS errors saving images in the maker', errors.join(' | '));
+            await ctx.close();
+
+            // (c) the recipient page, only once the card is open
+            const rctx = await newContext({ viewport: { width: 390, height: 844 }, acceptDownloads: true });
+            const rpage = await rctx.newPage();
+            const rerrors = trackErrors(rpage);
+            await rpage.goto(link.replace('https://thevibecheckproject.com', server.base));
+            await rpage.waitForTimeout(1000);
+            t.check(!(await rpage.isVisible('#saveImageCard .save-image-btn')), 'recipient: no Save image before the card is opened');
+            await rpage.click('#flipCard');
+            await rpage.waitForTimeout(1900);
+            t.check(await rpage.isVisible('#saveImageCard .save-image-btn'), 'recipient: Save image appears once the card is open');
+            const w3 = await saveImage(rpage, '#saveImageCard', 'wallpaper');
+            const s3 = await saveImage(rpage, '#saveImageCard', 'square');
+            t.check(isWallpaper(w3) && isSquare(s3), 'recipient: both images download at the right sizes', JSON.stringify([w3, s3]));
+            t.check(await rpage.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth), 'recipient: no sideways scrolling with the Save image control');
+            // An animated card (a frame of its video) and an old link with no background
+            const base = decodeLink(link);
+            await rpage.goto(`${server.base}/view-card.html?data=${encodeCard({ ...base, id: 'v1', background: 'assets/backgrounds/animated_vibrant.mp4' })}`);
+            await rpage.waitForTimeout(1500);
+            await rpage.click('#flipCard');
+            await rpage.waitForTimeout(1900);
+            const vid = await saveImage(rpage, '#saveImageCard', 'square');
+            t.check(isSquare(vid), 'recipient: an animated card downloads as an image', JSON.stringify(vid));
+            const pixels = await rpage.evaluate(async () => {
+                const shot = async (card) => { const c = await VibeCardImage.render({ ...card, layout: 'wallpaper' }); const d = c.getContext('2d').getImageData(600, 300, 1, 1).data; return [c.width, c.height, d[0], d[1], d[2]].join(','); };
+                const long = 'word '.repeat(60).trim().slice(0, 280);
+                return { video: await shot({ background: 'assets/backgrounds/animated_vibrant.mp4', affirmation: 'Hi' }), missingVideo: await shot({ background: 'assets/backgrounds/nope.mp4', light: ['#FEC84A', '#FB923C', '#FFF6DC'], affirmation: 'Hi' }), none: await shot({ themeGroup: 'love', affirmation: long, recipientName: 'A'.repeat(50), senderName: 'B'.repeat(50) }) };
+            });
+            t.check(Object.values(pixels).every(v => v.startsWith('1179,2556,') && !v.endsWith(',0,0,0')), 'video frame, missing-video fallback and no-background cards all paint a picture', JSON.stringify(pixels));
+            // Sealed until a day: never offered
+            const d = new Date(); d.setDate(d.getDate() + 5);
+            const openOn = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            await rpage.goto(`${server.base}/view-card.html?data=${encodeCard({ ...base, id: 's1', openOn })}`);
+            await rpage.waitForTimeout(1000);
+            await rpage.click('#flipCard');
+            await rpage.waitForTimeout(1900);
+            t.check(!(await rpage.isVisible('#saveImageCard .save-image-btn')), 'recipient: a sealed card never offers Save image');
+            t.check(rerrors.length === 0, 'no JS errors saving images on the recipient page', rerrors.join(' | '));
+            await rctx.close();
+        }
+
+        // 12. OWN_WORDS_FREE = true (the one switch in js/send-card-logic.js): own words for everyone, nothing says Premium
+        {
+            const ctx = await newContext({ viewport: { width: 1280, height: 900 }, acceptDownloads: true });
+            await withOwnWordsFree(ctx);
+            const page = await ctx.newPage();
+            const errors = trackErrors(page);
+            await page.goto(`${server.base}/send-card.html`);
+            await page.waitForTimeout(400);
+            t.check(await page.evaluate(() => OWN_WORDS_FREE === true && !isPremium), 'the switch is on for a free user in this test');
+            await enterPortal(page);
+            const ownChip = page.locator('#portalTopicsDock .flow-chip', { hasText: 'Your own' });
+            t.check(await ownChip.locator('.chip-lock').count() === 0 && !(await ownChip.textContent()).includes('Premium'), 'switch on: the "Your own" chip has no lock');
+            await ownChip.click();
+            await page.waitForSelector('body.is-writing', { timeout: 3000 }).catch(() => { });
+            t.check(await page.evaluate(() => document.body.classList.contains('is-writing')) && !(await page.$('#premOverlay.open')), 'switch on: a free user opens "Your own words" with no paywall');
+            await page.waitForTimeout(100);
+            await page.focus('#composerInput');
+            await page.keyboard.type('y'.repeat(230));
+            t.check(await page.evaluate(() => document.getElementById('composerInput').value.length) === 200, 'switch on: own words still stop at 200 characters');
+            await page.fill('#composerInput', 'Sam, I am glad you are in my life.');
+            await page.keyboard.press('Enter');
+            t.check(!(await page.textContent('#portalUi')).toUpperCase().includes('PREMIUM') || await page.evaluate(() => ![...document.querySelectorAll('.portal-phrase.is-write, #mainCta')].some(el => /premium/i.test(el.textContent))), 'switch on: the own-words stop and the main button do not mention Premium');
+            t.check(await page.evaluate(() => document.getElementById('premOwnWordsItem').hidden), 'switch on: the Premium sheet no longer lists "Write your own words"');
+            await page.click('#mainCta');
+            await page.waitForSelector('#cardForm.is-open');
+            await page.fill('#recipientName', 'Sam');
+            const own = await saveImage(page, '#saveImageMaker', 'square');
+            t.check(isSquare(own) && !(await page.$('#premOverlay.open')), 'switch on: a free user downloads a card with their own words', JSON.stringify(own));
+            await page.evaluate(() => document.getElementById('cardForm').requestSubmit());
+            await page.waitForSelector('#successMessage.show', { timeout: 8000 }).catch(() => { });
+            const sentOwn = await page.inputValue('#cardLink');
+            t.check(!!sentOwn && decodeLink(sentOwn).affirmation === 'Sam, I am glad you are in my life.' && !(await page.$('#premOverlay.open')), 'switch on: a free user sends a card with their own words');
+            // The rest of Premium is still Premium
+            const still = await page.evaluate(() => [premiumBlockFor('Breathe. You are safe right now.', backgroundDefs[0].image), premiumBlockFor(freeAffirmations[0], backgroundDefs.find(b => b.premium).image)].every(Boolean));
+            t.check(still, 'switch on: Premium collections and Premium cards are still Premium');
+            t.check(errors.length === 0, 'no JS errors with own words free', errors.join(' | '));
+            await ctx.close();
         }
 
         // 6. Blog index opens at the top; FAQ accordion toggles

@@ -509,6 +509,44 @@ const VibeAB = (function () {
     }, { passive: true });
 })();
 
+// ── Motion: scroll reveal, leaving-page progress line ──
+// [data-reveal] elements rise in as they enter the view (css/styles.css "Motion layer").
+// Call window.VibeMotion.scan(root) after adding [data-reveal] elements later.
+const VibeMotion = (function () {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let io = null;
+    function scan(root) {
+        const els = (root || document).querySelectorAll('[data-reveal]:not(.is-in)');
+        if (!els.length) return;
+        if (reduced || !('IntersectionObserver' in window)) { els.forEach(el => el.classList.add('is-in')); return; }
+        document.documentElement.classList.add('has-reveal');
+        if (!io) {
+            io = new IntersectionObserver((entries) => {
+                entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+            }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+        }
+        els.forEach(el => io.observe(el));
+        // Never leave content hidden if the observer misses it (print, odd embedded browsers)
+        setTimeout(() => els.forEach(el => { const r = el.getBoundingClientRect(); if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-in'); }), 1500);
+    }
+    function init() {
+        scan(document);
+        // A thin line across the top while the next page loads
+        document.addEventListener('click', (e) => {
+            const a = e.target.closest && e.target.closest('a[href]');
+            if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank' || a.hasAttribute('download')) return;
+            let url; try { url = new URL(a.href, location.href); } catch (err) { return; }
+            if (url.origin !== location.origin || (url.pathname === location.pathname && url.search === location.search)) return;
+            let bar = document.querySelector('.nav-progress');
+            if (!bar) { bar = document.createElement('div'); bar.className = 'nav-progress'; document.body.appendChild(bar); }
+            bar.classList.remove('is-running'); void bar.offsetWidth; bar.classList.add('is-running');
+        });
+        window.addEventListener('pageshow', () => { const bar = document.querySelector('.nav-progress'); if (bar) bar.classList.remove('is-running'); });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+    return { scan, reduced };
+})();
+
 // ── Global Window Exports ──
 window.soundEngine = soundEngine;
 window.showToast = showToast;
@@ -518,4 +556,5 @@ window.isMobile = isMobile;
 window.VibeTelemetry = VibeTelemetry;
 window.VibeAB = VibeAB;
 window.VibeCounter = VibeCounter;
+window.VibeMotion = VibeMotion;
 

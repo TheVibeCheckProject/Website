@@ -295,7 +295,9 @@
         countOpen(first);
         track('daily_opened', { streak: Daily.streak(todayKey) });
     }
-    openBtn.addEventListener('click', openToday);
+    // Listen on the whole paper face: while the card is tilted in 3D a click can land on the face
+    // rather than on the button inside it. (Keyboard activation of the button bubbles here too.)
+    card.querySelector('.daycard-front').addEventListener('click', openToday);
     $('heroOpen').addEventListener('click', openToday);
 
     // The card leans towards the pointer, with a highlight that follows it

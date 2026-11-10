@@ -168,8 +168,12 @@
         ctx.fillRect(x - r * 6, y - r * 6, r * 12, r * 12);
 
         // The dark side, faintly lighter than the sky (earthshine)
-        ctx.fillStyle = rgb(mix(sky, [170, 164, 210], 0.015 + 0.14 * lit));
+        // Faded right out at new moon, so no dark disc shows against the sky
+        const before = ctx.globalAlpha;
+        ctx.globalAlpha = before * clamp(lit * 4);
+        ctx.fillStyle = rgb(mix(sky, [170, 164, 210], 0.14));
         ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.fill();
+        ctx.globalAlpha = before;
 
         // The lit side: a half disc plus/minus the terminator ellipse
         if (lit > 0.01) {

@@ -11,6 +11,7 @@ Static site (plain HTML/CSS/JS, no framework) on GitHub Pages behind Cloudflare.
 - Card links (`view-card.html?data=`) must stay backward compatible: old cards live in people's messages forever.
 - Never invent testimonials, statistics or user counts. Premium copy must match what it actually unlocks.
 - Browser automation: use Microsoft Edge (`channel: 'msedge'`), never Chrome. (Cloud sessions without Edge: `VC_TEST_BROWSER=<chromium path> npm run test:e2e`.)
+- Motion: quick and snappy (70–420 ms), never slow holds. The shared "Motion layer" (press feedback, `[data-reveal]`, `.lift`, loading states, page transitions) is at the end of `css/styles.css`; see `docs/HANDOFF.md` §5b.
 - Design: tokens and the shared "Design refresh" layer live in `css/styles.css`; no emoji in the nav or buttons, no coloured glows. See `docs/HANDOFF.md` §5a.
 
 ## Weekly guide

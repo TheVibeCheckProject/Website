@@ -137,6 +137,7 @@
                 message: (card.message || card.personalMessage || '').trim(),
                 shareUrl: card.shareUrl || '',
                 createdAt: card.createdAt || new Date().toISOString(),
+                openOn: /^\d{4}-\d{2}-\d{2}$/.test(card.openOn || '') ? card.openOn : '',
                 opened: Boolean(card.opened)
             };
 

@@ -412,3 +412,35 @@ body.is-revealed #postCardContent {
     .flip-card.flipped .flip-card-front { opacity: 0; transition: opacity 0.4s ease; }
     .rc-front-hint { animation: none; }
 }
+
+/* ── A card sealed until a day (card.openOn) ── */
+.rc-sealed {
+    margin: 22px auto 0;
+    max-width: 340px;
+    text-align: center;
+    color: #EDE8F5;
+}
+.rc-sealed[hidden] { display: none; }
+.rc-sealed-title { margin: 0; font: italic 600 26px 'Cormorant Garamond', Georgia, serif; color: #fff; }
+.rc-sealed-sub { margin: 6px 0 16px; font: 400 15px/1.5 'Outfit', sans-serif; color: #C9BFDA; }
+.rc-sealed-btn {
+    min-height: 44px;
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: 1px solid rgba(254, 200, 74, 0.55);
+    background: rgba(12, 9, 20, 0.45);
+    color: #fff;
+    font: 600 14px 'Outfit', sans-serif;
+    cursor: pointer;
+}
+.rc-sealed-btn:hover { background: rgba(254, 200, 74, 0.14); }
+body.is-sealed .flip-card { cursor: default; }
+body.is-sealed .rc-front-hint { animation: none; }
+.flip-card.is-nudged { animation: rcNudge 0.45s ease; }
+@keyframes rcNudge {
+    0%, 100% { translate: 0 0; }
+    25% { translate: -7px 0; }
+    60% { translate: 6px 0; }
+    85% { translate: -3px 0; }
+}
+@media (prefers-reduced-motion: reduce) { .flip-card.is-nudged { animation: none; } }

@@ -1,21 +1,27 @@
 <nav id="nav" aria-label="Main">
     <div class="nav-container">
         <div class="nav-logo">
-            <a href="{{root}}index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
+            <a href="{{root}}index.html" class="nav-logo-link">
+                <svg class="nav-mark" viewBox="0 0 32 32" width="26" height="26" aria-hidden="true">
+                    <circle cx="16" cy="13" r="7.5" fill="currentColor"/>
+                    <path d="M2 24c4.5-3.4 8-3.4 12.5-.6S23.5 26.8 30 22.5V30H2z" fill="currentColor" opacity=".55"/>
+                </svg>
+                <span>The Vibe Check Project</span>
+            </a>
         </div>
         <ul class="nav-links" id="nav-links">
             <li>
                 <a href="{{root}}blog/index.html#crisis" class="nav-crisis-badge">
-                    <span class="nav-crisis-heart" aria-hidden="true">❤️</span>
+                    <span class="nav-crisis-heart" aria-hidden="true"></span>
                     <span class="nav-crisis-text">Emergency Support</span>
                 </a>
             </li>
-            <li><a href="{{root}}send-card.html" class="nav-cta" data-nav="send">💌 Send a Card</a></li>
             <li><a href="{{root}}situations.html" data-nav="situations">Situations</a></li>
             <li><a href="{{root}}blog/index.html" data-nav="guides">Guides</a></li>
             <li><a href="{{root}}my-cards.html" data-nav="vibes">My Vibes</a></li>
             <li><a href="{{root}}faq.html" data-nav="faq">FAQ</a></li>
             <li><a href="{{root}}about.html" data-nav="about">About</a></li>
+            <li><a href="{{root}}send-card.html" class="nav-cta" data-nav="send">Send a card</a></li>
         </ul>
         <button class="nav-hamburger" id="nav-hamburger" type="button" aria-label="Open navigation menu"
             aria-expanded="false" aria-controls="nav-links">

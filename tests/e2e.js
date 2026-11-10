@@ -10,7 +10,7 @@ const BLOCK = /googlesyndication|clarity\.ms|workers\.dev|jsdelivr|unsplash|font
 
 (async () => {
     const server = await startServer();
-    const browser = await chromium.launch({ channel: 'msedge' });
+    const browser = await chromium.launch(process.env.VC_TEST_BROWSER ? { executablePath: process.env.VC_TEST_BROWSER } : { channel: 'msedge' });
     const newContext = async (opts = {}) => {
         const ctx = await browser.newContext({ reducedMotion: 'reduce', ...opts });
         await ctx.route(BLOCK, r => r.abort());
@@ -280,6 +280,86 @@ const BLOCK = /googlesyndication|clarity\.ms|workers\.dev|jsdelivr|unsplash|font
             await page.waitForTimeout(600);
             t.check(page.url().includes('send-card-classic.html?to=Sam'), '?classic=1 opens the classic form', page.url());
             await ctx.close();
+        }
+
+        // 8. Homepage: today's card opens, is remembered, can be kept (shows in My Vibes) and saved as an image
+        {
+            const ctx = await newContext({ viewport: { width: 1280, height: 900 }, acceptDownloads: true });
+            const page = await ctx.newPage();
+            const errors = trackErrors(page);
+            await page.goto(`${server.base}/`);
+            await page.waitForTimeout(500);
+            const batch = require('../newsletter-content/batch.json');
+            const todayKey = await page.evaluate(() => VibeDaily.dateKey());
+            const expected = (batch.emails.find(e => e.date === todayKey) || {}).affirmation;
+            t.check(await page.isHidden('#dayActions'), "today's card starts sealed");
+            await page.click('#dayCardOpen');
+            await page.waitForSelector('#dayCard.is-open');
+            const words = (await page.textContent('#dayWords')).replace(/\s+/g, ' ').trim();
+            t.check(words.length > 10 && (!expected || words === expected.trim()), "today's card shows the same words as the daily email", words.slice(0, 60));
+            t.check(await page.isVisible('#dayActions'), 'actions appear once the card is open');
+            await page.fill('#daySendName', 'Sam');
+            t.check(await page.evaluate(() => VibeDaily.streak()) === 1, 'opening counts as day one');
+            await page.click('#dayKeepBtn');
+            await page.click('#daySaveBtn');
+            const [download] = await Promise.all([page.waitForEvent('download', { timeout: 8000 }).catch(() => null), page.click('[data-save="square"]')]);
+            t.check(!!download && /square\.png$/.test(download.suggestedFilename()), 'the affirmation downloads as an image');
+            await page.click('[data-mood="heavy"]');
+            t.check((await page.textContent('#checkWords')).trim().length > 10 && (await page.getAttribute('#checkSend', 'href')).startsWith('send-card.html?message='), 'the vibe check answers with words that can be sent');
+            await page.reload();
+            await page.waitForSelector('#dayCard.is-open');
+            t.check(await page.getAttribute('[data-mood="heavy"]', 'aria-pressed') === 'true', "today's card and answer are remembered on return");
+            await page.fill('#daySendName', 'Sam');
+            await page.press('#daySendName', 'Enter');
+            await page.waitForURL(/send-card\.html\?message=.*recipient=Sam/);
+            t.check(true, 'sending from the homepage opens the card maker with the words and name');
+            await page.goto(`${server.base}/my-cards.html`);
+            await page.waitForTimeout(500);
+            t.check(await page.locator('.kept-day').count() === 1, 'a kept day is listed in My Vibes');
+            await page.locator('.kept-action', { hasText: 'Remove' }).click();
+            t.check(await page.locator('.kept-day').count() === 0 && await page.isVisible('#keptEmpty'), 'a kept day can be removed');
+            t.check(errors.length === 0, 'no JS errors on the homepage journey', errors.join(' | '));
+            await ctx.close();
+        }
+
+        // 9. Sealed cards: the date travels in the link, the card stays closed until then, old links are unaffected
+        {
+            const ctx = await newContext({ viewport: { width: 1280, height: 900 } });
+            const page = await ctx.newPage();
+            const errors = trackErrors(page);
+            await page.goto(`${server.base}/send-card.html`);
+            await page.waitForTimeout(400);
+            await enterPortal(page);
+            await page.click('#mainCta');
+            await page.waitForSelector('#cardForm.is-open');
+            await page.fill('#recipientName', 'Sam');
+            const openOn = await page.evaluate(() => { const d = new Date(); d.setDate(d.getDate() + 3); const el = document.getElementById('openOn'); el.value = VibeDailyDate(d); return el.value; function VibeDailyDate(x) { return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`; } });
+            await page.evaluate(() => document.getElementById('cardForm').requestSubmit());
+            await page.waitForSelector('#successMessage.show', { timeout: 8000 });
+            const link = await page.inputValue('#cardLink');
+            t.check(decodeLink(link).openOn === openOn, 'the sealed-until day is in the card link');
+            t.check((await page.textContent('#sealedNotice')).includes('Sealed until'), 'the success screen says the card is sealed');
+            await ctx.close();
+
+            const rctx = await newContext({ viewport: { width: 1280, height: 900 } });
+            const rpage = await rctx.newPage();
+            const rerrors = trackErrors(rpage);
+            await rpage.goto(link.replace('https://thevibecheckproject.com', server.base));
+            await rpage.waitForTimeout(1000);
+            await rpage.click('#flipCard');
+            await rpage.waitForTimeout(400);
+            t.check(!(await rpage.evaluate(() => document.getElementById('flipCard').classList.contains('flipped'))) && await rpage.isVisible('#sealedPanel'), 'a sealed card does not open before its day');
+            const past = { ...decodeLink(link), openOn: '2026-01-01' };
+            await rpage.goto(`${server.base}/view-card.html?data=${encodeCard(past)}`);
+            await rpage.waitForTimeout(1000);
+            await rpage.click('#flipCard');
+            await rpage.waitForTimeout(400);
+            t.check(await rpage.evaluate(() => document.getElementById('flipCard').classList.contains('flipped')), 'a sealed card opens once its day has come');
+            await rpage.goto(`${server.base}/view-card.html?data=${encodeCard({ ...past, openOn: '<img src=x onerror=alert(1)>' })}`);
+            await rpage.waitForTimeout(800);
+            t.check(await rpage.isHidden('#sealedPanel'), 'a malformed sealed-until value is ignored');
+            t.check(rerrors.length === 0, 'no JS errors on sealed cards', rerrors.join(' | '));
+            await rctx.close();
         }
 
         // 6. Blog index opens at the top; FAQ accordion toggles

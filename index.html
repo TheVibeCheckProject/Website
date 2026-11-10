@@ -1,43 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" data-design-concept="editorial">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Send free, anonymous digital affirmation cards and find comforting words for any moment. Share instant encouragement, kindness, and positivity today.">
-    <meta name="keywords"
-        content="affirmations, positive vibes, mental health, motivation, inspiration, daily affirmations, free affirmation cards">
+    <meta name="description" content="Open today's affirmation, keep it, save it as a wallpaper, or send it to someone as a free card. No account, no app. A new kind word every day.">
     <meta name="author" content="The Vibe Check Project">
+    <meta name="theme-color" content="#14111F">
 
     <!-- SEO & Verification -->
     <meta name="google-site-verification" content="JEgy976fMrsnFUjqI1GPeIwXZfFjNT5vnlrZDtOqvak">
-    <title>Free Affirmation Cards - Quotes | The Vibe Check Project</title>
-
-    <!-- Preloads: mobile gets smaller hero image, desktop gets full size -->
-    <link rel="preload" href="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=600&q=70&fm=webp"
-        as="image" fetchpriority="high" media="(max-width: 768px)">
-    <link rel="preload" href="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1200&q=70&fm=webp"
-        as="image" fetchpriority="high" media="(min-width: 769px)">
+    <title>Today's Affirmation - Free Affirmation Cards | The Vibe Check Project</title>
 
     <!-- Open Graph / Twitter Card -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://thevibecheckproject.com/">
     <link rel="canonical" href="https://thevibecheckproject.com/">
-    <meta property="og:title" content="Free Affirmation Cards - Quotes | The Vibe Check Project">
-    <meta property="og:description"
-        content="Send free, anonymous digital affirmation cards and find comforting words for any moment. Share instant encouragement, kindness, and positivity today.">
+    <meta property="og:title" content="Today's Affirmation - Free Affirmation Cards | The Vibe Check Project">
+    <meta property="og:description" content="Open today's affirmation, keep it, save it as a wallpaper, or send it to someone as a free card. No account, no app. A new kind word every day.">
     <meta property="og:image" content="https://thevibecheckproject.com/assets/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="The Vibe Check Project">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Free Affirmation Cards - Quotes | The Vibe Check Project">
-    <meta name="twitter:description"
-        content="Send free, anonymous digital affirmation cards and find comforting words for any moment. Share instant encouragement, kindness, and positivity today.">
+    <meta name="twitter:title" content="Today's Affirmation - Free Affirmation Cards | The Vibe Check Project">
+    <meta name="twitter:description" content="Open today's affirmation, keep it, save it as a wallpaper, or send it to someone as a free card. No account, no app. A new kind word every day.">
     <meta name="twitter:image" content="https://thevibecheckproject.com/assets/og-image.png">
 
-    <!-- Structured Data (WebSite & Organization) -->
+    <!-- Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -47,15 +37,23 @@
           "@id": "https://thevibecheckproject.com/#website",
           "url": "https://thevibecheckproject.com/",
           "name": "The Vibe Check Project",
-          "description": "Send free, anonymous digital affirmation cards and find comforting words for any moment.",
-          "publisher": {
-            "@id": "https://thevibecheckproject.com/#organization"
-          },
+          "description": "A new affirmation every day, and free affirmation cards to send to someone. No account required.",
+          "publisher": { "@id": "https://thevibecheckproject.com/#organization" },
           "potentialAction": {
             "@type": "SearchAction",
             "target": "https://thevibecheckproject.com/blog/?q={search_term_string}",
             "query-input": "required name=search_term_string"
           }
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://thevibecheckproject.com/#app",
+          "name": "The Vibe Check Card Sender",
+          "url": "https://thevibecheckproject.com/send-card",
+          "applicationCategory": "LifestyleApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
         },
         {
           "@type": "Organization",
@@ -89,404 +87,54 @@
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml"
-        href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='90'%3E✨%3C/text%3E%3C/svg%3E">
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2314111F'/%3E%3Ccircle cx='16' cy='13' r='7' fill='%23F6C76B'/%3E%3Cpath d='M3 24c4.5-3.4 8-3.4 12.5-.6S23.5 26.8 29 22.5V29H3z' fill='%23F6C76B' opacity='.55'/%3E%3C/svg%3E">
 
-    <!-- Fonts Performance -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Caveat:wght@400&family=Space+Grotesk:wght@600;700&display=swap"
-        rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Caveat:wght@400&family=Space+Grotesk:wght@600;700&display=swap"
-            rel="stylesheet">
-    </noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
 
+    <!-- The sky's first colour, before any script runs -->
     <style>
-        :root {
-            --color-primary: #FF6B9D;
-            --color-primary-dark: #E85285;
-            --color-primary-light: #FFB5D1;
-            --color-secondary: #FEC84A;
-            --color-secondary-dark: #F5B82E;
-            --color-accent: #A78BFA;
-            --color-bg-dark: #1A1625;
-            --color-bg-medium: #2D2438;
-            --color-bg-light: #3F3449;
-            --color-text-primary: #FEFEFE;
-            --color-text-secondary: #E0D4F0;
-            --color-text-muted: #B4A5C7;
-            --font-body: 'Outfit', sans-serif;
-            --font-display: 'Space Grotesk', sans-serif;
-            --transition-base: 0.3s ease;
-            --transition-fast: 0.2s ease
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-            scrollbar-width: none
-        }
-
-        ::-webkit-scrollbar {
-            display: none
-        }
-
-        body {
-            font-family: var(--font-body);
-            background-color: var(--color-bg-dark);
-            color: var(--color-text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased
-        }
-
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background: rgba(26, 22, 37, 0.8);
-            backdrop-filter: blur(6px);
-            border-bottom: 1px solid rgba(255, 107, 157, 0.1);
-            transition: background var(--transition-base), border-color var(--transition-base), backdrop-filter var(--transition-base)
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 16px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center
-        }
-
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 12px
-        }
-
-        .nav-logo-link {
-            font-family: var(--font-display);
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--color-text-primary);
-            text-decoration: none
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            list-style: none;
-            align-items: center
-        }
-
-        .nav-links a {
-            color: var(--color-text-secondary);
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 500
-        }
-
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 120%;
-            background: url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1200&q=70&fm=webp') center/cover no-repeat;
-            transform: translateZ(0);
-            will-change: transform
-        }
-
-        .hero-bg::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(26, 22, 37, 0.92) 0%, rgba(45, 36, 56, 0.88) 100%)
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 1200px;
-            padding: 96px 24px;
-            text-align: center
-        }
-
-        .hero-title {
-            font-family: var(--font-display);
-            font-size: clamp(48px, 8vw, 72px);
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 32px;
-            background: linear-gradient(135deg, #FF6B9D 0%, #FEC84A 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease-out 0.2s forwards
-        }
-
-        .hero-subtitle {
-            font-size: clamp(18px, 3vw, 22px);
-            color: var(--color-text-secondary);
-            max-width: 720px;
-            margin: 0 auto 48px;
-            line-height: 1.6;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease-out 0.4s forwards
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease-out 0.6s forwards
-        }
-
-        .btn {
-            padding: 16px 32px;
-            font-family: var(--font-display);
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 12px;
-            text-decoration: none;
-            cursor: pointer;
-            border: none;
-            display: inline-block
-        }
-
-        .btn-primary {
-            background: var(--color-primary);
-            color: white
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--color-text-primary);
-            border: 2px solid #3F3449
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px)
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0)
-            }
-        }
-
-        .nav-hamburger {
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            gap: 5px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 10px 6px;
-            margin-left: 12px;
-        }
-
-        .nav-hamburger span {
-            display: block;
-            width: 24px;
-            height: 2px;
-            background: var(--color-text-primary);
-            border-radius: 2px;
-            transition: transform 0.25s ease, opacity 0.25s ease;
-        }
-
-        nav.menu-open .nav-hamburger span:nth-child(1) {
-            transform: translateY(7px) rotate(45deg);
-        }
-
-        nav.menu-open .nav-hamburger span:nth-child(2) {
-            opacity: 0;
-        }
-
-        nav.menu-open .nav-hamburger span:nth-child(3) {
-            transform: translateY(-7px) rotate(-45deg);
-        }
-
-        @media (max-width:768px) {
-            .nav-logo-link {
-                font-size: 17px;
-            }
-
-            .nav-container {
-                padding: 12px 16px;
-            }
-
-            .nav-hamburger {
-                display: flex;
-            }
-
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                flex-direction: column;
-                align-items: stretch;
-                gap: 0;
-                background: rgba(26, 22, 37, 0.98);
-                border-bottom: 1px solid rgba(255, 107, 157, 0.15);
-                padding: 8px 0 12px;
-                box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
-            }
-
-            nav.menu-open .nav-links {
-                display: flex;
-            }
-
-            .nav-links li {
-                width: 100%;
-            }
-
-            .nav-links a {
-                display: block;
-                padding: 12px 24px;
-                font-size: 16px;
-            }
-
-            .nav-links a:active {
-                background: rgba(255, 107, 157, 0.08);
-            }
-        }
-
-        .join-form {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            align-items: stretch;
-            flex-wrap: wrap;
-            max-width: 560px;
-            margin: 0 auto 16px;
-        }
-
-        .join-form .form-input {
-            flex: 1 1 260px;
-            min-width: 0;
-        }
-
-        .join-form .btn {
-            white-space: nowrap;
-        }
-
-        #join-success {
-            max-width: 560px;
-            margin: 0 auto 16px;
-        }
+        html { background: #14111F; }
+        body { margin: 0; background: #14111F; color: #FBF6EC; }
     </style>
-    <link rel="stylesheet" href="css/styles.css?v=af8e2c7f4d" media="print" onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet" href="css/styles.css?v=af8e2c7f4d">
-    </noscript>
-    <link rel="stylesheet" href="css/home.css?v=8f30ebc730">
-
-    <!-- Lucide Icons (Script Removed for Performance, replaced with inline SVGs) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "WebSite",
-          "@id": "https://thevibecheckproject.com/#website",
-          "url": "https://thevibecheckproject.com/",
-          "name": "The Vibe Check Project",
-          "description": "Send free personalized affirmation cards, receive daily morning encouragement, and spread positivity with zero account required.",
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://thevibecheckproject.com/blog/?q={search_term_string}",
-            "query-input": "required name=search_term_string"
-          }
-        },
-        {
-          "@type": "WebApplication",
-          "@id": "https://thevibecheckproject.com/#app",
-          "name": "The Vibe Check Card Sender",
-          "url": "https://thevibecheckproject.com/send-card",
-          "applicationCategory": "LifestyleApplication",
-          "operatingSystem": "All",
-          "browserRequirements": "Requires JavaScript. Requires HTML5.",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "Organization",
-          "@id": "https://thevibecheckproject.com/#organization",
-          "name": "The Vibe Check Project",
-          "url": "https://thevibecheckproject.com/",
-          "logo": "https://thevibecheckproject.com/assets/og-image.png",
-          "sameAs": [
-            "https://x.com/thevibecheckpro",
-            "https://www.tiktok.com/@thevibecheckproject",
-            "https://ko-fi.com/thevibecheckproject"
-          ]
-        }
-      ]
-    }
-    </script>
+    <link rel="stylesheet" href="css/styles.css?v=2dece90f78">
+    <link rel="stylesheet" href="css/home.css?v=fd4d8f9b80">
 </head>
 
-<body data-design-concept="editorial">
-    <!-- Scroll Progress Bar -->
+<body class="home">
+    <!-- The sky follows the visitor's own clock (js/sky.js + js/home.js) -->
+    <canvas class="sky" id="sky" aria-hidden="true"></canvas>
+    <div class="sky-veil" id="skyVeil" aria-hidden="true"></div>
     <div class="scroll-progress" id="scroll-progress"></div>
 
-    <!-- Main Content -->
     <div id="main-content">
-        <!-- Navigation -->
         <!-- site-nav:start (generated from templates/partials/nav.html — edit there, then npm run build:layout) -->
 <nav id="nav" aria-label="Main">
     <div class="nav-container">
         <div class="nav-logo">
-            <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
+            <a href="index.html" class="nav-logo-link">
+                <svg class="nav-mark" viewBox="0 0 32 32" width="26" height="26" aria-hidden="true">
+                    <circle cx="16" cy="13" r="7.5" fill="currentColor"/>
+                    <path d="M2 24c4.5-3.4 8-3.4 12.5-.6S23.5 26.8 30 22.5V30H2z" fill="currentColor" opacity=".55"/>
+                </svg>
+                <span>The Vibe Check Project</span>
+            </a>
         </div>
         <ul class="nav-links" id="nav-links">
             <li>
                 <a href="blog/index.html#crisis" class="nav-crisis-badge">
-                    <span class="nav-crisis-heart" aria-hidden="true">❤️</span>
+                    <span class="nav-crisis-heart" aria-hidden="true"></span>
                     <span class="nav-crisis-text">Emergency Support</span>
                 </a>
             </li>
-            <li><a href="send-card.html" class="nav-cta" data-nav="send">💌 Send a Card</a></li>
             <li><a href="situations.html" data-nav="situations">Situations</a></li>
             <li><a href="blog/index.html" data-nav="guides">Guides</a></li>
             <li><a href="my-cards.html" data-nav="vibes">My Vibes</a></li>
             <li><a href="faq.html" data-nav="faq">FAQ</a></li>
             <li><a href="about.html" data-nav="about">About</a></li>
+            <li><a href="send-card.html" class="nav-cta" data-nav="send">Send a card</a></li>
         </ul>
         <button class="nav-hamburger" id="nav-hamburger" type="button" aria-label="Open navigation menu"
             aria-expanded="false" aria-controls="nav-links">
@@ -498,175 +146,190 @@
 </nav>
 <!-- site-nav:end -->
 
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-bg" id="hero-bg"></div>
-            <div class="hero-content">
-                <div class="hero-tag-badge">✨ Anonymous Affirmations &amp; Vibe Checks</div>
-                <h1 class="hero-title" id="mainHeroTitle">
-                    <span class="hero-title-main">Words that lift.</span>
-                    <span class="hero-title-gradient">Moments that matter.</span>
-                </h1>
-                <p class="hero-subtitle">
-                    A mindful reminder at the right moment can shift someone's entire day.
-                    Draw your daily spark below, or send a free card in 30 seconds.
-                </p>
-                <div class="hero-cta">
-                    <a href="send-card.html" class="btn btn-primary">💌 Send a Card Now</a>
-                    <button class="btn btn-secondary" id="hero-cta">✨ Join Daily Spark</button>
+        <main>
+            <!-- Today -->
+            <section class="today" id="today" aria-labelledby="todayTitle">
+                <div class="today-copy">
+                    <p class="eyebrow" id="todayEyebrow">Today</p>
+                    <h1 class="today-title" id="todayTitle">Today has a <em>kind word</em> for you.</h1>
+                    <p class="today-lede">Open it. Keep it, make it your wallpaper, or send it to someone who needs it more. Free, with no account and nothing to install.</p>
+
+                    <div class="streak" id="streak" hidden>
+                        <ol class="streak-days" id="streakDays" aria-hidden="true"></ol>
+                        <p class="streak-label" id="streakLabel"></p>
+                    </div>
+                    <p class="sky-note" id="skyNote"></p>
                 </div>
 
-                <div class="trust-badges-bar">
-                    <span class="trust-badge-pill"><span class="trust-icon">⚡</span> 30-Second Delivery</span>
-                    <span class="trust-badge-pill"><span class="trust-icon">🔒</span> No Account Needed</span>
-                    <span class="trust-badge-pill"><span class="trust-icon">💫</span> 100% Free Forever</span>
-                </div>
-
-                <!-- Interactive Vibe Deck -->
-                <div class="hero-affirmation-dock" id="vibeOfDay" role="region" aria-label="Daily Affirmation Generator">
-                    <div class="vibe-mood-tabs" id="vibeMoodTabs" role="tablist" aria-label="Affirmation categories">
-                        <button class="vibe-mood-btn active" data-mood="all" role="tab" aria-selected="true">✨ Daily Mix</button>
-                        <button class="vibe-mood-btn" data-mood="grounding" role="tab" aria-selected="false">🌱 Grounding</button>
-                        <button class="vibe-mood-btn" data-mood="energy" role="tab" aria-selected="false">⚡ Hype Up</button>
-                        <button class="vibe-mood-btn" data-mood="peace" role="tab" aria-selected="false">🕊️ Calm</button>
-                        <button class="vibe-mood-btn" data-mood="love" role="tab" aria-selected="false">💖 Self-Love</button>
-                    </div>
-                    
-                    <div class="vibe-quote-display">
-                        <p class="vibe-quote-text" id="vibeText">"You're trying, and that's what counts."</p>
-                    </div>
-
-                    <div class="vibe-dock-meta">
-                        <span class="affirmation-label">🌅 Today's Spark — <span id="vibeDate"></span></span>
-                        <div class="vibe-dock-actions">
-                            <button class="vibe-action-pill" id="vibeShuffleBtn" title="Shuffle another affirmation">🎲 Shuffle</button>
-                            <button class="vibe-action-pill" id="vibeShareBtn" title="Copy affirmation text">📋 Copy</button>
-                            <a href="send-card.html" class="vibe-action-pill primary" id="vibeSendAsCardBtn" title="Send this quote in a card">💌 Send as Card</a>
+                <div class="today-stage">
+                    <div class="daycard" id="dayCard">
+                        <div class="daycard-inner" id="dayCardInner">
+                            <div class="daycard-face daycard-front">
+                                <button class="daycard-open" id="dayCardOpen" type="button" aria-describedby="dayCardHint">
+                                    <span class="daycard-for" id="dayCardFor">For today</span>
+                                    <span class="daycard-seal" aria-hidden="true">
+                                        <svg viewBox="0 0 64 64" width="64" height="64">
+                                            <circle cx="32" cy="32" r="30" class="seal-wax"/>
+                                            <circle cx="32" cy="32" r="22.5" class="seal-ring"/>
+                                            <circle cx="32" cy="29" r="7" class="seal-mark"/>
+                                            <path d="M17 41c4.5-3.4 8-3.4 12.5-.6S39.5 43.8 47 39.5" class="seal-line"/>
+                                        </svg>
+                                    </span>
+                                    <span class="daycard-hint" id="dayCardHint">Tap to open</span>
+                                </button>
+                            </div>
+                            <div class="daycard-face daycard-back" id="dayCardBack" aria-live="polite">
+                                <canvas class="daycard-sky" id="dayCardSky" aria-hidden="true"></canvas>
+                                <span class="daycard-date" id="dayCardDate"></span>
+                                <p class="daycard-words" id="dayWords"></p>
+                                <span class="daycard-breath" id="dayBreath" aria-hidden="true"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
-        </section>
+                    <p class="day-reflection" id="dayReflection" hidden></p>
 
-        <!-- Send a Card Section -->
-        <section id="send-card" class="send-card-section" style="padding-top: 100px; padding-bottom: 100px;">
-            <div class="section-container">
-                <div class="section-header">
-                    <h2 class="section-title">Send Words That Matter</h2>
-                    <p class="section-subtitle">
-                        Pick a vibe below and watch the card come alive. Free, instant, and private — no sign-up or app required.
-                    </p>
-                </div>
-
-                <div class="card-demo-wrapper active">
-                    <!-- Particle canvas -->
-                    <canvas id="demoCanvas" aria-hidden="true"></canvas>
-
-                    <!-- Category pills -->
-                    <div class="demo-pills" id="demoPills" role="tablist" aria-label="Card vibe categories">
-                        <button type="button" class="demo-pill active" data-vibe="encouragement" role="tab" aria-selected="true" onclick="window.switchDemoVibe?.('encouragement', true)">✨ Encouragement</button>
-                        <button type="button" class="demo-pill" data-vibe="calm" role="tab" aria-selected="false" onclick="window.switchDemoVibe?.('calm', true)">💙 Calm</button>
-                        <button type="button" class="demo-pill" data-vibe="celebrate" role="tab" aria-selected="false" onclick="window.switchDemoVibe?.('celebrate', true)">🎉 Celebrate</button>
-                        <button type="button" class="demo-pill" data-vibe="love" role="tab" aria-selected="false" onclick="window.switchDemoVibe?.('love', true)">💖 Love</button>
-                        <button type="button" class="demo-pill" data-vibe="healing" role="tab" aria-selected="false" onclick="window.switchDemoVibe?.('healing', true)">🕊️ Healing</button>
-                        <button type="button" class="demo-pill" data-vibe="selflove" role="tab" aria-selected="false" onclick="window.switchDemoVibe?.('selflove', true)">💕 Self-Love</button>
-                    </div>
-
-                    <!-- 3D tilt card stage -->
-                    <div class="demo-stage" id="demoStage">
-                        <!-- Ambient glow (behind everything) -->
-                        <div class="demo-glow" id="demoGlow"></div>
-                        <!-- Main card -->
-                        <div class="demo-card" id="demoCard">
-                            <div class="demo-card-bg" id="demoBg"></div>
-                            <video id="demoBgVideo" class="demo-card-video" autoplay loop muted playsinline></video>
-                            <div class="demo-card-noise"></div>
-                            <!-- Holographic overlay -->
-                            <div class="demo-card-holo" id="demoHolo"></div>
-                            <div class="demo-card-content">
-                                <div class="demo-card-label">Vibe Check ✨</div>
-                                <div class="demo-card-quote" id="demoQuote">"You're doing better than you think you are."</div>
-                                <div class="demo-card-from">
-                                    <span>from</span>
-                                    <strong id="demoSender">Someone special</strong>
+                    <div class="day-actions" id="dayActions" hidden>
+                        <form class="day-send" id="daySend" novalidate>
+                            <label class="visually-hidden" for="daySendName">Who is it for?</label>
+                            <input class="day-send-name" id="daySendName" type="text" maxlength="50" autocomplete="off" placeholder="Send it to… (their name)">
+                            <button class="btn btn-primary day-send-go" type="submit"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 3 10.5 13.5"/><path d="M21 3l-6.5 18-4-7.5-7.5-4z"/></svg><span>Make the card</span></button>
+                        </form>
+                        <div class="day-tools">
+                            <div class="day-menu-wrap">
+                                <button class="tool" id="daySaveBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="daySaveMenu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7.5 11 4.5 4.5 4.5-4.5"/><path d="M5 20h14"/></svg><span>Save image</span></button>
+                                <div class="day-menu" id="daySaveMenu" hidden>
+                                    <button type="button" data-save="wallpaper">Phone wallpaper</button>
+                                    <button type="button" data-save="square">Square, for posting</button>
                                 </div>
                             </div>
-                            <div class="demo-card-shimmer-clip">
-                                <div class="demo-card-shimmer" id="demoShimmer"></div>
-                            </div>
+                            <button class="tool" id="dayKeepBtn" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 4h11v16l-5.5-4-5.5 4z"/></svg><span>Keep</span></button>
+                            <button class="tool" id="dayCopyBtn" type="button"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6.5a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg><span>Copy</span></button>
+                            <button class="tool" id="dayBreatheBtn" type="button"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/></svg><span>Breathe</span></button>
+                        </div>
+                        <p class="day-count" id="dayCount" hidden></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- The vibe check -->
+            <section class="check band" id="vibe-check" aria-labelledby="checkTitle">
+                <div class="band-inner">
+                    <p class="eyebrow">The vibe check</p>
+                    <h2 class="band-title" id="checkTitle">How's the weather in you?</h2>
+                    <p class="band-lede">Pick the closest one. The sky will answer, and so will we.</p>
+
+                    <div class="moods" id="moods" role="group" aria-label="How you feel right now">
+                        <button class="mood" type="button" data-mood="heavy" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 16.5a4 4 0 0 1 .6-7.96 5.5 5.5 0 0 1 10.5 1.5A3.3 3.3 0 0 1 17.5 16.5z"/><path d="M9 20v.5M12.5 19.5v1.5M16 20v.5"/></svg><span>Heavy</span></button>
+                        <button class="mood" type="button" data-mood="restless" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h10.5a2.5 2.5 0 1 0-2.5-2.5"/><path d="M3 13h15a2.5 2.5 0 1 1-2.5 2.5"/><path d="M3 17h7"/></svg><span>Restless</span></button>
+                        <button class="mood" type="button" data-mood="tired" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z"/></svg><span>Worn out</span></button>
+                        <button class="mood" type="button" data-mood="steady" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="3"/><path d="M9 3.5v1M3.5 9h1M5.1 5.1l.7.7M12.9 5.1l-.7.7"/><path d="M10 19a3.5 3.5 0 0 1 .5-6.96A4.5 4.5 0 0 1 19 13.5 2.8 2.8 0 0 1 18.5 19z"/></svg><span>Steady</span></button>
+                        <button class="mood" type="button" data-mood="bright" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/></svg><span>Bright</span></button>
+                    </div>
+
+                    <div class="answer" id="checkAnswer" hidden>
+                        <p class="answer-sky" id="checkSky"></p>
+                        <p class="answer-words" id="checkWords" aria-live="polite"></p>
+                        <div class="answer-actions">
+                            <a class="btn btn-primary" id="checkSend" href="send-card.html"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 3 10.5 13.5"/><path d="M21 3l-6.5 18-4-7.5-7.5-4z"/></svg><span>Send this to someone who feels it too</span></a>
+                            <button class="btn btn-secondary" id="checkAnother" type="button">Another one</button>
+                        </div>
+                        <a class="answer-guide" id="checkGuide" href="blog/index.html"></a>
+                    </div>
+                    <p class="check-private">Your answer stays in this browser. It is never sent to us.</p>
+                </div>
+            </section>
+
+            <!-- Send a card -->
+            <section class="send band" id="send-card" aria-labelledby="sendTitle">
+                <div class="band-inner send-grid">
+                    <div class="send-copy">
+                        <p class="eyebrow">Send a card</p>
+                        <h2 class="band-title" id="sendTitle">Then pass one on.</h2>
+                        <p class="band-lede">Choose a card, choose the words, add their name. You get a link to text them. The whole card travels inside that link, so there is no account to make and nothing for them to install.</p>
+
+                        <ul class="send-points">
+                            <li><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg><div><strong>A link, not an app</strong><span>Text it, email it, drop it in a group chat. It opens in any browser.</span></div></li>
+                            <li><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="7"/><path d="M12 9.5V13l2.5 1.5"/><path d="M9 3h6"/></svg><div><strong>Seal it until the day <em class="new-tag">New</em></strong><span>Pick a date and the card stays closed until then. For a birthday, an exam morning, a first day.</span></div></li>
+                            <li><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4.5 9.5 9 5"/><path d="M4.5 9.5H14a5.5 5.5 0 0 1 0 11h-3"/></svg><div><strong>They can send one back</strong><span>Every card ends with a quiet way to reply in kind.</span></div></li>
+                        </ul>
+
+                        <div class="send-cta">
+                            <a class="btn btn-primary" href="send-card.html">Make a card</a>
+                            <a class="btn btn-secondary" href="situations.html">Find words for a situation</a>
                         </div>
                     </div>
 
-                    <!-- CTA -->
-                    <div class="demo-cta">
-                        <a href="send-card.html" class="btn btn-primary demo-cta-btn">Send One Now — It's Free ✨</a>
-                        <span class="demo-cta-sub">No account · No fuss · Just good vibes</span>
+                    <a class="fan" id="fan" href="send-card.html" aria-label="Make a card">
+                        <span class="fan-card" style="--i:-2"><img src="assets/backgrounds/bg_scene_rose-dunes.webp" alt="" loading="lazy" width="640" height="640"><span class="fan-words">You make ordinary days better.</span></span>
+                        <span class="fan-card" style="--i:-1"><img src="assets/backgrounds/bg_free_aurora_1772750371136.webp" alt="" loading="lazy" width="640" height="640"><span class="fan-words">I'm proud of you. That's all.</span></span>
+                        <span class="fan-card" style="--i:0"><img src="assets/backgrounds/bg_scene_moonrise.webp" alt="" loading="lazy" width="640" height="640"><span class="fan-words">I'm right here. You don't have to reply.</span><span class="fan-from">for Sam</span></span>
+                        <span class="fan-card" style="--i:1"><img src="assets/backgrounds/bg_free_sunset_1772750341964.webp" alt="" loading="lazy" width="640" height="640"><span class="fan-words">Thinking of you today.</span></span>
+                        <span class="fan-card" style="--i:2"><img src="assets/backgrounds/bg_free_dawn_1772750358328.webp" alt="" loading="lazy" width="640" height="640"><span class="fan-words">One breath at a time.</span></span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Plain facts -->
+            <section class="facts band" aria-label="How it works here">
+                <div class="band-inner">
+                    <ul class="facts-list">
+                        <li><strong>No account</strong><span>Nothing to sign up for, ever.</span></li>
+                        <li><strong>No app</strong><span>It all runs in your browser.</span></li>
+                        <li><strong>Free to send</strong><span>Every free card and all 50 free phrases.</span></li>
+                        <li><strong>$4.99, once</strong><span>Premium is a single payment, not a subscription.</span></li>
+                        <li id="liveCardCountCard" hidden><strong id="liveCardCount"></strong><span>cards sent so far</span></li>
+                        <li id="liveNewsletterCountCard" hidden><strong id="liveNewsletterCount"></strong><span>morning emails sent</span></li>
+                    </ul>
+
+                    <div class="premium-note">
+                        <div>
+                            <p class="eyebrow">Premium</p>
+                            <h2 class="premium-title">Want more to say it with?</h2>
+                        </div>
+                        <p>One payment of $4.99 unlocks writing your own words, the Calm, Celebrate, Love and Healing collections, 17 more backgrounds (6 of them animated) and 5 extra sounds. It is saved in this browser.</p>
+                        <a class="btn btn-secondary" href="faq.html#faq-premium">How Premium works</a>
                     </div>
                 </div>
+            </section>
 
-            </div>
-        </section>
-
-        <!-- Stats Section -->
-        <section class="social-proof-section" style="padding: 60px 24px 80px;">
-            <div class="section-container">
-                <div class="stats-row" style="margin-top: 0;">
-                    <!-- Live counts: hidden until the counter service (js/core-utils.js VibeCounter) returns real numbers -->
-                    <div class="stat-card reveal" id="liveCardCountCard" hidden>
-                        <div class="stat" id="liveCardCount"></div>
-                        <p class="stat-label">Vibe Checks Sent</p>
-                    </div>
-                    <div class="stat-card reveal">
-                        <div class="stat">18</div>
-                        <p class="stat-label">Card Themes</p>
-                    </div>
-                    <div class="stat-card reveal">
-                        <div class="stat">100%</div>
-                        <p class="stat-label">Free to Send</p>
-                    </div>
-                    <div class="stat-card reveal" id="liveNewsletterCountCard" hidden>
-                        <div class="stat" id="liveNewsletterCount"></div>
-                        <p class="stat-label">Newsletters Sent</p>
+            <!-- Daily email -->
+            <section id="join" class="join band" aria-labelledby="joinTitle">
+                <div class="band-inner join-inner">
+                    <div class="letter">
+                        <p class="eyebrow">The morning email</p>
+                        <h2 class="band-title" id="joinTitle">Tomorrow's word, waiting when you wake up.</h2>
+                        <p class="band-lede">One short affirmation in your inbox each morning. The same one you'll find here, with a button to send it on.</p>
+                        <form id="join-form" class="join-form" novalidate>
+                            <input type="email" id="join-email" class="form-input" placeholder="you@example.com" aria-label="Email address" autocomplete="email" required>
+                            <button type="submit" class="btn btn-primary" id="join-submit">Send me the morning email</button>
+                            <p class="form-error" id="join-error" role="alert" hidden></p>
+                        </form>
+                        <div id="join-success" class="join-success" style="display: none;">
+                            <h3>You're in.</h3>
+                            <p>Look for a welcome email in your inbox. Your first morning affirmation arrives tomorrow.</p>
+                        </div>
+                        <p class="join-note">Free. One email a day. Unsubscribe with one click.</p>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Join Section -->
-        <section id="join" class="cta-section">
-            <div class="section-container">
-                <div class="section-header">
-                    <span class="trust-badge-pill" style="margin-bottom: 12px; display: inline-flex;"><span class="trust-icon">✨</span> The Daily Spark</span>
-                    <h2 class="section-title">A 30-Second Grounding Breath, Every Morning</h2>
-                    <p class="section-subtitle">
-                        One short, kind thought in your inbox each morning to anchor your day.
-                    </p>
+            <!-- Guides -->
+            <section class="guides band" aria-labelledby="guidesTitle">
+                <div class="band-inner">
+                    <p class="eyebrow">When you don't know what to say</p>
+                    <h2 class="band-title" id="guidesTitle">Words for the hard ones.</h2>
+                    <ul class="guide-list">
+                        <li><a href="blog/how-to-check-on-a-friend-who-went-quiet.html"><span>How to check on a friend who went quiet</span></a></li>
+                        <li><a href="blog/what-to-say-when-someone-is-depressed.html"><span>What to say when someone is depressed</span></a></li>
+                        <li><a href="blog/how-to-comfort-someone-who-lost-a-loved-one.html"><span>How to comfort someone who lost a loved one</span></a></li>
+                        <li><a href="blog/what-to-text-someone-having-a-panic-attack.html"><span>What to text someone having a panic attack</span></a></li>
+                    </ul>
+                    <a class="guides-all" href="blog/index.html">All guides and message ideas</a>
                 </div>
-                <form id="join-form" class="join-form" novalidate>
-                    <input type="email" id="join-email" class="form-input" placeholder="your.email@example.com"
-                        aria-label="Email address" required />
-                    <button type="submit" class="btn btn-primary btn-large" id="join-submit">Get Daily Vibes ✨</button>
-                    <p class="form-error" id="join-error" role="alert" hidden></p>
-                </form>
-                <div id="join-success" class="success-message" style="display: none;">
-                    <div class="success-icon">✨</div>
-                    <h3>You're in!</h3>
-                    <p>Check your email for your download links & first affirmation. Your daily morning spark begins tomorrow.</p>
-                </div>
-                <p class="cta-note">100% Free forever • One email a day • Unsubscribe anytime with 1 click</p>
-            </div>
-        </section>
+            </section>
+        </main>
 
-        <!-- Guide Discovery Strip -->
-        <div class="minimal-strip">
-            <a href="blog/index.html" class="guide-discover-link">
-                <span>📖 Looking for the right words? Explore our 26+ Guides & Scripts</span>
-                <span class="arrow">→</span>
-            </a>
-        </div>
-
-        <!-- Footer -->
         <!-- site-footer:start (generated from templates/partials/footer.html) -->
 <footer class="footer">
     <div class="footer-container">
@@ -674,7 +337,7 @@
             <div class="footer-section">
                 <h4>About</h4>
                 <p class="footer-about">
-                    The Vibe Check Project exists to spread positivity through daily affirmations and uplifting messages. Because small words make a big impact.
+                    A kind word for today, and one to send to someone you care about.
                 </p>
             </div>
 
@@ -712,19 +375,18 @@
 
         <div class="footer-bottom">
             <p class="footer-disclaimer"><strong>Disclaimer:</strong> The Vibe Check Project provides peer emotional inspiration and positive support, not clinical therapy, psychotherapy, or medical care. If you or someone you know is in crisis, please call or text <strong>988</strong> (USA/Canada) or text <strong>HOME</strong> to <strong>741741</strong>.</p>
-            <p>✨ The Vibe Check Project • Spreading good since 2025</p>
+            <p>The Vibe Check Project · Spreading good since 2025</p>
         </div>
     </div>
 </footer>
 <!-- site-footer:end -->
     </div>
 
-
-    <!-- Main JavaScript -->
     <script src="js/core-utils.js?v=986d751688" defer></script>
     <script src="js/script.js?v=24567f2261" defer></script>
-    <script src="js/animations.js?v=ac756b2185" defer></script>
-
+    <script src="js/sky.js?v=7a464136e8" defer></script>
+    <script src="js/daily.js?v=956b9deab2" defer></script>
+    <script src="js/home.js?v=188f7c19cc" defer></script>
 </body>
 
 </html>

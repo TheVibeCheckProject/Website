@@ -5,19 +5,23 @@
 
 /* CSS Variables - Design System */
 :root {
-    /* Colors - Warm & Uplifting */
-    --color-primary: #FF6B9D;
-    --color-primary-dark: #E85285;
-    --color-primary-light: #FFB5D1;
-    --color-secondary: #FEC84A;
-    --color-secondary-dark: #F5B82E;
-    --color-accent: #A78BFA;
-    --color-bg-dark: #1A1625;
-    --color-bg-medium: #2D2438;
-    --color-bg-light: #3F3449;
-    --color-text-primary: #FEFEFE;
-    --color-text-secondary: #E0D4F0;
-    --color-text-muted: #B4A5C7;
+    /* Colours: night ink, warm paper, one gold, one rose */
+    --color-primary: #F58FA8;
+    --color-primary-dark: #E66F8E;
+    --color-primary-light: #FFC4D2;
+    --color-secondary: #F6C76B;
+    --color-secondary-dark: #E9B24C;
+    --color-accent: #B8A9E8;
+    --color-bg-dark: #14111F;
+    --color-bg-medium: #1E1A2C;
+    --color-bg-light: #2B2540;
+    --color-text-primary: #FBF6EC;
+    --color-text-secondary: #D9D0E6;
+    --color-text-muted: #A79DBB;
+    --color-paper: #FFF6E4;
+    --color-ink: #14111F;
+    --color-line: rgba(255, 246, 228, 0.1);
+    --color-line-strong: rgba(255, 246, 228, 0.2);
 
     /* Spacing */
     --space-xs: 8px;
@@ -29,9 +33,10 @@
     --space-3xl: 96px;
     --space-4xl: 128px;
 
-    /* Typography */
+    /* Typography: a serif for anything said out loud, a sans for everything you press */
     --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-display: 'Space Grotesk', sans-serif;
+    --font-display: 'Cormorant Garamond', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+    --font-hand: 'Caveat', 'Segoe Print', cursive;
 
     /* Layout Tokens (Canonical Responsive Parity) */
     --max-width: 1440px;
@@ -46,12 +51,13 @@
     --transition-fast: 0.2s ease;
     --transition-base: 0.3s ease;
     --transition-slow: 0.6s ease;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
-    /* Shadows */
-    --shadow-sm: 0 2px 8px rgba(255, 107, 157, 0.1);
-    --shadow-md: 0 4px 16px rgba(255, 107, 157, 0.15);
-    --shadow-lg: 0 8px 32px rgba(255, 107, 157, 0.2);
-    --shadow-xl: 0 12px 48px rgba(255, 107, 157, 0.25);
+    /* Shadows: plain depth, no coloured glow */
+    --shadow-sm: 0 2px 8px rgba(6, 4, 16, 0.3);
+    --shadow-md: 0 6px 20px rgba(6, 4, 16, 0.35);
+    --shadow-lg: 0 14px 40px rgba(6, 4, 16, 0.45);
+    --shadow-xl: 0 24px 64px rgba(6, 4, 16, 0.55);
 }
 
 /* Reset & Base Styles */
@@ -4471,3 +4477,226 @@ html.reduce-motion .blog-showcase-card:hover {
 /* Footer text (shared partial) */
 .footer .footer-about { color: var(--color-text-muted); font-size: 14px; line-height: 1.7; }
 .footer .footer-disclaimer { font-size: 0.82rem; color: var(--color-text-muted); margin-bottom: 10px; line-height: 1.6; }
+
+
+/* ==========================================================================
+   Design refresh (Nov 2026): night ink + warm paper, Cormorant for words, Outfit for controls.
+   This layer sits last on purpose: it restyles the shared chrome (nav, footer, buttons,
+   headings, pills) for every page without touching each page's own rules above.
+   ========================================================================== */
+
+::selection { background: rgba(246, 199, 107, 0.35); color: #fff; }
+
+h1, h2, h3,
+.section-title, .hero-title, .situations-header h1, .modal-header h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.012em;
+}
+
+/* Controls stay in the sans */
+.btn, .filter-pill, .situation-pill, .vibe-action-pill, .nav-crisis-text, .footer-section h4,
+.faq-categories .filter-pill, .situations-categories .filter-pill, .situations-categories .situation-pill {
+    font-family: var(--font-body);
+}
+
+a { text-underline-offset: 3px; }
+
+:focus-visible { outline: 2px solid var(--color-secondary); outline-offset: 3px; border-radius: 4px; }
+
+/* ── Navigation ── */
+nav {
+    background: rgba(20, 17, 31, 0.55);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    backdrop-filter: blur(14px) saturate(1.2);
+    border-bottom: 1px solid transparent;
+}
+
+nav.scrolled, nav.menu-open, nav.nav-open {
+    background: rgba(20, 17, 31, 0.92);
+    border-bottom-color: var(--color-line);
+    box-shadow: none;
+}
+
+.nav-container { padding: 14px clamp(16px, 3vw, 32px); }
+
+.nav-logo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--color-text-primary);
+    white-space: nowrap;
+}
+
+.nav-logo-link:hover { color: var(--color-text-primary); }
+.nav-mark { color: var(--color-secondary); flex: none; transition: transform 0.6s var(--ease-out); }
+.nav-logo-link:hover .nav-mark { transform: rotate(-12deg) translateY(-1px); }
+
+.nav-links { gap: clamp(16px, 2.2vw, 30px); }
+
+.nav-links a {
+    color: var(--color-text-secondary);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.nav-links a:hover { color: var(--color-text-primary); }
+
+.nav-links a::after {
+    bottom: -6px;
+    height: 1px;
+    background: var(--color-secondary);
+}
+
+.nav-links a.nav-cta {
+    color: var(--color-ink);
+    background: var(--color-secondary);
+    font-weight: 600;
+    padding: 9px 18px;
+    border-radius: 999px;
+    transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.nav-links a.nav-cta:hover { color: var(--color-ink); background: #FFD98A; transform: translateY(-1px); }
+.nav-links a.nav-cta::after { display: none; }
+.nav-links a.nav-cta[aria-current="page"] { color: var(--color-ink); }
+
+.nav-crisis-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(245, 143, 168, 0.35);
+    background: rgba(245, 143, 168, 0.08);
+    box-shadow: none;
+    animation: none;
+}
+
+.nav-crisis-badge:hover { background: rgba(245, 143, 168, 0.16); border-color: rgba(245, 143, 168, 0.6); transform: none; box-shadow: none; }
+.nav-links a.nav-crisis-badge::after { display: none; }
+
+.nav-crisis-heart {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    font-size: 0;
+    animation: none;
+}
+
+.nav-crisis-text {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-primary-light);
+}
+
+.nav-hamburger span { background: var(--color-text-primary); }
+
+@media (max-width: 768px) {
+    .nav-logo-link { font-size: 19px; }
+    .nav-links { background: rgba(20, 17, 31, 0.98); border-bottom: 1px solid var(--color-line); gap: 0; }
+    .nav-links a.nav-cta { margin: 10px 24px 6px; text-align: center; padding: 13px 18px; }
+    nav.nav-open .nav-links a[aria-current="page"], nav.menu-open .nav-links a[aria-current="page"] { color: var(--color-secondary); }
+    nav.nav-open .nav-links a.nav-cta[aria-current="page"], nav.menu-open .nav-links a.nav-cta[aria-current="page"] { color: var(--color-ink); }
+}
+
+/* ── Buttons ── */
+.btn {
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0;
+    border-radius: 999px;
+    padding: 15px 28px;
+    transition: transform 0.2s var(--ease-out), background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-primary, a.btn-primary {
+    background: var(--color-secondary);
+    color: var(--color-ink);
+    box-shadow: none;
+}
+
+.btn-primary:hover { background: #FFD98A; color: var(--color-ink); transform: translateY(-2px); box-shadow: none; }
+.btn-primary:active { transform: translateY(0) scale(0.98); }
+
+.btn-secondary {
+    background: rgba(255, 246, 228, 0.04);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-line-strong);
+}
+
+.btn-secondary:hover { background: rgba(255, 246, 228, 0.1); border-color: rgba(255, 246, 228, 0.4); color: var(--color-text-primary); transform: translateY(-2px); }
+
+/* ── Footer ── */
+.footer {
+    background: #100E1A;
+    border-top: 1px solid var(--color-line);
+}
+
+.footer-section h4 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+}
+
+.footer-links a { color: var(--color-text-secondary); }
+.footer-links a:hover { color: var(--color-secondary); }
+.footer .footer-about { font-family: var(--font-display); font-size: 19px; line-height: 1.45; color: var(--color-text-secondary); }
+.footer-bottom { border-top-color: var(--color-line); }
+
+/* ── Toast ── */
+.vibe-toast {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    border: 0;
+    border-radius: 999px;
+    box-shadow: var(--shadow-lg);
+    font-weight: 500;
+}
+
+/* ── Scroll progress: one thin gold line ── */
+.scroll-progress { background: var(--color-secondary); height: 2px; box-shadow: none; }
+#scroll-progress-y { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+    .nav-mark, .btn { transition: none; }
+}
+
+/* ── Headings and pills left over from the pink-to-gold gradient era ── */
+h1 { font-size: clamp(40px, 5.6vw, 68px); line-height: 1.04; }
+
+.hero-title, .situations-header h1, .why-section .section-title, .how-it-works-section .section-title,
+.modal-header h2, h1.my-cards-title, .category-grid-header h2 {
+    background: none;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    -webkit-text-fill-color: currentColor;
+    color: var(--color-text-primary);
+    text-shadow: none;
+}
+
+.situations-header h1 { font-size: clamp(44px, 6vw, 72px); }
+
+.faq-categories .filter-pill.active, .situations-categories .filter-pill.active, .situations-categories .situation-pill.active {
+    background: var(--color-paper);
+    border-color: var(--color-paper);
+    color: var(--color-ink);
+    box-shadow: none;
+}
+
+.situation-card-actions .btn-primary, .demo-cta-btn {
+    background: var(--color-secondary);
+    color: var(--color-ink);
+    box-shadow: none;
+}
+
+.cta-section { background: linear-gradient(180deg, var(--color-bg-medium), var(--color-bg-dark)); }

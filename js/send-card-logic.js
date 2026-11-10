@@ -500,6 +500,34 @@ const backgroundDefs = [
 ];
 selectedBackground = backgroundDefs[0].image;
 
+// ── Seal it until a day ──
+// The date field's value ("2026-11-14") if it is a real day after today and within a year, else ''.
+function readOpenOn() {
+    const el = document.getElementById('openOn');
+    const v = el ? el.value : '';
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return '';
+    const [y, m, d] = v.split('-').map(Number);
+    const day = new Date(y, m - 1, d);
+    if (day.getMonth() !== m - 1) return '';
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const days = Math.round((day - today) / 86400000);
+    return days >= 1 && days <= 366 ? v : '';
+}
+function formatOpenOn(v) {
+    const [y, m, d] = v.split('-').map(Number);
+    return new Date(y, m - 1, d).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+}
+(function initOpenOn() {
+    const el = document.getElementById('openOn');
+    if (!el) return;
+    const pad = (n) => String(n).padStart(2, '0');
+    const iso = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    const now = new Date();
+    el.min = iso(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1));
+    el.max = iso(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 366));
+})();
+
 function copyLink(e) {
     const input = document.getElementById('cardLink');
     const button = e ? e.currentTarget || e.target : document.querySelector('.success-copy-btn');
@@ -713,6 +741,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? window.VibeHistory.generateId()
                 : ('vibe_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 8));
 
+            // "Seal it until a day": a calendar date the recipient's browser compares with its own clock.
+            // Only added when set, so ordinary card links keep exactly the nine fields they always had.
+            const openOn = readOpenOn();
+
             const cardData = {
                 id: cardId,
                 affirmation: selectedAffirmation,
@@ -724,6 +756,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 background: selectedBackground,
                 createdAt: new Date().toISOString()
             };
+            if (openOn) cardData.openOn = openOn;
 
             const encoded = btoa(encodeURIComponent(JSON.stringify(cardData)))
                 .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); // base64url: URL-safe share links
@@ -745,6 +778,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         message: personalMessage,
                         shareUrl: cardUrl,
                         createdAt: cardData.createdAt,
+                        openOn: openOn || '',
                         opened: false
                     });
                 } catch (e) {
@@ -845,6 +879,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     const total = window.VibeHistory.getAll().length;
                     countBadge.textContent = total > 1 ? `${total} vibes saved` : '1 vibe saved';
                 }
+            }
+            const sealedNotice = document.getElementById('sealedNotice');
+            if (sealedNotice) {
+                sealedNotice.hidden = !openOn;
+                if (openOn) sealedNotice.textContent = `Sealed until ${formatOpenOn(openOn)}. Send the link now: it won't open before then.`;
             }
             const cardLinkInput = document.getElementById('cardLink');
             if (cardLinkInput) cardLinkInput.value = cardUrl;

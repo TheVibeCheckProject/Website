@@ -12,10 +12,10 @@
 
 | Page | Role |
 | :--- | :--- |
-| `index.html` | Homepage: Daily Spark, interactive demo card, newsletter signup |
+| `index.html` + `js/home.js` + `js/sky.js` + `js/daily.js` | Homepage: a live sky that follows the visitor's clock, today's sealed affirmation card (same words as the daily email; send, save as image, keep, breathe), the vibe check, newsletter signup |
 | `send-card.html` + `js/card-flow.js` + `js/send-card-logic.js` | Card flow: choose a card in a 3D carousel → fly into it (the portal) → choose or write the words → names, note, sound → Send (paper-plane flight, `js/send-plane.js` + GSAP). `card-flow.js` is the UI; `send-card-logic.js` owns the data, Premium and sending. `?classic=1` opens the previous 3-step form (`send-card-classic.html`, noindex) |
 | `view-card.html` | What the recipient opens (no nav, not indexed) |
-| `my-cards.html` + `js/vibe-history.js` | Sender's history, stored in the browser only (not indexed) |
+| `my-cards.html` + `js/vibe-history.js` + `js/kept.js` | Kept daily affirmations and the sender's history, stored in the browser only (not indexed) |
 | `situations.html`, `faq.html`, `about.html`, `contact.html`, legal pages | Static pages |
 | `blog/` | Articles, listicles, message pages and category hubs (see scripts.md for which are generated) |
 
@@ -29,6 +29,8 @@ A card is not stored anywhere. `send-card-logic.js` turns it into a link:
 JSON { id, recipientName, senderName, affirmation, personalMessage, sound, themeGroup, background, createdAt }
   → encodeURIComponent → btoa → base64url  →  https://thevibecheckproject.com/view-card.html?data=…
 ```
+
+An optional tenth field, `openOn` (`YYYY-MM-DD`), seals the card until that day on the recipient's calendar; it is only present when the sender sets it.
 
 Limits: names 50, affirmation 280, note 500 characters. `view-card.html` decodes it, trims every field, and only accepts backgrounds from `assets/backgrounds/`. Links must keep the `view-card.html` path: old cards and the preview worker depend on it.
 

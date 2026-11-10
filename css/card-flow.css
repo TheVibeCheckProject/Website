@@ -1443,3 +1443,8 @@ body.reduced-motion.is-leaving .portal-card:not(.is-active) { transition: opacit
     /* Free sets on the first line; the Premium collections and "Your own" on the second */
     .portal-topics-dock > .chip-sep:first-of-type { flex-basis: 100%; height: 0; margin: 0; background: none; }
 }
+
+/* Seal it until a day */
+.drawer-input[type="date"] { color-scheme: dark; min-height: 48px; }
+.done-sealed { margin: 14px 0 0; font-size: 15px; color: #FEC84A; }
+.done-sealed[hidden] { display: none; }

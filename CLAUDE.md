@@ -10,7 +10,8 @@ Static site (plain HTML/CSS/JS, no framework) on GitHub Pages behind Cloudflare.
 - No client-side dependencies or frameworks, except GSAP (plus its MorphSVG/DrawSVG/MotionPath plugins, from jsDelivr) for the send animation: approved by the owner 2026-09-29.
 - Card links (`view-card.html?data=`) must stay backward compatible: old cards live in people's messages forever.
 - Never invent testimonials, statistics or user counts. Premium copy must match what it actually unlocks.
-- Browser automation: use Microsoft Edge (`channel: 'msedge'`), never Chrome.
+- Browser automation: use Microsoft Edge (`channel: 'msedge'`), never Chrome. (Cloud sessions without Edge: `VC_TEST_BROWSER=<chromium path> npm run test:e2e`.)
+- Design: tokens and the shared "Design refresh" layer live in `css/styles.css`; no emoji in the nav or buttons, no coloured glows. See `docs/HANDOFF.md` §5a.
 
 ## Weekly guide
 Every Monday the owner's assistant reminds them to say **"write the next guide"**. When they do, read

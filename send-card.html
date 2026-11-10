@@ -93,9 +93,9 @@
     </noscript>
 
 
-    <link rel="stylesheet" href="css/styles.css?v=af8e2c7f4d">
+    <link rel="stylesheet" href="css/styles.css?v=2dece90f78">
     <link rel="stylesheet" href="css/send-card.css?v=33c752f97c">
-    <link rel="stylesheet" href="css/card-flow.css?v=5124407dc8">
+    <link rel="stylesheet" href="css/card-flow.css?v=a507d71494">
 </head>
 
 <body data-design-concept="editorial" class="card-flow-body">
@@ -122,21 +122,27 @@
 <nav id="nav" aria-label="Main">
     <div class="nav-container">
         <div class="nav-logo">
-            <a href="index.html" class="nav-logo-link">✨ The Vibe Check Project</a>
+            <a href="index.html" class="nav-logo-link">
+                <svg class="nav-mark" viewBox="0 0 32 32" width="26" height="26" aria-hidden="true">
+                    <circle cx="16" cy="13" r="7.5" fill="currentColor"/>
+                    <path d="M2 24c4.5-3.4 8-3.4 12.5-.6S23.5 26.8 30 22.5V30H2z" fill="currentColor" opacity=".55"/>
+                </svg>
+                <span>The Vibe Check Project</span>
+            </a>
         </div>
         <ul class="nav-links" id="nav-links">
             <li>
                 <a href="blog/index.html#crisis" class="nav-crisis-badge">
-                    <span class="nav-crisis-heart" aria-hidden="true">❤️</span>
+                    <span class="nav-crisis-heart" aria-hidden="true"></span>
                     <span class="nav-crisis-text">Emergency Support</span>
                 </a>
             </li>
-            <li><a href="send-card.html" class="nav-cta" data-nav="send" aria-current="page">💌 Send a Card</a></li>
             <li><a href="situations.html" data-nav="situations">Situations</a></li>
             <li><a href="blog/index.html" data-nav="guides">Guides</a></li>
             <li><a href="my-cards.html" data-nav="vibes">My Vibes</a></li>
             <li><a href="faq.html" data-nav="faq">FAQ</a></li>
             <li><a href="about.html" data-nav="about">About</a></li>
+            <li><a href="send-card.html" class="nav-cta" data-nav="send" aria-current="page">Send a card</a></li>
         </ul>
         <button class="nav-hamburger" id="nav-hamburger" type="button" aria-label="Open navigation menu"
             aria-expanded="false" aria-controls="nav-links">
@@ -262,6 +268,11 @@
                 <small class="drawer-hint">Leave blank and you'll get a link to text or copy</small>
             </div>
             <div class="drawer-field">
+                <label for="openOn">Seal it until a day (optional)</label>
+                <input type="date" class="drawer-input" id="openOn">
+                <small class="drawer-hint">Send it now. It stays closed until that morning: a birthday, an exam, a first day.</small>
+            </div>
+            <div class="drawer-field">
                 <span class="drawer-label" id="soundLabel">Sound when they open it</span>
                 <div class="sound-row" id="soundRow" role="group" aria-labelledby="soundLabel"></div>
             </div>
@@ -370,6 +381,7 @@
                     <a class="done-share-btn" id="twitterShare" href="https://twitter.com/intent/tweet?text=I%20sent%20you%20a%20Vibe%20Check!%20%E2%9C%A8" target="_blank" rel="noopener noreferrer">X</a>
                 </div>
 
+                <p class="done-sealed" id="sealedNotice" hidden></p>
                 <p class="done-history" id="historySavedNotice" style="display:none;">
                     Saved to <a href="my-cards.html">My Vibes</a> <span class="done-dot" aria-hidden="true">·</span> <span id="historyCountBadge">1 vibe saved</span>
                 </p>
@@ -401,7 +413,7 @@
             <div class="footer-section">
                 <h4>About</h4>
                 <p class="footer-about">
-                    The Vibe Check Project exists to spread positivity through daily affirmations and uplifting messages. Because small words make a big impact.
+                    A kind word for today, and one to send to someone you care about.
                 </p>
             </div>
 
@@ -439,15 +451,15 @@
 
         <div class="footer-bottom">
             <p class="footer-disclaimer"><strong>Disclaimer:</strong> The Vibe Check Project provides peer emotional inspiration and positive support, not clinical therapy, psychotherapy, or medical care. If you or someone you know is in crisis, please call or text <strong>988</strong> (USA/Canada) or text <strong>HOME</strong> to <strong>741741</strong>.</p>
-            <p>✨ The Vibe Check Project • Spreading good since 2025</p>
+            <p>The Vibe Check Project · Spreading good since 2025</p>
         </div>
     </div>
 </footer>
 <!-- site-footer:end -->
 
     <script src="js/core-utils.js?v=986d751688"></script>
-    <script src="js/vibe-history.js?v=b1877229a4"></script>
-    <script src="js/send-card-logic.js?v=e5ebb0a1b3"></script>
+    <script src="js/vibe-history.js?v=146b9c4ba1"></script>
+    <script src="js/send-card-logic.js?v=138377ccf2"></script>
     <script src="js/card-flow.js?v=1312076c31"></script>
 
     <!-- The saved Send button's flight: GSAP (allowed by the owner 2026-09-29) + js/send-plane.js.

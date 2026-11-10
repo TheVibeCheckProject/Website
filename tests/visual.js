@@ -37,7 +37,7 @@ const STATES = {
 
 (async () => {
     const server = await startServer(PORT);
-    const browser = await chromium.launch({ channel: 'msedge' });
+    const browser = await chromium.launch(process.env.VC_TEST_BROWSER ? { executablePath: process.env.VC_TEST_BROWSER } : { channel: 'msedge' });
     const pages = listPages().filter(p => p !== 'view-card.html').map(urlPath).concat([`/view-card.html?data=${card}`]);
     const snapshot = {};
     try {

@@ -1,6 +1,6 @@
 # Handoff — current state of The Vibe Check Project
 
-Last updated: 2026-09-29. Read this first, then `CLAUDE.md` (project rules), `docs/README.md` (how the
+Last updated: 2026-11-10 (redesign on branch `claude/gallant-cerf-nb809b`, see §5a; not yet on `main`). Read this first, then `CLAUDE.md` (project rules), `docs/README.md` (how the
 site works) and `docs/scripts.md` (build scripts, newsletter jobs, workers).
 
 ---
@@ -112,6 +112,51 @@ template pasted by the owner 2026-09-29.
 - Site overhaul merged (PR #1): fabricated claims, AdSense, Amazon links and the owner's name removed;
   Premium verified with Stripe; counters/read receipts; shared nav/footer; SEO; tests.
 
+## 5a. The November 2026 redesign (branch `claude/gallant-cerf-nb809b`, awaiting the owner's go)
+
+The owner asked for a full redesign to beat the competition (affirmation apps, e-card sites, daily
+newsletters). What changed:
+
+- **Look, site-wide:** night ink `#14111F`, warm paper `#FFF6E4`, one gold `#F6C76B`, one rose `#F58FA8`.
+  Cormorant Garamond for anything said out loud, Outfit for controls, Caveat for handwritten asides.
+  Tokens are the `:root` block in `css/styles.css`; the shared chrome (nav, buttons, footer, headings,
+  pills) is restyled by the "Design refresh" layer at the **end** of `css/styles.css`. New nav partial
+  (SVG mark, no emoji, gold "Send a card" pill). Every page loads one shared Google Fonts URL.
+- **Homepage rebuilt** (`index.html`, `css/home.css`, `js/home.js`; `js/animations.js` deleted):
+  - **The sky** (`js/sky.js`, `window.VibeSky`): a canvas behind the whole page painted for the
+    visitor's own clock: colours by hour, sun or moon in its real phase, stars, drifting cloud, seeded
+    hills, a rare shooting star on clear nights. 15 fps, 1x pixels, paused when hidden (the one-fan
+    laptop). `?sky=21.5` previews an hour. Reduced motion = one still frame a minute.
+  - **Today's card** (`js/daily.js`, `window.VibeDaily`): sealed paper card, one tap breaks the seal
+    and turns it over. The words are **the same as that morning's email** (read from
+    `newsletter-content/batch.json`, which is published with the site; a fixed list picked by date is
+    the fallback). Then: send it (name field → `send-card.html?message=&recipient=`), save it as an
+    image (phone wallpaper 1179×2556 or square 1080, drawn by `VibeSky.renderImage`, share sheet on
+    phones), keep it, copy it, breathe with it (three slow breaths). Opened days, the streak and kept
+    days live in `localStorage.vc_daily`, nowhere else.
+  - "Today's card has been opened N times" uses the existing counter worker (`daily-YYYY-MM-DD`);
+    it only shows when the worker returns 2 or more. No worker change was needed.
+  - **The vibe check:** five answers (Heavy, Restless, Worn out, Steady, Bright). Each changes the
+    sky's weather and answers with words, a send button and a real guide. Stored in the browser only.
+  - Join form keeps its IDs (`initJoinForm` in `js/script.js`); the success message no longer
+    promises "download links" (nothing sent them).
+- **Sealed cards (new, free):** "Seal it until a day" in the note panel adds an optional `openOn`
+  (`YYYY-MM-DD`) to the card link. `view-card.html` keeps the card closed until that day on the
+  recipient's own calendar, shows the date and offers a calendar file (.ics). The sender's preview is
+  never sealed. Links without `openOn` are untouched (still the same nine fields). It is a courtesy
+  seal, not security: the words are in the link.
+- **My Vibes:** new "Kept days" gallery (`js/kept.js`), each day under the sky it was opened in, with
+  Send / Wallpaper / Remove. Sent cards show "Sealed until …".
+- **Tests:** `VC_TEST_BROWSER=/path/to/chromium npm run test:e2e` runs the browser tests without Edge
+  (cloud sessions); on the owner's machine nothing changes (Edge). New journeys: homepage (8) and
+  sealed cards (9). Pages no longer throw when the Lucide icon CDN is blocked.
+- **Not changed on purpose:** the card flow's mechanics and the recipient page (owner-approved in
+  §6.3), the emails, the workers, Premium rules and price.
+
+**Needs a server, so proposed rather than built:** emailing a sealed card on its day (today the sender
+shares the link and the page holds it shut); a real, tamper-proof seal; a daily push notification;
+syncing Premium / kept days across devices; group cards signed by several people.
+
 ## 6. The card flow (live since 2026-09-29)
 
 `send-card.html` is the site's main flow. Full build notes: the **Portal Integration Guide** (a Claude
@@ -180,7 +225,7 @@ reduced motion → crossfades, no particles.
 3. **Premium backgrounds:** the owner plans to make more. Each needs its file in `assets/backgrounds/`
    and an entry in `backgroundDefs` with 3 `light` colours; never rename or delete existing files (old
    card links point at them). Keep the "17 more backgrounds" count true everywhere it appears: the Premium sheet in
-   `send-card.html`, `about.html` (2×), `faq.html` (2×, incl. JSON-LD), `docs/README.md`, and welcome
+   `send-card.html`, `index.html` (the Premium note), `about.html` (2×), `faq.html` (2×, incl. JSON-LD), `docs/README.md`, and welcome
    email 3 (`docs/email/welcome-email-3.html` + MailerLite). New painted scenes: add to `scenes.html`,
    render with `node scripts/marketing/backgrounds/scenes.js --site <name>`.
 4. **Still worth checking after launch:** a real Stripe purchase round trip (lands back on the same card

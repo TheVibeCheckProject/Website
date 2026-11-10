@@ -179,6 +179,68 @@ if (isSenderPreview) {
   if (badge) badge.textContent = `👀 Preview: this is what ${vibeCard.recipientName || 'they'} will see`;
 }
 
+// ── Sealed until a day ──
+// The sender can pick a day (card.openOn). Until that day arrives on this device's calendar the
+// card stays closed and says when it opens. The sender's own preview is never sealed.
+function sealedUntil() {
+  if (!vibeCard || !vibeCard.openOn || isSenderPreview) return null;
+  const [y, m, d] = vibeCard.openOn.split('-').map(Number);
+  const day = new Date(y, m - 1, d);
+  if (isNaN(day) || day.getMonth() !== m - 1) return null;
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const days = Math.round((day - today) / 86400000);
+  return days >= 1 && days <= 400 ? { day, days } : null;
+}
+(function initSeal() {
+  if (!vibeCard || !vibeCard.openOn) return;
+  const panel = document.getElementById('sealedPanel');
+  const longDay = (d) => d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  const seal = sealedUntil();
+  if (!seal) {
+    if (isSenderPreview) {
+      const [y, m, d] = vibeCard.openOn.split('-').map(Number);
+      const badge = document.getElementById('headerBadge');
+      if (badge) badge.textContent += ` (sealed for them until ${longDay(new Date(y, m - 1, d))})`;
+    }
+    return;
+  }
+  const sender = (vibeCard.senderName || '').trim();
+  document.body.classList.add('is-sealed');
+  document.getElementById('sealedTitle').textContent = `Sealed until ${longDay(seal.day)}`;
+  document.getElementById('sealedSub').textContent =
+    `${sender || 'Someone'} wants you to open this on the day. ${seal.days === 1 ? 'One more sleep.' : `${seal.days} days to go.`}`;
+  const hint = document.querySelector('.rc-front-hint');
+  if (hint) hint.textContent = seal.days === 1 ? 'Opens tomorrow' : `Opens in ${seal.days} days`;
+  const flip = document.getElementById('flipCard');
+  flip.setAttribute('aria-label', `Your card is sealed until ${longDay(seal.day)}`);
+  panel.hidden = false;
+
+  // A calendar entry on the day, with the link back to this card (a file made right here)
+  document.getElementById('sealedRemind').addEventListener('click', () => {
+    const p = (n) => String(n).padStart(2, '0');
+    const stamp = (d) => `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}`;
+    const next = new Date(seal.day.getFullYear(), seal.day.getMonth(), seal.day.getDate() + 1);
+    const esc = (s) => String(s).replace(/[\\;,]/g, (c) => '\\' + c).replace(/\n/g, '\\n');
+    const ics = [
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//The Vibe Check Project//Sealed card//EN', 'BEGIN:VEVENT',
+      `UID:${(vibeCard.id || 'card')}-${stamp(seal.day)}@thevibecheckproject.com`,
+      `DTSTAMP:${new Date().toISOString().replace(/[-:]|\.\d{3}/g, '')}`,
+      `DTSTART;VALUE=DATE:${stamp(seal.day)}`, `DTEND;VALUE=DATE:${stamp(next)}`,
+      `SUMMARY:${esc(`Open your card${sender ? ` from ${sender}` : ''}`)}`,
+      `DESCRIPTION:${esc(`Your card opens today: ${location.href}`)}`,
+      `URL:${location.href}`, 'END:VEVENT', 'END:VCALENDAR',
+    ].join('\r\n');
+    const url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
+    const a = document.createElement('a');
+    a.href = url; a.download = 'open-your-card.ics';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    if (window.VibeTelemetry) window.VibeTelemetry.track('sealed_card_reminder');
+  });
+  if (window.VibeTelemetry) window.VibeTelemetry.track('sealed_card_viewed', { days: seal.days });
+})();
+
 // Desktop: the reply panel has its column from the start (no layout shift later), so the
 // card sits in the visual centre until the reveal, then glides into its place on the left.
 const desktopMQ = window.matchMedia('(min-width: 901px)');
@@ -241,6 +303,17 @@ if (window.matchMedia('(pointer: fine)').matches && !reducedMotion) {
 }
 
 flipCard.addEventListener('click', () => {
+  // Still sealed (checked on every tap, so it opens if the day arrives while the page is open)
+  if (!cardOpen && sealedUntil()) {
+    flipCard.classList.remove('is-nudged');
+    void flipCard.offsetWidth;
+    flipCard.classList.add('is-nudged');
+    return;
+  }
+  if (document.body.classList.contains('is-sealed')) {
+    document.body.classList.remove('is-sealed');
+    document.getElementById('sealedPanel').hidden = true;
+  }
   cardOpen = !cardOpen;
   inner.style.transition = '';
   inner.style.transform = '';

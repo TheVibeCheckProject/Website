@@ -241,6 +241,24 @@ function sealedUntil() {
   if (window.VibeTelemetry) window.VibeTelemetry.track('sealed_card_viewed', { days: seal.days });
 })();
 
+// ── Keep the card as an image (phone wallpaper or square) ──
+// The control appears once the card has been opened (body.has-opened, set at the first flip),
+// so a card sealed until a day can't be saved before it opens.
+if (vibeCard && window.VibeCardImage) {
+  window.VibeCardImage.mount(document.getElementById('saveImageCard'), {
+    where: 'recipient',
+    allow: () => document.body.classList.contains('has-opened') && !sealedUntil(),
+    card: () => ({
+      background: window.resolveVibeBackground(vibeCard.background) || '',
+      themeGroup: vibeCard.themeGroup,
+      affirmation: vibeCard.affirmation,
+      recipientName: vibeCard.recipientName,
+      senderName: vibeCard.senderName,
+      video: document.getElementById('backVideo')
+    })
+  });
+}
+
 // Desktop: the reply panel has its column from the start (no layout shift later), so the
 // card sits in the visual centre until the reveal, then glides into its place on the left.
 const desktopMQ = window.matchMedia('(min-width: 901px)');
@@ -278,6 +296,9 @@ if (soundToggleBtn) {
     isSoundMuted = !isSoundMuted;
     try { localStorage.setItem('vibe_sound_muted', String(isSoundMuted)); } catch (err) { }
     updateSoundToggleUI();
+    soundToggleBtn.classList.remove('is-toggled');
+    void soundToggleBtn.offsetWidth;
+    soundToggleBtn.classList.add('is-toggled');
   });
 }
 function playCardSound() {
@@ -319,6 +340,7 @@ flipCard.addEventListener('click', () => {
   inner.style.transform = '';
   flipCard.classList.toggle('flipped', cardOpen);
   document.body.classList.toggle('is-open', cardOpen);
+  if (cardOpen) document.body.classList.add('has-opened');
   flipCard.setAttribute('aria-label', cardOpen ? 'Close your card' : 'Open your card');
 
   const video = document.getElementById('backVideo');

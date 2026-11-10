@@ -92,12 +92,10 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="css/styles.css?v=6b0bd320f0">
-
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+    <link rel="stylesheet" href="css/about.css?v=0">
 </head>
 
-<body data-design-concept="editorial">
+<body class="about-page" data-design-concept="editorial">
     <!-- Navigation -->
     <!-- site-nav:start (generated from templates/partials/nav.html — edit there, then npm run build:layout) -->
 <nav id="nav" aria-label="Main">
@@ -135,170 +133,159 @@
 </nav>
 <!-- site-nav:end -->
 
-    <!-- Hero Section -->
-    <section class="hero" style="min-height: 60vh;">
-        <div class="hero-bg"
-            style="background-image: url('https://images.unsplash.com/photo-1531747056595-07f6cbbe10ad?w=1920&q=80');">
-        </div>
-        <div class="hero-content">
-            <h1 style="margin-bottom: var(--space-md);">About The Vibe Check Project</h1>
-            <p class="hero-subtitle">
-                A free tool for sending the right words to the right person at exactly the right time.
-            </p>
-        </div>
-    </section>
+    <main class="ab-main">
 
-    <!-- Our Story -->
-    <section class="why-section">
-        <div class="section-container">
-            <div class="section-header">
-                <h2 class="section-title">Our Story</h2>
-                <p class="section-subtitle">
-                    It started with a simple problem: knowing someone needs support but not knowing what to say.
-                </p>
-            </div>
-
-            <div style="max-width: 800px; margin: 0 auto;">
-                <div class="why-card" style="margin-top: var(--space-xl);">
-                    <h3>How We Started</h3>
-                    <p>
-                        Most of us have been there — a friend goes quiet, someone you love is going through a breakup,
-                        a coworker just got some hard news. You want to reach out. You want to say something real.
-                        But the blank text message cursor just blinks at you, and you end up sending nothing.
-                    </p>
-                    <p>
-                        The Vibe Check Project was built for that exact moment. A place where you can pick a card that
-                        says what you're feeling, write a short note, and send it — free, no account needed, no
-                        friction.
-                        Because emotional support shouldn't require a subscription or a perfect first draft.
-                    </p>
-                </div>
-
-                <div class="why-card" style="margin-top: var(--space-lg);">
-                    <h3>What We Build</h3>
-                    <p>
-                        Our core product is simple: a free affirmation card sender. Pick a design, write a message,
-                        share a link. The recipient gets a beautiful card they can open anywhere, on any device.
-                    </p>
-                    <p>
-                        For people who want more, a one-time Premium Unlock ($4.99) adds writing your own affirmation, the Calm, Celebrate, Love and Healing collections, 17 premium backgrounds (6 of them animated) and 5 extra sounds. It's saved in the browser you buy it on.
-                    </p>
-                </div>
-
-                <div class="why-card" style="margin-top: var(--space-lg);">
-                    <h3>Our Approach</h3>
-                    <p>
-                        Every affirmation and every guide is written for a specific, real emotional situation, not generic wellness platitudes. If you've ever searched "what to text someone having a panic
-                        attack" at 2am and found nothing useful, that's exactly who we're building for.
-                    </p>
-                    <p>
-                        The site is free. Always will be. The premium option exists so we can keep the lights on and
-                        keep building. Every Premium Unlock directly supports new card designs, new affirmations, and
-                        new features.
-                    </p>
+        <!-- What this is -->
+        <header class="ab-hero ab-wrap">
+            <p class="eyebrow" data-reveal>About The Vibe Check Project</p>
+            <h1 class="ab-title" data-reveal style="--d:60ms">A free tool for sending the right words to the right person, <em>at exactly the right time.</em></h1>
+            <div class="ab-hero-foot">
+                <p class="ab-aside" data-reveal style="--d:140ms">no account,<br>nothing to install</p>
+                <div class="ab-lede" data-reveal style="--d:140ms">
+                    <p>Most of us have been there. A friend goes quiet, someone you love is going through a breakup, a coworker just got some hard news. You want to say something real, but the cursor just blinks at you, and you end up sending nothing.</p>
+                    <p>The Vibe Check Project was built for that exact moment: pick a card that says what you're feeling, add a short note, and send it. Every day there is also one kind word waiting for you on the homepage.</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </header>
 
-    <!-- Mission & Values -->
-    <section class="how-it-works-section">
-        <div class="section-container">
-            <div class="section-header">
-                <h2 class="section-title">What We're About</h2>
+        <!-- How it works -->
+        <section class="ab-section ab-wrap" aria-labelledby="howTitle">
+            <div class="ab-section-head" data-reveal>
+                <p class="eyebrow">How it works</p>
+                <h2 class="ab-h2" id="howTitle">Three steps, and the third is theirs.</h2>
             </div>
+            <ol class="ab-steps">
+                <li class="ab-step" data-reveal>
+                    <span class="ab-step-n" aria-hidden="true">1</span>
+                    <h3>Pick a card and the words</h3>
+                    <p>Choose a design, then choose the words that fit, from general encouragement to sets written for specific situations.</p>
+                </li>
+                <li class="ab-step" data-reveal style="--d:80ms">
+                    <span class="ab-step-n" aria-hidden="true">2</span>
+                    <h3>Add their name and a note</h3>
+                    <p>Sign it or leave it anonymous. If it is for a particular day, seal it until that date and it stays closed until then.</p>
+                </li>
+                <li class="ab-step" data-reveal style="--d:160ms">
+                    <span class="ab-step-n" aria-hidden="true">3</span>
+                    <h3>Share the link</h3>
+                    <p>You get a link to text or email. They open it in a browser, on any device, with no app and no account. Every card ends with a way to send one back.</p>
+                </li>
+            </ol>
+        </section>
 
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number" style="background: var(--color-primary);">1</div>
-                    <h3>Zero Friction Kindness</h3>
-                    <p>
-                        Sending support shouldn't require an account, a credit card, or 20 minutes. The core experience
-                        is free, fast, and works on any device. If someone needs a card at 11pm, we're here.
-                    </p>
-                </div>
-
-                <div class="step">
-                    <div class="step-number" style="background: var(--color-secondary);">2</div>
-                    <h3>Real Words for Real Situations</h3>
-                    <p>
-                        No filler affirmations. Every card, every email, every blog post is written for a specific
-                        human situation — because "you've got this!" means nothing when someone is actually struggling.
-                    </p>
-                </div>
-
-                <div class="step">
-                    <div class="step-number" style="background: var(--color-accent);">3</div>
-                    <h3>Transparent & Community Supported</h3>
-                    <p>
-                        We never sell your data. We're a small independent project supported by the people who find value in what we make. No ads, no data selling: Premium and tips keep the core experience free.
-                    </p>
-                </div>
+        <!-- What we're about -->
+        <section class="ab-section ab-wrap" aria-labelledby="aboutTitle">
+            <div class="ab-section-head" data-reveal>
+                <p class="eyebrow">What we're about</p>
+                <h2 class="ab-h2" id="aboutTitle">Small, plain, and on your side.</h2>
             </div>
-        </div>
-    </section>
+            <dl class="ab-values">
+                <div class="ab-value" data-reveal>
+                    <dt>Zero friction kindness</dt>
+                    <dd>Sending support shouldn't require an account, a credit card, or 20 minutes. The core experience is free, fast, and works on any device.</dd>
+                </div>
+                <div class="ab-value" data-reveal>
+                    <dt>Real words for real situations</dt>
+                    <dd>Every card, every email and every guide is written for a specific human situation, because &ldquo;you've got this!&rdquo; means nothing when someone is actually struggling.</dd>
+                </div>
+                <div class="ab-value" data-reveal>
+                    <dt>Transparent and community supported</dt>
+                    <dd>A small independent project, supported by the people who find value in what it makes. No ads and no data selling: Premium and tips keep the core experience free.</dd>
+                </div>
+                <div class="ab-value" data-reveal>
+                    <dt>Encouragement, not treatment</dt>
+                    <dd>This is peer support and kind words, not therapy or medical care. If you or someone you know is in crisis, go straight to <a href="blog/index.html#crisis">emergency support</a>.</dd>
+                </div>
+            </dl>
+        </section>
 
-    <!-- Support the Project -->
-    <section class="features-section">
-        <div class="section-container">
-            <div class="section-header">
-                <h2 class="section-title">Support the Project</h2>
-                <p class="section-subtitle">
-                    If The Vibe Check Project has ever helped you find the right words, here's how to keep it going.
-                </p>
+        <!-- Free and Premium -->
+        <section class="ab-section ab-wrap" aria-labelledby="priceTitle">
+            <div class="ab-section-head" data-reveal>
+                <p class="eyebrow">What it costs</p>
+                <h2 class="ab-h2" id="priceTitle">Sending a card is free. Premium is extra ways to say it.</h2>
             </div>
-
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon"
-                        style="background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));">
-                        <i data-lucide="coffee"></i>
+            <div class="ab-plans">
+                <article class="ab-plan" data-reveal>
+                    <p class="ab-plan-label">Free</p>
+                    <p class="ab-price">$0</p>
+                    <p class="ab-plan-sub">No account and no card details.</p>
+                    <ul class="ab-list">
+                        <li><svg class="ab-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Making and sending cards</span></li>
+                        <li><svg class="ab-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>The free card designs and the free sets of words, including the ones written for specific situations</span></li>
+                        <li><svg class="ab-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Sealing a card until a date</span></li>
+                        <li><svg class="ab-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Today's affirmation, and the morning email if you want it</span></li>
+                        <li><svg class="ab-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Every guide and message list</span></li>
+                    </ul>
+                    <a class="btn btn-secondary" href="send-card.html">Send a free card</a>
+                </article>
+                <article class="ab-plan ab-plan--premium" data-reveal style="--d:80ms">
+                    <p class="ab-plan-label">Premium</p>
+                    <p class="ab-price">$4.99 <small>one-time</small></p>
+                    <p class="ab-plan-sub">A single payment. No subscription.</p>
+                    <ul class="ab-list">
+                        <li><svg class="ab-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Writing your own words on a card</span></li>
+                        <li><svg class="ab-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>The Calm, Celebrate, Love and Healing collections</span></li>
+                        <li><svg class="ab-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>17 more backgrounds (6 of them animated)</span></li>
+                        <li><svg class="ab-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>5 extra sounds</span></li>
+                    </ul>
+                    <p class="ab-plan-note">Premium is stored in this browser: it unlocks in the browser you buy it in.</p>
+                    <div class="ab-plan-actions">
+                        <a class="btn btn-primary" href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener noreferrer">Unlock Premium, $4.99</a>
+                        <a class="ab-textlink" href="faq.html#faq-premium">How Premium works <svg class="ab-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
                     </div>
-                    <h3>Buy Us a Coffee</h3>
-                    <p>
-                        Not ready for anything else? A one-time tip on Ko-fi helps keep the project running and is
-                        deeply appreciated.
-                    </p>
-                    <a href="https://ko-fi.com/thevibecheckproject?utm_source=about&utm_campaign=about-page"
-                        target="_blank" rel="noopener noreferrer" class="btn btn-primary"
-                        style="margin-top: var(--space-md); display: inline-block;">
-                        Tip on Ko-fi ☕
-                    </a>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon"
-                        style="background: linear-gradient(135deg, var(--color-secondary), var(--color-accent));">
-                        <i data-lucide="package"></i>
-                    </div>
-                    <h3>Premium Unlock</h3>
-                    <p>
-                        A one-time $4.99 payment unlocks writing your own affirmation, the Calm, Celebrate, Love and Healing collections, 17 premium backgrounds (6 of them animated) and 5 extra sounds. No subscription.
-                    </p>
-                    <a href="https://buy.stripe.com/14A8wPd160dd9Cz0n11VK02" target="_blank" rel="noopener noreferrer"
-                        class="btn btn-secondary" style="margin-top: var(--space-md); display: inline-block;">
-                        Unlock Premium — $4.99 →
-                    </a>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon"
-                        style="background: linear-gradient(135deg, var(--color-accent), var(--color-primary));">
-                        <i data-lucide="send"></i>
-                    </div>
-                    <h3>Just Use It</h3>
-                    <p>
-                        Sending a card to someone helps them and helps us. Every person who receives a card is a
-                        potential new sender. Share the vibes.
-                    </p>
-                    <a href="send-card.html" class="btn btn-secondary"
-                        style="margin-top: var(--space-md); display: inline-block;">
-                        Send a Free Card →
-                    </a>
-                </div>
+                </article>
             </div>
-        </div>
-    </section>
+            <p class="ab-support" data-reveal>Premium and tips are what keep the project running. If it has ever helped you find the right words, a one-time <a href="https://ko-fi.com/thevibecheckproject?utm_source=about&amp;utm_campaign=about-page" target="_blank" rel="noopener noreferrer">tip on Ko-fi</a> helps too.</p>
+        </section>
+
+        <!-- Privacy -->
+        <section class="ab-section ab-wrap" aria-labelledby="privacyTitle">
+            <div class="ab-section-head" data-reveal>
+                <p class="eyebrow">Privacy</p>
+                <h2 class="ab-h2" id="privacyTitle">What happens to your words.</h2>
+            </div>
+            <ul class="ab-privacy">
+                <li data-reveal>
+                    <svg class="ab-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg>
+                    <h3>The card travels inside its link</h3>
+                    <p>Cards are not stored on a server. The names, the words and your note are packed into the link you share, so the card exists wherever that link goes, and anyone who has the link can open it.</p>
+                </li>
+                <li data-reveal style="--d:80ms">
+                    <svg class="ab-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5A1.5 1.5 0 0 1 5.5 5h13A1.5 1.5 0 0 1 20 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><path d="M4 9.5h16"/><path d="M7 7.3h.01M9.5 7.3h.01"/></svg>
+                    <h3>Your history stays in this browser</h3>
+                    <p>My Vibes (the cards you have sent), the days you kept and your streak are saved in this browser only. They don't follow you to another device, and clearing your browser data removes them.</p>
+                </li>
+                <li data-reveal>
+                    <svg class="ab-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 6h15A1.5 1.5 0 0 1 21 7.500v9a1.500 1.500 0 0 1-1.5 1.5h-15A1.500 1.500 0 0 1 3 16.500v-9A1.500 1.500 0 0 1 4.500 6z"/><path d="m3.500 7.500 8.500 6 8.500-6"/></svg>
+                    <h3>Two optional fields do send something</h3>
+                    <p>If you type their email address, the card link is emailed to them through EmailJS, with the names you entered. If you ask for the 30-day reminder or the morning email, your email address goes to MailerLite, which sends those emails.</p>
+                </li>
+                <li data-reveal style="--d:80ms">
+                    <svg class="ab-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19V11"/><path d="M12 19V5"/><path d="M19 19v-5"/></svg>
+                    <h3>What gets counted</h3>
+                    <p>Simple counters note that a card was sent or opened (that is how My Vibes can show a card as opened), never what it said. Pages also load Microsoft Clarity, which shows how the site is used. Premium is paid through Stripe; your card number never reaches us.</p>
+                </li>
+            </ul>
+            <p class="ab-privacy-foot" data-reveal>We never sell your data, and there are no ads. <a class="ab-textlink" href="privacy.html">Read the privacy policy <svg class="ab-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></p>
+        </section>
+
+        <!-- The letter -->
+        <section class="ab-cta ab-wrap" aria-labelledby="ctaTitle">
+            <div class="ab-letter" data-reveal="scale">
+                <p class="eyebrow">Your turn</p>
+                <h2 class="ab-h2" id="ctaTitle">Someone came to mind while you were reading this.</h2>
+                <p>Send them a card. Or start with the kind word that is waiting for you today.</p>
+                <div class="ab-letter-actions">
+                    <a class="btn btn-primary" href="send-card.html">Make a card <svg class="ab-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+                    <a class="btn ab-btn-line" href="index.html#today">Open today's affirmation</a>
+                </div>
+                <span class="ab-letter-note">no reason needed</span>
+            </div>
+        </section>
+
+        <p class="ab-contact ab-wrap" data-reveal>Questions, or something not working? Write to <a href="mailto:WeCare@TheVibeCheckProject.com">WeCare@TheVibeCheckProject.com</a> or use the <a href="contact.html">contact page</a>.</p>
+    </main>
 
     <!-- Footer -->
     <!-- site-footer:start (generated from templates/partials/footer.html) -->
@@ -355,7 +342,6 @@
     <!-- JavaScript -->
     <script src="js/core-utils.js?v=864a06025c" defer></script>
     <script src="js/script.js?v=24567f2261" defer></script>
-    <script>document.addEventListener('DOMContentLoaded', () => window.lucide && lucide.createIcons());</script>
 </body>
 
 </html>

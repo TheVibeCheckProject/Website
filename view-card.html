@@ -60,6 +60,7 @@
 
     /* Only shown once the card is opened / read (css/view-card.css animates them in) */
     .card-message,
+    .rc-save,
     #postCardContent {
       opacity: 0;
       visibility: hidden;
@@ -199,6 +200,9 @@
 
       <!-- The sender's note -->
       <div class="card-message" id="cardMessage" aria-live="polite"></div>
+
+      <!-- Keep the card as an image: shown once the card has been opened (js/card-image.js) -->
+      <div class="rc-save" id="saveImageCard" data-menu="up"></div>
     </div>
 
     <!-- After they've had time to read: a quiet way to send one back -->
@@ -233,6 +237,7 @@
 
   <script src="js/core-utils.js?v=864a06025c"></script>
   <script src="js/vibe-history.js?v=146b9c4ba1"></script>
+  <script src="js/card-image.js?v=0"></script>
   <script src="js/view-card.js?v=e840a639c2"></script>
 
 </body>

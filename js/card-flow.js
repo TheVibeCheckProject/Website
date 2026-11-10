@@ -527,9 +527,9 @@
                     : '<span class="portal-quote-text is-invite">Write your own words</span>';
                 phraseEl.innerHTML = `
                     <div class="portal-phrase-inner">
-                        <span class="portal-vibe-tag">✍️ Your own words <span class="premium-pill">🔒 PREMIUM</span></span>
+                        <span class="portal-vibe-tag">✍️ Your own words${OWN_WORDS_FREE ? '' : ' <span class="premium-pill">🔒 PREMIUM</span>'}</span>
                         ${text}
-                        <span class="write-hint">${isPremium ? (customText ? 'Tap to edit' : 'Tap to start writing') : 'Tap to see what Premium includes'}</span>
+                        <span class="write-hint">${canWriteOwn() ? (customText ? 'Tap to edit' : 'Tap to start writing') : 'Tap to see what Premium includes'}</span>
                     </div>`;
             } else {
                 phraseEl.innerHTML = `
@@ -633,7 +633,7 @@
         let label = 'Next →', unlock = false;
         if (isWriting()) {
             ctaAction = () => { closeComposer(); if (customText) openDrawer(true); };
-        } else if (item.write && !isPremium) {
+        } else if (item.write && !canWriteOwn()) {
             label = 'Unlock Premium — $4.99'; unlock = true;
             ctaAction = () => offerPremium('write_own', 'Writing your own words', { then: 'write-own' });
         } else if (item.write && !customText) {
@@ -645,12 +645,20 @@
         } else {
             ctaAction = () => openDrawer(true);
         }
-        mainCta.textContent = label;
+        if (mainCta.textContent !== label) {
+            mainCta.textContent = label;
+            // A quick pop when the button starts saying something else
+            if (!reduced && document.body.classList.contains('is-inside')) {
+                mainCta.classList.remove('is-changed');
+                void mainCta.offsetWidth;
+                mainCta.classList.add('is-changed');
+            }
+        }
         mainCta.classList.toggle('is-unlock', unlock);
     }
 
     function onWriteStop() {
-        if (isPremium) openComposer();
+        if (canWriteOwn()) openComposer();
         else offerPremium('write_own', 'Writing your own words', { then: 'write-own' });
     }
 
@@ -697,12 +705,12 @@
         if (set.premium) track('premium_category_viewed', { category: set.id });
     }
 
-    /* ========== 4. Your own words (Premium) ========== */
+    /* ========== 4. Your own words (Premium, or everyone when OWN_WORDS_FREE) ========== */
     const isWriting = () => document.body.classList.contains('is-writing');
     let promptTimer = 0, promptIdx = 0;
 
     function openComposer() {
-        if (!isPremium) return;
+        if (!canWriteOwn()) return;
         const writeIdx = wheelItems.findIndex(it => it.write);
         if (wheel.currentIndex !== writeIdx) scrollToIndex(writeIdx, true);
         document.body.classList.add('is-writing');
@@ -776,10 +784,10 @@
             }, set.premium ? ' is-premium-set' : '', set.id);
         });
         addSep();
-        addChip(`<span aria-hidden="true">✍️</span><span>Your own</span>${isPremium ? '' : '<span class="chip-lock" aria-hidden="true">🔒</span><span class="flow-sr"> (Premium)</span>'}`, () => {
+        addChip(`<span aria-hidden="true">✍️</span><span>Your own</span>${canWriteOwn() ? '' : '<span class="chip-lock" aria-hidden="true">🔒</span><span class="flow-sr"> (Premium)</span>'}`, () => {
             scrollToIndex(wheelItems.findIndex(it => it.write));
             setTimeout(onWriteStop, reduced ? 0 : 500);
-        }, ' is-premium-set');
+        }, OWN_WORDS_FREE ? '' : ' is-premium-set');
     }
 
     /* ========== 5. Note panel (#cardForm) ========== */
@@ -898,6 +906,42 @@
         // Hold on "Thanks for sending a vibe!" long enough to read it before the success screen
         await wait((window.SendPlane.FLIGHT + 0.6) * 1000 + SENT_HOLD_MS);
         $('sendAnnounce').textContent = 'Sent';
+    }
+
+    // The card as it stands, for "Save image" (js/card-image.js draws it)
+    function cardForImage(video) {
+        const bg = backgroundDefs.find(b => b.image === selectedBackground) || backgroundDefs[currentCardIdx];
+        return {
+            background: bg.image,
+            light: bg.light,
+            themeGroup: selectedThemeGroup,
+            affirmation: selectedAffirmation,
+            recipientName: (($('recipientName') || {}).value || '').trim(),
+            senderName: (($('senderName') || {}).value || '').trim(),
+            video: bg.isVideo ? video || portal.video : null
+        };
+    }
+    function initSaveImage() {
+        if (!window.VibeCardImage) return;
+        // Before sending (the note panel): make a card and keep it, without sending it.
+        // The same Premium rule as sending.
+        window.VibeCardImage.mount($('saveImageMaker'), {
+            where: 'maker',
+            card: () => cardForImage(),
+            allow: () => {
+                if (!selectedAffirmation) { showToast('Pick the words first ✨', '💌'); return false; }
+                const block = premiumBlockFor(selectedAffirmation, selectedBackground);
+                if (!block) return true;
+                showToast(block.toast, '🔒');
+                offerPremium(block.context === 'write_own' ? 'write_own' : block.context + '_at_save', block.what, {});
+                return false;
+            }
+        });
+        // After sending (the success screen)
+        window.VibeCardImage.mount($('saveImageDone'), {
+            where: 'success',
+            card: () => cardForImage($('doneCard').querySelector('video'))
+        });
     }
 
     function showSuccess() {
@@ -1019,8 +1063,8 @@
         const idx = Math.max(0, backgroundDefs.findIndex(b => b.id === targetBg));
         selectedSound = (isPremium && t.premSound) ? t.premSound : t.sound;
         extraSet = {
-            id: 'preset-' + t.id, name: `${t.emoji} ${t.title}`, themeGroup: t.themeGroup || 'default',
-            items: [{ text: t.affirmation, vibe: t.title }, ...WORD_SETS[0].items]
+            id: 'preset-' + t.id, name: t.title, themeGroup: t.themeGroup || 'default',
+            items: [{ text: t.affirmation, vibe: t.title }, ...presetCompanions(t)]
         };
         activeSet = extraSet;
         initTopics();
@@ -1033,6 +1077,12 @@
         if (!auto) setTimeout(() => enterPortalMode(currentCardIdx, { keepWheel: true }), reduced ? 0 : 750);
     }
 
+    // The phrases that follow a preset's own words: its matching free set, else General
+    function presetCompanions(t) {
+        const set = (t.setId && WORD_SETS.find(s => s.id === t.setId && !s.premium)) || WORD_SETS[0];
+        return set.items.filter(it => it.text !== t.affirmation);
+    }
+
     function renderOccasionRow() {
         const row = $('occasionRow');
         row.innerHTML = '';
@@ -1042,7 +1092,7 @@
             b.className = 'flow-chip';
             b.dataset.preset = t.id;
             b.setAttribute('aria-pressed', 'false');
-            b.innerHTML = `<span aria-hidden="true">${t.emoji}</span><span>${escapeHtml(t.title)}</span>`;
+            b.innerHTML = `<span>${escapeHtml(t.title)}</span>`;   // words only: no emoji on buttons
             b.addEventListener('click', () => { if (!isPortalMode && !isBusy) applyOccasionTemplate(t.id); });
             row.appendChild(b);
         });
@@ -1245,6 +1295,11 @@
             track('premium_checkout_started', { then: (pendingThen && pendingThen.then) || '' });
         });
         $('premLater').addEventListener('click', () => hidePremModal());
+
+        // Premium sheet: only list "Write your own words" while that is a Premium feature
+        const ownItem = $('premOwnWordsItem');
+        if (ownItem) ownItem.hidden = OWN_WORDS_FREE;
+        initSaveImage();
 
         setupGestures();
         animate();

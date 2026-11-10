@@ -72,9 +72,9 @@
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Caveat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Fredoka:wght@400;500;600&display=swap"
         rel="stylesheet" media="print" onload="this.media='all'">
 
-    <!-- Core & Dedicated Blog CSS -->
+    <!-- Core + Guides CSS -->
     <link rel="stylesheet" href="../css/styles.css?v=6b0bd320f0">
-    <link rel="stylesheet" href="../css/blog.css?v=9f3cdc03c9">
+    <link rel="stylesheet" href="../css/guides.css?v=0">
 
     <!-- Analytics (Microsoft Clarity) -->
     <script>
@@ -86,10 +86,7 @@
     </script>
 </head>
 
-<body class="dark-theme" data-design-concept="editorial">
-    <!-- Reading Progress -->
-    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
-
+<body class="dark-theme guides-page" data-design-concept="editorial">
 
     <!-- Navigation -->
     <!-- site-nav:start (generated from templates/partials/nav.html — edit there, then npm run build:layout) -->
@@ -128,859 +125,485 @@
 </nav>
 <!-- site-nav:end -->
 
-    <main id="blogMain">
-    <!-- SVG clip path -->
-    <svg style="position:absolute;width:0;height:0;">
-        <defs>
-            <clipPath id="smokeClip" clipPathUnits="objectBoundingBox">
-                <path
-                    d="M -0.03,0.48 C 0.0,0.35 0.03,0.25 0.07,-0.08 C 0.1,-0.18 0.14,0.32 0.18,0.28 C 0.2,0.25 0.22,0.22 0.26,0.2 C 0.3,0.18 0.32,0.15 0.36,-0.1 C 0.4,-0.18 0.44,0.25 0.5,0.15 C 0.54,0.08 0.56,0.2 0.6,0.12 C 0.62,0.08 0.66,0.25 0.7,-0.05 C 0.73,-0.12 0.76,0.22 0.8,0.28 C 0.84,0.32 0.88,0.1 0.92,0.18 C 0.96,0.25 0.99,0.15 1.02,0.35 C 1.03,0.42 1.03,0.48 1.03,0.52 L 1.03,0.55 C 1.02,0.7 0.98,0.62 0.94,0.78 C 0.9,0.92 0.86,0.7 0.82,1.12 C 0.78,1.22 0.74,0.68 0.68,0.75 C 0.64,0.8 0.6,0.72 0.54,1.08 C 0.5,1.18 0.46,0.72 0.4,0.78 C 0.36,0.82 0.32,0.7 0.28,0.68 C 0.24,0.66 0.2,0.85 0.16,1.05 C 0.12,1.15 0.08,0.7 0.04,0.6 C 0.0,0.5 -0.02,0.65 -0.03,0.55 Z">
-                </path>
-            </clipPath>
-        </defs>
-    </svg>
+    <main id="blogMain" class="g-main">
+        <div class="g-wrap">
 
-    <header class="blog-header">
-        <img class="blob-img" src="../assets/media/blog-header-art.png" alt="The Vibe Check floating abstract artwork" width="600" height="180">
-        <div class="title-wrap">
-            <h1 class="title-main-line">
-                <span class="pre-text">The</span>
-                <span class="drop-v">V</span>
-                <span class="rest-text">ibe Check's
-                    <span class="rotating-word-wrap"><span class="rotating-word in">Guides</span></span>
-                </span>
-            </h1>
-        </div>
-    </header>
-
-    <br><br><br><br>
-    <p class="sub-desc">Advice, templates, and exactly what to text your friends when life gets loud, quiet, or just
-        plain hard.</p>
-
-    <!-- Instant Search Bar -->
-    <div class="blog-search-container">
-        <input type="text" id="blogSearchInput" class="form-input" placeholder="🔍 Search guides, topics, or keywords..." aria-label="Search guides">
-    </div>
-    <div id="blogEmptyState" style="display: none; text-align: center; padding: 40px 20px; color: var(--color-text-secondary, #a0a0a0); font-size: 1.1rem;">
-        <p>No guides found matching your search. Try another keyword or browse topics below! ✨</p>
-    </div>
-
-    <!-- Browse by Topic Hubs -->
-    <div class="topic-hubs-container">
-        <h2 class="section-title-small">Browse by Topic</h2>
-        <div class="topic-hubs-grid">
-            <a href="../blog/mental-health/index.html" class="topic-hub-card">
-                <div class="topic-hub-icon">🧠</div>
-                <span>Mental Health</span>
-                <div class="cat-btn">Browse Guides →</div>
-            </a>
-            <a href="../blog/grief-support/index.html" class="topic-hub-card">
-                <div class="topic-hub-icon">🕊️</div>
-                <span>Grief & Loss</span>
-                <div class="cat-btn">Browse Guides →</div>
-            </a>
-            <a href="../blog/serious-illness/index.html" class="topic-hub-card">
-                <div class="topic-hub-icon">🩹</div>
-                <span>Serious Illness</span>
-                <div class="cat-btn">Browse Guides →</div>
-            </a>
-            <a href="../blog/encouragement/index.html" class="topic-hub-card">
-                <div class="topic-hub-icon">✨</div>
-                <span>Encouragement</span>
-                <div class="cat-btn">Browse Guides →</div>
-            </a>
-        </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════ -->
-    <!-- ── Category Slider ─────────────────── -->
-    <!-- ═══════════════════════════════════════ -->
-    <div class="slider-wrapper">
-        <div class="category-slider">
-            <div class="slide">
-                <!-- Slide 1: Mental Health -->
-                <div class="item" data-category="mental-health">
-                    <img src="../assets/blog_cover_panic.webp" alt="Mental Health Support" class="slider-cover">
-                    <div class="cat-content">
-                        <div class="cat-name">Mental Health Support</div>
-                        <div class="cat-des">Words to help them through the hard days. Support for anxiety,
-                            depression, and general mental wellness.</div>
-                        <a class="cat-btn" href="../blog/mental-health/index.html">View Guides ↓</a>
-                    </div>
-                    <div class="cat-thumb-label">Mental Health</div>
+            <!-- Header: headline + search. generate-hubs.js rewrites this block for each topic hub. -->
+            <header class="g-head" id="guidesHead">
+                <div class="g-head-copy" data-reveal>
+                    <p class="eyebrow">Guides</p>
+                    <h1 class="g-title">What to say, <em>and what to text.</em></h1>
                 </div>
-
-                <!-- Slide 2: Grief Support -->
-                <div class="item" data-category="grief-support">
-                    <img src="../assets/blog_cover_grief_1772534407866.webp" alt="Grief Support" class="slider-cover">
-                    <div class="cat-content">
-                        <div class="cat-name">Grief &amp; Loss Support</div>
-                        <div class="cat-des">When someone you care about is grieving, the wrong words can make it worse.
-                            Here are the words that actually help.</div>
-                        <a class="cat-btn" href="../blog/grief-support/index.html">View Guides ↓</a>
-                    </div>
-                    <div class="cat-thumb-label">Grief Support</div>
+                <div class="g-find" data-reveal style="--d:80ms">
+                    <p class="g-lede">Advice, templates, and exactly what to text your friends when life gets loud, quiet, or just plain hard.</p>
+                    <form class="g-search" role="search" action="#" novalidate>
+                        <svg class="g-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+                        <label class="visually-hidden" for="guideSearch">Search guides</label>
+                        <input type="search" id="guideSearch" placeholder="Search the guides" autocomplete="off" spellcheck="false" enterkeyhint="search">
+                        <button class="g-search-clear" id="guideSearchClear" type="button" aria-label="Clear search" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+                    </form>
+                    <p class="g-try">try
+                        <button type="button" data-q="panic">panic</button>
+                        <button type="button" data-q="breakup">breakup</button>
+                        <button type="button" data-q="birthday">birthday</button>
+                        <button type="button" data-q="went quiet">went quiet</button>
+                    </p>
                 </div>
+            </header>
 
-                <!-- Slide 3: Serious Illness -->
-                <div class="item" data-category="serious-illness">
-                    <img src="../assets/blog_cover_cancer_1772534614299.webp" alt="Serious Illness Support"
-                        class="slider-cover">
-                    <div class="cat-content">
-                        <div class="cat-name">Serious Illness Support</div>
-                        <div class="cat-des">What to say, what to do, and what to avoid when someone you love gets a
-                            scary diagnosis.</div>
-                        <a class="cat-btn" href="../blog/serious-illness/index.html">View Guides ↓</a>
-                    </div>
-                    <div class="cat-thumb-label">Serious Illness</div>
-                </div>
+            <!-- Always in view near the top: the numbers, and the way to the full section -->
+            <aside class="g-urgent" aria-label="Emergency support">
+                <span class="g-urgent-dot" aria-hidden="true"></span>
+                <p><strong>In crisis right now?</strong> Call or text <a href="tel:988">988</a> (US), or text <a href="sms:741741">HOME to 741741</a>.</p>
+                <a class="g-urgent-more" href="#crisis" data-crisis-link>Emergency support <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg></a>
+            </aside>
 
-                <!-- Slide 4: Encouragement -->
-                <div class="item" data-category="encouragement">
-                    <img src="../assets/blog_cover_new_job_1772534337585.webp" alt="Encouragement & Motivation"
-                        class="slider-cover">
-                    <div class="cat-content">
-                        <div class="cat-name">Encouragement &amp; Motivation</div>
-                        <div class="cat-des">Hype texts and grounding wisdom for big days, nervous moments, and everyday
-                            support.</div>
-                        <a class="cat-btn" href="../blog/encouragement/index.html">View Guides ↓</a>
-                    </div>
-                    <div class="cat-thumb-label">Encouragement</div>
+            <!-- Topic filter. On the hubs these chips become links (generate-hubs.js). -->
+            <div class="g-filter" id="guidesFilter">
+                <div class="g-filter-row">
+                    <ul class="g-chips" id="guideChips" aria-label="Filter guides by topic">
+                        <li><button class="g-chip" type="button" data-topic="all" data-label="All guides" aria-pressed="true">All guides <span class="g-chip-n">24</span></button></li>
+                        <li><button class="g-chip" type="button" data-topic="mental-health" data-label="Mental Health" aria-pressed="false">Mental Health <span class="g-chip-n">10</span></button></li>
+                        <li><button class="g-chip" type="button" data-topic="grief-support" data-label="Grief &amp; Loss" aria-pressed="false">Grief &amp; Loss <span class="g-chip-n">4</span></button></li>
+                        <li><button class="g-chip" type="button" data-topic="serious-illness" data-label="Serious Illness" aria-pressed="false">Serious Illness <span class="g-chip-n">3</span></button></li>
+                        <li><button class="g-chip" type="button" data-topic="encouragement" data-label="Encouragement" aria-pressed="false">Encouragement <span class="g-chip-n">9</span></button></li>
+                    </ul>
+                    <p class="g-count" id="guideCount" role="status" aria-live="polite">24 guides and 8 message lists</p>
                 </div>
+                <p class="g-topic-note" id="topicNote" hidden>
+                    <span data-note="mental-health" hidden>Words to help them through the hard days. Support for anxiety, depression, and general mental wellness. <a href="../blog/mental-health/index.html">Open the Mental Health page <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></span>
+                    <span data-note="grief-support" hidden>When someone you care about is grieving, the wrong words can make it worse. Here are the words that actually help. <a href="../blog/grief-support/index.html">Open the Grief &amp; Loss page <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></span>
+                    <span data-note="serious-illness" hidden>What to say, what to do, and what to avoid when someone you love gets a scary diagnosis. <a href="../blog/serious-illness/index.html">Open the Serious Illness page <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></span>
+                    <span data-note="encouragement" hidden>Hype texts and grounding wisdom for big days, nervous moments, and everyday support. <a href="../blog/encouragement/index.html">Open the Encouragement page <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></span>
+                </p>
             </div>
 
-            <div class="slider-buttons">
-                <button class="prev">◁</button>
-                <button class="next">▷</button>
+            <!-- The guides. data-topics must match the lists in scripts/build/generate-hubs.js. -->
+            <div class="g-grid" id="guideGrid">
+                <article class="guide guide--featured" data-topics="mental-health" data-reveal>
+                    <a class="guide-link" href="../blog/how-to-check-on-a-friend-who-went-quiet.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_quiet_1772534313015.webp" alt="" width="600" height="400" loading="eager" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Checking In</span>
+                            <h2 class="guide-title">How to Check On That Friend Who Suddenly Went Quiet</h2>
+                            <p class="guide-excerpt">They stopped replying to group chats. They dropped off the radar. How to reach out without making them feel guilty.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="mental-health grief-support" data-reveal>
+                    <a class="guide-link" href="../blog/what-to-say-to-someone-who-feels-like-giving-up.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_giving_up_1772534638363.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Crisis Guide</span>
+                            <h2 class="guide-title">What to Say to Someone Who Feels Like Giving Up</h2>
+                            <p class="guide-excerpt">When someone tells you they want to give up, every word matters. Here's exactly what helps — and what makes it worse.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="grief-support" data-reveal style="--d:70ms">
+                    <a class="guide-link" href="../blog/what-to-text-someone-whose-pet-died.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_pet_loss.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Grief Support</span>
+                            <h2 class="guide-title">What to Text Someone Whose Pet Died</h2>
+                            <p class="guide-excerpt">Losing a pet is losing family. 7 kind, specific texts to send, and what never to say to a grieving pet owner.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="encouragement" data-reveal style="--d:140ms">
+                    <a class="guide-link" href="../blog/words-of-encouragement-for-someone-taking-a-big-risk.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_risk_1772534353037.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Motivation</span>
+                            <h2 class="guide-title">Words of Encouragement for Someone Taking a Big Risk</h2>
+                            <p class="guide-excerpt">Quitting to start a business. Moving across the country. How to be the anchor when they are terrified.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="serious-illness encouragement" data-reveal>
+                    <a class="guide-link" href="../blog/how-a-30-second-text-can-change-someones-day.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_new_job_1772534337585.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Everyday Kindness</span>
+                            <h2 class="guide-title">How a 30-Second Text Can Change Someone's Entire Day</h2>
+                            <p class="guide-excerpt">The science behind why one small message has outsized impact — and 10 texts you can send right now.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="mental-health" data-reveal style="--d:70ms">
+                    <a class="guide-link" href="../blog/what-to-text-someone-having-a-panic-attack.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_panic.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Anxiety &amp; Support</span>
+                            <h2 class="guide-title">What to Text Someone Having a Panic Attack</h2>
+                            <p class="guide-excerpt">When someone is spiraling, "Let me know if you need anything" doesn't help. Here are 5 exact texts to send instead.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="grief-support" data-reveal style="--d:140ms">
+                    <a class="guide-link" href="../blog/how-to-comfort-someone-who-lost-a-loved-one.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_grief_1772534407866.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Grief Support</span>
+                            <h2 class="guide-title">How to Comfort Someone Who Lost a Loved One</h2>
+                            <p class="guide-excerpt">When someone you care about is grieving, the wrong words can make it worse. Here are the words that actually help.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="encouragement" data-reveal>
+                    <a class="guide-link" href="../blog/affirmations-to-send-someone-starting-a-new-job.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_new_job_1772534337585.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Big Changes</span>
+                            <h2 class="guide-title">7 Affirmations to Send Someone Starting a New Job</h2>
+                            <p class="guide-excerpt">Imposter syndrome is real. Give them the hype they need on their first day with these short, powerful texts.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="serious-illness" data-reveal style="--d:70ms">
+                    <a class="guide-link" href="../blog/how-to-support-a-friend-with-cancer.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_cancer_1772534614299.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Serious Illness</span>
+                            <h2 class="guide-title">How to Support a Friend With Cancer</h2>
+                            <p class="guide-excerpt">What to say, what to do, and what to avoid when someone you love gets a cancer diagnosis.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="mental-health" data-reveal style="--d:140ms">
+                    <a class="guide-link" href="../blog/what-to-say-when-someone-is-depressed.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_depression_1772534420076.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Mental Health</span>
+                            <h2 class="guide-title">What to Say When Someone Is Depressed</h2>
+                            <p class="guide-excerpt">8 things you can say to a depressed friend that actually help — and the 5 things to never say.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="grief-support" data-reveal>
+                    <a class="guide-link" href="../blog/how-to-support-a-friend-going-through-a-breakup.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_breakup_1772534324219.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Heartbreak</span>
+                            <h2 class="guide-title">How to Actually Support a Friend Through a Breakup</h2>
+                            <p class="guide-excerpt">Beyond ice cream and "they didn't deserve you." Tactical ways to show up for a friend whose world just collapsed.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="encouragement" data-reveal style="--d:70ms">
+                    <a class="guide-link" href="../blog/encouraging-words-for-students-during-exams.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_exams_1772534436768.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Encouragement</span>
+                            <h2 class="guide-title">Encouraging Words for Students During Exams</h2>
+                            <p class="guide-excerpt">Exam season is brutal. Here are real words of encouragement for students who are stressed, overwhelmed, or doubting themselves.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="serious-illness" data-reveal style="--d:140ms">
+                    <a class="guide-link" href="../blog/what-to-write-in-a-get-well-soon-card.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_get_well_1772534500993.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Card Writing</span>
+                            <h2 class="guide-title">What to Write in a Get Well Soon Card</h2>
+                            <p class="guide-excerpt">Stuck staring at a blank card? Heartfelt messages for every situation — from minor illness to hospital stays.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="mental-health" data-reveal>
+                    <a class="guide-link" href="../blog/daily-affirmations-for-anxiety.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_anxiety_1772534512339.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Anxiety &amp; Wellness</span>
+                            <h2 class="guide-title">Daily Affirmations for Anxiety — 30 Phrases That Calm Your Mind</h2>
+                            <p class="guide-excerpt">Not toxic positivity — real, grounding affirmations designed for anxious brains. Pick 1-3 and read them daily.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="encouragement" data-reveal style="--d:70ms">
+                    <a class="guide-link" href="../blog/how-to-celebrate-a-friends-success.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_success_1772534454340.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Friendship</span>
+                            <h2 class="guide-title">How to Celebrate a Friend's Success (Even When You're Struggling)</h2>
+                            <p class="guide-excerpt">How to genuinely celebrate someone's win — even when life isn't going your way right now.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="mental-health" data-reveal style="--d:140ms">
+                    <a class="guide-link" href="../blog/self-care-ideas-for-bad-mental-health-days.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_self_care_1772534542941.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Self-Care</span>
+                            <h2 class="guide-title">Self-Care Ideas for Bad Mental Health Days</h2>
+                            <p class="guide-excerpt">20 low-effort self-care ideas organized by energy level — from "can't leave the bed" to "ready to invest in tomorrow."</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="encouragement" data-reveal>
+                    <a class="guide-link" href="../blog/why-you-should-send-affirmations-for-no-reason.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_affirmations_random.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Just Because</span>
+                            <h2 class="guide-title">Why You Should Send Affirmations For No Reason At All</h2>
+                            <p class="guide-excerpt">You don't need a crisis to tell someone they matter. The most powerful messages arrive when everything seems "fine."</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="mental-health" data-reveal style="--d:70ms">
+                    <a class="guide-link" href="../blog/mindfulness-exercises-for-beginners.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_quiet_1772534313015.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Mindfulness</span>
+                            <h2 class="guide-title">Mindfulness Exercises for Beginners — 10 Techniques in 5 Minutes</h2>
+                            <p class="guide-excerpt">No apps, no equipment, no experience needed. 10 beginner-friendly exercises that actually calm your mind.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="encouragement" data-reveal style="--d:140ms">
+                    <a class="guide-link" href="../blog/ways-to-show-someone-you-care-without-words.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_friendship_1772534526563.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Showing Love</span>
+                            <h2 class="guide-title">Ways to Show Someone You Care Without Words</h2>
+                            <p class="guide-excerpt">Not everyone speaks love in words. 15 meaningful ways to show someone they matter through actions and presence.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="mental-health" data-reveal>
+                    <a class="guide-link" href="../blog/positive-things-to-say-to-yourself-every-morning.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_morning_1772534601600.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Morning Routine</span>
+                            <h2 class="guide-title">Positive Things to Say to Yourself Every Morning</h2>
+                            <p class="guide-excerpt">25 morning affirmations organized by what you need today — confidence, calm, kindness, motivation, or hope.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="encouragement" data-reveal style="--d:70ms">
+                    <a class="guide-link" href="../blog/how-to-write-a-heartfelt-letter-to-a-friend.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_success_1772534454340.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Letter Writing</span>
+                            <h2 class="guide-title">How to Write a Heartfelt Letter to a Friend</h2>
+                            <p class="guide-excerpt">A simple 4-part framework and real examples to help you say what you've been meaning to say.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="mental-health" data-reveal style="--d:140ms">
+                    <a class="guide-link" href="../blog/the-people-who-seem-fine-need-you-most.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_friendship_1772534526563.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Check On Your People</span>
+                            <h2 class="guide-title">The People Who Seem Fine Are Often the Ones Struggling Most</h2>
+                            <p class="guide-excerpt">The strongest people carry the heaviest weight in silence. Here's how to check on the friends who never ask for help.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="encouragement" data-reveal>
+                    <a class="guide-link" href="../blog/birthday-wishes-for-someone-going-through-a-hard-time.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_birthday_1772534627129.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Birthday Messages</span>
+                            <h2 class="guide-title">Birthday Wishes for Someone Going Through a Hard Time</h2>
+                            <p class="guide-excerpt">Thoughtful birthday messages that acknowledge the struggle without ignoring their special day.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
+                <article class="guide" data-topics="mental-health" data-reveal style="--d:70ms">
+                    <a class="guide-link" href="../blog/how-to-be-a-better-friend.html">
+                        <span class="guide-cover"><img src="../assets/blog_cover_friendship_1772534526563.webp" alt="" width="600" height="400" loading="lazy" decoding="async"></span>
+                        <span class="guide-body">
+                            <span class="guide-flag">A good place to start</span>
+                            <span class="guide-tag">Friendship</span>
+                            <h2 class="guide-title">How to Be a Better Friend — 12 Things That Actually Matter</h2>
+                            <p class="guide-excerpt">It's not about grand gestures. It's about the boring, quiet, consistent stuff that most people overlook.</p>
+                            <span class="guide-more">Read guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </span>
+                    </a>
+                </article>
             </div>
-        </div>
 
-        <!-- Persistent Crisis Chip -->
-        <a class="crisis-chip" href="../blog/index.html#crisis" onclick="showCategory('crisis'); return false;">
-            <div class="crisis-chip-icon">❤️</div>
-            <span class="crisis-chip-label">Crisis<br>Support</span>
-        </a>
-    </div>
+            <div class="g-empty" id="guideEmpty" hidden>
+                <h2>Nothing for &ldquo;<span id="guideEmptyWord"></span>&rdquo; yet.</h2>
+                <p>Try another word, or go back to every guide and pick a topic.</p>
+                <button class="btn btn-secondary" type="button" data-guides-reset>Show all guides</button>
+            </div>
 
-    <!-- ═══════════════════════════════════════ -->
-    <!-- ── Category Blog Grids ─────────────── -->
-    <!-- ═══════════════════════════════════════ -->
+            <!-- Emergency support (the nav badge links to #crisis) -->
+            <div class="g-crisis-wrap" id="crisisSection">
+                <section class="g-crisis" id="crisis" aria-labelledby="crisisTitle">
+                    <p class="eyebrow">Emergency Resource Portal</p>
+                    <h2 class="g-crisis-title" id="crisisTitle">You Are Not Alone. Help Is Available Right Now.</h2>
+                    <p class="g-crisis-intro">Professional resources and high-urgency guides for when life feels impossible. This portal is always open.</p>
 
-    <!-- Grid 0: Crisis Support (Emergency Resource Portal) -->
-    <div id="crisis" class="crisis-section">
-        <div class="category-grid-header">
-            <h2>🚨 Emergency Resource Portal</h2>
-            <p style="text-align: center; margin-bottom: 40px;">Professional resources and high-urgency guides for
-                when life feels impossible. This portal is always open.</p>
-        </div>
+                    <dl class="g-lines">
+                        <div class="g-line">
+                            <dt>988 Suicide &amp; Crisis Lifeline</dt>
+                            <dd>Call or text <a href="tel:988">988</a> (US) — available 24/7</dd>
+                        </div>
+                        <div class="g-line">
+                            <dt>Crisis Text Line</dt>
+                            <dd>Text <a class="is-words" href="sms:741741">HOME to 741741</a></dd>
+                        </div>
+                        <div class="g-line">
+                            <dt>International Association for Suicide Prevention</dt>
+                            <dd>Outside the US <a class="is-words" href="https://www.iasp.info/resources/Crisis_Centres/" target="_blank" rel="noopener noreferrer">Find a crisis center</a></dd>
+                        </div>
+                    </dl>
 
-        <div class="crisis-banner">
-            <h3>You Are Not Alone. Help Is Available Right Now.</h3>
-            <p>
-                <strong>988 Suicide &amp; Crisis Lifeline:</strong> Call or text <a href="tel:988">988</a> (US) —
-                available 24/7<br>
-                <strong>Crisis Text Line:</strong> Text <a href="sms:741741">HOME to 741741</a><br>
-                <strong>International Association for Suicide Prevention:</strong> <a
-                    href="https://www.iasp.info/resources/Crisis_Centres/" target="_blank" rel="noopener noreferrer">Find a
-                    crisis center</a>
-            </p>
-        </div>
+                    <ul class="g-res">
+                        <li>
+                            <a href="https://www.mysafetyplan.org/" target="_blank" rel="noopener noreferrer">
+                                <div>
+                                    <span class="g-res-tag">Emergency Tool</span>
+                                    <h3 class="g-res-title">Build a Suicide Safety Plan</h3>
+                                    <span class="g-res-des">A free, digital, step-by-step guide to creating a safety plan when you or someone you love is in crisis. Save it to your phone or print it out.</span>
+                                </div>
+                                <span class="g-res-go">Open Builder <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://findahelpline.com/" target="_blank" rel="noopener noreferrer">
+                                <div>
+                                    <span class="g-res-tag">Global Directory</span>
+                                    <h3 class="g-res-title">Find A Helpline (International)</h3>
+                                    <span class="g-res-des">A comprehensive, searchable directory matching you to free and confidential emotional support and therapy hotlines in over 150 countries.</span>
+                                </div>
+                                <span class="g-res-go">Find Local Support <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="../blog/what-to-say-to-someone-who-feels-like-giving-up.html">
+                                <div>
+                                    <span class="g-res-tag">Crisis Guide</span>
+                                    <h3 class="g-res-title">What to Say to Someone Who Feels Like Giving Up</h3>
+                                    <span class="g-res-des">When someone tells you they want to give up, every word matters. Here's exactly what helps — and what makes it worse.</span>
+                                </div>
+                                <span class="g-res-go">Read Guide <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+            </div>
 
-        <div class="blog-grid">
-            <!-- Professional Resource 1 -->
-            <a href="https://www.mysafetyplan.org/" target="_blank" rel="noopener noreferrer" class="blog-card-img"
-                style="filter: saturate(0.5) contrast(1.2);">
-                <img src="../assets/blog_cover_panic.webp" alt="Build a Suicide Safety Plan" class="card-cover"
-                    loading="lazy">
-                <div class="color-overlay" style="background: rgba(255, 68, 68, 0.4);"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag" style="background: #ff4444;">Emergency Tool</span>
-                    <h2>Build a Suicide Safety Plan</h2>
+            <!-- Ready-made message lists (listicles + message pages) -->
+            <section class="g-section" id="messageIdeas" aria-labelledby="messageIdeasTitle">
+                <div data-reveal>
+                    <p class="eyebrow">Ready to copy</p>
+                    <h2 class="g-h2" id="messageIdeasTitle">Messages you can send as they are.</h2>
+                    <p class="g-sub">Lists of short messages. Copy one into a text, or turn it into a card.</p>
                 </div>
-                <div class="card-info">
-                    <p>A free, digital, step-by-step guide to creating a safety plan when you or someone you love is in
-                        crisis. Save it to your phone or print it out.</p>
-                    <div class="read-more-btn" style="background: #ff4444;">
-                        Open Builder
-                    </div>
-                </div>
-            </a>
+                <ul class="g-msg-list" data-reveal>
+                    <li data-keywords="encouragement hype uplifting best friend coworker partner"><a href="../blog/100-encouraging-messages-for-a-friend.html"><span>100 Encouraging Messages for a Friend</span> <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></li>
+                    <li data-keywords="comfort bad day rough"><a href="../blog/50-texts-to-send-someone-having-a-hard-day.html"><span>50 Texts to Send Someone Having a Hard Day</span> <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></li>
+                    <li data-keywords="miss you short sweet"><a href="../blog/75-thinking-of-you-messages.html"><span>75 Thinking of You Messages</span> <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></li>
+                    <li data-keywords="sympathy condolence card loss grieving"><a href="../blog/sympathy-card-messages/index.html"><span>Grief Support Messages</span> <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></li>
+                    <li data-keywords="heartbreak messages"><a href="../blog/breakup-support-messages/index.html"><span>Breakup Support Texts</span> <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></li>
+                    <li data-keywords="anxious panic overwhelmed spiraling messages"><a href="../blog/texts-for-anxiety/index.html"><span>Anxiety Support Texts</span> <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></li>
+                    <li data-keywords="encouragement quotes greeting card"><a href="../blog/encouraging-messages-for-cards/index.html"><span>Encouraging Card Messages</span> <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></li>
+                    <li data-keywords="no reason thinking of you texts"><a href="../blog/just-because-messages/index.html"><span>Just Because Messages</span> <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a></li>
+                </ul>
+            </section>
 
-            <!-- Professional Resource 2 -->
-            <a href="https://findahelpline.com/" target="_blank" rel="noopener noreferrer" class="blog-card-img"
-                style="filter: saturate(0.5) contrast(1.2);">
-                <img src="../assets/blog_cover_quiet_1772534313015.webp" alt="Find A Helpline (International)"
-                    class="card-cover" loading="lazy">
-                <div class="color-overlay" style="background: rgba(255, 68, 68, 0.4);"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag" style="background: #ff4444;">Global Directory</span>
-                    <h2>Find A Helpline (International)</h2>
+            <!-- The four topic pages -->
+            <section class="g-section" id="topicPages" aria-labelledby="topicPagesTitle">
+                <div data-reveal>
+                    <p class="eyebrow">Browse by Topic</p>
+                    <h2 class="g-h2" id="topicPagesTitle">Four shelves, one for each kind of hard.</h2>
                 </div>
-                <div class="card-info">
-                    <p>A comprehensive, searchable directory matching you to free and confidential emotional support and
-                        therapy hotlines in over 150 countries.</p>
-                    <div class="read-more-btn" style="background: #ff4444;">
-                        Find Local Support
-                    </div>
-                </div>
-            </a>
+                <ul class="g-topics">
+                    <li data-reveal>
+                        <a class="g-topic" href="../blog/mental-health/index.html" data-topic-link="mental-health">
+                            <span class="g-topic-n">01</span>
+                            <span class="g-topic-name">Mental Health Support</span>
+                            <span class="g-topic-des">Words to help them through the hard days. Support for anxiety, depression, and general mental wellness.</span>
+                            <span class="g-topic-go">Browse guides <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </a>
+                    </li>
+                    <li data-reveal style="--d:70ms">
+                        <a class="g-topic" href="../blog/grief-support/index.html" data-topic-link="grief-support">
+                            <span class="g-topic-n">02</span>
+                            <span class="g-topic-name">Grief &amp; Loss Support</span>
+                            <span class="g-topic-des">When someone you care about is grieving, the wrong words can make it worse. Here are the words that actually help.</span>
+                            <span class="g-topic-go">Browse guides <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </a>
+                    </li>
+                    <li data-reveal style="--d:140ms">
+                        <a class="g-topic" href="../blog/serious-illness/index.html" data-topic-link="serious-illness">
+                            <span class="g-topic-n">03</span>
+                            <span class="g-topic-name">Serious Illness Support</span>
+                            <span class="g-topic-des">What to say, what to do, and what to avoid when someone you love gets a scary diagnosis.</span>
+                            <span class="g-topic-go">Browse guides <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </a>
+                    </li>
+                    <li data-reveal style="--d:210ms">
+                        <a class="g-topic" href="../blog/encouragement/index.html" data-topic-link="encouragement">
+                            <span class="g-topic-n">04</span>
+                            <span class="g-topic-name">Encouragement &amp; Motivation</span>
+                            <span class="g-topic-des">Hype texts and grounding wisdom for big days, nervous moments, and everyday support.</span>
+                            <span class="g-topic-go">Browse guides <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
 
-            <!-- High Urgency Guide -->
-            <a href="../blog/what-to-say-to-someone-who-feels-like-giving-up.html" class="blog-card-img">
-                <img src="../assets/blog_cover_giving_up_1772534638363.webp"
-                    alt="What to Say to Someone Who Feels Like Giving Up" class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Crisis Guide</span>
-                    <h2>What to Say to Someone Who Feels Like Giving Up</h2>
+            <section class="g-cta" aria-labelledby="guidesCtaTitle">
+                <div class="g-letter" data-reveal="scale">
+                    <h2 id="guidesCtaTitle">Don't just think about them. Send it.</h2>
+                    <p>Skip the small talk. Send an anonymous (or signed) digital affirmation card straight to their phone.</p>
+                    <a href="../send-card.html" class="btn btn-primary">Send a Free Card Now <svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></a>
+                    <span class="g-letter-note">free, and no account to make</span>
                 </div>
-                <div class="card-info">
-                    <p>When someone tells you they want to give up, every word matters. Here's exactly what helps —
-                        and what makes it worse.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-
-
-    <!-- Grid: mental-health -->
-    <div id="mental-health" class="category-grid active">
-        <div class="blog-grid">
-
-            <a href="../blog/what-to-text-someone-having-a-panic-attack.html" class="blog-card-img">
-                <img src="../assets/blog_cover_panic.webp" alt="What to Text Someone Having a Panic Attack"
-                    class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Anxiety &amp; Support</span>
-                    <h2>What to Text Someone Having a Panic Attack</h2>
-                </div>
-                <div class="card-info">
-                    <p>When someone is spiraling, "Let me know if you need anything" doesn't help. Here are 5 exact
-                        texts to send instead.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/what-to-say-when-someone-is-depressed.html" class="blog-card-img">
-                <img src="../assets/blog_cover_depression_1772534420076.webp" alt="What to Say When Someone Is Depressed"
-                    class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Mental Health</span>
-                    <h2>What to Say When Someone Is Depressed</h2>
-                </div>
-                <div class="card-info">
-                    <p>8 things you can say to a depressed friend that actually help — and the 5 things to never
-                        say.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/what-to-say-to-someone-who-feels-like-giving-up.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_giving_up_1772534638363.webp');">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Crisis Guide</span>
-                    <h2>What to Say to Someone Who Feels Like Giving Up</h2>
-                </div>
-                <div class="card-info">
-                    <p>When someone tells you they want to give up, every word matters. Here's exactly what helps —
-                        and what makes it worse.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/daily-affirmations-for-anxiety.html" class="blog-card-img">
-                <img src="../assets/blog_cover_anxiety_1772534512339.webp" alt="Daily Affirmations for Anxiety"
-                    class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Anxiety &amp; Wellness</span>
-                    <h2>Daily Affirmations for Anxiety — 30 Phrases That Calm Your Mind</h2>
-                </div>
-                <div class="card-info">
-                    <p>Not toxic positivity — real, grounding affirmations designed for anxious brains. Pick 1-3 and
-                        read
-                        them daily.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/self-care-ideas-for-bad-mental-health-days.html" class="blog-card-img">
-                <img src="../assets/blog_cover_self_care_1772534542941.webp"
-                    alt="Self-Care Ideas for Bad Mental Health Days" class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Self-Care</span>
-                    <h2>Self-Care Ideas for Bad Mental Health Days</h2>
-                </div>
-                <div class="card-info">
-                    <p>20 low-effort self-care ideas organized by energy level — from "can't leave the bed" to
-                        "ready to
-                        invest in tomorrow."</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/mindfulness-exercises-for-beginners.html" class="blog-card-img">
-                <img src="../assets/blog_cover_quiet_1772534313015.webp" alt="Mindfulness Exercises for Beginners"
-                    class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Mindfulness</span>
-                    <h2>Mindfulness Exercises for Beginners — 10 Techniques in 5 Minutes</h2>
-                </div>
-                <div class="card-info">
-                    <p>No apps, no equipment, no experience needed. 10 beginner-friendly exercises that actually
-                        calm your
-                        mind.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/positive-things-to-say-to-yourself-every-morning.html" class="blog-card-img">
-                <img src="../assets/blog_cover_morning_1772534601600.webp"
-                    alt="Positive Things to Say to Yourself Every Morning" class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Morning Routine</span>
-                    <h2>Positive Things to Say to Yourself Every Morning</h2>
-                </div>
-                <div class="card-info">
-                    <p>25 morning affirmations organized by what you need today — confidence, calm, kindness,
-                        motivation, or
-                        hope.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/how-to-check-on-a-friend-who-went-quiet.html" class="blog-card-img">
-                <img src="../assets/blog_cover_quiet_1772534313015.webp"
-                    alt="How to Check On That Friend Who Suddenly Went Quiet" class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Checking In</span>
-                    <h2>How to Check On That Friend Who Suddenly Went Quiet</h2>
-                </div>
-                <div class="card-info">
-                    <p>They stopped replying to group chats. They dropped off the radar. How to reach out without
-                        making
-                        them feel guilty.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/the-people-who-seem-fine-need-you-most.html" class="blog-card-img">
-                <img src="../assets/blog_cover_friendship_1772534526563.webp"
-                    alt="The People Who Seem Fine Are Often the Ones Struggling Most" class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Check On Your People</span>
-                    <h2>The People Who Seem Fine Are Often the Ones Struggling Most</h2>
-                </div>
-                <div class="card-info">
-                    <p>The strongest people carry the heaviest weight in silence. Here's how to check on the friends
-                        who
-                        never ask for help.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/how-to-be-a-better-friend.html" class="blog-card-img">
-                <img src="../assets/blog_cover_friendship_1772534526563.webp" alt="How to Be a Better Friend"
-                    class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Friendship</span>
-                    <h2>How to Be a Better Friend — 12 Things That Actually Matter</h2>
-                </div>
-                <div class="card-info">
-                    <p>It's not about grand gestures. It's about the boring, quiet, consistent stuff that most
-                        people
-                        overlook.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
+            </section>
 
         </div>
-    </div>
-
-
-
-
-    <!-- Grid: grief-support -->
-    <div id="grief-support" class="category-grid">
-        <div class="blog-grid">
-
-            <a href="../blog/what-to-text-someone-whose-pet-died.html" class="blog-card-img">
-                <img src="../assets/blog_cover_pet_loss.webp" alt="What to Text Someone Whose Pet Died"
-                    class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Grief Support</span>
-                    <h2>What to Text Someone Whose Pet Died</h2>
-                </div>
-                <div class="card-info">
-                    <p>Losing a pet is losing family. 7 kind, specific texts to send, and what never to say to a
-                        grieving pet owner.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/how-to-comfort-someone-who-lost-a-loved-one.html" class="blog-card-img">
-                <img src="../assets/blog_cover_grief_1772534407866.webp" alt="How to Comfort Someone Who Lost a Loved One"
-                    class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Grief Support</span>
-                    <h2>How to Comfort Someone Who Lost a Loved One</h2>
-                </div>
-                <div class="card-info">
-                    <p>When someone you care about is grieving, the wrong words can make it worse. Here are the
-                        words that
-                        actually help.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/how-to-support-a-friend-going-through-a-breakup.html" class="blog-card-img">
-                <img src="../assets/blog_cover_breakup_1772534324219.webp"
-                    alt="How to Actually Support a Friend Through a Breakup" class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Heartbreak</span>
-                    <h2>How to Actually Support a Friend Through a Breakup</h2>
-                </div>
-                <div class="card-info">
-                    <p>Beyond ice cream and "they didn't deserve you." Tactical ways to show up for a friend whose
-                        world
-                        just collapsed.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/what-to-say-to-someone-who-feels-like-giving-up.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_giving_up_1772534638363.webp');">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Crisis Guide</span>
-                    <h2>What to Say to Someone Who Feels Like Giving Up</h2>
-                </div>
-                <div class="card-info">
-                    <p>When someone tells you they want to give up, every word matters. Here's exactly what helps —
-                        and what makes it worse.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-
-        </div>
-    </div>
-
-
-
-
-    <!-- Grid: encouragement -->
-    <div id="encouragement" class="category-grid">
-        <div class="blog-grid">
-
-            <a href="../blog/words-of-encouragement-for-someone-taking-a-big-risk.html" class="blog-card-img">
-                <img src="../assets/blog_cover_risk_1772534353037.webp"
-                    alt="Words of Encouragement for Someone Taking a Big Risk" class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Motivation</span>
-                    <h2>Words of Encouragement for Someone Taking a Big Risk</h2>
-                </div>
-                <div class="card-info">
-                    <p>Quitting to start a business. Moving across the country. How to be the anchor when they are
-                        terrified.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/affirmations-to-send-someone-starting-a-new-job.html" class="blog-card-img">
-                <img src="../assets/blog_cover_new_job_1772534337585.webp"
-                    alt="7 Affirmations to Send Someone Starting a New Job" class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Big Changes</span>
-                    <h2>7 Affirmations to Send Someone Starting a New Job</h2>
-                </div>
-                <div class="card-info">
-                    <p>Imposter syndrome is real. Give them the hype they need on their first day with these short,
-                        powerful
-                        texts.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/encouraging-words-for-students-during-exams.html" class="blog-card-img">
-                <img src="../assets/blog_cover_exams_1772534436768.webp" alt="Encouraging Words for Students During Exams"
-                    class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Encouragement</span>
-                    <h2>Encouraging Words for Students During Exams</h2>
-                </div>
-                <div class="card-info">
-                    <p>Exam season is brutal. Here are real words of encouragement for students who are stressed,
-                        overwhelmed, or doubting themselves.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/how-to-celebrate-a-friends-success.html" class="blog-card-img">
-                <img src="../assets/blog_cover_success_1772534454340.webp" alt="How to Celebrate a Friend's Success"
-                    class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Friendship</span>
-                    <h2>How to Celebrate a Friend's Success (Even When You're Struggling)</h2>
-                </div>
-                <div class="card-info">
-                    <p>How to genuinely celebrate someone's win — even when life isn't going your way right now.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/why-you-should-send-affirmations-for-no-reason.html" class="blog-card-img">
-                <img src="../assets/blog_cover_affirmations_random.webp"
-                    alt="Why You Should Send Affirmations For No Reason At All" class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Just Because</span>
-                    <h2>Why You Should Send Affirmations For No Reason At All</h2>
-                </div>
-                <div class="card-info">
-                    <p>You don't need a crisis to tell someone they matter. The most powerful messages arrive when
-                        everything seems "fine."</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/how-a-30-second-text-can-change-someones-day.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_new_job_1772534337585.webp');">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Everyday Kindness</span>
-                    <h2>How a 30-Second Text Can Change Someone's Entire Day</h2>
-                </div>
-                <div class="card-info">
-                    <p>The science behind why one small message has outsized impact — and 10 texts you can send
-                        right now.
-                    </p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/ways-to-show-someone-you-care-without-words.html" class="blog-card-img">
-                <img src="../assets/blog_cover_friendship_1772534526563.webp"
-                    alt="Ways to Show Someone You Care Without Words" class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Showing Love</span>
-                    <h2>Ways to Show Someone You Care Without Words</h2>
-                </div>
-                <div class="card-info">
-                    <p>Not everyone speaks love in words. 15 meaningful ways to show someone they matter through
-                        actions and
-                        presence.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/how-to-write-a-heartfelt-letter-to-a-friend.html" class="blog-card-img">
-                <img src="../assets/blog_cover_success_1772534454340.webp"
-                    alt="How to Write a Heartfelt Letter to a Friend" class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Letter Writing</span>
-                    <h2>How to Write a Heartfelt Letter to a Friend</h2>
-                </div>
-                <div class="card-info">
-                    <p>A simple 4-part framework and real examples to help you say what you've been meaning to say.
-                    </p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/birthday-wishes-for-someone-going-through-a-hard-time.html" class="blog-card-img">
-                <img src="../assets/blog_cover_birthday_1772534627129.webp"
-                    alt="Birthday Wishes for Someone Going Through a Hard Time" class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Birthday Messages</span>
-                    <h2>Birthday Wishes for Someone Going Through a Hard Time</h2>
-                </div>
-                <div class="card-info">
-                    <p>Thoughtful birthday messages that acknowledge the struggle without ignoring their special
-                        day.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-
-        </div>
-    </div>
-
-
-
-
-    <!-- Grid: serious-illness -->
-    <div id="serious-illness" class="category-grid">
-        <div class="blog-grid">
-
-            <a href="../blog/how-to-support-a-friend-with-cancer.html" class="blog-card-img">
-                <img src="../assets/blog_cover_cancer_1772534614299.webp" alt="How to Support a Friend With Cancer"
-                    class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Serious Illness</span>
-                    <h2>How to Support a Friend With Cancer</h2>
-                </div>
-                <div class="card-info">
-                    <p>What to say, what to do, and what to avoid when someone you love gets a cancer diagnosis.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/what-to-write-in-a-get-well-soon-card.html" class="blog-card-img">
-                <img src="../assets/blog_cover_get_well_1772534500993.webp" alt="What to Write in a Get Well Soon Card"
-                    class="card-cover" loading="lazy">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Card Writing</span>
-                    <h2>What to Write in a Get Well Soon Card</h2>
-                </div>
-                <div class="card-info">
-                    <p>Stuck staring at a blank card? Heartfelt messages for every situation — from minor illness to
-                        hospital stays.</p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-            <a href="../blog/how-a-30-second-text-can-change-someones-day.html" class="blog-card-img"
-                style="background-image: url('../assets/blog_cover_new_job_1772534337585.webp');">
-                <div class="color-overlay"></div>
-                <div class="gradient-overlay"></div>
-                <div class="title-content">
-                    <span class="blog-tag">Everyday Kindness</span>
-                    <h2>How a 30-Second Text Can Change Someone's Entire Day</h2>
-                </div>
-                <div class="card-info">
-                    <p>The science behind why one small message has outsized impact — and 10 texts you can send
-                        right now.
-                    </p>
-                    <div class="read-more-btn">
-                        Read Guide
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
-
-        </div>
-    </div>
-
-
-
-    <section class="blog-cta">
-        <h3>Don't just think about them. Send it.</h3>
-        <p>Skip the small talk. Send an anonymous (or signed) digital affirmation card straight to their phone.</p>
-        <a href="../send-card.html" class="btn btn-primary" style="margin-top: 10px;">Send a Free Card Now ✨</a>
-    </section>
     </main>
 
     <!-- site-footer:start (generated from templates/partials/footer.html) -->
@@ -1034,237 +657,10 @@
 </footer>
 <!-- site-footer:end -->
 
-    <!-- ═══════════════════════════════════════ -->
-    <!-- ── Slider + Category Logic ─────────── -->
-    <!-- ═══════════════════════════════════════ -->
-    <script>
-        "use strict";
-
-        // ── Slider navigation ──
-        const nextBtn = document.querySelector('.next');
-        const prevBtn = document.querySelector('.prev');
-        const slideContainer = document.querySelector('.category-slider .slide');
-        // Category hubs are generated from this page with the slider removed
-        const hasSlider = !!(nextBtn && prevBtn && slideContainer);
-
-        if (hasSlider) {
-        nextBtn.addEventListener('click', function () {
-            const items = document.querySelectorAll('.category-slider .slide .item');
-            slideContainer.appendChild(items[0]);
-        });
-
-        // ── Click on thumbnail to advance to that slide ──
-        slideContainer.addEventListener('click', function (e) {
-            const clickedItem = e.target.closest('.item');
-            if (!clickedItem) return;
-            const items = Array.from(document.querySelectorAll('.category-slider .slide .item'));
-            const index = items.indexOf(clickedItem);
-            // Only advance if clicking a thumbnail (3rd child onward, index >= 2)
-            if (index >= 2) {
-                const stepsNeeded = index - 1;
-                let step = 0;
-                function advanceStep() {
-                    if (step < stepsNeeded) {
-                        const currentItems = document.querySelectorAll('.category-slider .slide .item');
-                        slideContainer.appendChild(currentItems[0]);
-                        step++;
-                        if (step < stepsNeeded) {
-                            setTimeout(advanceStep, 120);
-                        }
-                    }
-                }
-                advanceStep();
-            }
-        });
-
-        prevBtn.addEventListener('click', function () {
-            const items = document.querySelectorAll('.category-slider .slide .item');
-            slideContainer.prepend(items[items.length - 1]);
-        });
-
-        }
-
-        // ── Category grid toggling ──
-        // scroll=false when called programmatically (e.g. clearing the search box, or on load)
-        function showCategory(categoryId, scroll = true) {
-            // Hide all potential toggled sections (slider grids + crisis section)
-            document.querySelectorAll('.category-grid, .crisis-section').forEach(grid => {
-                grid.classList.remove('active');
-            });
-
-            // Show the selected one
-            const target = document.getElementById(categoryId);
-            if (target) {
-                target.classList.add('active');
-                // Re-trigger animation
-                target.style.animation = 'none';
-                target.offsetHeight; // force reflow
-                target.style.animation = '';
-
-                if (scroll) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
-
-        if (hasSlider) {
-        // ── Sync slider active item with grid on slide change ──
-        const observer = new MutationObserver(function () {
-            const activeSlide = slideContainer.children[1]; // 2nd child is the visible one
-            if (activeSlide) {
-                const cat = activeSlide.getAttribute('data-category');
-                // Only sync if it's one of the standard category grids
-                // This will also hide the crisis section if the user scrolls the slider
-                if (cat) {
-                    document.querySelectorAll('.category-grid, .crisis-section').forEach(grid => {
-                        grid.classList.remove('active');
-                    });
-                    const targetGrid = document.getElementById(cat);
-                    if (targetGrid) targetGrid.classList.add('active');
-                }
-            }
-        });
-
-        observer.observe(slideContainer, { childList: true });
-        }
-
-        // ── Global Crisis Link Handler ──
-        // If the page is loaded with #crisis, show it immediately
-        window.addEventListener('load', function () {
-            if (window.location.hash === '#crisis') {
-                showCategory('crisis');
-            }
-        });
-    </script>
-
-    <script>
-        // ── Rotating Word Animation for Blog Header ──
-        (function () {
-            const words = ["Guides", "Advice", "Inspiration"];
-            const fonts = ["'Fredoka', sans-serif", "'Caveat', cursive", "'Playfair Display', serif"];
-            const colors = ["#FEC84A", "#67E8F9", "#FF6B9D"];
-            const shadows = [
-                "0 0 10px rgba(254,200,74,0.7), 0 0 30px rgba(254,200,74,0.4), 0 4px 15px rgba(0,0,0,0.5)",
-                "0 0 10px rgba(103,232,249,0.7), 0 0 30px rgba(103,232,249,0.4), 0 4px 15px rgba(0,0,0,0.5)",
-                "0 0 10px rgba(255,107,157,0.7), 0 0 30px rgba(255,107,157,0.4), 0 4px 15px rgba(0,0,0,0.5)"
-            ];
-            let idx = 0;
-            const spans = document.querySelectorAll('.rotating-word');
-
-            // Set initial styles
-            spans.forEach(span => {
-                span.style.fontFamily = fonts[0];
-                span.style.color = colors[0];
-                span.style.webkitTextFillColor = colors[0];
-                span.style.background = 'none';
-                span.style.textShadow = shadows[0];
-            });
-
-            setInterval(() => {
-                const next = (idx + 1) % words.length;
-                const allSpans = [
-                    ...document.querySelectorAll('.rotating-word'),
-                    ...document.querySelectorAll('.nav-logo .rotating-logo-word')
-                ];
-
-                allSpans.forEach(span => {
-                    span.classList.remove('in');
-                    span.classList.add('out');
-                    setTimeout(() => {
-                        span.textContent = words[next];
-                        span.style.fontFamily = fonts[next];
-
-                        // Handle font size only for large header, not small navbar logo
-                        if (span.classList.contains('rotating-word')) {
-                            span.style.fontSize = next === 1 ? '130%' : '100%';
-                        }
-
-                        span.style.color = colors[next];
-                        if (span.style.webkitTextFillColor !== undefined) {
-                            span.style.webkitTextFillColor = colors[next];
-                        }
-                        span.style.background = 'none';
-                        span.style.textShadow = shadows[next];
-
-                        // Update tab title
-
-                        span.classList.remove('out');
-                        span.classList.add('waiting');
-                        requestAnimationFrame(() => {
-                            requestAnimationFrame(() => {
-                                span.classList.remove('waiting');
-                                span.classList.add('in');
-                            });
-                        });
-                    }, 500);
-                });
-                idx = next;
-            }, 3000);
-        })();
-    </script>
-
-
-
-
-    <script>
-        // Reading + vertical progress bars (no script.js needed on blog pages)
-        (function () {
-            var barX = document.getElementById('scroll-progress');
-            if (!barX) return;
-            var barY = document.createElement('div');
-            barY.id = 'scroll-progress-y';
-            document.body.appendChild(barY);
-            var raf = false;
-            function update() {
-                var st = window.pageYOffset || document.documentElement.scrollTop;
-                var dh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                var pct = (dh > 0 ? Math.min(st / dh * 100, 100) : 0) + '%';
-                barX.style.width = pct;
-                barY.style.height = pct;
-                raf = false;
-            }
-            window.addEventListener('scroll', function () {
-                if (!raf) { raf = true; requestAnimationFrame(update); }
-            }, { passive: true });
-        })();
-    </script>
     <!-- Shared Utility Scripts -->
     <script src="../js/core-utils.js?v=864a06025c" defer></script>
     <script src="../js/script.js?v=24567f2261" defer></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            if (typeof window.initItemFilter === "function") {
-                window.initItemFilter({
-                    inputId: "blogSearchInput",
-                    containerId: "blogMain",
-                    itemSelector: ".blog-card-img",
-                    textSelector: "h2, p, .blog-tag",
-                    onFilterChange: function (matchCount) {
-                        var searchInput = document.getElementById("blogSearchInput");
-                        var query = searchInput ? searchInput.value.trim() : "";
-                        var grids = document.querySelectorAll(".category-grid");
-                        var slider = document.querySelector(".slider-wrapper");
-                        var hubs = document.querySelector(".topic-hubs-container");
-                        var emptyState = document.getElementById("blogEmptyState");
-
-                        if (query.length > 0) {
-                            grids.forEach(function (g) { g.classList.add("active"); });
-                            if (slider) slider.style.display = "none";
-                            if (hubs) hubs.style.display = "none";
-                            if (emptyState) emptyState.style.display = matchCount === 0 ? "block" : "none";
-                        } else {
-                            if (slider) slider.style.display = "";
-                            if (hubs) hubs.style.display = "";
-                            if (emptyState) emptyState.style.display = "none";
-                            var firstItem = document.querySelector(".category-slider .slide .item");
-                            var cat = firstItem ? firstItem.getAttribute("data-category") : "mental-health";
-                            if (typeof showCategory === "function") {
-                                showCategory(cat, false);
-                            }
-                        }
-                    }
-                });
-            }
-        });
-    </script>
+    <script src="../js/guides.js?v=0" defer></script>
 </body>
 
 </html>

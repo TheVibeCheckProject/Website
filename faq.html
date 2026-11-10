@@ -47,6 +47,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="css/styles.css?v=6b0bd320f0">
+    <link rel="stylesheet" href="css/faq.css?v=0">
 
     <!-- Structured Data (FAQ Schema) -->
     <script type="application/ld+json">
@@ -60,7 +61,7 @@
           "name": "Is sending a vibe check really free?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, 100% free forever. Anyone can pick a theme, write a personal message, and generate a shareable card link without paying a dime or entering a credit card."
+            "text": "Yes, 100% free forever. Anyone can pick a theme, write a personal message, and generate a shareable card link without paying or entering a credit card."
           }
         },
         {
@@ -69,6 +70,46 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Never. The recipient simply clicks your private link and their personalized 3D card opens immediately in their mobile or desktop browser, accompanied by ambient soundscapes and animations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a \"Seal it until a day\" card?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "When you add your note you can pick a date under \"Seal it until a day\". You still share the link right away. The card then stays closed on the recipient's device until that day on their own calendar. Until then it shows the date and offers to add it to their calendar. Sealing a card is free. It is a courtesy seal, not a lock: the words travel inside the link itself, and nothing is emailed on the day. Your own preview is never sealed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the Premium Unlock?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The optional $4.99 one-time unlock unlocks writing your own affirmation, the Calm, Celebrate, Love and Healing collections, 17 premium backgrounds (6 of them animated) and 5 extra sounds. It is saved in the browser you buy it on. It also helps cover our server costs to keep the platform free for everyone else. If you clear your browser data, switch devices or have any problem with a purchase, email WeCare@TheVibeCheckProject.com and we'll sort it out."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is \"today's card\" on the homepage?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It is one sealed card on the homepage, new each day. One tap breaks the seal and turns it over. The words are the same as that morning's email, so the site and your inbox match. Once it is open you can send it to someone, save it as an image, keep it, copy it, or take three slow breaths with it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I save an affirmation as a phone wallpaper or a square image?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Open today's card on the homepage, choose \"Save image\", then pick \"Phone wallpaper\" (1179 by 2556 pixels) or \"Square, for posting\" (1080 by 1080). The image is made in your browser. On phones that support it, the share sheet opens so you can save it to your photos. Days you have kept can be saved as a wallpaper again later from My Vibes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does the daily affirmation newsletter work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Every morning, a fresh, thoughtfully crafted affirmation lands in your inbox. No sales pitches, no spam, just a grounding breath to anchor your day. Every email has a one-click unsubscribe link at the bottom."
           }
         },
         {
@@ -84,23 +125,15 @@
           "name": "Can I see cards I've sent in the past?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes! Visit your My Vibes Dashboard to see past cards created on this device, copy their share links again, check if they've been opened, or delete them. Everything is stored locally in your browser with zero logins required."
+            "text": "Yes. Visit your My Vibes Dashboard to see past cards created on this device, copy their share links again, check if they've been opened, or delete them. Everything is stored locally in your browser with zero logins required."
           }
         },
         {
           "@type": "Question",
-          "name": "What is the Premium Unlock?",
+          "name": "Where are my kept days and my streak stored?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "The optional $4.99 one-time unlock unlocks writing your own affirmation, the Calm, Celebrate, Love and Healing collections, 17 premium backgrounds (6 of them animated) and 5 extra sounds. It is saved in the browser you buy it on. It also helps cover our server costs to keep the platform free for everyone else. If you clear your browser data, switch devices or have any problem with a purchase, email WeCare@TheVibeCheckProject.com and we'll sort it out."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does the daily affirmation newsletter work?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Every morning, a fresh, thoughtfully crafted affirmation lands in your inbox. No sales pitches, no spam—just a grounding breath to anchor your day. Every email has a one-click unsubscribe link at the bottom."
+            "text": "In this browser only. The days you opened, your streak and the days you kept are saved in this browser's own storage and are never sent anywhere. That also means they do not follow you to another device or browser, and clearing your browser data removes them. Your kept days are in My Vibes."
           }
         },
         {
@@ -158,122 +191,207 @@
 </nav>
 <!-- site-nav:end -->
 
-        <!-- Page Header -->
-        <section class="hero faq-hero">
-            <div class="hero-content">
-                <h1 class="hero-title" style="font-size: clamp(38px, 6vw, 60px);">Frequently Asked Questions</h1>
-                <p class="hero-subtitle">
-                    Everything you need to know about sending good vibes, privacy, and how our free platform works.
-                </p>
-            </div>
-        </section>
+        <!-- Page -->
+        <main class="fq">
+            <header class="fq-hero">
+                <p class="fq-eyebrow" data-reveal>Help</p>
+                <h1 data-reveal style="--d:60ms">Frequently asked <em>questions</em></h1>
+                <p class="fq-lede" data-reveal style="--d:120ms">How cards, today's card, Premium and privacy work, in plain words.</p>
+                <div data-reveal style="--d:180ms">
+                    <label class="fq-search" for="faqSearchInput">
+                        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+                        <input type="search" id="faqSearchInput" placeholder="free, anonymous, wallpaper, premium" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-label="Search frequently asked questions">
+                        <button type="button" class="fq-clear" id="faqClear" aria-label="Clear search" hidden><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+                    </label>
+                    <p class="fq-count" id="faqCount" role="status" aria-live="polite">11 questions</p>
+                </div>
+            </header>
 
-        <!-- FAQ Section: Canonical 2-Column Desktop Layout -->
-        <section class="faq-section" style="border-top: none; padding-top: 0;">
-            <div class="section-container faq-container">
-                <div class="faq-layout">
-                    <!-- Left Rail: Sticky Search & Category Pills -->
-                    <aside class="faq-sidebar">
-                        <div class="faq-search-box">
-                            <label for="faqSearchInput" class="form-label" style="display: block; margin-bottom: 8px; font-size: 13px;">Search Questions</label>
-                            <input type="text" id="faqSearchInput" class="form-input" placeholder="e.g. anonymous, free, history..." autocomplete="off" aria-label="Search frequently asked questions">
-                        </div>
-                        <div class="faq-categories" role="tablist" aria-label="FAQ Categories">
-                            <button type="button" class="filter-pill faq-pill active" data-category="all">All Questions</button>
-                            <button type="button" class="filter-pill faq-pill" data-category="cards">Sending Cards</button>
-                            <button type="button" class="filter-pill faq-pill" data-category="privacy">Privacy &amp; Safety</button>
-                            <button type="button" class="filter-pill faq-pill" data-category="support">Support &amp; Community</button>
-                        </div>
-                    </aside>
+            <div class="fq-layout">
+                <aside class="fq-rail" aria-label="Question categories">
+                    <p class="fq-rail-title">Browse</p>
+                    <div class="fq-cats" role="group" aria-label="Filter questions by category">
+                        <button type="button" class="fq-cat faq-pill" data-category="all" aria-pressed="true"><span>All questions</span> <i>11</i></button>
+                        <button type="button" class="fq-cat faq-pill" data-category="cards" aria-pressed="false"><span>Sending cards</span> <i>5</i></button>
+                        <button type="button" class="fq-cat faq-pill" data-category="daily" aria-pressed="false"><span>Today's card and the daily email</span> <i>4</i></button>
+                        <button type="button" class="fq-cat faq-pill" data-category="privacy" aria-pressed="false"><span>Privacy and what is stored</span> <i>3</i></button>
+                        <button type="button" class="fq-cat faq-pill" data-category="support" aria-pressed="false"><span>Safety and support</span> <i>2</i></button>
+                    </div>
+                    <p class="fq-hand">tap a question to open it</p>
+                </aside>
 
-                    <!-- Right Stream: Accordion List -->
-                    <div class="faq-main">
-                        <div class="faq-accordion" id="faqAccordion">
-                            <div class="faq-item active" id="faq-free" data-category="cards" style="scroll-margin-top: 100px;">
-                                <button class="faq-question" type="button" aria-expanded="true" onclick="toggleFaq(this)">
+                <div class="fq-list">
+                    <div class="faq-accordion" id="faqAccordion">
+                        <section class="fq-group" data-group="cards" aria-labelledby="fqg-cards">
+                            <h2 class="fq-group-title" id="fqg-cards">Sending cards</h2>
+                            <div class="faq-item active" id="faq-free" data-category="cards">
+                                <button class="faq-question" type="button" aria-expanded="true" aria-controls="faq-free-a">
                                     <span>Is sending a vibe check really free?</span>
-                                    <span class="faq-icon">+</span>
+                                    <span class="fq-plus" aria-hidden="true"></span>
                                 </button>
-                                <div class="faq-answer">
-                                    <p>Yes, 100% free forever. Anyone can pick a theme, write a personal message, and generate a shareable card link without paying a dime or entering a credit card.</p>
+                                <div class="faq-answer" id="faq-free-a" role="region" aria-label="Is sending a vibe check really free?">
+                                    <div class="fq-answer-in"><div>
+                                        <p>Yes, 100% free forever. Anyone can pick a theme, write a personal message, and generate a shareable card link without paying or entering a credit card.</p>
+                                    </div></div>
                                 </div>
                             </div>
-
-                            <div class="faq-item" id="faq-recipient-app" data-category="cards" style="scroll-margin-top: 100px;">
-                                <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
+                            <div class="faq-item" id="faq-recipient-app" data-category="cards">
+                                <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-recipient-app-a">
                                     <span>Does the recipient need to sign up or download an app?</span>
-                                    <span class="faq-icon">+</span>
+                                    <span class="fq-plus" aria-hidden="true"></span>
                                 </button>
-                                <div class="faq-answer">
-                                    <p>Never. The recipient simply clicks your private link and their personalized 3D card opens immediately in their mobile or desktop browser, accompanied by ambient soundscapes and animations.</p>
+                                <div class="faq-answer" id="faq-recipient-app-a" role="region" aria-label="Does the recipient need to sign up or download an app?">
+                                    <div class="fq-answer-in"><div>
+                                        <p>Never. The recipient simply clicks your private link and their personalized 3D card opens immediately in their mobile or desktop browser, accompanied by ambient soundscapes and animations.</p>
+                                    </div></div>
                                 </div>
                             </div>
-
-                            <div class="faq-item" id="faq-anonymous" data-category="privacy" style="scroll-margin-top: 100px;">
-                                <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
-                                    <span>Can I remain anonymous when sending a card?</span>
-                                    <span class="faq-icon">+</span>
+                            <div class="faq-item" id="faq-sealed" data-category="cards">
+                                <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-sealed-a">
+                                    <span>What is a "Seal it until a day" card?</span>
+                                    <span class="fq-plus" aria-hidden="true"></span>
                                 </button>
-                                <div class="faq-answer">
-                                    <p>Absolutely. You can sign your card with your real name, a nickname, or leave it signed as 'A friend', 'Someone who cares', or completely blank.</p>
+                                <div class="faq-answer" id="faq-sealed-a" role="region" aria-label="What is a &quot;Seal it until a day&quot; card?">
+                                    <div class="fq-answer-in"><div>
+                                        <p>When you add your note you can pick a date under "Seal it until a day". You still share the link right away. The card then stays closed on the recipient's device until that day on their own calendar. Until then it shows the date and offers to add it to their calendar. Sealing a card is free.</p>
+                                        <p>It is a courtesy seal, not a lock: the words travel inside the link itself, and nothing is emailed on the day. Your own preview is never sealed.</p>
+                                    </div></div>
                                 </div>
                             </div>
-
-                            <div class="faq-item" id="faq-history" data-category="cards privacy" style="scroll-margin-top: 100px;">
-                                <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
-                                    <span>Can I see cards I've sent in the past?</span>
-                                    <span class="faq-icon">+</span>
-                                </button>
-                                <div class="faq-answer">
-                                    <p>Yes! Visit your <a href="my-cards.html" style="color: var(--color-primary); font-weight: 600;">My Vibes Dashboard</a> to see past cards created on this device, copy their share links again, check if they've been opened, or delete them. Everything is stored locally in your browser with zero logins required.</p>
-                                </div>
-                            </div>
-
-                            <div class="faq-item" id="faq-premium" data-category="cards" style="scroll-margin-top: 100px;">
-                                <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
+                            <div class="faq-item" id="faq-premium" data-category="cards">
+                                <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-premium-a">
                                     <span>What is the Premium Unlock?</span>
-                                    <span class="faq-icon">+</span>
+                                    <span class="fq-plus" aria-hidden="true"></span>
                                 </button>
-                                <div class="faq-answer">
-                                    <p>The optional $4.99 one-time unlock unlocks writing your own affirmation, the Calm, Celebrate, Love and Healing collections, 17 premium backgrounds (6 of them animated) and 5 extra sounds. It is saved in the browser you buy it on. It also helps cover our server costs to keep the platform free for everyone else. If you clear your browser data, switch devices or have any problem with a purchase, email <a href="mailto:WeCare@TheVibeCheckProject.com">WeCare@TheVibeCheckProject.com</a> and we'll sort it out.</p>
+                                <div class="faq-answer" id="faq-premium-a" role="region" aria-label="What is the Premium Unlock?">
+                                    <div class="fq-answer-in"><div>
+                                        <p>The optional $4.99 one-time unlock unlocks writing your own affirmation, the Calm, Celebrate, Love and Healing collections, 17 premium backgrounds (6 of them animated) and 5 extra sounds. It is saved in the browser you buy it on. It also helps cover our server costs to keep the platform free for everyone else. If you clear your browser data, switch devices or have any problem with a purchase, email <a href="mailto:WeCare@TheVibeCheckProject.com">WeCare@TheVibeCheckProject.com</a> and we'll sort it out.</p>
+                                    </div></div>
                                 </div>
                             </div>
+                        </section>
 
-                            <div class="faq-item" id="faq-newsletter" data-category="support" style="scroll-margin-top: 100px;">
-                                <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
+                        <section class="fq-group" data-group="daily" aria-labelledby="fqg-daily">
+                            <h2 class="fq-group-title" id="fqg-daily">Today's card and the daily email</h2>
+                            <div class="faq-item" id="faq-todays-card" data-category="daily">
+                                <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-todays-card-a">
+                                    <span>What is "today's card" on the homepage?</span>
+                                    <span class="fq-plus" aria-hidden="true"></span>
+                                </button>
+                                <div class="faq-answer" id="faq-todays-card-a" role="region" aria-label="What is &quot;today's card&quot; on the homepage?">
+                                    <div class="fq-answer-in"><div>
+                                        <p>It is one sealed card on the <a href="index.html">homepage</a>, new each day. One tap breaks the seal and turns it over. The words are the same as that morning's email, so the site and your inbox match.</p>
+                                        <p>Once it is open you can send it to someone, save it as an image, keep it, copy it, or take three slow breaths with it.</p>
+                                    </div></div>
+                                </div>
+                            </div>
+                            <div class="faq-item" id="faq-wallpaper" data-category="daily">
+                                <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-wallpaper-a">
+                                    <span>Can I save an affirmation as a phone wallpaper or a square image?</span>
+                                    <span class="fq-plus" aria-hidden="true"></span>
+                                </button>
+                                <div class="faq-answer" id="faq-wallpaper-a" role="region" aria-label="Can I save an affirmation as a phone wallpaper or a square image?">
+                                    <div class="fq-answer-in"><div>
+                                        <p>Yes. Open today's card on the homepage, choose "Save image", then pick "Phone wallpaper" (1179 by 2556 pixels) or "Square, for posting" (1080 by 1080). The image is made in your browser. On phones that support it, the share sheet opens so you can save it to your photos.</p>
+                                        <p>Days you have kept can be saved as a wallpaper again later from <a href="my-cards.html">My Vibes</a>.</p>
+                                    </div></div>
+                                </div>
+                            </div>
+                            <div class="faq-item" id="faq-newsletter" data-category="daily support">
+                                <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-newsletter-a">
                                     <span>How does the daily affirmation newsletter work?</span>
-                                    <span class="faq-icon">+</span>
+                                    <span class="fq-plus" aria-hidden="true"></span>
                                 </button>
-                                <div class="faq-answer">
-                                    <p>Every morning, a fresh, thoughtfully crafted affirmation lands in your inbox. No sales pitches, no spam—just a grounding breath to anchor your day. Every email has a one-click unsubscribe link at the bottom.</p>
+                                <div class="faq-answer" id="faq-newsletter-a" role="region" aria-label="How does the daily affirmation newsletter work?">
+                                    <div class="fq-answer-in"><div>
+                                        <p>Every morning, a fresh, thoughtfully crafted affirmation lands in your inbox. No sales pitches, no spam, just a grounding breath to anchor your day. Every email has a one-click unsubscribe link at the bottom.</p>
+                                    </div></div>
                                 </div>
                             </div>
+                        </section>
 
-                            <div class="faq-item" id="faq-crisis" data-category="support" style="scroll-margin-top: 100px;">
-                                <button class="faq-question" type="button" aria-expanded="false" onclick="toggleFaq(this)">
+                        <section class="fq-group" data-group="privacy" aria-labelledby="fqg-privacy">
+                            <h2 class="fq-group-title" id="fqg-privacy">Privacy and what is stored</h2>
+                            <div class="faq-item" id="faq-anonymous" data-category="privacy">
+                                <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-anonymous-a">
+                                    <span>Can I remain anonymous when sending a card?</span>
+                                    <span class="fq-plus" aria-hidden="true"></span>
+                                </button>
+                                <div class="faq-answer" id="faq-anonymous-a" role="region" aria-label="Can I remain anonymous when sending a card?">
+                                    <div class="fq-answer-in"><div>
+                                        <p>Absolutely. You can sign your card with your real name, a nickname, or leave it signed as 'A friend', 'Someone who cares', or completely blank.</p>
+                                    </div></div>
+                                </div>
+                            </div>
+                            <div class="faq-item" id="faq-history" data-category="cards privacy">
+                                <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-history-a">
+                                    <span>Can I see cards I've sent in the past?</span>
+                                    <span class="fq-plus" aria-hidden="true"></span>
+                                </button>
+                                <div class="faq-answer" id="faq-history-a" role="region" aria-label="Can I see cards I've sent in the past?">
+                                    <div class="fq-answer-in"><div>
+                                        <p>Yes. Visit your <a href="my-cards.html">My Vibes Dashboard</a> to see past cards created on this device, copy their share links again, check if they've been opened, or delete them. Everything is stored locally in your browser with zero logins required.</p>
+                                    </div></div>
+                                </div>
+                            </div>
+                            <div class="faq-item" id="faq-streak" data-category="privacy daily">
+                                <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-streak-a">
+                                    <span>Where are my kept days and my streak stored?</span>
+                                    <span class="fq-plus" aria-hidden="true"></span>
+                                </button>
+                                <div class="faq-answer" id="faq-streak-a" role="region" aria-label="Where are my kept days and my streak stored?">
+                                    <div class="fq-answer-in"><div>
+                                        <p>In this browser only. The days you opened, your streak and the days you kept are saved in this browser's own storage and are never sent anywhere.</p>
+                                        <p>That also means they do not follow you to another device or browser, and clearing your browser data removes them. Your kept days are in <a href="my-cards.html">My Vibes</a>.</p>
+                                    </div></div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="fq-group" data-group="support" aria-labelledby="fqg-support">
+                            <h2 class="fq-group-title" id="fqg-support">Safety and support</h2>
+                            <div class="faq-item" id="faq-crisis" data-category="support">
+                                <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-crisis-a">
                                     <span>Do you provide counseling or medical advice?</span>
-                                    <span class="faq-icon">+</span>
+                                    <span class="fq-plus" aria-hidden="true"></span>
                                 </button>
-                                <div class="faq-answer">
-                                    <p>No. We do not provide therapy, counseling, or psychiatric advice. Our content is for positive emotional encouragement only. If you or someone you love is experiencing an emotional crisis, please click our <a href="blog/index.html#crisis" style="color: var(--color-primary); font-weight: 600;">Emergency Support</a> link for 24/7 free, confidential hotlines.</p>
+                                <div class="faq-answer" id="faq-crisis-a" role="region" aria-label="Do you provide counseling or medical advice?">
+                                    <div class="fq-answer-in"><div>
+                                        <p>No. We do not provide therapy, counseling, or psychiatric advice. Our content is for positive emotional encouragement only. If you or someone you love is experiencing an emotional crisis, please click our <a href="blog/index.html#crisis">Emergency Support</a> link for 24/7 free, confidential hotlines.</p>
+                                    </div></div>
                                 </div>
                             </div>
-                        </div>
+                        </section>
+                    </div>
 
-                        <div id="faqEmptyState" class="faq-empty-state" hidden style="text-align:center; padding: 40px 20px; color: var(--color-text-muted);">
-                            <p style="font-size: 1.1rem; margin-bottom: 8px;">No matching questions found.</p>
-                            <small>Try another search keyword or select "All Questions".</small>
+                    <div class="fq-empty" id="faqEmptyState" hidden>
+                        <p class="fq-eyebrow">Nothing found</p>
+                        <h2>No question matches <em id="faqEmptyTerm"></em></h2>
+                        <p>Try one plain word, like "free" or "email". If it still isn't here, ask us at <a href="mailto:WeCare@TheVibeCheckProject.com">WeCare@TheVibeCheckProject.com</a>.</p>
+                        <div class="fq-empty-acts">
+                            <button type="button" class="fq-btn-line" id="faqReset">Show every question</button>
                         </div>
                     </div>
                 </div>
-
-                <div style="text-align: center; margin-top: 60px; padding: 40px 24px; background: var(--color-bg-medium); border-radius: 20px; border: 1px solid rgba(255, 107, 157, 0.15);">
-                    <h3 style="font-family: var(--font-display); font-size: 24px; margin-bottom: 12px; color: var(--color-text-primary);">Ready to brighten someone's day?</h3>
-                    <p style="color: var(--color-text-secondary); max-width: 500px; margin: 0 auto 24px;">Takes 30 seconds to send a heartfelt, animated affirmation card to someone who needs it.</p>
-                    <a href="send-card.html" class="btn btn-primary btn-large">Send a Free Card Now ✨</a>
-                </div>
             </div>
-        </section>
+
+            <section class="fq-letter" data-reveal aria-labelledby="fqLetterTitle">
+                <div>
+                    <p class="fq-eyebrow">Still stuck?</p>
+                    <h2 id="fqLetterTitle">Write to us and <em>we'll sort it out.</em></h2>
+                    <p>A card that won't open, a purchase that didn't unlock, an email you'd like to stop: tell us what happened and which device you were on.</p>
+                </div>
+                <div class="fq-letter-acts">
+                    <p class="fq-hand">the address, so you don't have to hunt for it</p>
+                    <a class="fq-address" id="faqSupportAddress" href="mailto:WeCare@TheVibeCheckProject.com">WeCare@TheVibeCheckProject.com</a>
+                    <div class="fq-letter-btns">
+                        <a class="fq-btn-ink" href="mailto:WeCare@TheVibeCheckProject.com">Email us</a>
+                        <button type="button" class="fq-btn-paper" id="faqCopyAddress"><svg class="fq-ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 8.5h7a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z"/><path d="M15.5 8.5V6.5a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg><svg class="fq-tick" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span id="faqCopyLabel">Copy the address</span></button>
+                    </div>
+                    <a class="fq-letter-link" href="send-card.html">Or go and send a card</a>
+                </div>
+            </section>
+        </main>
 
         <!-- Footer -->
         <!-- site-footer:start (generated from templates/partials/footer.html) -->
@@ -328,47 +446,120 @@
 <!-- site-footer:end -->
     </div>
 
-    <!-- FAQ Initialization & Deep-Linking URL Hash Controller -->
+    <!-- FAQ: search, categories, deep links (#faq-premium etc.). Open/close is toggleFaq in js/script.js. -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // 1. Initialize Universal Item Filter
-            if (typeof window.initItemFilter === 'function') {
-                window.initItemFilter({
-                    inputId: 'faqSearchInput',
-                    containerId: 'faqAccordion',
-                    itemSelector: '.faq-item',
-                    textSelector: '.faq-question, .faq-answer',
-                    pillSelector: '.faq-pill',
-                    categoryAttr: 'data-category',
-                    emptyStateId: 'faqEmptyState'
+            var input = document.getElementById('faqSearchInput');
+            var clearBtn = document.getElementById('faqClear');
+            var count = document.getElementById('faqCount');
+            var empty = document.getElementById('faqEmptyState');
+            var emptyTerm = document.getElementById('faqEmptyTerm');
+            var accordion = document.getElementById('faqAccordion');
+            var cats = Array.prototype.slice.call(document.querySelectorAll('.fq-cat'));
+            var items = Array.prototype.slice.call(accordion.querySelectorAll('.faq-item'));
+            var groups = Array.prototype.slice.call(accordion.querySelectorAll('.fq-group'));
+            var category = 'all';
+            var haystack = items.map(function (el) { return el.textContent.toLowerCase(); });
+
+            function setOpen(item, open) {
+                item.classList.toggle('active', open);
+                var btn = item.querySelector('.faq-question');
+                if (btn) btn.setAttribute('aria-expanded', String(open));
+            }
+
+            // If js/script.js did not load, questions still open
+            if (typeof window.toggleFaq !== 'function') {
+                accordion.addEventListener('click', function (e) {
+                    var btn = e.target.closest && e.target.closest('.faq-question');
+                    if (!btn) return;
+                    var item = btn.closest('.faq-item');
+                    var wasOpen = item.classList.contains('active');
+                    items.forEach(function (it) { setOpen(it, false); });
+                    setOpen(item, !wasOpen);
                 });
             }
 
-            // 2. Handle Deep-Linking URL Hashes (#faq-free, #faq-anonymous, etc.)
+            function apply(animate) {
+                var words = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+                var shown = [];
+                items.forEach(function (item, i) {
+                    var ok = (category === 'all' || (' ' + item.getAttribute('data-category') + ' ').indexOf(' ' + category + ' ') !== -1) &&
+                        words.every(function (w) { return haystack[i].indexOf(w) !== -1; });
+                    item.hidden = !ok;
+                    item.classList.remove('fq-enter');
+                    if (ok) {
+                        if (animate) {
+                            item.style.setProperty('--i', Math.min(shown.length, 8));
+                            void item.offsetWidth;
+                            item.classList.add('fq-enter');
+                        }
+                        shown.push(item);
+                    } else if (item.classList.contains('active')) {
+                        setOpen(item, false);
+                    }
+                });
+                groups.forEach(function (g) { g.hidden = !g.querySelector('.faq-item:not([hidden])'); });
+                // one match while searching: open it, the answer is what they came for
+                if (words.length && shown.length === 1) setOpen(shown[0], true);
+                empty.hidden = shown.length !== 0;
+                emptyTerm.textContent = words.length ? '\u201C' + input.value.trim() + '\u201D' : 'that filter';
+                clearBtn.hidden = !input.value;
+                count.textContent = shown.length === items.length ? items.length + ' questions' :
+                    shown.length + ' of ' + items.length + (shown.length === 1 ? ' question' : ' questions');
+            }
+
+            function setCategory(cat, animate) {
+                category = cat;
+                cats.forEach(function (c) { c.setAttribute('aria-pressed', String(c.getAttribute('data-category') === cat)); });
+                apply(animate);
+            }
+
+            function toList() {
+                var layout = document.querySelector('.fq-layout');
+                var y = layout.getBoundingClientRect().top + window.pageYOffset - 90;
+                if (window.pageYOffset > y) window.scrollTo(0, y);
+            }
+
+            input.addEventListener('input', function () { apply(true); });
+            input.addEventListener('keydown', function (e) { if (e.key === 'Escape' && input.value) { input.value = ''; apply(true); } });
+            clearBtn.addEventListener('click', function (e) { e.preventDefault(); input.value = ''; apply(true); input.focus(); });
+            cats.forEach(function (c) { c.addEventListener('click', function () { setCategory(c.getAttribute('data-category'), true); toList(); }); });
+            document.getElementById('faqReset').addEventListener('click', function () { input.value = ''; setCategory('all', true); });
+
+            // Copy the support address; the button answers with a tick
+            var copyBtn = document.getElementById('faqCopyAddress');
+            var copyLabel = document.getElementById('faqCopyLabel');
+            copyBtn.addEventListener('click', function () {
+                var text = document.getElementById('faqSupportAddress').textContent.trim();
+                function done() {
+                    copyBtn.classList.add('is-copied');
+                    copyLabel.textContent = 'Copied';
+                    clearTimeout(copyBtn._t);
+                    copyBtn._t = setTimeout(function () { copyBtn.classList.remove('is-copied'); copyLabel.textContent = 'Copy the address'; }, 1600);
+                }
+                function fallback() {
+                    var ta = document.createElement('textarea');
+                    ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+                    document.body.appendChild(ta); ta.select();
+                    try { if (document.execCommand('copy')) done(); } catch (err) { }
+                    document.body.removeChild(ta);
+                }
+                if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback);
+                else fallback();
+            });
+
+            // Deep links: faq.html#faq-premium opens that question and brings it into view
             function handleFaqHash() {
                 var hash = window.location.hash;
                 if (!hash || hash.indexOf('#faq-') !== 0) return;
-                var target = document.querySelector(hash);
-                if (target && target.classList.contains('faq-item')) {
-                    // Reset filter pills to 'all' so target is visible
-                    var allPill = document.querySelector('.faq-pill[data-category="all"]');
-                    if (allPill && !allPill.classList.contains('active')) {
-                        allPill.click();
-                    }
-                    if (typeof window.toggleFaq === 'function') {
-                        var btn = target.querySelector('.faq-question');
-                        if (btn && !target.classList.contains('active')) {
-                            window.toggleFaq(btn);
-                        }
-                    } else {
-                        target.classList.add('active');
-                        var qBtn = target.querySelector('.faq-question');
-                        if (qBtn) qBtn.setAttribute('aria-expanded', 'true');
-                    }
-                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
+                var target = document.getElementById(hash.slice(1));
+                if (!target || !target.classList.contains('faq-item')) return;
+                if (target.hidden) { input.value = ''; setCategory('all', false); }
+                items.forEach(function (it) { setOpen(it, it === target); });
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
 
+            apply(false);
             handleFaqHash();
             window.addEventListener('hashchange', handleFaqHash);
         });

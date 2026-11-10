@@ -8,33 +8,22 @@ const INDEX_HTML = path.join(BLOG_DIR, 'index.html');
 const sourceHtml = fs.readFileSync(INDEX_HTML, 'utf-8');
 const $ = cheerio.load(sourceHtml);
 
-// 1. Extract all blog cards
-const allCards = [];
-$('.blog-card-img').each((i, el) => {
-    const $card = $(el).clone();
-    const href = $card.attr('href');
-    if (href && !href.startsWith('http')) {
-        allCards.push({
-            href: href,
-            html: $.html($card)
-        });
-    }
-});
-
-// Remove duplicates based on href
+// 1. Extract every guide card from the index (css/guides.css: <article class="guide"> with one link)
 const uniqueCards = [];
 const seen = new Set();
-for (const card of allCards) {
-    if (!seen.has(card.href)) {
-        seen.add(card.href);
-        uniqueCards.push(card);
-    }
-}
+$('#guideGrid .guide').each((i, el) => {
+    const href = $(el).find('a.guide-link').attr('href');
+    if (!href || href.startsWith('http') || seen.has(href)) return;
+    seen.add(href);
+    uniqueCards.push({ href, topics: ($(el).attr('data-topics') || '').split(/\s+/).filter(Boolean), html: $.html(el) });
+});
+if (!uniqueCards.length) throw new Error('generate-hubs: no .guide cards found in blog/index.html (#guideGrid)');
 
 // 2. Define our 4 categories
 const categories = [
     {
         id: 'mental-health',
+        short: 'Mental Health',
         title: 'Mental Health Support',
         desc: 'Find supportive words, text ideas, and guidance for anxiety, depression, and mental wellness. Practical, grounding peer support for friends in need.',
         files: [
@@ -52,6 +41,7 @@ const categories = [
     },
     {
         id: 'grief-support',
+        short: 'Grief & Loss',
         title: 'Grief & Loss Support',
         desc: 'Find thoughtful words, sympathy texts, and caring advice when someone you love is grieving. Genuine comfort, kindness, and support that truly helps.',
         files: [
@@ -63,6 +53,7 @@ const categories = [
     },
     {
         id: 'serious-illness',
+        short: 'Serious Illness',
         title: 'Serious Illness Support',
         desc: 'Learn what to say, what to do, and what to avoid when someone you love receives a serious illness diagnosis or spends extended time in the hospital.',
         files: [
@@ -73,6 +64,7 @@ const categories = [
     },
     {
         id: 'encouragement',
+        short: 'Encouragement',
         title: 'Encouragement & Motivation',
         desc: 'Discover uplifting text messages and grounding affirmations for big days, nervous moments, new jobs, exams, and everyday friend encouragement.',
         files: [
@@ -128,33 +120,46 @@ categories.forEach(cat => {
     $hub('meta[name="twitter:title"]').attr('content', pageTitle);
     $hub('meta[name="twitter:description"]').attr('content', cat.desc);
 
-    // Update Header Text to the category title
-    $hub('.pre-text').text('');
-    $hub('.drop-v').text('');
-    $hub('.rest-text').html(`${cat.title}`);
-    $hub('.sub-desc').text(cat.desc);
+    const ARROW = '<svg class="g-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>';
+    const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
-    // Remove the slider and crisis chip
-    $hub('.slider-wrapper').remove();
+    // Header: a breadcrumb back to all guides, the topic as the page's one <h1>, its description
+    $hub('#guidesHead').addClass('g-head--hub').html(`
+                <div class="g-head-copy" data-reveal>
+                    <p class="eyebrow"><a href="../blog/index.html">Guides</a><span class="sep">/</span>Topic</p>
+                    <h1 class="g-title">${esc(cat.title)}</h1>
+                    <p class="g-lede">${esc(cat.desc)}</p>
+                </div>
+            `);
 
-    // Remove all existing grids and crisis sections
-    $hub('.crisis-section').remove();
-    $hub('.category-grid').remove();
+    // The topic chips are links here: all guides, and the four hubs
+    $hub('#guideChips').attr('aria-label', 'Guide topics').html(`
+                        <li><a class="g-chip" href="../blog/index.html">All guides</a></li>
+${categories.map(c => `                        <li><a class="g-chip" href="../blog/${c.id}/index.html"${c.id === cat.id ? ' aria-current="page"' : ''}>${esc(c.short)}</a></li>`).join('\n')}
+                    `);
+    $hub('#guideCount').removeAttr('role').removeAttr('aria-live').text(`${cat.files.length} guides`);
 
-    // Recreate a single grid for this category
-    const gridHtml = `
-    <div class="category-grid active" style="display: block;">
-        <div class="blog-grid">
-            ${cat.files.map(file => {
-        const card = uniqueCards.find(c => c.href === file || c.href.includes(file));
-        return card ? card.html : '';
-    }).join('\n')}
-        </div>
-    </div>
-    `;
+    // Index-only parts: the filter note, the empty state, the message lists and the full
+    // emergency section (the line under the header stays, and points at the index's #crisis)
+    $hub('#topicNote, #guideEmpty, #messageIdeas, #crisisSection').remove();
+    $hub('[data-crisis-link]').attr('href', '../blog/index.html#crisis');
+    $hub('script[src*="js/guides.js"]').remove();
+    $hub(`[data-topic-link="${cat.id}"]`).attr('aria-current', 'page').find('.g-topic-go').text('You are here');
 
-    // Insert new grid right after the .sub-desc paragraph
-    $hub('.sub-desc').after(gridHtml);
+    // This topic's guides, in the order listed above; the first one is shown large
+    const cardsHtml = cat.files.map((file, i) => {
+        const card = uniqueCards.find(c => c.href === file || c.href.endsWith('/' + file));
+        if (!card) throw new Error(`generate-hubs: "${file}" (${cat.id}) has no card in blog/index.html`);
+        if (!card.topics.includes(cat.id)) console.warn(`  note: ${file} is in the ${cat.id} hub but its data-topics in blog/index.html says "${card.topics.join(' ')}"`);
+        const $c = cheerio.load(card.html, null, false);
+        const $a = $c('.guide');
+        $a.removeClass('guide--featured').removeAttr('style');
+        if (i === 0) $a.addClass('guide--featured');
+        else if ((i - 1) % 3) $a.attr('style', `--d:${((i - 1) % 3) * 70}ms`);
+        $c('img').attr('loading', i === 0 ? 'eager' : 'lazy');
+        return '                ' + $c.html();
+    }).join('\n');
+    $hub('#guideGrid').html(`\n${cardsHtml}\n            `);
 
     // Inject structured data for CollectionPage and BreadcrumbList
     const hubSchema = {

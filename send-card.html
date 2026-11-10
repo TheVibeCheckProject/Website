@@ -107,7 +107,7 @@
             <p id="premSheetText">One small purchase unlocks everything below.</p>
             <ul>
                 <li>🌌 17 more backgrounds, 6 of them animated</li>
-                <li>✍️ Write your own words</li>
+                <li id="premOwnWordsItem">✍️ Write your own words</li><!-- hidden by js/card-flow.js when OWN_WORDS_FREE -->
                 <li>🎵 All 8 sounds</li>
                 <li>💙 4 more collections: Calm, Celebrate, Love and Healing</li>
             </ul>
@@ -181,7 +181,7 @@
             </div>
             <div class="carousel-steppers">
                 <button type="button" class="circle-nav-btn" id="ringPrev" aria-label="Previous card">←</button>
-                <span class="ring-progress" id="ringProgress">01 / 21</span>
+                <span class="ring-progress" id="ringProgress">01 / 34</span>
                 <button type="button" class="circle-nav-btn" id="ringNext" aria-label="Next card">→</button>
             </div>
         </div>
@@ -290,6 +290,11 @@
             </div>
             <div class="drawer-foot">
                 <button type="submit" class="send-slot" id="sendButton" aria-label="Send"></button>
+                <!-- "Send it or download it": the card as an image, without sending (js/card-image.js) -->
+                <div class="drawer-save">
+                    <span class="drawer-save-or" aria-hidden="true">or</span>
+                    <div id="saveImageMaker" data-menu="up"></div>
+                </div>
                 <p class="flow-sr" id="sendAnnounce" aria-live="polite"></p>
             </div>
         </div>
@@ -381,6 +386,8 @@
                     <a class="done-share-btn" id="twitterShare" href="https://twitter.com/intent/tweet?text=I%20sent%20you%20a%20Vibe%20Check!%20%E2%9C%A8" target="_blank" rel="noopener noreferrer">X</a>
                 </div>
 
+                <div class="done-save" id="saveImageDone"></div>
+
                 <p class="done-sealed" id="sealedNotice" hidden></p>
                 <p class="done-history" id="historySavedNotice" style="display:none;">
                     Saved to <a href="my-cards.html">My Vibes</a> <span class="done-dot" aria-hidden="true">·</span> <span id="historyCountBadge">1 vibe saved</span>
@@ -460,6 +467,7 @@
     <script src="js/core-utils.js?v=864a06025c"></script>
     <script src="js/vibe-history.js?v=146b9c4ba1"></script>
     <script src="js/send-card-logic.js?v=138377ccf2"></script>
+    <script src="js/card-image.js?v=0"></script>
     <script src="js/card-flow.js?v=1312076c31"></script>
 
     <!-- The saved Send button's flight: GSAP (allowed by the owner 2026-09-29) + js/send-plane.js.

@@ -14,7 +14,7 @@ const OUT = path.join(ROOT, 'assets', 'email');
 const SITE = process.argv.includes('--site');
 
 (async () => {
-    const browser = await chromium.launch({ channel: 'msedge' });
+    const browser = await chromium.launch(process.env.VC_TEST_BROWSER ? { executablePath: process.env.VC_TEST_BROWSER } : { channel: 'msedge' });
     try {
         const page = await browser.newPage({ viewport: { width: 1024, height: 1024 } });
         await page.goto('file://' + path.join(__dirname, 'neutral.html').replace(/\\/g, '/'));

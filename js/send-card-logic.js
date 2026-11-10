@@ -2,6 +2,15 @@
 // portal, words, note panel, Send flight) lives in js/card-flow.js and writes the
 // selected* variables below; the submit handler at the bottom builds and sends the card.
 
+// ── Writing your own words: free or Premium? ──
+// ONE switch. false = "Your own words" is Premium-only (how the site has always worked).
+// true = every visitor can open "Your own words", type up to 200 characters and send or
+// download that card with no paywall; the flow then never says own words need Premium and
+// the Premium sheet stops listing "Write your own words" (#premOwnWordsItem in send-card.html).
+// If you change this, also change the Premium copy on the other pages (homepage, FAQ, About,
+// welcome email 3) so it matches what Premium really unlocks.
+const OWN_WORDS_FREE = false;
+
 // ── Safe storage (Safari private mode / blocked storage throws on access) ──
 function storageGet(key) {
     try { return window.localStorage.getItem(key); } catch (e) { return null; }
@@ -104,6 +113,110 @@ const occasionTemplates = [
         premSound: 'harp',
         themeGroup: 'healing',
         notePlaceholder: "Holding space for you today. Take all the time and gentleness you need."
+    },
+    // More occasions (Nov 2026). `setId` = the free word set shown after the preset's own words.
+    {
+        id: 'new_job',
+        emoji: '💼',
+        title: 'New Job',
+        affirmation: "They chose you. Go in and be exactly who you are.",
+        bgId: 'mountain_sunrise',
+        premBgId: 'emerald',
+        sound: 'sparkle',
+        premSound: 'celebration',
+        themeGroup: 'celebrate',
+        setId: 'exams',
+        notePlaceholder: "So happy for you. I can't wait to hear how the first week goes."
+    },
+    {
+        id: 'exam_day',
+        emoji: '📝',
+        title: 'Exam Day',
+        affirmation: "You've done the work. Now breathe and trust it.",
+        bgId: 'lighthouse',
+        premBgId: 'electric',
+        sound: 'bell',
+        premSound: 'piano',
+        themeGroup: 'anxiety',
+        setId: 'exams',
+        notePlaceholder: "Thinking of you today. Whatever happens in there, I'm proud of you."
+    },
+    {
+        id: 'get_well',
+        emoji: '🍵',
+        title: 'Get Well',
+        affirmation: "Rest as long as you need. I'm thinking of you.",
+        bgId: 'meadow',
+        premBgId: 'ocean',
+        sound: 'chime',
+        premSound: 'harp',
+        themeGroup: 'healing',
+        setId: 'get-well',
+        notePlaceholder: "No need to reply. Just rest, and tell me if you need anything."
+    },
+    {
+        id: 'missing_you',
+        emoji: '🌙',
+        title: 'Missing You',
+        affirmation: "I miss you. Just wanted you to know.",
+        bgId: 'city_lights',
+        premBgId: 'velvet',
+        sound: 'chime',
+        premSound: 'musicbox',
+        themeGroup: 'love',
+        setId: 'long-distance',
+        notePlaceholder: "Something reminded me of you today. Call soon?"
+    },
+    {
+        id: 'sorry',
+        emoji: '🤍',
+        title: "I'm Sorry",
+        affirmation: "I'm sorry. You matter to me, and I want to make this right.",
+        bgId: 'rain_window',
+        premBgId: 'crystal',
+        sound: 'bell',
+        premSound: 'piano',
+        themeGroup: 'love',
+        setId: 'sorry',
+        notePlaceholder: "I've been thinking about it, and I wanted to say this properly."
+    },
+    {
+        id: 'just_because',
+        emoji: '⛵',
+        title: 'Just Because',
+        affirmation: "No reason. I just thought of you and smiled.",
+        bgId: 'paper_boat',
+        premBgId: 'gold',
+        sound: 'sparkle',
+        premSound: 'musicbox',
+        themeGroup: 'default',
+        setId: 'thank-you',
+        notePlaceholder: "Nothing big. You crossed my mind and I wanted you to know."
+    },
+    {
+        id: 'congrats',
+        emoji: '🎉',
+        title: 'Congratulations',
+        affirmation: "You did it. I'm so happy for you!",
+        bgId: 'cherry_blossom',
+        premBgId: 'gold',
+        sound: 'sparkle',
+        premSound: 'celebration',
+        themeGroup: 'celebrate',
+        notePlaceholder: "You worked so hard for this. Enjoy every bit of it."
+    },
+    {
+        id: 'new_baby',
+        emoji: '🍼',
+        title: 'New Baby',
+        affirmation: "Welcome to the world, little one. And well done, you.",
+        bgId: 'dawn',
+        premBgId: 'cherry',
+        sound: 'chime',
+        premSound: 'musicbox',
+        themeGroup: 'love',
+        setId: 'new-parent',
+        notePlaceholder: "Congratulations! Tell me what you need and I'll bring it round."
     }
 ];
 
@@ -113,7 +226,15 @@ const OCCASION_ALIASES = {
     hype: 'proud', celebrate: 'proud',
     thank_you: 'gratitude', love: 'gratitude',
     anxiety: 'calm', panic: 'calm', burnout: 'calm',
-    grief: 'healing', loss: 'healing', illness: 'healing', sympathy: 'healing'
+    grief: 'healing', loss: 'healing', illness: 'healing', sympathy: 'healing',
+    job: 'new_job', first_day: 'new_job', promotion: 'new_job',
+    exam: 'exam_day', exams: 'exam_day', interview: 'exam_day', test: 'exam_day',
+    sick: 'get_well', recovery: 'get_well', surgery: 'get_well',
+    miss_you: 'missing_you', long_distance: 'missing_you',
+    apology: 'sorry', im_sorry: 'sorry',
+    thinking_of_you: 'just_because',
+    congratulations: 'congrats', graduation: 'congrats',
+    baby: 'new_baby', new_parent: 'new_baby'
 };
 
 function findOccasionTemplate(templateId) {
@@ -255,6 +376,113 @@ const FREE_WORD_SETS = [
             "You are worthy of good things happening to you.",
             "You are capable of navigating hard things with grace."
         ]
+    },
+    // Situations and occasions (Nov 2026). Written to be sent as they are: short, plain, and
+    // nothing that reads like a statistic, a promise about the future or a therapy claim.
+    {
+        id: 'grief', name: 'Grief',
+        items: [
+            "I'm so sorry. I'm here, for as long as you need.",
+            "There's no right way to do this. However you feel today is okay.",
+            "You don't have to be strong for anyone right now.",
+            "I'm thinking of you, and of them.",
+            "Take all the time you need. I'm not going anywhere.",
+            "You don't have to reply. I just wanted you to know I care.",
+            "Missing them this much says how much you loved them.",
+            "Some days will be heavier than others. I'm here for all of them.",
+            "You don't have to talk about it. I can just sit with you.",
+            "I can't fix this, but I can be here with you."
+        ]
+    },
+    {
+        id: 'exams', name: 'Exams & Interviews',
+        items: [
+            "You've done the work. Now breathe and trust it.",
+            "One question at a time. That's all you have to do.",
+            "Nerves just mean you care. You're ready.",
+            "Whatever happens in that room, I'm proud of you.",
+            "You earned your seat at that table.",
+            "Take a breath before you start. You know more than you think.",
+            "I believe in you, today and whatever the result.",
+            "Be yourself in there. That's who they asked to meet.",
+            "This one day doesn't decide your worth.",
+            "Thinking of you this morning. Go get it."
+        ]
+    },
+    {
+        id: 'get-well', name: 'Get Well',
+        items: [
+            "Rest as long as you need. I'm thinking of you.",
+            "Be patient with your body. It's working hard for you.",
+            "No rush. Getting better takes the time it takes.",
+            "Thinking of you and hoping today is a little easier.",
+            "You don't have to be brave every minute. Resting counts.",
+            "Sending you a quiet day and a soft pillow.",
+            "I'm here if you need anything at all, even just company.",
+            "One day at a time. Today, just rest.",
+            "It's okay to let people look after you for a while.",
+            "Missing you around here. Take all the time you need."
+        ]
+    },
+    {
+        id: 'long-distance', name: 'Long Distance',
+        items: [
+            "I miss you. Just wanted you to know.",
+            "Far away, and still one of my favorite people.",
+            "Different time zones, same sky. Thinking of you.",
+            "Something reminded me of you today, and I smiled.",
+            "Counting the days until I see you.",
+            "The distance hasn't changed how much you mean to me.",
+            "Wish you were here. Until then, this.",
+            "You're on my mind more often than you know.",
+            "Miles apart, and still on your side.",
+            "Save me a seat. I'll be there as soon as I can."
+        ]
+    },
+    {
+        id: 'new-parent', name: 'New Parent',
+        items: [
+            "You're doing a good job, even on no sleep.",
+            "You don't have to enjoy every minute to be a good parent.",
+            "It's okay to ask for help. I'm one message away.",
+            "That baby is lucky to have you.",
+            "You're learning each other. That takes time.",
+            "Rest when you can. The dishes will wait.",
+            "Tired doesn't mean you're doing it wrong.",
+            "You're allowed to miss your old life and love this one.",
+            "Thinking of you all. Tell me what you need and I'll bring it.",
+            "Welcome to the world, little one. And well done, you."
+        ]
+    },
+    {
+        id: 'thank-you', name: 'Thank You',
+        items: [
+            "Thank you. It meant more than you know.",
+            "I noticed what you did, and I'm grateful.",
+            "You made a hard week easier. Thank you.",
+            "Thank you for showing up when it counted.",
+            "I don't say it enough: thank you.",
+            "You didn't have to, and you did anyway. Thank you.",
+            "Thank you for listening. It really helped.",
+            "I'm lucky to have you in my corner.",
+            "Thank you for being patient with me.",
+            "Because of you, I felt less alone. Thank you."
+        ]
+    },
+    {
+        id: 'sorry', name: "I'm Sorry",
+        items: [
+            "I'm sorry. You matter to me, and I want to make this right.",
+            "I was wrong, and I'm sorry.",
+            "I'm sorry I hurt you. You didn't deserve that.",
+            "I've been thinking about what I said. I'm sorry.",
+            "No excuses. I'm sorry.",
+            "I miss us. I'm sorry for my part in this.",
+            "I should have listened. I'm sorry.",
+            "Take the time you need. I'll be here when you're ready.",
+            "I'm sorry I wasn't there when you needed me.",
+            "I care about you more than I care about being right."
+        ]
     }
 ];
 
@@ -385,7 +613,7 @@ const categoryDefs = [
 ];
 
 // Words a free user may send: the free sets, the presets and a ?message= from our own pages.
-// The Premium collections and anything typed are Premium.
+// The Premium collections are Premium; words they typed are Premium unless OWN_WORDS_FREE.
 const cleanWords = (a) => (a || '').replace(/^["']|["']$/g, '').trim();
 function isFreeWords(text) {
     const clean = cleanWords(text);
@@ -400,6 +628,29 @@ function isFreeWords(text) {
 function isCollectionWords(text) {
     const clean = cleanWords(text);
     return categoryDefs.some(c => c.premium && c.affirmations.some(a => cleanWords(a) === clean));
+}
+
+// May this visitor write their own words?
+const canWriteOwn = () => isPremium || OWN_WORDS_FREE;
+
+// The Premium rule for a card, used when sending AND when downloading it as an image: a free
+// user can't use a Premium collection's words, their own words (unless OWN_WORDS_FREE) or a
+// Premium card. Returns null when the card is allowed, else what to tell them.
+function premiumBlockFor(affirmation, background) {
+    if (isPremium) return null;
+    if (!isFreeWords(affirmation)) {
+        if (isCollectionWords(affirmation)) {
+            return { toast: 'That collection is part of Premium ✨', context: 'collection', what: 'This collection' };
+        }
+        if (!OWN_WORDS_FREE) {
+            return { toast: 'Writing your own words is a Premium feature ✨', context: 'write_own', what: 'Writing your own words' };
+        }
+    }
+    const bgDef = backgroundDefs.find(b => b.image === background);
+    if (bgDef && bgDef.premium) {
+        return { toast: `${bgDef.label} is a Premium card ✨`, context: 'bg', what: bgDef.label };
+    }
+    return null;
 }
 
 // ── Premium sheet (#premOverlay) ──
@@ -480,6 +731,15 @@ const backgroundDefs = [
     // Painted scenes (scripts/marketing/backgrounds/scenes.html)
     { id: 'moonrise', label: 'Moonrise', image: 'assets/backgrounds/bg_scene_moonrise.webp', premium: false, light: ['#FFF4E0', '#C4B5FD', '#E9D5FF'] },
     { id: 'rose_dunes', label: 'Rose Dunes', image: 'assets/backgrounds/bg_scene_rose-dunes.webp', premium: false, light: ['#FFE0C2', '#F9A8A0', '#FFF3DC'] },
+    // Portrait scenes, 1080x1512 so they stay sharp in downloaded images (all free)
+    { id: 'lighthouse', label: 'Lighthouse', image: 'assets/backgrounds/bg_scene_lighthouse.webp', premium: false, light: ['#FFE9B8', '#F2A47C', '#B9B6F2'] },
+    { id: 'meadow', label: 'Golden Meadow', image: 'assets/backgrounds/bg_scene_meadow.webp', premium: false, light: ['#FFF0C2', '#F8B76C', '#CFE0A8'] },
+    { id: 'rain_window', label: 'Rain on the Window', image: 'assets/backgrounds/bg_scene_rain-window.webp', premium: false, light: ['#FFCE96', '#96D2DC', '#E6F2F8'] },
+    { id: 'snowfall', label: 'Snowfall', image: 'assets/backgrounds/bg_scene_snowfall.webp', premium: false, light: ['#FFFFFF', '#C3CEE8', '#9FB4F2'] },
+    { id: 'paper_boat', label: 'Paper Boat', image: 'assets/backgrounds/bg_scene_paper-boat.webp', premium: false, light: ['#FFF9EC', '#A6D2C6', '#DFF2E6'] },
+    { id: 'cherry_blossom', label: 'Cherry Blossom', image: 'assets/backgrounds/bg_scene_cherry-blossom.webp', premium: false, light: ['#FFE3EC', '#F7A8C0', '#FFF4E8'] },
+    { id: 'mountain_sunrise', label: 'Mountain Sunrise', image: 'assets/backgrounds/bg_scene_mountain-sunrise.webp', premium: false, light: ['#FFD9A2', '#F0B08A', '#C9D8F2'] },
+    { id: 'city_lights', label: 'City Lights', image: 'assets/backgrounds/bg_scene_city-lights.webp', premium: false, light: ['#FFCE8C', '#FFF4E0', '#96CEE6'] },
     { id: 'nebula', label: 'Nebula', image: 'assets/backgrounds/bg_prem_nebula_1772750433414.webp', premium: true, light: ['#8B5CF6', '#60A5FA', '#F0ABFC'] },
     { id: 'gold', label: 'Liquid Gold', image: 'assets/backgrounds/bg_prem_gold_1772750445716.webp', premium: true, light: ['#FEC84A', '#FFE9A8', '#FFF6DC'] },
     { id: 'emerald', label: 'Emerald', image: 'assets/backgrounds/bg_prem_emerald_1772750461402.webp', premium: true, light: ['#34D399', '#A7F3D0', '#ECFDF5'] },
@@ -535,7 +795,7 @@ function copyLink(e) {
     const url = input ? input.value : '';
     if (navigator.clipboard && url) {
         navigator.clipboard.writeText(url).then(() => {
-            if (button) { button.textContent = 'Copied! ✓'; setTimeout(() => { button.textContent = originalText; }, 2000); }
+            if (button) { button.textContent = 'Copied! ✓'; button.classList.add('is-done'); setTimeout(() => { button.textContent = originalText; button.classList.remove('is-done'); }, 2000); }
         }).catch(() => {
             if (input) { input.select(); document.execCommand('copy'); }
             if (button) { button.textContent = 'Copied! ✓'; setTimeout(() => { button.textContent = originalText; }, 2000); }
@@ -672,21 +932,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Paywall: free users send the free sets, presets and ?message= text from our own
-            // pages. The Premium collections and words they typed themselves are Premium.
-            if (!isPremium && !isFreeWords(selectedAffirmation)) {
-                const collection = isCollectionWords(selectedAffirmation);
-                showToast(collection ? 'That collection is part of Premium ✨' : 'Writing your own words is a Premium feature ✨', '🔒');
-                showPremModal(collection ? 'collection_at_send' : 'write_own', collection ? 'This collection' : 'Writing your own words');
+            // pages. The Premium collections are Premium, and so are words they typed themselves
+            // unless OWN_WORDS_FREE. The same for a Premium card or sound, however it was reached.
+            const block = premiumBlockFor(selectedAffirmation, selectedBackground);
+            if (block) {
+                showToast(block.toast, '🔒');
+                showPremModal(block.context === 'write_own' ? 'write_own' : block.context + '_at_send', block.what);
                 return;
             }
-            // The same for a Premium card or sound, however it was reached
-            const bgDef = backgroundDefs.find(b => b.image === selectedBackground);
             const soundDef = SOUND_DEFS.find(s => s.id === selectedSound);
-            if (!isPremium && bgDef && bgDef.premium) {
-                showToast(`${bgDef.label} is a Premium card ✨`, '🔒');
-                showPremModal('bg_at_send', bgDef.label);
-                return;
-            }
             if (!isPremium && soundDef && soundDef.premium) {
                 showToast(`The ${soundDef.label} sound is part of Premium ✨`, '🔒');
                 showPremModal('sound_at_send', `The ${soundDef.label} sound`);

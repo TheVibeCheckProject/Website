@@ -137,14 +137,19 @@
         ctx.globalAlpha = 1;
     }
 
-    /** Where the sun or moon sits: an arc from the left horizon to the right. */
-    function bodyPosition(hour, w, h, horizonY) {
+    /**
+     * Where the sun or moon sits: an arc from the left horizon to the right.
+     * arc: optional [highest, lowest] y as fractions of h, to keep the body inside a band of sky.
+     */
+    function bodyPosition(hour, w, h, horizonY, arc) {
         let t;
         if (isDay(hour)) t = (hour - SUNRISE) / (SUNSET - SUNRISE);
         else t = (((hour - SUNSET) + 24) % 24) / (24 - (SUNSET - SUNRISE));
         const x = lerp(0.14, 0.86, t) * w;
         const lift = Math.sin(t * Math.PI);
-        const y = lerp(horizonY - h * 0.02, h * 0.16, Math.pow(lift, 0.8));
+        const low = arc ? arc[1] * h : horizonY - h * 0.02;
+        const high = arc ? arc[0] * h : h * 0.16;
+        const y = lerp(low, high, Math.pow(lift, 0.8));
         return { x, y, t };
     }
 
@@ -276,6 +281,8 @@
      * @param {number} w,h   size in canvas pixels
      * @param {object} o     { hour, date, seed, mood, t, fadeToInk, horizon, model }
      *                       model: the result of VibeSky.model(seed) (cached shapes); optional.
+     *                       arc: [highest, lowest] y of the sun/moon as fractions of h; optional.
+     *                       bodyAlpha, bodyScale: fade or shrink the sun/moon (default 1).
      */
     function paint(ctx, w, h, o = {}) {
         const date = o.date || new Date();
@@ -297,17 +304,22 @@
         drawStars(ctx, w, horizonY / 0.78, m.stars, pal.stars * (1 - weather.cloud * 0.75), t, unit);
         ctx.restore();
 
-        const body = bodyPosition(hour, w, h, horizonY);
+        const body = bodyPosition(hour, w, h, horizonY, o.arc);
         body.x -= px * 10 * unit; body.y -= py * 5 * unit;
+        // bodyAlpha / bodyScale: the homepage fades the sun or moon out as the page scrolls
+        const bodyAlpha = typeof o.bodyAlpha === 'number' ? clamp(o.bodyAlpha) : 1;
+        const bodyUnit = unit * (typeof o.bodyScale === 'number' ? o.bodyScale : 1);
         const veil = 1 - weather.cloud * 0.55;
-        ctx.globalAlpha = veil;
-        if (isDay(hour)) drawSun(ctx, body.x, body.y, unit * 20, colours, pulse);
-        else {
-            const f = clamp(body.y / h);
-            const local = f < 0.48 ? mix(colours.top, colours.mid, f / 0.48) : mix(colours.mid, colours.low, clamp((f - 0.48) / 0.32));
-            drawMoon(ctx, body.x, body.y, unit * 22, moonPhase(date), local, pulse);
+        if (bodyAlpha > 0.01) {
+            ctx.globalAlpha = veil * bodyAlpha;
+            if (isDay(hour)) drawSun(ctx, body.x, body.y, bodyUnit * 20, colours, pulse);
+            else {
+                const f = clamp(body.y / h);
+                const local = f < 0.48 ? mix(colours.top, colours.mid, f / 0.48) : mix(colours.mid, colours.low, clamp((f - 0.48) / 0.32));
+                drawMoon(ctx, body.x, body.y, bodyUnit * 22, moonPhase(date), local, pulse);
+            }
+            ctx.globalAlpha = 1;
         }
-        ctx.globalAlpha = 1;
 
         drawClouds(ctx, w, horizonY, m.clouds, weather, colours, t, px);
         drawHills(ctx, w, h, m.hills, colours, horizonY, o.fadeToInk, px);

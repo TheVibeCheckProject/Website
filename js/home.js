@@ -45,14 +45,46 @@
         const INTRO_MS = 1300;      // on arrival the sky runs through the last few hours to now
         const introAt = reducedMotion || hourOverride !== null ? 0 : performance.now();
         let px = 0, py = 0, tx = 0, ty = 0; // pointer parallax (eased)
+        let scale = 1, scrolledAt = 0, paintedBody = false;
+
+        // The sun or moon lives in the clear sky above the hero's first line, never behind words.
+        // It scrolls up with the hero and has faded out before it reaches the nav. Where there is no
+        // clear band (phones, short windows) the page sky leaves it out; the opened card still shows it.
+        let clear = null; // { high, low, fade, size } in CSS px at scroll 0
+        // Layout position on the page, ignoring transforms (the hero is still animating in when this runs)
+        const pageTop = (el) => { let y = 0; for (; el; el = el.offsetParent) y += el.offsetTop; return y; };
+        function measureClearSky() {
+            const nav = $('nav');
+            const navBottom = nav ? nav.offsetTop + nav.offsetHeight : 0;
+            const contentTop = Math.min(...['todayEyebrow', 'todayTitle', 'dayCard']
+                .map(id => $(id)).filter(Boolean).map(pageTop));
+            const band = contentTop - navBottom;
+            const r = 22 * Math.sqrt(w * h) / 860 / scale; // the moon's radius in CSS px (the sun's is smaller)
+            const size = Math.min(1, band / (2.6 * r));
+            if (!isFinite(size) || size < 0.55) { clear = null; return; }
+            const rr = r * size;
+            clear = { high: navBottom + 1.3 * rr, low: contentTop - 1.3 * rr, fade: Math.max(40, band - 1.3 * rr), size };
+        }
+
+        function bodyFor(scrollY) {
+            if (!clear) return { bodyAlpha: 0 };
+            const p = Math.min(1, Math.max(0, scrollY / clear.fade));
+            const k = scale / h;
+            return {
+                bodyAlpha: 1 - p * p * (3 - 2 * p),
+                bodyScale: clear.size,
+                arc: [(clear.high - scrollY) * k, (clear.low - scrollY) * k],
+            };
+        }
 
         function resize() {
             // documentElement sizes exclude a desktop scrollbar (innerWidth doesn't)
             const cw = document.documentElement.clientWidth, ch = window.innerHeight;
             // Soft gradients don't need retina pixels: 1x keeps this light on any laptop
-            const scale = cw * ch > 1600 * 1000 ? 0.75 : 1;
+            scale = cw * ch > 1600 * 1000 ? 0.75 : 1;
             w = canvas.width = Math.round(cw * scale);
             h = canvas.height = Math.round(ch * scale);
+            measureClearSky();
             draw(performance.now());
         }
 
@@ -65,9 +97,11 @@
                 hour = (hour - 5 * (1 - p) + 24) % 24;
             }
             px += (tx - px) * 0.12; py += (ty - py) * 0.12;
+            const body = bodyFor(window.scrollY);
+            paintedBody = body.bodyAlpha > 0;
             const frame = Sky.paint(ctx, w, h, {
                 hour, date: new Date(), model, mood, px, py, moodMix: { from: moodFrom, k: reducedMotion ? 1 : eased },
-                t: reducedMotion ? 0 : now / 1000, fadeToInk: true, horizon: 0.78,
+                t: reducedMotion ? 0 : now / 1000, fadeToInk: true, horizon: 0.78, ...body,
             });
             if (meteor) drawMeteor(now);
             lastPaint = now;
@@ -97,7 +131,9 @@
                 meteor = { at: now, x: w * (0.15 + Math.random() * 0.6), y: h * (0.06 + Math.random() * 0.22), dx: w * (0.18 + Math.random() * 0.14) * (Math.random() > 0.5 ? 1 : -1), dy: h * (0.1 + Math.random() * 0.08) };
             }
             // 30 frames a second for cloud and twinkle; full rate while something moves fast
-            const fast = meteor || moodMoving || (introAt && now - introAt < INTRO_MS) || Math.abs(tx - px) + Math.abs(ty - py) > 0.004;
+            // (and while the hero scrolls, so the sun or moon keeps pace with the page)
+            const scrolling = clear && now - scrolledAt < 150 && window.scrollY < clear.fade + 40;
+            const fast = meteor || moodMoving || scrolling || (introAt && now - introAt < INTRO_MS) || Math.abs(tx - px) + Math.abs(ty - py) > 0.004;
             if (fast || now - lastPaint > 32) draw(now);
             requestAnimationFrame(loop);
         }
@@ -121,9 +157,20 @@
         function onScroll() {
             const p = Math.min(1, window.scrollY / (window.innerHeight * 0.85));
             veil.style.setProperty('--veil', (p * 0.6).toFixed(3));
+            scrolledAt = performance.now();
+            // Reduced motion paints on demand: keep the sun or moon in step until it has faded
+            // (also when one long scroll jumps straight past the fade)
+            if (!running && (bodyFor(window.scrollY).bodyAlpha > 0 || paintedBody)) draw(scrolledAt);
         }
         window.addEventListener('scroll', onScroll, { passive: true });
         window.addEventListener('resize', resize);
+        // The hero's layout moves when fonts arrive and when today's card opens
+        const remeasure = () => { measureClearSky(); if (!running) draw(performance.now()); };
+        if ('ResizeObserver' in window) {
+            const ro = new ResizeObserver(remeasure);
+            ['today', 'todayTitle', 'dayCard'].forEach(id => $(id) && ro.observe($(id)));
+        }
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
         document.addEventListener('visibilitychange', () => setRunning(!document.hidden && visible));
         // Stop painting once the footer covers the view
         const footer = document.querySelector('.footer');
@@ -400,31 +447,142 @@
         catch (e) { toast('Copy didn’t work here. Press and hold the words to copy them.'); }
     });
 
-    // ── Breathe with it: three slow breaths, the card rising and settling ──
-    let breathTimer = null;
+    // ── Breathe with it: three slow breaths, the words (and the card) swelling and settling ──
+    let breathTimer = null, cueTimer = null;
+    const cue = $('dayBreath');
+    // The cue itself breathes, like a word filling with air:
+    //  - a lens (an SVG displacement filter) bulges the middle of the word and bends the strokes of
+    //    the letters, pinching the ends; it drains on the out-breath and briefly over-empties
+    //  - each letter puffs (taller more than wider), the middle of the word lifts like a chest, and
+    //    the outer letters lean out as if on a surface being inflated; each is pushed aside by exactly
+    //    the room its neighbours gained, so none overlap and the word stays centred
+    const BREATH_EASE = 'cubic-bezier(0.45, 0, 0.55, 1)';
+    const breathEase = (t) => 0.5 - 0.5 * Math.cos(Math.PI * t);
+    const LENS = 30; // how hard the lens bulges at the top of the breath (px)
+
+    // One letter pose for a "fullness" f (1 full of air, 0 at rest, below 0 emptied)
+    function pose(letters, widths, f) {
+        const n = letters.length, mid = (n - 1) / 2;
+        const shape = letters.map((_, i) => {
+            const d = mid ? (i - mid) / mid : 0, belly = 1 - d * d;
+            return { d, belly, sx: 1 + f * (0.05 + 0.24 * belly), sy: 1 + f * (0.08 + 0.46 * belly) };
+        });
+        let x = 0, X = 0;
+        const shifts = widths.map((w, i) => {
+            const s = (X + w * shape[i].sx / 2) - (x + w / 2);
+            x += w; X += w * shape[i].sx;
+            return s;
+        });
+        const grow = (X - x) / 2;
+        return shape.map((p, i) => `translate(${(shifts[i] - grow).toFixed(2)}px, ${(-4 * f * p.belly).toFixed(2)}px) ` +
+            `rotate(${(7 * f * p.d).toFixed(2)}deg) scale(${p.sx.toFixed(3)}, ${p.sy.toFixed(3)})`);
+    }
+
+    // The lens: built once, its map redrawn for each word, its strength driven every frame
+    let lens = null, lensFrame = 0;
+    function makeLens() {
+        const NS = 'http://www.w3.org/2000/svg';
+        const svg = document.createElementNS(NS, 'svg');
+        svg.setAttribute('aria-hidden', 'true');
+        svg.setAttribute('width', '0'); svg.setAttribute('height', '0');
+        svg.style.position = 'absolute';
+        svg.innerHTML = '<filter id="cueLens" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">' +
+            '<feImage result="map" preserveAspectRatio="none"/>' +
+            '<feDisplacementMap in="SourceGraphic" in2="map" scale="0" xChannelSelector="R" yChannelSelector="G"/>' +
+            // displacement samples without smoothing: a hair of blur, in step with it, keeps the strokes clean
+            '<feGaussianBlur stdDeviation="0"/></filter>';
+        document.body.append(svg);
+        return { filter: svg.querySelector('filter'), image: svg.querySelector('feImage'), disp: svg.querySelector('feDisplacementMap'), soft: svg.querySelector('feGaussianBlur') };
+    }
+    // A displacement map that magnifies an ellipse around the word's middle (sRGB 128 = no shift)
+    function aimLens(textWidth) {
+        if (!lens) lens = makeLens();
+        const w = cue.offsetWidth, h = cue.offsetHeight, padX = 30, padY = 30;
+        const W = Math.round(w + padX * 2), H = Math.round(h + padY * 2);
+        const canvas = document.createElement('canvas');
+        canvas.width = W; canvas.height = H;
+        const g = canvas.getContext('2d'), img = g.createImageData(W, H);
+        const cx = W / 2, cy = H / 2, rx = textWidth * 0.62 + 8, ry = h * 1.15;
+        for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+            const nx = (x - cx) / rx, ny = (y - cy) / ry, r2 = nx * nx + ny * ny;
+            const k = r2 < 1 ? (1 - r2) * (1 - r2) : 0;
+            const o = (y * W + x) * 4;
+            img.data[o] = Math.round(128 - 127 * Math.max(-1, Math.min(1, nx * k * 1.6)));
+            img.data[o + 1] = Math.round(128 - 127 * Math.max(-1, Math.min(1, ny * k * 1.6)));
+            img.data[o + 2] = 128; img.data[o + 3] = 255;
+        }
+        g.putImageData(img, 0, 0);
+        for (const el of [lens.filter, lens.image]) {
+            el.setAttribute('x', -padX); el.setAttribute('y', -padY);
+            el.setAttribute('width', W); el.setAttribute('height', H);
+        }
+        lens.image.setAttribute('href', canvas.toDataURL());
+        cue.style.filter = 'url(#cueLens)';
+    }
+    // Drive the lens through keyframes [{at, v}] over ms, eased like the breath
+    function runLens(keys, ms) {
+        cancelAnimationFrame(lensFrame);
+        const start = performance.now();
+        const step = (now) => {
+            const t = breathEase(Math.min(1, (now - start) / ms));
+            let i = 1; while (i < keys.length - 1 && t > keys[i].at) i++;
+            const a = keys[i - 1], b = keys[i], u = Math.min(1, Math.max(0, (t - a.at) / (b.at - a.at || 1)));
+            const v = a.v + (b.v - a.v) * u;
+            lens.disp.setAttribute('scale', v.toFixed(2));
+            lens.soft.setAttribute('stdDeviation', (0.5 * Math.min(1, Math.abs(v) / LENS)).toFixed(3));
+            if (now - start < ms) lensFrame = requestAnimationFrame(step);
+        };
+        lensFrame = requestAnimationFrame(step);
+    }
+
+    function writeCue(text, swell, ms) {
+        const letters = [...text].map(ch => { const s = document.createElement('span'); s.className = 'cue-l'; s.textContent = ch; return s; });
+        cue.replaceChildren(...letters);
+        cancelAnimationFrame(lensFrame);
+        if (!swell || reducedMotion || !cue.animate) { cue.style.filter = ''; return; }
+        const widths = letters.map(l => l.offsetWidth);
+        const rest = pose(letters, widths, 0), full = pose(letters, widths, 1), empty = pose(letters, widths, -0.18);
+        letters.forEach((l, i) => l.animate(
+            swell > 0
+                ? [{ transform: rest[i] }, { transform: full[i] }]
+                : [{ transform: full[i] }, { transform: empty[i], offset: 0.86 }, { transform: rest[i] }],
+            { duration: ms, easing: BREATH_EASE, fill: 'both' }));
+        aimLens(widths.reduce((a, b) => a + b, 0));
+        runLens(swell > 0 ? [{ at: 0, v: 0 }, { at: 1, v: LENS }] : [{ at: 0, v: LENS }, { at: 0.86, v: -LENS * 0.25 }, { at: 1, v: 0 }], ms);
+    }
+    // The cue cross-fades to its next words (css: .is-swapping) rather than switching.
+    // swell: 1 swells over ms, -1 sinks over ms, 0 stays still
+    function sayCue(text, swell = 0, ms = 0) {
+        clearTimeout(cueTimer);
+        if (reducedMotion || !card.classList.contains('is-breathing') || !cue.textContent) { writeCue(text, swell, ms); return; }
+        cue.classList.add('is-swapping');
+        cueTimer = setTimeout(() => { writeCue(text, swell, ms - 220); cue.classList.remove('is-swapping'); }, 220);
+    }
     function stopBreath() {
         clearTimeout(breathTimer); breathTimer = null;
+        clearTimeout(cueTimer); cue.classList.remove('is-swapping');
+        cancelAnimationFrame(lensFrame); cue.style.filter = '';
         card.classList.remove('is-breathing', 'is-inhale', 'is-exhale');
         $('dayBreatheBtn').querySelector('span').textContent = 'Breathe';
     }
     $('dayBreatheBtn').addEventListener('click', () => {
         if (breathTimer) return stopBreath();
-        const label = $('dayBreath');
         let round = 0;
+        cue.textContent = '';
         card.classList.add('is-breathing');
         $('dayBreatheBtn').querySelector('span').textContent = 'Stop';
         track('daily_breathe');
         const inhale = () => {
             if (round === 3) {
-                label.textContent = 'There.';
+                sayCue('There.');
                 breathTimer = setTimeout(stopBreath, 2200);
                 return;
             }
             round++;
-            label.textContent = 'Breathe in';
+            sayCue('Breathe in', 1, 4000);
             card.classList.remove('is-exhale'); card.classList.add('is-inhale');
             breathTimer = setTimeout(() => {
-                label.textContent = 'and out';
+                sayCue('Breathe out', -1, 6000);
                 card.classList.remove('is-inhale'); card.classList.add('is-exhale');
                 breathTimer = setTimeout(inhale, 6000);
             }, 4000);

@@ -4607,6 +4607,19 @@ nav.scrolled, nav.menu-open, nav.nav-open {
     nav.nav-open .nav-links a.nav-cta[aria-current="page"], nav.menu-open .nav-links a.nav-cta[aria-current="page"] { color: var(--color-ink); }
 }
 
+/* The open hamburger menu: a solid panel (the translucent, blurred one let the page's text show
+   through between the links), and the crisis badge keeps its pill shape and heart dot (the generic
+   menu-link rule was overriding both) */
+@media (max-width: 1099px) {
+    nav.nav-open .nav-links, nav.menu-open .nav-links { background: var(--color-bg-dark); }
+    nav.nav-open .nav-links a.nav-crisis-badge, nav.menu-open .nav-links a.nav-crisis-badge {
+        display: inline-flex;
+        padding: 9px 16px 9px 14px;
+        margin: 10px 0 6px;
+        border: 1px solid rgba(245, 143, 168, 0.35);
+    }
+}
+
 /* ── Buttons ── */
 .btn {
     font-weight: 600;
